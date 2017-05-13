@@ -1,0 +1,12 @@
+# Any subfolders
+*/*
+
+# Any file
+*
+
+# Except shell scripts
+!*.sh
+!*.bash
+
+# Except .gitignore
+!.gitignore
