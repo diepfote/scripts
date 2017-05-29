@@ -16,6 +16,11 @@ if [[ "$1" =~ ^-?[0-9]+$ ]]; then
 	NUM_WEEKS=$1
 fi
 
+# Is the second parameter a valid int.
+if [[ "$2" =~ ^-?[0-9]+$ ]]; then
+	NUM_WEEKS=$2
+fi
+
 
 # Day to display in first parameter
 if [ "$1" == "sun" ]; then
@@ -41,3 +46,4 @@ if [ -f $FILE ]; then
 		chromium-browser $FILE 1> /dev/null
 	fi
 fi
+
