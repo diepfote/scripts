@@ -34,7 +34,7 @@ fi
 
 
 DATE=$(date -d"$DAY+$NUM_WEEKS weeks" +%Y-%m-%d)
-PASS=$(sudo find ~ -name 'rk.txt')
+PASS=$(sudo find ~ -name 'rk*.txt')
 PY_F=$(find ~ -name 'rk_.py' 2> /dev/null) # Pipe error messages to stderror to null
 
 sudo python $PY_F $DATE $FILE $PASS
