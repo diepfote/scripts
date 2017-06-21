@@ -22,7 +22,7 @@ echo
 cd ~/Documents/pythoncode; git pull
 echo $SEP
 
-echo git pull Zeiterfassung
-echo
-cd ~/Documents/time_management; git pull
+#echo git pull Zeiterfassung
+#echo
+#cd ~/Documents/time_management; git pull
 
