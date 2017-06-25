@@ -11,6 +11,7 @@ else
 	echo Mount in progress
 	sudo mount -t cifs -o username=user,password=user,uid=1000,gid=1000 //$IP_DESKTOP/Video-Files ~/Videos/
 	sudo mount -t cifs -o username=user,password=user,uid=1000,gid=1000 //$IP_DESKTOP/Music ~/Music/
+	sudo mount -t cifs -o username=user,password=user,uid=1000,gid=1000 //$IP_DESKTOP/Software ~/Software/
 
 	echo
 	df -h
