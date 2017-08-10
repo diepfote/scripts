@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd ~/Pictures
+cd /home/flo/Pictures
 mv Screenshot* screenshots/
 
