@@ -22,6 +22,7 @@ for f in $(find $IPHONE_DCIM_DIR -name "*IMG*"); do
   cp -p $(find $f -newer "$LOCAL_PICTURES_DIR/$latest_backup_dir/$latest_file") "$LOCAL_PICTURES_DIR/$f_date" 2>/dev/null
 done
 
+chown -R flo:flo $f_date
 cd "$LOCAL_PICTURES_DIR/$f_date"
 is_new_files=$(ls)
 
