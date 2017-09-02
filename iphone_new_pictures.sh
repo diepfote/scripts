@@ -1,6 +1,6 @@
 #!/bin/bash
 
-upper_dir="/home/$(whoami)"
+upper_dir="/home/flo"
 trap "fusermount -u $upper_dir/iPhone/" EXIT
 ifuse $upper_dir/iPhone/
 
