@@ -2,9 +2,14 @@
 
 SEP=$(printf "=================\n\n")
 
+cd ~/Documents/scripts
+echo get timetracking file
+echo
+./work_timetracking.sh
+
 echo git pull scripts
 echo
-cd ~/Documents/scripts; git pull
+git pull
 echo $SEP
 
 echo git pull pythoncode
@@ -20,3 +25,4 @@ echo $SEP
 echo git pull cpp
 echo
 cd ~/Documents/cpp/; git pull
+
