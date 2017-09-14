@@ -4,9 +4,9 @@ SEP=$(printf "=================\n\n")
 
 cd ~/Documents/scripts
 echo get timetracking file
-echo
 ./work_timetracking.sh
 
+echo
 echo git pull scripts
 echo
 git pull
