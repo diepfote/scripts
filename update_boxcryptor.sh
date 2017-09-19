@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/Desktop/boxcr/
+cd /home/flo/Desktop/boxcr/
 
 current_boxcryptor=$(curl -sI https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest | grep Location | cut -d ':' -f3 | cut -d '/' -f7 | sed "s/\r//")
 
