@@ -7,10 +7,11 @@ current_boxcryptor=$(curl -sI https://ptc.secomba.com/api/boxcryptor/linuxPortab
 last_in_filesystem=$(find -printf "%TY-%Tm-%Td %TT %p\n" | sort -nr | grep tar.gz | head -1 | cut -d ' ' -f3 | cut -d '/' -f2) 
 
 if echo $last_in_filesystem | grep $current_boxcryptor 1>/dev/null; then
-  echo No new boxcryptor version.
+  echo -e "\033[1;32mNo new boxcryptor version.\033[0m"
   echo Current version is: $last_in_filesystem
   echo
 else
+  echo -e "\033[1;33mDownloading new version: $current_boxcryptor\033[0m"
   curl -sL https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest -o $current_boxcryptor
 
   temp=temp
