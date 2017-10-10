@@ -12,9 +12,9 @@ echo
 git pull
 echo $SEP
 
-echo git pull pythoncode
+echo git pull python
 echo
-cd ~/Documents/pythoncode; git pull
+cd ~/Documents/python; git pull
 echo $SEP
 
 echo git pull c
