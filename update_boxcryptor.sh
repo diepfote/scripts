@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo 1>&2
+echo -e "\033[1;33mboxcryptor update start\033[0m" 1>&2
+
 cd /home/flo/Desktop/boxcr/
 
 current_boxcryptor=$(curl -sI https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest | grep Location | cut -d ':' -f3 | cut -d '/' -f7 | sed "s/\r//")
@@ -46,4 +49,6 @@ else
 
   rm -rf $temp
 fi
+
+echo -e "\033[1;33mboxcryptor update end\033[0m" 1>&2
 
