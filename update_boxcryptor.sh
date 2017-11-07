@@ -9,7 +9,7 @@ current_boxcryptor=$(curl -sI https://ptc.secomba.com/api/boxcryptor/linuxPortab
 
 last_in_filesystem=$(find -printf "%TY-%Tm-%Td %TT %p\n" | sort -nr | grep tar.gz | head -1 | cut -d ' ' -f3 | cut -d '/' -f2) 
 
-if echo $last_in_filesystem | grep $current_boxcryptor 1>/dev/null; then
+if  [ $last_in_filesystem == $current_boxcryptor ]; then
   echo
   echo -e "\033[1;32mNo new boxcryptor version.\033[0m"
 
@@ -18,6 +18,11 @@ if echo $last_in_filesystem | grep $current_boxcryptor 1>/dev/null; then
   echo -e Current verion is: "\033[1;32m`expr substr $last_in_filesystem $start_of_version $version_length`\033[0m"
   echo
 else
+  if [ -z "$current_boxcryptor" ]; then
+    echo -e "\033[1;31mNo internet connection?\033[0m\n" 1>&2
+    exit
+  fi
+
   echo
   echo -e "\033[1;33mDownloading new version: $current_boxcryptor\033[0m"
   echo
