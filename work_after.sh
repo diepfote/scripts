@@ -3,8 +3,8 @@
 SEP=$(printf "=================\n\n")
 
 cd ~/Documents/scripts
-echo get timetracking file
-./work_timetracking.sh
+echo get time-tracking file
+./work_time-tracking.sh
 
 echo
 echo git pull scripts

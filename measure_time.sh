@@ -1,7 +1,9 @@
-#!/bin/bash
+#!/bin/sh
+
+# usage:
+# ./measure_time.sh command
+
 START=$(date +%s%N)
-# do something
-# start your script work here
 
 # run passed in command
 $1 1>/dev/null 2>/dev/null
@@ -11,3 +13,4 @@ END=$(date +%s%N)
 DIFF=$(( $END - $START ))
 
 echo millisec $(($DIFF/1000000))
+
