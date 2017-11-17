@@ -26,3 +26,7 @@ echo git pull cpp
 echo
 cd ~/Documents/cpp/; git pull
 
+echo git pull cpp
+echo
+cd ~/.config/fish/functions/; git pull
+
