@@ -1,11 +1,14 @@
 #!/bin/bash
 
-fish_dir=/home/flo/.local/share/fish
-fish_back_dir=$fish_dir/back
+user_dir=/home/`sudo head -1 /etc/sudoers | cut -d ' ' -f1`
+fish_backup_dir=`sudo find $user_dir -name fish_backup 2>/dev/null`
+
+# Get parent directory
+fish_dir=`dirname $fish_backup_dir`
 f_date=$(date '+%m-%d-%Y_%H-%M-%S')
 
-cp $fish_dir/fish_history $fish_back_dir/fish_history$f_date
-
 # Remove 10th file
-rm -f $fish_back_dir/`ls -t $fish_back_dir | sed -n 10p` 2>/dev/null
+trap "rm -f $fish_backup_dir/`ls -t $fish_backup_dir | sed -n 10p` 2>/dev/null" EXIT
+
+cp $fish_dir/fish_history $fish_backup_dir/fish_history$f_date
 
