@@ -8,5 +8,6 @@
 !*.sh
 !*.bash
 
-# Except .gitignore
 !.gitignore
+!Makefile
+
