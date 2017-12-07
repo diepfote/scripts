@@ -1,6 +1,12 @@
 #!/bin/bash
 
 user_dir=/home/`sudo head -1 /etc/sudoers | cut -d ' ' -f1`
+
+# HOTFIX
+if [ $user_dir == '/home/#' ]; then
+  user_dir=/home/florian
+fi
+
 fish_backup_dir=`sudo find $user_dir -name fish_backup 2>/dev/null`
 
 # Get parent directory
