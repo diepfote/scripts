@@ -3,11 +3,6 @@
 if [ $SUDO_USER ]; then user=$SUDO_USER; else user=`whoami`; fi
 user_dir=/home/$user
 
-# HOTFIX
-if [ $user_dir == '/home/#' ]; then
-  user_dir=/home/florian
-fi
-
 fish_backup_dir=`sudo find $user_dir -name fish_backup 2>/dev/null`
 
 # Get parent directory
