@@ -1,6 +1,7 @@
 #!/bin/bash
 
-user_dir=/home/`sudo head -1 /etc/sudoers | cut -d ' ' -f1`
+if [ $SUDO_USER ]; then user=$SUDO_USER; else user=`whoami`; fi
+user_dir=/home/$user
 
 # HOTFIX
 if [ $user_dir == '/home/#' ]; then
