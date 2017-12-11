@@ -1,5 +1,5 @@
 #!/bin/bash
-t=(mktemp -d)
+t=(mkdir -d)
 
 idevicecrashreport -e $t
 rm -rf $t
