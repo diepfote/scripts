@@ -1,6 +1,6 @@
 #!/bin/bash
-mkdir -p /tmp/temp
+t=(mktemp -d)
 
-idevicecrashreport -e /tmp/temp/
-rm -rf /tmp/temp/
+idevicecrashreport -e $t
+rm -rf $t
 
