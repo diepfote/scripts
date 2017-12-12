@@ -1,8 +1,7 @@
 # Any subfolders
 */*
 
-# Any file
-#*
+*.swp
 
 # Except shell scripts
 !*.sh
