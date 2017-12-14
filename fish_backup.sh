@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $SUDO_USER ]; then user=$SUDO_USER; else user=`whoami`; fi
+user=`cut -d : -f 1 /etc/passwd | grep flo`
 user_dir=/home/$user
 
 fish_backup_dir=`sudo find $user_dir -name fish_backup 2>/dev/null`
