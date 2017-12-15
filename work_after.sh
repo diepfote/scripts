@@ -4,6 +4,11 @@ SEP=$(printf "=================\n\n")
 
 sudo echo 1>/dev/null
 
+echo git fish functions
+echo
+cd ~/.config/fish/functions/; git pull
+echo $SEP
+
 echo git pull scripts
 echo
 cd ~/Documents/scripts
@@ -23,11 +28,6 @@ echo $SEP
 echo git pull cpp
 echo
 cd ~/Documents/cpp/; git pull
-echo $SEP
-
-echo git fish functions
-echo
-cd ~/.config/fish/functions/; git pull
 echo $SEP
 
 echo
