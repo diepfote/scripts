@@ -5,11 +5,11 @@ echo -e "\033[1;33mboxcryptor update start\033[0m" 1>&2
 
 boxcryptor_location=/home/flo/Desktop/boxcr
 
-current_boxcryptor_ver_with_ext=$(curl -sI https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest | grep Location | cut -d ':' -f3 | cut -d '/' -f7 | sed "s/\r//")
+current_boxcryptor_ver_with_ext=$(curl -sI https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest | grep Location | cut -d ':' -f3 | cut -d '/' -f7 | sed "s/\r//" 2>/dev/null)
 
-last_in_filesystem=$(find $boxcryptor_location -printf "%TY-%Tm-%Td %TT %p\n" | sort -nr | grep tar.gz | head -1 | cut -d ' ' -f3 | cut -d '/' -f6) 
+last_in_filesystem=$(find $boxcryptor_location -printf "%TY-%Tm-%Td %TT %p\n" | sort -nr | grep tar.gz | head -1 | cut -d ' ' -f3 | cut -d '/' -f6 2>/dev/null)
   
-if [ $last_in_filesystem == $current_boxcryptor_ver_with_ext ]; then
+if [ "$last_in_filesystem" == "$current_boxcryptor_ver_with_ext" ]; then
   echo
   echo -e "\033[1;32mNo new boxcryptor version.\033[0m"
 
@@ -43,7 +43,7 @@ else
   rm $boxcryptor_location/Boxcryptor_Portable.sh
   
   # delete oldest tar.gz version (3rd .tar.gz file is deleted - sorted by newest)
-  rm $boxcryptor_location/$(find $boxcryptor_location -printf "%TY-%Tm-%Td %TT %p\n" | sort -nr | grep tar.gz | sed -n 4p | cut -d '/' -f6) 
+  rm $boxcryptor_location/$(find $boxcryptor_location -printf "%TY-%Tm-%Td %TT %p\n" | sort -nr | grep tar.gz | sed -n 4p | cut -d '/' -f6 2>/dev/null) 
 
   mv $temp/README.txt $boxcryptor_location
   mv $temp/Boxcryptor_Portable.sh $boxcryptor_location
