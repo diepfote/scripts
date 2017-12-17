@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo 1>&2
-echo -e "\033[1;33mboxcryptor update start\033[0m" 1>&2
+echo
+echo -e "\033[1;33mboxcryptor update start\033[0m"
 
 boxcryptor_location=/home/flo/Desktop/boxcr
 
@@ -55,5 +55,5 @@ else
   rm -rf $temp
 fi
 
-echo -e "\033[1;33mboxcryptor update end\033[0m" 1>&2
+echo -e "\033[1;33mboxcryptor update end\033[0m"
 
