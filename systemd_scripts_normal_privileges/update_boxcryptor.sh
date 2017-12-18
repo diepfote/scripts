@@ -3,7 +3,10 @@
 echo
 echo -e "\033[1;33mboxcryptor update start\033[0m"
 
-boxcryptor_location=/home/flo/Desktop/boxcr
+user=`cut -d : -f 1 /etc/passwd | grep flo`
+user_dir=/home/$user
+
+boxcryptor_location=$user_dir/Desktop/boxcr
 
 current_boxcryptor_ver_with_ext=$(curl -sI https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest | grep Location | cut -d ':' -f3 | cut -d '/' -f7 | sed "s/\r//" 2>/dev/null)
 
