@@ -23,7 +23,7 @@ if [ "$last_in_filesystem" == "$current_boxcryptor_ver_with_ext" ]; then
 else
   if [ -z "$current_boxcryptor_ver_with_ext" ]; then
     echo -e "\033[1;31mNo internet connection?\033[0m\n" 1>&2
-    exit
+    exit 1
   fi
 
   echo
