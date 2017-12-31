@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo
 echo -e "\033[1;33mboxcryptor update start\033[0m"
 
 user=`cut -d : -f 1 /etc/passwd | grep flo`
@@ -13,22 +12,18 @@ current_boxcryptor_ver_with_ext=$(curl -sI https://ptc.secomba.com/api/boxcrypto
 last_in_filesystem=$(find $boxcryptor_location -printf "%TY-%Tm-%Td %TT %p\n" | sort -nr | grep tar.gz | head -1 | cut -d ' ' -f3 | cut -d '/' -f6 2>/dev/null)
   
 if [ "$last_in_filesystem" == "$current_boxcryptor_ver_with_ext" ]; then
-  echo
   echo -e "\033[1;32mNo new boxcryptor version.\033[0m"
 
   start_of_version=29
   version_length=10
   echo -e Current verion is: "\033[1;32m`expr substr $last_in_filesystem $start_of_version $version_length`\033[0m"
-  echo
 else
   if [ -z "$current_boxcryptor_ver_with_ext" ]; then
-    echo -e "\033[1;31mNo internet connection?\033[0m\n" 1>&2
+    echo -e "\033[1;31mNo internet connection?\033[0m" 1>&2
     exit 1
   fi
 
-  echo
   echo -e "\033[1;33mDownloading new version: $current_boxcryptor_ver_with_ext\033[0m"
-  echo
   curl -sL https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest -o $boxcryptor_location/$current_boxcryptor_ver_with_ext
 
   temp=$boxcryptor_location/temp
