@@ -2,8 +2,6 @@
 
 SEP=$(printf "=================\n\n")
 
-sudo echo 1>/dev/null
-
 echo git fish functions
 echo
 cd ~/.config/fish/functions/; git pull
@@ -32,5 +30,5 @@ echo $SEP
 
 echo
 echo get time-tracking file
-~/Documents/scripts/work_time-tracking.sh
+~/Documents/scripts/work_time-tracking.sh $1
 
