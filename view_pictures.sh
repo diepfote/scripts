@@ -1,7 +1,11 @@
 #!/bin/bash
 
-trap "sudo chown -R root:root ~/Documents/iphone_pictures/" EXIT
+PICT_DIR=~/Documents/iphone_pictures/
 
-sudo chown -R $USER:$USER ~/Documents/iphone_pictures/
+trap "sudo chown -R root:root $PICT_DIR" EXIT
+
+sudo chown -R $USER:$USER $PICT_DIR
+xdg-open $PICT_DIR
+
 sleep infinity
 
