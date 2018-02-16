@@ -1,7 +1,7 @@
 #!/bin/sh
 
 vol_group_mapper=/dev/mapper/VolGroup00
-d=$(date '+%m-%d-%Y_%H-%M-%S')
+d=$(date '+%Y-%m-%d_%H-%M-%S')
 
 dir=root
 size=1GB
