@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # usage:
-# ./measure_time.sh command
+# ./time-it.sh command arg1 arg2 arg3 ...
 
 START=$(date +%s%N)
 
