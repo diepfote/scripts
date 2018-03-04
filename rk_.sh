@@ -40,9 +40,9 @@ PY_F=$(find ~ -name 'rk_.py' 2> /dev/null) # Pipe error messages to stderror to 
 sudo python $PY_F $DATE $FILE $PASS
 
 if [ -f $FILE ]; then
-	google-chrome-stable $FILE 2> /dev/null 1> /dev/null
+	chromium $FILE 2> /dev/null 1> /dev/null
 
-	if [ "$?" -eq 127 ]; then # google-chrome-stable not found
+	if [ "$?" -eq 127 ]; then # chromium not found
 		chromium-browser $FILE 1> /dev/null
 	fi
 fi
