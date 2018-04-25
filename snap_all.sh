@@ -1,7 +1,9 @@
 #!/bin/sh
 
 vol_group_mapper=/dev/mapper/VolGroup00
-d=$(date '+%Y-%m-%d_%H-%M-%S')
+# create a local timestamp
+d=$(date +%FT%T%Z)
+d="${d//:/-}"
 
 dir=root
 size='2.5GB'
