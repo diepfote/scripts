@@ -13,4 +13,5 @@ END=$(date +%s%N)
 DIFF=$(( $END - $START ))
 
 echo millisec $(($DIFF/1000000))
+echo millisec $(($DIFF/1000000)) 1>&2
 
