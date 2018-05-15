@@ -30,7 +30,7 @@ dd if=/dev/urandom of=$TEST_FILE bs=$BLOCK_SIZE count=$COUNT conv=fsync > /dev/n
 PRINTF_FORMAT="%8s : %s\n"
 printf "$PRINTF_FORMAT" 'block size' 'transfer rate'
 
-# Block sizes of 512b 1K 2K 4K 8K 16K 32K 64K 128K 256K 512K 1M 2M 4M 8M 16M 32M 64M
+# Block sizes of 512b 1K   2K   4K   8K   16K   32K   64K   128K   256K   512K   1M      2M      4M      8M      16M      32M      64M
 for BLOCK_SIZE in 512 1024 2048 4096 8192 16384 32768 65536 131072 262144 524288 1048576 2097152 4194304 8388608 16777216 33554432 67108864
 do
   # Clear kernel cache to ensure more accurate test
