@@ -3,6 +3,11 @@
 user=`cut -d : -f 1 /etc/passwd | grep flo`
 user_dir=/home/$user
 
+dir_to_search=$user_dir/.local/share/fish/fish_backup
+if [ ! -d $dir_to_search ]; then
+  dir_to_search=$user_dir/.config/fish/fish_backup
+fi
+
 fish_backup_dir=`find $user_dir -name fish_backup 2>/dev/null`
 
 # Remove 10th file
