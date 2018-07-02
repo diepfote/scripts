@@ -4,7 +4,7 @@ user=`cut -d : -f 1 /etc/passwd | grep flo`
 user_dir=/home/$user
 
 fish_backup_dir=$user_dir/.local/share/fish/fish_backup
-if [ ! -d $dir_to_search ]; then
+if [ ! -d $fish_backup_dir ]; then
   fish_backup_dir=$user_dir/.config/fish/fish_backup
 fi
 
