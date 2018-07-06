@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-# either takes a path or assumes the current directory
-# is where relevant pdf files reside
+# This script either takes a path to a folder containing PDF files or
+# assumes the current directory is where relevant PDF files reside
+#
 directory=$1
 if [ -z $directory ]; then
   directory=$(pwd)
 fi
 
-declare -a NUM_PAGES_ARRAY
 END=$(ls $directory | wc -l)
 
 for i in $(seq 1 $END); do
