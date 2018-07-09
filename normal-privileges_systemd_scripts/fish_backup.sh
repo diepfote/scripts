@@ -13,7 +13,7 @@ trap "rm -f $fish_backup_dir/`ls -t $fish_backup_dir | sed -n 10p` 2>/dev/null" 
 
 # Get parent directory
 fish_dir=`dirname $fish_backup_dir`
-f_date=$(date '+%FT%T%Z')
+f_date=$(date +%FT%T%Z | sed 's/:/--/g')
 
 cp $fish_dir/fish_history $fish_backup_dir/fish_history$f_date
 

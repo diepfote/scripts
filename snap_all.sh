@@ -2,7 +2,7 @@
 
 vol_group_mapper=/dev/mapper/VolGroup00
 # create a local timestamp
-d=$(date +%FT%T%Z)
+d=$(date +%FT%T%Z | sed 's/:/--/g')
 d="${d//:/-}"
 
 dir=root
