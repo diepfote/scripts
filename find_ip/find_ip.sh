@@ -4,6 +4,7 @@ quit_on_found=0
 packet_count=2
 subnet=""
 verbose="-q"
+interface='wlp4s0'
 
 usage()
 {
@@ -20,6 +21,7 @@ OPTIONS:
 	-s <subnet>       First 3 parts of the subnet to test, default 192.168.0
 	-q                Quit when found first free address, default keep going
 	-v                Verbose
+  -i <interface>
 
 EOF
 }
@@ -36,7 +38,7 @@ EOF
 	exit 1
 fi
 
-while getopts  ":hvs:qc:" flag
+while getopts  ":hvs:qc:i:" flag
 do
 	case $flag in
 		h)
@@ -55,6 +57,9 @@ do
 		v)
 			verbose=""
 			;;
+    i)
+      interface=$OPTARG
+      ;;
 		?)
 			usage
 			exit 1
@@ -86,7 +91,7 @@ for i in {1..254}
 #for i in {1..254}
 do
 	IP=$subnet.$i
-	arping $verbose -c $packet_count -0 $IP
+	arping -I $interface $verbose -c $packet_count $IP
 	result=$?
 	if [[ $result == 0 ]]
 	then
