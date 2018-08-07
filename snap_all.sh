@@ -14,14 +14,14 @@ size=356MB
 sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
 dir=home
-size='2.5GB'
+size='3.5GB'
 sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
 dir=var
 size='2.5GB'
 sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
-dir=opt
-size='2.5GB'
-sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+#dir=opt
+#size='2.5GB'
+#sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
