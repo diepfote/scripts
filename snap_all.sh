@@ -6,7 +6,7 @@ d=$(date +%FT%T%Z | sed 's/:/--/g')
 d="${d//:/-}"
 
 dir=root
-size='2.5GB'
+size='1.5GB'
 sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
 dir=boot
@@ -14,11 +14,11 @@ size=356MB
 sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
 dir=home
-size='3.5GB'
+size='5GB'
 sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
 dir=var
-size='2.5GB'
+size='2GB'
 sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
 #dir=opt
