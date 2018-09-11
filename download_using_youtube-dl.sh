@@ -27,20 +27,15 @@ download() {
   if [ "$(pwd)" == "$dir" ]; then
 
       if [ -z "$search_term" ]; then
-        VIDEOS=$(youtube-dl  --add-metadata  -w  -f best --dateafter "$date_to_use"   $url | grep 'Destination')
+        youtube-dl  --add-metadata  -w  -f best --dateafter "$date_to_use"   $url | grep 'Destination'
         # DEBUG
         #youtube-dl -w -f best --dateafter "$date_to_use"   $url 
       else
-        VIDEOS=$(youtube-dl  --add-metadata  -w  -f best   --match-title $search_term   --dateafter "$date_to_use"   $url | grep 'Destination')
+        youtube-dl  --add-metadata  -w  -f best   --match-title $search_term   --dateafter "$date_to_use"   $url | grep 'Destination'
         # DEBUG
         #youtube-dl -w -f best   --match-title $search_term   --dateafter "$date_to_use"   $url
       fi
 
-    if [[ ! "$VIDEOS" ]]; then
-      echo -e "$name - Nothing new."
-    else
-      echo -e "$VIDEOS"
-    fi
 
     echo -e "\033[1;33mEnd $name\033[0m"
 
