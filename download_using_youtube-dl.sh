@@ -27,13 +27,17 @@ download() {
   if [ "$(pwd)" == "$dir" ]; then
 
       if [ -z "$search_term" ]; then
-        youtube-dl  --write-info-json  --add-metadata  -w  -f best --dateafter "$date_to_use"   $url | grep 'Destination'
+        youtube-dl  --write-info-json  --add-metadata  -w  -f best \
+          --dateafter "$date_to_use"   $url | grep -E 'Destination|Finished'
         # DEBUG
-        #youtube-dl -w -f best --dateafter "$date_to_use"   $url 
+        #youtube-dl  --write-info-json  --add-metadata  -w  -f best \
+          #--dateafter "$date_to_use"   $url
       else
-        youtube-dl  --write-info-json  --add-metadata  -w  -f best   --match-title $search_term   --dateafter "$date_to_use"   $url | grep 'Destination'
+        youtube-dl  --write-info-json  --add-metadata  -w  -f best   \
+          --match-title $search_term   --dateafter "$date_to_use"   $url | grep -E 'Destination|Finished'
         # DEBUG
-        #youtube-dl -w -f best   --match-title $search_term   --dateafter "$date_to_use"   $url
+        #youtube-dl  --write-info-json  --add-metadata  -w  -f best   \
+          #--match-title $search_term   --dateafter "$date_to_use"   $url
       fi
 
 
