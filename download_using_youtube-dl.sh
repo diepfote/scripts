@@ -18,7 +18,7 @@ download() {
   search_term=$4
 
   # read range for past days from conf file
-  day_range_past=$(head -n 1 $config_file | grep days_past | cut -d '=' -f2)
+  day_range_past=$(./read_toml_setting.sh  $config_file  days_past)
   date_to_use=$(date --date="$day_range_past" '+%Y%m%d') 
 
   dir="$user_dir/Win_Part/Users/Dev/Desktop/$name"
