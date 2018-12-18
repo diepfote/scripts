@@ -14,5 +14,6 @@ fi
 pass=$($script_dir/read_pass.sh)
 
 file=$(find $pass_dir -iname "*$1*.gpg")
-echo $pass | gpg -d --batch --passphrase-fd 0 $file 2>/dev/null
+echo $pass | gpg --no-symkey-cache -d --batch --passphrase-fd 0 $file 2>/dev/null
+#echo $pass | gpg --crypto-algo AES256 --no-symkey-cache -d --batch --passphrase-fd 0 $file 2>/dev/null
 
