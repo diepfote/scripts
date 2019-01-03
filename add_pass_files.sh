@@ -34,7 +34,7 @@ RED='\033[1;31m'
 GREEN='\033[1;32m'
 NC='\033[0m'
 
-if [ $pass != $pass_second ]; then
+if [ "$pass" != "$pass_second" ]; then
   echo -en "$RED"; echo -en "Passwords do not match!$NC"; echo
 else
 
