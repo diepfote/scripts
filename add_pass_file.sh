@@ -12,8 +12,6 @@ function check_error
   fi
 }
 
-file_dir=$1
-
 user=$(cut -d : -f 1 /etc/passwd | grep flo)
 user_dir=/home/$user  
 
@@ -29,7 +27,6 @@ pass=$($script_dir/read_pass.sh)
 pass_second=$($script_dir/read_pass.sh)
 
 
-
 RED='\033[1;31m'
 GREEN='\033[1;32m'
 NC='\033[0m'
@@ -37,30 +34,23 @@ NC='\033[0m'
 if [ "$pass" != "$pass_second" ]; then
   echo -en "$RED"; echo -en "Passwords do not match!$NC"; echo
 else
+  file="$1"
+  
+  echo -e "----------------------\nAdding $(basename $file)\n"
+  
+  $script_dir/encrypt_file.sh "$pass" "$file"
+  check_error "$?" gpg $RED $NC
 
-  files=$(find $file_dir -maxdepth 1 -type f)
-  # DEBUG
-  #echo -e "$files"
+  mv $file.gpg $pass_dir
+  check_error "$?" mv $RED $NC 
+  chmod 600 $pass_dir/*
+  check_error "$?" chmod $RED $NC 
 
-  for file in $(echo -e $files) 
-  do
-    echo -e "----------------------\nAdding $(basename $file)\n"
-    
+  rm $file
+  check_error "$?" rm $RED $NC 
+  
+  echo -en "$GREEN"; echo -en "Successfully added $(basename $file)!$NC"; echo
 
-    $script_dir/encrypt_file.sh "$pass" "$file"
-    check_error "$?" gpg $RED $NC
-
-    mv $file.gpg $pass_dir
-    check_error "$?" mv $RED $NC 
-    chmod 600 $pass_dir/*
-    check_error "$?" chmod $RED $NC 
-
-    rm $file
-    check_error "$?" rm $RED $NC 
-    
-    echo -en "$GREEN"; echo -en "Successfully added $(basename $file)!$NC"; echo
-
-    echo -e "\n----------------------\n"
-  done
+  echo -e "\n----------------------\n"
 fi
 
