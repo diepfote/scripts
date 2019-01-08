@@ -46,8 +46,8 @@ else
   do
     echo -e "----------------------\nAdding $(basename $file)\n"
     
-    echo $pass | gpg -c --batch --passphrase-fd 0 $file
-    #echo $pass | gpg --cipher-algo AES256 -c --batch --passphrase-fd 0 $file
+    #echo $pass | gpg -c --batch --passphrase-fd 0 $file
+    echo $pass | gpg --cipher-algo AES256 -c --batch --passphrase-fd 0 $file
     check_error "$?" gpg $RED $NC
 
     mv $file.gpg $pass_dir
