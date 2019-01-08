@@ -21,8 +21,8 @@ do
     for file in $(echo -e $files) 
     do
       echo -e "----------------------\n$(basename $file)\n"
-      echo $pass | gpg --no-symkey-cache -d --batch --passphrase-fd 0 $file 2>/dev/null
-      #echo $pass | gpg --cipher-algo AES256 --no-symkey-cache -d --batch --passphrase-fd 0 $file 2>/dev/null
+      echo $pass | gpg -d --batch --passphrase-fd 0 $file 2>/dev/null
+      #echo $pass | gpg --cipher-algo AES256 -d --batch --passphrase-fd 0 $file 2>/dev/null
       echo -e "\n----------------------\n"
     done
   done
