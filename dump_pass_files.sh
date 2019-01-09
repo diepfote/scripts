@@ -25,3 +25,5 @@ do
 done
 
 echo Dumped files to "$temp_dir"
+cd "$temp_dir"
+
