@@ -7,7 +7,7 @@ script_dir=$user_dir/Documents/scripts
 pass_dir=$user_dir/Documents/passwds
 
 temp=$(mktemp -d)
-trap 'rm -rf $temp' EXIT
+trap 'rm -rf $temp; $script_dir/kill_vpn.sh' EXIT
 
 if [ ! -d $script_dir ]; then
   script_dir=$user_dir/Docs/scripts
@@ -15,9 +15,9 @@ if [ ! -d $script_dir ]; then
 fi
 
 creds=$($script_dir/view_pass_file.sh ***REMOVED*******REMOVED*** --config "$pass_dir/../***REMOVED***_strong/$1.ovpn" --auth-user-pass $creds_file &
-  sleep 10
 
+  sleep 10
   rm -rf $temp
-  fg 1
+  sleep infinity
 fi
 
