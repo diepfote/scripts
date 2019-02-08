@@ -11,6 +11,7 @@ sudo cryptsetup --type tcrypt --veracrypt open "$veracrypt_file" "$mount_point"
 sudo mount /dev/mapper/"$mount_point" "$temp"
 if [ "$?" == "0" ]; then
   echo "Success, view under $temp."
+  xdg-open "$temp" 1>/dev/null 2>/dev/null
 fi
 sleep infinity
 
