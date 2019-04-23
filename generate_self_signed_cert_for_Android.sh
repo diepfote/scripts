@@ -7,8 +7,7 @@ openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 36
 # generate CA.pem
 openssl req -new -days 365 -key key.pem  -out CA.pem
 # generate crt file
-echo 'basicConstraints=CA:true' >> android_options
-openssl x509 -req -days 365 -in CA.pem  -signkey key.pem  -extfile ./android_options.txt -out CA.crt
+openssl x509 -req -days 365 -in CA.pem  -signkey key.pem  -extfile ./options.cnf -out CA.crt
 # convert to DER format for Android
 openssl x509 -inform PEM -outform DER -in CA.crt -out CA.der.crt
 
