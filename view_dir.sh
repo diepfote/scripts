@@ -3,8 +3,9 @@
 DIR=~/Documents/$1
 no_xdg=$2
 
-trap 'sudo chown -R root:root "$DIR"' EXIT
+trap 'sudo chown -R root:root "$DIR"; sudo chmod -R 000 "$DIR"' EXIT
 
+sudo chmod -R 700 "$DIR"
 sudo chown -R $USER:$USER "$DIR"
 if [ "$?" != "0" ]; then
   echo Insufficient permissions, exiting.
