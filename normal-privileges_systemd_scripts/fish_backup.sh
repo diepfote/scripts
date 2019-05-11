@@ -9,11 +9,13 @@ if [ ! -d $fish_backup_dir ]; then
 fi
 
 # Remove 10th file
-trap "rm -f $fish_backup_dir/`ls -t $fish_backup_dir | sed -n 10p` 2>/dev/null" EXIT
+trap "rm -f $fish_backup_dir/`ls -t $fish_backup_dir | sed -n 10p` 2>/dev/null; $user_dir/Documents/scripts/set___user_rw_noone_else.sh ../$fish_backup_dir" EXIT
 
 # Get parent directory
 fish_dir=`dirname $fish_backup_dir`
 f_date=$(date +%FT%T%Z | sed 's/:/--/g')
 
 cp $fish_dir/fish_history $fish_backup_dir/fish_history$f_date
+
+echo $(pwd)
 
