@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 vol_group_mapper=/dev/mapper/VolGroup00
 # create a local timestamp
