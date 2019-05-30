@@ -6,14 +6,16 @@ echo -n > "$aliases_file"
 
 for files in "$(find ~/.config/fish/functions/ -name "*.fish")"
 do 
+  echo "----------------------"
+  echo "[>] generating sh functions for fish shell functions"
+  echo
+
   for file in $(echo -e $files) 
   do
     basename_no_ext="$(basename "$file" | sed 's/\.[^.]*$//')"
-    echo -e "----------------------\n$basename_no_ext"
-    #echo 'alias '"$basename_no_ext"'="fish -c "'"$basename_no_ext"' $@""' >> "$aliases_file"
+    echo "$basename_no_ext"
     echo 'function '"$basename_no_ext"' { fish -c "'"$basename_no_ext"' $@"'\; } >> "$aliases_file"
-    #function tail_ls { ls -l "$1" | tail; }
-    echo -e "\n----------------------\n"
   done
+  echo -e "----------------------\n"
 done
 
