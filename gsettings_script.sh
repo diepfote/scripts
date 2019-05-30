@@ -12,3 +12,6 @@ gsettings set org.gnome.desktop.wm.keybindings raise "['F1']"
 gsettings set org.gnome.desktop.background show-desktop-icons false
 gsettings set org.nemo.desktop show-desktop-icons true
 
+# disable sleep if on ac power
+gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
+
