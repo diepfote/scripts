@@ -3,28 +3,16 @@
 # This script either takes a path to a folder containing PDF files or
 # assumes the current directory is where relevant PDF files reside
 #
-directory=$1
-if [ -z $directory ]; then
-  directory=$(pwd)
+directory="$@"
+if [ -z "$directory" ]; then
+  directory=.
 fi
 
-END=$(ls $directory | wc -l)
-
-for i in $(seq 1 $END); do
-  filename=$(ls $directory | head -n $i | tail -n 1)
-  if [ "${filename##*.}" == "pdf" ]; then
-    NUM_PAGES_ARRAY[$i]=$(pdfinfo $directory/"$filename" 2>/dev/null | grep 'Pages: ' | cut -d ':' -f2)
-    
-    echo $filename
-    echo ${NUM_PAGES_ARRAY[$i]}
-    echo ---------
-  fi
-done
-
-string=$(echo ${NUM_PAGES_ARRAY[*]})
-to_calc=$(echo ${string// /'+'})
+# TODO should not run find twice
+find "$directory" -type f -iname '*.pdf' -exec bash -c 'echo "{}"; pdfinfo "{}"  2>/dev/null | grep 'Pages: '; echo' \;
+calc_command="$(find "$directory" -type f -iname '*.pdf' -exec bash -c 'pdfinfo "{}"  2>/dev/null | grep 'Pages: ' | cut -d ':' -f2' \; | sed 's#Pages: ##g' | tr '\n' '+') 0"
 
 echo
-echo SUM
-echo $to_calc | bc
+echo -n "SUM: " 
+echo "$calc_command" | bc
 
