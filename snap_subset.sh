@@ -14,7 +14,7 @@ if [ ! -z $is_private_laptop ]; then
 fi
 
 dir=home
-size='15GB'
+size='20GB'
 sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
 
 dir=root
