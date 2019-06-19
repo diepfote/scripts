@@ -13,7 +13,7 @@ TMP_FILE=$1
   #firefox --private-window $TMP_FILE 2>/dev/null 1>/dev/null &
 #fi
 
-firefox --private-window $TMP_FILE 2>/dev/null 1>/dev/null &
+firefox --private-window "$TMP_FILE" 2>/dev/null 1>/dev/null &
 
 sleep 2
 
