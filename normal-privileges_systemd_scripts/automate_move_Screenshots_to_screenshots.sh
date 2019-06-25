@@ -1,6 +1,6 @@
 #!/bin/bash
 
-user=`cut -d : -f 1 /etc/passwd | grep flo`
+user=`cut -d : -f 1 /etc/passwd | grep flo | head -n 1`
 user_dir=/home/$user
 
 mv $user_dir/Pictures/Screenshot* $user_dir/Pictures/screenshots/

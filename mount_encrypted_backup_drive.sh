@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-user=$(cut -d : -f 1 /etc/passwd | grep flo)
+user=$(cut -d : -f 1 /etc/passwd | grep flo | head -n 1)
 veracrypt_device="$1"
 mount_point="$2"
 temp=$(mktemp -d)

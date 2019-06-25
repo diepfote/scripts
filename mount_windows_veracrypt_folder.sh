@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-user=$(cut -d : -f 1 /etc/passwd | grep flo)
+user=$(cut -d : -f 1 /etc/passwd | grep flo | head -n 1)
 veracrypt_file=/home/"$user"/Win_Part/Users/Dev/Desktop/veracrypt_folder.hc
 mount_point=windows_veracrypt_folder
 temp=$(mktemp -d)

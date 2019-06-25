@@ -12,7 +12,7 @@ function check_error
   fi
 }
 
-user=$(cut -d : -f 1 /etc/passwd | grep flo)
+user=$(cut -d : -f 1 /etc/passwd | grep flo | head -n 1)
 user_dir=/home/$user  
 
 script_dir=$user_dir/Documents/scripts

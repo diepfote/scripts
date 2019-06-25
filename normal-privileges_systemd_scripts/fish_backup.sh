@@ -1,6 +1,6 @@
 #!/bin/bash
 
-user=`cut -d : -f 1 /etc/passwd | grep flo`
+user=`cut -d : -f 1 /etc/passwd | grep flo | head -n 1`
 user_dir=/home/$user
 
 fish_backup_dir=$user_dir/.local/share/fish/fish_backup

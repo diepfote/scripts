@@ -14,7 +14,7 @@ function check_error
 
 file_dir=$1
 
-user=$(cut -d : -f 1 /etc/passwd | grep flo)
+user=$(cut -d : -f 1 /etc/passwd | grep flo | head -n 1)
 user_dir=/home/$user  
 
 script_dir=$user_dir/Documents/scripts
