@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #Black        0;30     Dark Gray     1;30
 #Red          0;31     Light Red     1;31
@@ -9,8 +9,18 @@
 #Cyan         0;36     Light Cyan    1;36
 #Light Gray   0;37     White         1;37
 
+PURPLE='\033[1;35m'
+ORANGE='\033[0;33m'
+CYAN='\033[1;36m'
 RED='\033[1;31m'
 NC='\033[0m' # No Color
+
+
+echo -e "I ${ORANGE}love${NC} Stack Overflow"
+echo -e "I ${PURPLE}love${NC} Stack Overflow"
+echo -e "I ${CYAN}love${NC} Stack Overflow"
+echo
+
 printf "I ${RED}love${NC} Stack Overflow\n"
 
 echo -e "I ${RED}love${NC} Stack Overflow"
