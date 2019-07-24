@@ -12,6 +12,7 @@
 PURPLE='\033[1;35m'
 ORANGE='\033[0;33m'
 CYAN='\033[1;36m'
+GREEN='\033[1;32m'
 RED='\033[1;31m'
 NC='\033[0m' # No Color
 
@@ -19,6 +20,7 @@ NC='\033[0m' # No Color
 echo -e "I ${ORANGE}love${NC} Stack Overflow"
 echo -e "I ${PURPLE}love${NC} Stack Overflow"
 echo -e "I ${CYAN}love${NC} Stack Overflow"
+echo -e "I ${GREEN}love${NC} Stack Overflow"
 echo
 
 printf "I ${RED}love${NC} Stack Overflow\n"
