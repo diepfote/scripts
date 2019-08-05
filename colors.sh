@@ -42,7 +42,7 @@ echo -e "I \033[1;31mlove\033[0m Stack Overflow"
     GREEN="$(tput setaf 2)"
     YELLOW="$(tput setaf 3)"
     BLUE="$(tput setaf 4)"
-    PURPLE="$(tput setaf 4)"
+    PURPLE="$(tput setaf 5)"
     BOLD="$(tput bold)"
     NORMAL="$(tput sgr0)"
   else
