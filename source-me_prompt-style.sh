@@ -22,7 +22,10 @@ done
 show_openstack_project()
 {
   local output="$(env | grep OS_PROJECT_NAME | cut -d = -f2)"
-  echo -n "*$output*"
+  
+  if [ "$output" != "" ]; then
+    echo -n " *$output*  "
+  fi
 }
 
 
