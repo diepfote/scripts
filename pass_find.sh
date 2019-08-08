@@ -8,16 +8,16 @@ pass_dir=$user_dir/Documents/passwds
 if [ ! -d $script_dir ]; then
   pass_dir=$user_dir/Dokumente/passwds
 fi
-for part_file in "$@"
-do
-  for files in "$(find $pass_dir -iname "*$part_file*.gpg")"
-  do 
-    echo -e "----------------------\n[Matches]: \n"
-    for file in $(echo -e $files)
-    do
-      echo -e "$(basename $file)\n"
-    done
-      echo -e "----------------------\n"
+
+
+for part_file in "$@"; do
+  echo -e "----------------------\nMatches for '$part_file': \n"
+  
+  for file in $(find $pass_dir -iname "*$part_file*.gpg"); do
+    echo -e "$(basename $file)\n"
   done
+  
+  echo -e "----------------------\n"
 done
+
 

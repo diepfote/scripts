@@ -14,14 +14,10 @@ fi
 
 pass=$("$script_dir"/read_pass.sh)
 
-for files in $(find "$pass_dir" -iname "*.gpg")
-do 
-  for file in $(echo -e "$files") 
-  do
-    #echo "$pass" | gpg -d --batch --passphrase-fd 0 "$file" > "$temp_dir"/"$(basename "$file" | sed 's/.gpg//')"
-    echo $pass | gpg --cipher-algo AES256 -d --batch --passphrase-fd 0 $file > $temp_dir/$(basename $file | sed 's/.gpg//')
-    echo -e "\n----------------------\n"
-  done
+for file in $(find "$pass_dir" -iname "*.gpg"); do 
+  #echo "$pass" | gpg -d --batch --passphrase-fd 0 "$file" > "$temp_dir"/"$(basename "$file" | sed 's/.gpg//')"
+  echo $pass | gpg --cipher-algo AES256 -d --batch --passphrase-fd 0 $file > $temp_dir/$(basename $file | sed 's/.gpg//')
+  echo -e "\n----------------------\n"
 done
 
 echo Dumped files to "$temp_dir"

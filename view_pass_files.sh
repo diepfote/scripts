@@ -13,16 +13,11 @@ fi
 
 pass=$($script_dir/read_pass.sh)
 
-for part_file in "$@"
-do
-  for files in "$(find $pass_dir -iname "*$part_file*.gpg")"
-  do 
-    for file in $(echo -e $files) 
-    do
-      echo -e "----------------------\n$(basename $file)\n"
-      $script_dir/decrypt_file.sh "$pass" "$file"
-      echo -e "\n----------------------\n"
-    done
+for part_file in "$@"; do
+  for file in $(find $pass_dir -iname "*$part_file*.gpg"); do 
+    echo -e "----------------------\n$(basename $file)\n"
+    $script_dir/decrypt_file.sh "$pass" "$file"
+    echo -e "\n----------------------\n"
   done
 done
 

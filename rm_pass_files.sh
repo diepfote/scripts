@@ -13,18 +13,14 @@ fi
 
 for part_file in "$@"
 do
-  for files in "$(find $pass_dir -iname "*$part_file*.gpg")"
-  do 
-    for file in $(echo -e $files)
-    do
-      echo -n "Delete $file (y/n): "
-      read confirmation
+  for file in $(find $pass_dir -iname "*$part_file*.gpg"); do 
+    echo -n "Delete $file (y/n): "
+    read confirmation
 
-      if [ $confirmation == "y" ]; then
-        echo "[>] Deleting $file."
-        rm $file
-      fi
-    done
+    if [ $confirmation == "y" ]; then
+      echo "[>] Deleting $file."
+      rm $file
+    fi
   done
 done
 
