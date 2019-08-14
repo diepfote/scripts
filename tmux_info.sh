@@ -58,7 +58,7 @@ custom_git_ps1()
   #__git_ps1 | tr '(' '[' | tr ')' ']'
 }
 
-echo -en "[ $(tmux_id) |  $LIGHT_GREEN$NC$PURPLE$(custom_git_ps1)$NC $(show_kubernetes_context)$YELLOW$(show_kubernetes_namespace)$NC] "
+echo -en "[ $(tmux_id) |  $(custom_git_ps1) $(show_kubernetes_context)$(show_kubernetes_namespace)] "
 
 
 #echo -en $(show_kubernetes_context)$YELLOW$(show_kubernetes_namespace)$NC
