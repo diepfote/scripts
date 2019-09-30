@@ -13,7 +13,7 @@ fi
 
 for part_file in "$@"
 do
-  for file in $(find $pass_dir -iname "*$part_file*.gpg"); do 
+  for file in $(find $pass_dir -iname "*$part_file*"); do 
     echo -n "Delete $file (y/n): "
     read confirmation
 
