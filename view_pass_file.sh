@@ -12,7 +12,7 @@ if [ ! -d $script_dir ]; then
 fi
 
 pass=$($script_dir/read_pass.sh)
-file=$(find $pass_dir -iname "$1*.gpg")
+file=$(find $pass_dir -iname "$1*")
 
 $script_dir/decrypt_file.sh "$pass" "$file"
 
