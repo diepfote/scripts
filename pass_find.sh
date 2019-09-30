@@ -13,7 +13,7 @@ fi
 for part_file in "$@"; do
   echo -e "----------------------\nMatches for '$part_file': \n"
   
-  for file in $(find $pass_dir -iname "*$part_file*.gpg"); do
+  for file in $(find $pass_dir -iname "*$part_file*"); do
     echo -e "$(basename $file)\n"
   done
   
