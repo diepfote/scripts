@@ -26,7 +26,7 @@ trap 'iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"
 
 iterate_files "sudo chown -R $USER:$USER"
 iterate_files 'sudo chmod -R 700'
-
+echo
 
 
 sleep infinity
