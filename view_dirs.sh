@@ -22,11 +22,15 @@ iterate_files()
 #trap 'asdf' EXIT
 
 
-trap 'iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"' EXIT
+trap 'echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"' EXIT
 
 iterate_files "sudo chown -R $USER:$USER"
 iterate_files 'sudo chmod -R 700'
-echo
+
+while (true); do
+  sudo echo -en '\r...'
+  sleep 60
+done
 
 
 sleep infinity
