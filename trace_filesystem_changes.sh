@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
+#
+# usage example:
+# $ ./trace_filesystem_changes.sh . attrib
+#
 
-# such as 'attrib', 'modify'
+
+# an event type such as 'attrib', 'modify' or 'create'
 event="$2"
 dir_to_watch="$1"
 
