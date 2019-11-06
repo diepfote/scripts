@@ -1,19 +1,26 @@
 #!/usr/bin/env bash
 
-echo -ne '#####                     (33%)\r'
-sleep 1
-echo -ne '#############             (66%)\r'
-sleep 1
-echo -ne '#######################   (100%)\r'
-echo -ne '\n'
+progressbar()
+{
+  text="$1"
+  while true; do
+    echo -en "$text    \r"
+    sleep 0.5
+    
+    echo -en "$text .  \r"
+    sleep 0.5
+    
+    echo -en "$text .. \r"
+    sleep 0.5
 
+    echo -en "$text ...\r"
+    sleep 0.5
 
+  done
+}
 
-echo -ne 'blub\r'
-sleep 1
-echo -ne 'blub .\r'
-sleep 1
-echo -ne 'blub ..\r'
-sleep 1
-echo -ne 'blub ...\r'
-sleep 1
+progressbar "emit some $PURPLE text$NC" &
+read  # run progressbar until <Enter> is pressed
+
+kill %%  # kill last job
+
