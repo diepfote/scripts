@@ -20,7 +20,10 @@ show_kubernetes_context ()
 {
   set_kubernetes_vars
 
-  local output="($context)  "
+
+  if [ -n "$context" ]; then
+    local output="($context)  "
+  fi
 
   if [ -z "$minikube_configured" ]; then
     echo -n "$output"
@@ -36,7 +39,9 @@ show_kubernetes_namespace ()
 {
   set_kubernetes_vars
 
-  local output=">$namespace< "
+  if [ -n "$namespace" ]; then
+    local output=">$namespace< "
+  fi
 
   if [ -z "$minikube_configured" ]; then
     echo -n "$output"
