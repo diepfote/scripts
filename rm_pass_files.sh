@@ -15,7 +15,7 @@ for part_file in "$@"
 do
   for file in $(find $pass_dir -iname "*$part_file*"); do 
     echo -n "Delete $file (y/n): "
-    read confirmation
+    read -r confirmation
 
     if [ $confirmation == "y" ]; then
       echo "[>] Deleting $file."

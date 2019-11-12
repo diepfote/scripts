@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-read -s pass
+read -r -s pass
 
 echo $pass
 
