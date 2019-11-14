@@ -2,7 +2,13 @@
 
 function arbitrary_command
 {
-  dir=$1
+  dir="$1"
+  if [[ ${dir:0:1} == '#' ]]; then
+    # ignore commented lines
+    exit
+  fi
+ 
+
   echo "$dir"
   if [ -d $dir/.git ]; then
     cd $dir 
