@@ -68,6 +68,7 @@ export ANSIBLE_DEV_ENV_IMG="$(~/Documents/scripts/read_toml_setting.sh ~/Documen
 ansible_dev_env ()
 {
   docker run --rm -ti \
+    --cap-drop=ALL \
     --hostname "ansible-dev" \
     --entrypoint=/bin/bash \
     "$@" \
