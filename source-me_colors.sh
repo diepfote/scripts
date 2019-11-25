@@ -11,3 +11,6 @@ if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
   NC="$(tput sgr0)"  # no color
 fi
 
+# colorize man pages with 'bat'
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
