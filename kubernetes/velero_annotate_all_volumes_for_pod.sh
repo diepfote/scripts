@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 
+source ~/Documents/scripts/kubernetes/source-me_common_functions.sh
+
 set -e
 set -u
 set -o pipefail
@@ -31,13 +33,9 @@ shift $((OPTIND-1))
 partial_pod_name="$1"
 echo -e "${GREEN}namespace:$namespace ${PURPLE}pod:$partial_pod_name$NC\n"
 
-pod="$(kubectl get pod -o name -n $namespace | grep $partial_pod_name | head -n 1)"
-volume_names="$(kubectl get $pod -o jsonpath='{.spec.volumes..name}' | tr ' ' ',')"
-
-# DEBUG kubectl command output
-#echo -e "volume names: $volume_names"
-#echo -e "pod name: $pod"
-
+pod="$(get_pod $partial_pod_name)"
+volume_name_separator=','
+volume_names="$(get_pod_volumes $volume_name_separator)"
 
 set -x
 kubectl -n "$namespace" annotate "$pod" backup.velero.io/backup-volumes="$volume_names" --overwrite
