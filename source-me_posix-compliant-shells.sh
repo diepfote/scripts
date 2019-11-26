@@ -5,8 +5,8 @@ export FZF_DEFAULT_COMMAND="find ~"
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 # kube-fzf (AUR pkg)
-alias logspod=/usr/bin/findpod
-alias getpod=/usr/bin/tailpod
+alias logspod=/usr/bin/tailpod
+alias getpod=/usr/bin/findpod
 alias port-forward_pod=/usr/bin/pfpod
 
 
