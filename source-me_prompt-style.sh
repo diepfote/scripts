@@ -21,10 +21,11 @@ done
 
 show_openstack_project()
 {
-  local output="$(env | grep OS_PROJECT_NAME | cut -d = -f2)"
+  local project="$(env | grep OS_PROJECT_NAME | cut -d = -f2)"
+  local user="$(env | grep OS_USERNAME | cut -d = -f2)"
   
-  if [ "$output" != "" ]; then
-    echo -n " *$output*  "
+  if [ "$project" != "" ]; then
+    echo -en " *OS_PROJECT=$NC$project$YELLOW* *OS_USERNAME=$NC$user$YELLOW*  "
   fi
 }
 
