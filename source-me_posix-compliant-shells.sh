@@ -74,7 +74,6 @@ ansible_dev_env ()
     "$@" \
      -v `pwd`:/work \
      -v ~/.m2/settings.xml:/root/.m2/settings.xml \
-    -e ssh_private_key_filename=bb_work_openstack \
     -v ~/.ssh:/tmp/.ssh.host \
     -v ~/.vpass:/tmp/.vpass \
     -v ~/.jenkins-api-tokens.vpass:/tmp/jenkins-api-tokens.vpass:ro \
