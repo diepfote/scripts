@@ -2,5 +2,5 @@
 
 read -r -s pass
 
-echo $pass
+echo -n "$pass"
 
