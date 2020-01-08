@@ -14,3 +14,4 @@ fi
 # colorize man pages with 'bat'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
+export GIT_PAGER="less"
