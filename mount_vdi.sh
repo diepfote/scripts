@@ -6,7 +6,7 @@ mount_partition="$2"
 
 temp=$(mktemp -d)
 
-trap "sudo umount '$temp'; sudo qemu-nbd -d /dev/nbd0" EXIT
+trap "sudo umount '$temp'; rm -rf '$temp'; sudo qemu-nbd -d /dev/nbd0" EXIT
 
 sudo modprobe -v nbd
 
