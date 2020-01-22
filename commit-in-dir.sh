@@ -9,7 +9,8 @@ echo
 git commit -m "${@:2}"
 echo
 
-git show --stat
+source ~/.sh_functions
+git_log -1 --stat
 sleep 2
 
 git push
