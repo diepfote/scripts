@@ -1,7 +1,7 @@
 #!/bin/bash
 
 user="$(cut -d : -f 1 /etc/passwd | grep flo | head -n 1)"
-user_dir="/home/$user"
+user_dir="$HOME"
 
 bash_backup_dir="$user_dir/bash_backup"
 [[ -d "$bash_backup_dir" ]] || mkdir "$bash_backup_dir"

@@ -3,7 +3,7 @@
 echo -e "\033[1;33mboxcryptor update start\033[0m"
 
 user=`cut -d : -f 1 /etc/passwd | grep flo | head -n 1`
-user_dir=/home/$user
+user_dir=$HOME
 
 boxcryptor_location=$user_dir/Documents/boxcr
 
