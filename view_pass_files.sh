@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
 pass_dir=~/Documents/passwds
+script_dir=~/Documents/scripts
 
-if [ ! -d $script_dir ]; then
-  script_dir=~/Docs/scripts
-  pass_dir=~/Dokumente/passwds
-fi
-
-pass=$($script_dir/read_pass.sh)
+pass=$("$script_dir"/read_pass.sh)
 
 for part_file in "$@"; do
   for file in $(find $pass_dir -iname "*$part_file*"); do
