@@ -6,7 +6,8 @@ cd "$1"
 
 git add .
 echo
-git commit -m "${@:2}"
+message="${@:2}"
+git commit -m "$message"
 echo
 
 source ~/.sh_functions
