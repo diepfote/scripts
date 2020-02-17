@@ -9,11 +9,11 @@ tmux_id ()
 
 set_kubernetes_vars ()
 {
-   context="$(kubectl config current-context)"
-   namespace="$(kubectl config get-contexts | grep \* | tr -s ' ' | cut -d ' ' -f5)"
+   context="$(kubectl config current-context 2>/dev/null)"
+   namespace="$(kubectl config get-contexts 2>/dev/null | grep \* | tr -s ' ' | cut -d ' ' -f5)"
 
    minikube_running="$(ps -ef | grep -v grep | grep minikube)"
-   minikube_configured="$(kubectl config current-context | grep minikube)"
+   minikube_configured="$(kubectl config current-context 2>/dev/null | grep minikube)"
 }
 
 show_kubernetes_context ()
@@ -32,7 +32,7 @@ show_kubernetes_context ()
       echo -n "$output"
     fi
   fi
-  
+
 }
 
 show_kubernetes_namespace ()
@@ -52,7 +52,7 @@ show_kubernetes_namespace ()
   fi
 }
 
-parse_git_branch() 
+parse_git_branch()
 {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
 }
@@ -63,7 +63,16 @@ custom_git_ps1()
   #__git_ps1 | tr '(' '[' | tr ')' ']'
 }
 
-echo -en "[ $(tmux_id) |  $(custom_git_ps1) $(show_kubernetes_context)$(show_kubernetes_namespace)] "
+display_kubernetes_info()
+{
+  echo -en " $(custom_git_ps1) $(show_kubernetes_context)$(show_kubernetes_namespace)"
+}
 
+display_tmux_info()
+{
+  echo -en "[ $(tmux_id) |  $(display_kubernetes_info)] "
+}
+
+display_tmux_info
 
 #echo -en $(show_kubernetes_context)$YELLOW$(show_kubernetes_namespace)$NC

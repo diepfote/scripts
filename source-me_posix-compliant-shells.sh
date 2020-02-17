@@ -12,10 +12,11 @@ alias port-forward_pod=/usr/bin/pfpod
 
 source ~/Documents/scripts/source-me_colors.sh
 source ~/Documents/scripts/source-me_prompt-style.sh
-
+source ~/Documents/scripts/tmux_info.sh 1>/dev/null 2>/dev/null
+source ~/Documents/scripts/source-me_completions*
 
 # source fish functions
-sh_functions_file=~/.sh_functions 
+sh_functions_file=~/.sh_functions
 [[ ! -f "$sh_functions_file" ]] && ~/Documents/scripts/generate_sh_functions_based_on_fish_shell_functions.sh
 source "$sh_functions_file"
 
@@ -28,8 +29,8 @@ if [[ -f "$bashacks_source_file" ]]; then
   source "$bashacks_source_file"
 else
   echo -e "${PURPLE}[>] missing bashacks. Downloading from $bashacks_repo_source\n$NC"
-  git clone --depth=1 "$bashacks_repo_source" "$bashacks_dir" 
-  
+  git clone --depth=1 "$bashacks_repo_source" "$bashacks_dir"
+
   pushd "$bashacks_dir"
   make
   popd
@@ -56,7 +57,10 @@ alias kctx="kubectx"
 alias kx="kubectx"
 alias ktx="kubectx"
 
-
+set_kubecontext()
+{
+  export KUBECONFIG=~/.kube/"$1"
+}
 
 # PATH
 export PATH="$PATH":$HOME/.krew/bin
