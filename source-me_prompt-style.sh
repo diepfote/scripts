@@ -9,17 +9,6 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1    # % if there are untracked files.
 export GIT_PS1_SHOWUPSTREAM='verbose'  # 'u='=no difference, 'u+1'=ahead by 1 commit
 
 
-# automatically add all config files as a colon delimited string in KUBECONFIG
-unset KUBECONFIG
-for file in ~/.kube/* ; do
-  if [ "$(basename $file)" = "kubectx" ]; then
-    echo 1>/dev/null
-  elif [ -f $file ]; then
-    export KUBECONFIG=$KUBECONFIG:$file
-  fi
-done
-
-
 
 show_openstack_project()
 {
