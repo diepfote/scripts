@@ -9,4 +9,5 @@ autocomplete_for_different_directory () {
 complete -o default -F autocomplete_for_different_directory new-function
 complete -o default -F autocomplete_for_different_directory edit-function
 complete -o default -F autocomplete_for_different_directory duplicate-function
+complete -o default -F autocomplete_for_different_directory mv-function
 
