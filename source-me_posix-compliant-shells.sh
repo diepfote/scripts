@@ -62,6 +62,12 @@ set_kubecontext()
   export KUBECONFIG=~/.kube/"$1"
 }
 
+refresh_tmux_kubecontext()
+{
+  echo "$KUBECONFIG" > ~/._kubeconfig
+  tmux refresh-client &
+}
+
 # PATH
 export PATH="$PATH":$HOME/.krew/bin
 

@@ -9,11 +9,12 @@ tmux_id ()
 
 set_kubernetes_vars ()
 {
-   context="$(kubectl config current-context 2>/dev/null)"
-   namespace="$(kubectl config get-contexts 2>/dev/null | grep \* | tr -s ' ' | cut -d ' ' -f5)"
+  export KUBECONFIG="$(cat ~/._kubeconfig 2>/dev/null)"
+  context="$(kubectl config current-context 2>/dev/null)"
+  namespace="$(kubectl config get-contexts 2>/dev/null | grep \* | tr -s ' ' | cut -d ' ' -f5)"
 
-   minikube_running="$(ps -ef | grep -v grep | grep minikube)"
-   minikube_configured="$(kubectl config current-context 2>/dev/null | grep minikube)"
+  minikube_running="$(ps -ef | grep -v grep | grep minikube)"
+  minikube_configured="$(kubectl config current-context 2>/dev/null | grep minikube)"
 }
 
 show_kubernetes_context ()
