@@ -17,6 +17,7 @@ for name in $(find ~/Documents/scripts -name 'source-me_completions*'); do
   source "$name"
 done
 
+
 # source fish functions
 sh_functions_file=~/.sh_functions
 [[ ! -f "$sh_functions_file" ]] && ~/Documents/scripts/generate_sh_functions_based_on_fish_shell_functions.sh
@@ -71,8 +72,13 @@ refresh_tmux_kubecontext()
   tmux refresh-client &
 }
 
+# -------------------------
 # PATH
 export PATH="$PATH":$HOME/.krew/bin
+
+# add gnu utils to PATH
+[ "$(uname)" = 'Darwin' ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# -------------------------
 
 
 
