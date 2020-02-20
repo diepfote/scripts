@@ -13,7 +13,9 @@ alias port-forward_pod=/usr/bin/pfpod
 source ~/Documents/scripts/source-me_colors.sh
 source ~/Documents/scripts/source-me_prompt-style.sh
 source ~/Documents/scripts/tmux_info.sh 1>/dev/null 2>/dev/null
-source ~/Documents/scripts/source-me_completions*
+for name in $(find ~/Documents/scripts -name 'source-me_completions*'); do
+  source "$name"
+done
 
 # source fish functions
 sh_functions_file=~/.sh_functions
