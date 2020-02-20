@@ -58,6 +58,7 @@ alias kba="kubectl apply"
 alias kctx="kubectx"
 alias kx="kubectx"
 alias ktx="kubectx"
+alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh "$@"'
 
 set_kubecontext()
 {
