@@ -18,6 +18,10 @@ get_pod_openshift()
   get_pod "$1" "$do_not_match"
 }
 
+alias gp="get_pod"
+alias gpo="get_pod_openshift"
+
+
 get_pod_volumes()
 {
   local separator="$1"
