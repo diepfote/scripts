@@ -4,7 +4,7 @@
 get_pod()
 {
   local partial_pod_name="$1"
-  local do_not_match="$2"
+  local do_not_match="'$2'"
   if [ -n "$namespace" ]; then
     kubectl get pod -o name -n "$namespace" | grep -vE "$do_not_match"  | grep "$partial_pod_name"  | head -n 1
   else
