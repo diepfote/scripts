@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-autocomplete_funcs () {
+_complete_funcs () {
   FILE_EXCHANGE_DIR=~/.config/fish/functions
   # Set
   IFS=$'\n' tmp=( $(compgen -W "$(ls "$FILE_EXCHANGE_DIR")" -- "${COMP_WORDS[$COMP_CWORD]}" ))
   COMPREPLY=( "${tmp[@]// /\ }" )
 }
-complete -o default -F autocomplete_funcs new-function
-complete -o default -F autocomplete_funcs edit-function
-complete -o default -F autocomplete_funcs duplicate-function
-complete -o default -F autocomplete_funcs mv-function
-complete -o default -F autocomplete_funcs rm-function
+complete -o filenames -F _complete_funcs new-function
+complete -o filenames -F _complete_funcs edit-function
+complete -o filenames -F _complete_funcs duplicate-function
+complete -o filenames -F _complete_funcs mv-function
+complete -o filenames -F _complete_funcs rm-function
 
