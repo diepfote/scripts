@@ -9,6 +9,9 @@ alias logspod=/usr/bin/tailpod
 alias getpod=/usr/bin/findpod
 alias port-forward_pod=/usr/bin/pfpod
 
+# common aliases
+ls='ls --color=auto'
+
 
 source ~/Documents/scripts/source-me_colors.sh
 source ~/Documents/scripts/source-me_prompt-style.sh
