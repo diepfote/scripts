@@ -14,7 +14,7 @@ get_pod()
 
 get_pod_openshift()
 {
-  local do_not_match='build|deploy'
+  local do_not_match="build|deploy"
   get_pod "$1" "$do_not_match"
 }
 

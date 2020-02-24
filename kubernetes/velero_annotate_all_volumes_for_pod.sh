@@ -4,37 +4,13 @@
 source ~/Documents/scripts/kubernetes/source-me_common_functions.sh
 
 set -e
-set -u
+#set -u
 set -o pipefail
 
 
 usage()
 {
-  echo "Usage: $PURPLE$0 -n <namespace> <partial_pod_name>$NC"
-}
-
-get_pod()
-{
-  local partial_pod_name="$1"
-  local do_not_match="$2"
-  if [ -n "$namespace" ]; then
-    kubectl get pod -o name -n "$namespace" | grep -vE "$do_not_match"  | grep "$partial_pod_name"  | head -n 1
-  else
-    kubectl get pod -o name | grep -vE "$do_not_match"  | grep "$partial_pod_name"  | head -n 1
-  fi
-}
-
-get_pod_volumes()
-{
-  separator="$1"
-
-  [[ -z "$pod" ]] && pod="$2"
-
-  if [ -n "$namespace" ]; then
-    kubectl get "$pod" -n "$namespace" -o jsonpath='{.spec.volumes..name}' | tr ' ' "$separator"
-  else
-    kubectl get "$pod" -o jsonpath='{.spec.volumes..name}' | tr ' ' "$separator"
-  fi
+  echo "Usage: $PURPLE$0 -n <namespace> [-e <do_not_match_regex>] <partial_pod_name>$NC"
 }
 
 while getopts "hn:e:" opt; do  # ':' signify that a given flag takes an argument
