@@ -10,4 +10,5 @@ complete -o default -F autocomplete_scripts new-script
 complete -o default -F autocomplete_scripts edit-script
 complete -o default -F autocomplete_scripts duplicate-script
 complete -o default -F autocomplete_scripts mv-script
+complete -o default -F autocomplete_scripts rm-script
 

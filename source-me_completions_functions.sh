@@ -10,4 +10,5 @@ complete -o default -F autocomplete_funcs new-function
 complete -o default -F autocomplete_funcs edit-function
 complete -o default -F autocomplete_funcs duplicate-function
 complete -o default -F autocomplete_funcs mv-function
+complete -o default -F autocomplete_funcs rm-function
 
