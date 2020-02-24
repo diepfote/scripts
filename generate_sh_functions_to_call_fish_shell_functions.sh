@@ -31,15 +31,19 @@
 aliases_file=~/.sh_functions
 # clear file
 echo -n > "$aliases_file"
-  
+
 echo "----------------------"
 echo "[>] generating sh functions for fish shell functions"
 echo
 
-for file in $(find ~/.config/fish/functions/ -name "*.fish"); do 
+for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
   basename_no_ext="$(basename "$file" | sed 's/\.[^.]*$//')"
   echo "$basename_no_ext"
-  echo 'function '"$basename_no_ext"' {  commands="$@"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
+  if [[ "$basename_no_ext" =~ commit ]]; then
+    echo 'function '"$basename_no_ext"' {  commands="'\''$@'\''"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
+  else
+    echo 'function '"$basename_no_ext"' {  commands="$@"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
+  fi
 done
 echo -e "----------------------\n"
 
