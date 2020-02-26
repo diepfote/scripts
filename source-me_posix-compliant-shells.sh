@@ -80,7 +80,7 @@ refresh_tmux_kubecontext()
 export PATH="$PATH":$HOME/.krew/bin
 
 # add gnu utils to PATH
-[ "$(uname)" = 'Darwin' ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+[ "$(uname)" = 'Darwin' ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" && PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
 # -------------------------
 
 

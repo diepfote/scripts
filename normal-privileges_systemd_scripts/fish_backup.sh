@@ -1,12 +1,11 @@
 #!/bin/bash
 
-user="$(cut -d : -f 1 /etc/passwd | grep flo | head -n 1)"
-user_dir=/home/"$user"
+set -u
+set -e
+set -o pipefail
 
-fish_backup_dir="$user_dir"/.local/share/fish/fish_backup
-if [ ! -d $fish_backup_dir ]; then
-  fish_backup_dir="$user_dir"/.config/fish/fish_backup
-fi
+fish_backup_dir=~/.local/share/fish/fish_backup
+[[ ! -d "$fish_backup_dir" ]] && mkdir "$fish_backup_dir"
 
 # Remove 10th file
 trap "rm -f $fish_backup_dir/$(ls -t $fish_backup_dir | sed -n 10p) 2>/dev/null" EXIT
@@ -16,6 +15,4 @@ fish_dir="$(dirname "$fish_backup_dir")"
 f_date=$(date +%FT%T%Z | sed 's/:/_/g')
 
 cp "$fish_dir/fish_history" "$fish_backup_dir/fish_history$f_date"
-
-pwd
 

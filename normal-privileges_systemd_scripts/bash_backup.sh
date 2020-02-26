@@ -1,6 +1,9 @@
 #!/bin/bash
 
-user="$(cut -d : -f 1 /etc/passwd | grep flo | head -n 1)"
+set -o pipefail
+set -u
+set -e
+
 user_dir="$HOME"
 
 bash_backup_dir="$user_dir/bash_backup"

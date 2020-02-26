@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -e
+set -o pipefail
+set -u
+
 dir="$1"
 
 if [ -z "$dir" ]; then
@@ -7,5 +11,5 @@ if [ -z "$dir" ]; then
 fi
 
 find "$dir" -type f -exec sh -c 'chmod -f 600 "{}"' \; || true  # do not return non-zero return code
-find "$dir" -type d -exec sh -c 'chmod -f 700 "{}"' \; || true 
+find "$dir" -type d -exec sh -c 'chmod -f 700 "{}"' \; || true
 
