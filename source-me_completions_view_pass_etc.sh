@@ -8,7 +8,7 @@ _complete_password_funcs () {
 }
 complete -o filenames -F _complete_password_funcs pass_find
 complete -o filenames -F _complete_password_funcs view_pass_file
-complete -o filenames -F _complete_password_funcs view_pass_files
+complete -o filenames -F _complete_password_funcs view-pass-files
 complete -o filenames -F _complete_password_funcs rm_pass_files
 complete -o filenames -F _complete_password_funcs mv_pass_file
 
