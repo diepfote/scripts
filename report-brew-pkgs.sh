@@ -10,9 +10,9 @@ dir=~/Documents/misc/mac-os
 [ ! -d "$dir" ] && mkdir "$dir"
 
 #brew info --installed --json | jq .[].name | sed 's#"##g' > ~/Documents/misc/mac-os/brew-pkgs.txt
-brew list > ~/Documents/misc/mac-os/brew-pkgs.txt
-brew cask list > ~/Documents/misc/mac-os/brew-cask-pkgs.txt
+brew list > "$dir"/brew-pkgs.txt
+brew cask list > "$dir"/brew-cask-pkgs.txt
 
 username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
-rclone sync --delete-excluded -v ~/Documents/misc/mac-os/ 'fastmail:'$username'.fastmail.com/files/-configs/mac-os'
+rclone sync --delete-excluded -v "$dir" 'fastmail:'$username'.fastmail.com/files/-configs/mac-os'
 

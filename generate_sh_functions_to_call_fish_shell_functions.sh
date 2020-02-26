@@ -2,7 +2,7 @@
 
 # BSD 2-Clause License
 
-# Copyright (c) 2019, Florian Begusch
+# Copyright (c) 2020, Florian Begusch
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
