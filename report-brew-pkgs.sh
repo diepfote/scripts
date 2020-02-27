@@ -6,6 +6,8 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+source ~/.sh_functions
+
 dir=~/Documents/misc/mac-os
 [ ! -d "$dir" ] && mkdir "$dir"
 
@@ -14,5 +16,5 @@ brew list > "$dir"/brew-pkgs.txt
 brew cask list > "$dir"/brew-cask-pkgs.txt
 
 username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
-rclone sync --delete-excluded -v "$dir" 'fastmail:'$username'.fastmail.com/files/-configs/mac-os'
+rclone sync --exclude .DS_Store --delete-excluded -v "$dir" 'fastmail:'$username'.fastmail.com/files/-configs/mac-os'
 
