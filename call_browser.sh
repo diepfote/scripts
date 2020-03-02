@@ -14,12 +14,14 @@ TMP_FILE=$1
 #fi
 
 
+set -x
 if [ "$(uname)" = Darwin ]; then
   source ~/.sh_functions
   open_mac-os_app Firefox.app --private-window "$TMP_FILE"
 else
   firefox --private-window "$TMP_FILE" 2>/dev/null 1>/dev/null &
 fi
+set +x
 
 sleep 2
 
