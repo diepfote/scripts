@@ -11,7 +11,7 @@ alias port-forward_pod=/usr/bin/pfpod
 
 # common aliases
 ls='ls --color=auto'
-[ "$(uname)" = 'Darwin' ] && alias grep='ggrep --color' || alias grep='grep --color'
+[ "$(uname)" = 'Darwin' ] && alias grep='ggrep --color' || alias grep='grep --color' && alias docker=podman
 
 source ~/Documents/scripts/source-me_colors.sh
 source ~/Documents/scripts/source-me_prompt-style.sh
