@@ -30,9 +30,9 @@ for file in $FILES; do
 
   if [ -n "$dir" ]; then
     mkdir -p "$password_storage_folder/$dir"
-    pass "$dir/$file" > "$password_storage_folder/$dir/$file"
+    pass "$dir/$file" > "$password_storage_folder/$dir/$file.txt"
   else
-    pass "$file" > "$password_storage_folder/$file"
+    pass "$file" > "$password_storage_folder/$file.txt"
   fi
 
 done
