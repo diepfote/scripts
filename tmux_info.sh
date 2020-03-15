@@ -69,9 +69,15 @@ display_kubernetes_info()
   echo -en " $(custom_git_ps1) $(show_kubernetes_context)$(show_kubernetes_namespace)"
 }
 
+
+get_audio_muted()
+{
+  echo -en "muted:$(pactl list sinks | grep Mute | head -n 1 | cut -d ':' -f2)"
+}
+
 display_tmux_info()
 {
-  echo -en "[ $(tmux_id) |  $(display_kubernetes_info)] "
+  echo -en "$(get_audio_muted) | [ $(tmux_id) |  $(display_kubernetes_info)] "
 }
 
 display_tmux_info
