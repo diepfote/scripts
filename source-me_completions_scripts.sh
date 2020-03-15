@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
-_complete_scripts () {
-  FILE_EXCHANGE_DIR=~/Documents/scripts
-  # Set
-  IFS=$'\n' tmp=( $(compgen -W "$(ls "$FILE_EXCHANGE_DIR")" -- "${COMP_WORDS[$COMP_CWORD]}" ))
-  COMPREPLY=( "${tmp[@]// /\ }" )
-}
-complete -o filenames -F _complete_scripts new-script
-complete -o filenames -F _complete_scripts edit-script
-complete -o filenames -F _complete_scripts duplicate-script
-complete -o filenames -F _complete_scripts mv-script
-complete -o filenames -F _complete_scripts rm-script
+script_dir="$HOME/Documents/scripts"
+source "$script_dir/source-me_common-functions.sh"
+export DIR_TO_COMPLETE="$script_dir"
+
+complete -o filenames -F _complete_files_and_dirs_helper new-script
+complete -o filenames -F _complete_files_and_dirs_helper edit-script
+complete -o filenames -F _complete_files_and_dirs_helper duplicate-script
+complete -o filenames -F _complete_files_and_dirs_helper mv-script
+complete -o filenames -F _complete_files_and_dirs_helper rm-script
 
