@@ -10,7 +10,8 @@ echo '----------------'
 git add .
 echo
 message="${@:2}"
-git commit -m "$message"
+[ -n "$message" ] && git commit -m "$message" \
+  || git commit
 echo
 echo '----------------'
 
