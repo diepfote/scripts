@@ -11,8 +11,10 @@ alias port-forward_pod=/usr/bin/pfpod
 
 # common aliases
 ls='ls --color=auto'
-[ "$(uname)" = 'Darwin' ] && alias grep='ggrep --color' || alias grep='grep --color'
-[ "$(uname)" = 'Darwin' ] && export LANG=en_US LC_NUMERIC=en_US LC_TIME=en_US LC_COLLATE=en_US LC_MONETARY=en_US LC_MESSAGES=en_US
+[ "$(uname)" = 'Darwin' ] && alias grep='ggrep --color' \
+  || alias grep='grep --color'
+[ "$(uname)" = 'Darwin' ] && export LANG=en_US LC_NUMERIC=en_US \
+  LC_TIME=en_US LC_COLLATE=en_US LC_MONETARY=en_US LC_MESSAGES=en_US
 [ "$(uname)" = 'Darwin' ] && alias pip=pip3
 
 source ~/Documents/scripts/source-me_colors.sh
@@ -25,7 +27,8 @@ done
 
 # source fish functions
 sh_functions_file=~/.sh_functions
-[[ ! -f "$sh_functions_file" ]] && ~/Documents/scripts/generate_sh_functions_based_on_fish_shell_functions.sh
+[[ ! -f "$sh_functions_file" ]] && \
+  ~/Documents/scripts/generate_sh_functions_based_on_fish_shell_functions.sh
 source "$sh_functions_file"
 
 

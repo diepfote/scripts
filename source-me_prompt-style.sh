@@ -1,6 +1,7 @@
 # enable __git_ps1 command
 git_prompt=/usr/share/git/completion/git-prompt.sh  # installed with git
-[[ -f "$git_prompt" ]] || git_prompt=/usr/local/etc/bash_completion.d/git-prompt.sh
+[[ -f "$git_prompt" ]] || \
+  git_prompt=/usr/local/etc/bash_completion.d/git-prompt.sh
 source "$git_prompt"
 
 # settings for __git_ps1
@@ -19,5 +20,4 @@ show_openstack_project()
     echo -en " *OS_PROJECT=$NC$project$YELLOW* *OS_USERNAME=$NC$user$YELLOW*  "
   fi
 }
-
 
