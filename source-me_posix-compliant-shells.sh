@@ -13,6 +13,7 @@ alias port-forward_pod=/usr/bin/pfpod
 ls='ls --color=auto'
 [ "$(uname)" = 'Darwin' ] && alias grep='ggrep --color' || alias grep='grep --color'
 [ "$(uname)" = 'Darwin' ] && export LANG=en_US LC_NUMERIC=en_US LC_TIME=en_US LC_COLLATE=en_US LC_MONETARY=en_US LC_MESSAGES=en_US
+[ "$(uname)" = 'Darwin' ] && alias pip=pip3
 
 source ~/Documents/scripts/source-me_colors.sh
 source ~/Documents/scripts/source-me_prompt-style.sh
@@ -105,3 +106,4 @@ ansible_dev_env ()
     -w /work \
     "${ANSIBLE_DEV_ENV_IMG}"
 }
+
