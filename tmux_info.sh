@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-source ~/Documents/scripts/source-me_prompt-style.sh
 
 tmux_id ()
 {
@@ -73,15 +72,16 @@ display_kubernetes_info()
 get_audio_muted()
 {
   if [ "$(uname)" = Darwin ]; then
-    echo -en "muted: $(osascript -e 'output muted of (get volume settings)')"
+    #echo -en "♩$(osascript -e 'output muted of (get volume settings)') | "
+    :
   else
-    echo -en "muted:$(pactl list sinks | grep Mute | head -n 1 | cut -d ':' -f2)"
+    echo -en "♩$(pactl list sinks | grep Mute | head -n 1 | cut -d ':' -f2) | "
   fi
 }
 
 display_tmux_info()
 {
-  echo -en "$(get_audio_muted) | [ $(tmux_id) | $(display_kubernetes_info)] "
+  echo -en "$(get_audio_muted)[ $(tmux_id) | $(display_kubernetes_info)] "
 }
 
 display_tmux_info
