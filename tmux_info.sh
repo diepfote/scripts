@@ -71,12 +71,13 @@ display_kubernetes_info()
 
 get_audio_muted()
 {
-  if [ "$(uname)" = Darwin ]; then
-    #echo -en "♩$(osascript -e 'output muted of (get volume settings)') | "
-    :
-  else
-    echo -en "♩$(pactl list sinks | grep Mute | head -n 1 | cut -d ':' -f2) | "
-  fi
+  #if [ "$(uname)" = Darwin ]; then
+    ##echo -en "♩$(osascript -e 'output muted of (get volume settings)') | "
+    #:
+  #else
+    #echo -en "♩$(pactl list sinks | grep Mute | head -n 1 | cut -d ':' -f2) | "
+  #fi
+  :
 }
 
 display_tmux_info()
