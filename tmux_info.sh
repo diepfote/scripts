@@ -60,13 +60,13 @@ parse_git_branch()
 
 custom_git_ps1()
 {
-  :
-  #__git_ps1 | tr '(' '[' | tr ')' ']'
+  #:
+  __git_ps1 | tr '(' '[' | tr ')' ']'
 }
 
 display_kubernetes_info()
 {
-  echo -en " $(custom_git_ps1) $(show_kubernetes_context)$(show_kubernetes_namespace)"
+  echo -en "$(show_kubernetes_context)$(show_kubernetes_namespace)"
 }
 
 
@@ -81,7 +81,7 @@ get_audio_muted()
 
 display_tmux_info()
 {
-  echo -en "$(get_audio_muted) | [ $(tmux_id) |  $(display_kubernetes_info)] "
+  echo -en "$(get_audio_muted) | [ $(tmux_id) | $(display_kubernetes_info)] "
 }
 
 display_tmux_info
