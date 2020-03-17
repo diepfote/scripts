@@ -11,6 +11,8 @@ trap "popd" EXIT
 
 pushd ~/Documents/boxcryptor_container
 
+curl -C - -L 'https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest' -o Boxcryptor.tar.gz
+
 set -x
 podman build --no-cache -t boxcryptor:0.1 .
 set +x
