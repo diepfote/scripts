@@ -14,6 +14,7 @@ podman run -it \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   --security-opt=no-new-privileges \
+  --cap-drop=ALL \
   --rm --name boxcryptor \
     localhost/boxcryptor:0.1
 
