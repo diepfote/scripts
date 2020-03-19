@@ -32,25 +32,6 @@ sh_functions_file=~/.sh_functions
 source "$sh_functions_file"
 
 
-# source bashacks
-bashacks_repo_source=https://github.com/merces/bashacks
-bashacks_dir=~/Documents/infosec_pkgs/bashacks
-bashacks_source_file="$bashacks_dir"/bashacks.sh
-if [[ -f "$bashacks_source_file" ]]; then
-  source "$bashacks_source_file"
-else
-  echo -e "${PURPLE}[>] missing bashacks. Downloading from $bashacks_repo_source\n$NC"
-  git clone --depth=1 "$bashacks_repo_source" "$bashacks_dir"
-
-  pushd "$bashacks_dir"
-  make
-  popd
-
-  source "$bashacks_source_file"
-fi
-
-
-
 # pipenv aliases
 alias pipsh="pipenv shell"
 
