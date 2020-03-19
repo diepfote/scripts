@@ -43,13 +43,7 @@ show_kubernetes_namespace ()
     local output=">$namespace< "
   fi
 
-  if [ -z "$minikube_configured" ]; then
-    echo -n "$output"
-  else
-    if [ ! -z "$minikube_running" ]; then
-      echo -n "$output"
-    fi
-  fi
+  echo -n "$output"
 }
 
 parse_git_branch()
@@ -87,4 +81,3 @@ display_tmux_info()
 
 display_tmux_info
 
-#echo -en $(show_kubernetes_context)$YELLOW$(show_kubernetes_namespace)$NC
