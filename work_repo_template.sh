@@ -1,29 +1,27 @@
 #!/usr/bin/env bash
 
-function arbitrary_command
+trap "cd $PWD" EXIT
+
+source ~/Documents/scripts/source-me_colors.sh
+
+_arbitrary_command()
 {
   dir="$1"
-  if [[ ${dir:0:1} == '#' ]]; then
+  command_to_run=${@:2}  # skip first arg
+  if [ "$(expr substr "$dir" 1 1)" = '#' ]; then
     # ignore commented lines
     exit
   fi
- 
 
   echo "$dir"
-  if [ -d $dir/.git ]; then
-    cd $dir 
-    # execute command (skipping first parameter)
-    "${@:2}"
+  if [ -d "$dir/.git" ]; then
+    cd "$dir"
+    $command_to_run
   else
     echo -en "$YELLOW"; echo -en "No .git dir in $dir$NC\n"
   fi
   echo
 }
 
-RED='\033[1;31m'
-YELLOW='\033[1;33m'
-GREEN='\033[1;32m'
-NC='\033[0m'
-
-arbitrary_command $@
+_arbitrary_command $@
 

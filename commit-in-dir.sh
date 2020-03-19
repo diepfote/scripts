@@ -1,27 +1,25 @@
 #!/usr/bin/env bash
 
-trap "cd '$PWD'" EXIT
+trap "popd" EXIT
 
-cd "$1"
+pushd "$1"
 
 git status -sb
-echo '----------------'
+echo -e '\n----------------\n'
 
 git add .
 echo
 message="${@:2}"
 [ -n "$message" ] && git commit -m "$message" \
   || git commit
-echo
-echo '----------------'
+echo -e '\n----------------\n'
 
 git status -sb
-echo
-echo '----------------'
+echo -e '\n----------------\n'
 
 source ~/.sh_functions
 git_log -2 --stat
-echo '----------------'
+echo -e '\n----------------\n'
 
 sleep 2
 git push
