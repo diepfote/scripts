@@ -6,7 +6,7 @@ export DIR_TO_COMPLETE="$script_dir"
 
 complete -o filenames -F _complete_files_and_dirs new-script
 complete -o filenames -F _complete_files_and_dirs edit-script
-complete -o filenames -F _complete_files_and_dirs duplicate-script
+complete -o filenames -F _complete_files_and_dirs cp-script
 complete -o filenames -F _complete_files_and_dirs mv-script
 complete -o filenames -F _complete_files_and_dirs rm-script
 

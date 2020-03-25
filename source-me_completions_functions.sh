@@ -8,7 +8,7 @@ _complete_funcs () {
 }
 complete -o filenames -F _complete_funcs new-function
 complete -o filenames -F _complete_funcs edit-function
-complete -o filenames -F _complete_funcs duplicate-function
+complete -o filenames -F _complete_funcs cp-function
 complete -o filenames -F _complete_funcs mv-function
 complete -o filenames -F _complete_funcs rm-function
 
