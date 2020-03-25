@@ -2,11 +2,16 @@
 
 script_dir="$HOME/Documents/scripts"
 source "$script_dir/source-me_common-functions.sh"
-export DIR_TO_COMPLETE="$script_dir"
 
-complete -o filenames -F _complete_files_and_dirs new-script
-complete -o filenames -F _complete_files_and_dirs edit-script
-complete -o filenames -F _complete_files_and_dirs cp-script
-complete -o filenames -F _complete_files_and_dirs mv-script
-complete -o filenames -F _complete_files_and_dirs rm-script
+_scripts_complete ()
+{
+  export DIR_TO_COMPLETE="$HOME/Documents/scripts"
+  _complete_files_and_dirs
+}
+
+complete -o filenames -F _scripts_complete new-script
+complete -o filenames -F _scripts_complete edit-script
+complete -o filenames -F _scripts_complete cp-script
+complete -o filenames -F _scripts_complete mv-script
+complete -o filenames -F _scripts_complete rm-script
 
