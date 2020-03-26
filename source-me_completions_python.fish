@@ -15,4 +15,5 @@ complete -o filenames -F _py_complete edit-python
 complete -o filenames -F _py_complete cp-python
 complete -o filenames -F _py_complete mv-python
 complete -o filenames -F _py_complete rm-python
+complete -o filenames -F _py_complete checkout-python
 
