@@ -17,7 +17,7 @@ show_openstack_project()
   local user="$(env | grep OS_USERNAME | cut -d = -f2)"
 
   if [ "$project" != "" ]; then
-    echo -en " *OS_PROJECT=$NC$project$YELLOW* *OS_USERNAME=$NC$user$YELLOW*  "
+    echo -en " OS_P$NC:$project$YELLOW OS_U$NC:$user$YELLOW"
   fi
 }
 
