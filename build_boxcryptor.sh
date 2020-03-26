@@ -8,7 +8,7 @@ shopt -s failglob  # error on unexpaned globs
 
 
 trap "popd" EXIT
-pushd ~/Documents/boxcryptor_container
+pushd ~/Documents/dockerfiles/boxcryptor
 
 
 download_url="$(curl -s 'https://ptc.secomba.com/api/boxcryptor/linuxPortable/latest' | grep tar | sed -r 's#.*https#https#')"
