@@ -10,8 +10,9 @@ ip="$(ifconfig en0  | grep -E 'inet\b' | sed 's#.*inet ##;s# netmask.*##')"
 xhost + "$ip"
 
 docker run -it \
-  -v ~/Documents/books\&documentation:/data:ro \
-  -w /data \
+  -v ~/Documents/books\&documentation:/data1:ro \
+  -v ~/Downloads:/data2:ro \
+  -w /data1 \
   -e DISPLAY="$ip":0 \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   --security-opt=no-new-privileges \
