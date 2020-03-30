@@ -21,6 +21,6 @@ set -x
 [ "$upstream_version" != "$file_version" ] && rm Boxcryptor*
 curl -C - -sO "$download_url"
 
-podman build --no-cache -t boxcryptor:0.1 .
+podman build --squash --no-cache -t boxcryptor:0.1 .
 set +x
 
