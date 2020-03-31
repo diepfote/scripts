@@ -6,6 +6,15 @@ readonly LESSSECURE
 export FZF_DEFAULT_COMMAND="find ~"
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
+
+# -------------------------
+# PATH
+export PATH="$PATH":$HOME/.krew/bin
+
+# add gnu utils to PATH
+[ "$(uname)" = 'Darwin' ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" && PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+# -------------------------
+
 # kube-fzf (AUR pkg)
 alias logspod=/usr/bin/tailpod
 alias getpod=/usr/bin/findpod
@@ -64,13 +73,6 @@ refresh_tmux_kubecontext()
   tmux refresh-client &
 }
 
-# -------------------------
-# PATH
-export PATH="$PATH":$HOME/.krew/bin
-
-# add gnu utils to PATH
-[ "$(uname)" = 'Darwin' ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" && PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
-# -------------------------
 
 
 
