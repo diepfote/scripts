@@ -12,7 +12,12 @@ export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 export PATH="$PATH":$HOME/.krew/bin
 
 # add gnu utils to PATH
-[ "$(uname)" = 'Darwin' ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" && PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+if [ "$(uname)" = 'Darwin' ]; then
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+  export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
+
 # -------------------------
 
 # kube-fzf (AUR pkg)
