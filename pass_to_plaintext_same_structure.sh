@@ -7,7 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-password_storage_folder=~/Documents/boxcryptor_container/data/temp_pass
+password_storage_folder=~/Documents/dockerfiles/boxcryptor/data/temp_pass
 #password_storage_folder=~/VirtualBox_VMs/#_win_shared/temp_pass
 trap "rm -rf "$password_storage_folder"" EXIT
 mkdir "$password_storage_folder"
