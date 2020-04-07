@@ -20,18 +20,17 @@ fi
 
 # -------------------------
 
-# kube-fzf (AUR pkg)
-alias logspod=/usr/bin/tailpod
-alias getpod=/usr/bin/findpod
-alias port-forward_pod=/usr/bin/pfpod
-
 # common aliases
 ls='ls --color=auto'
+
 [ "$(uname)" = 'Darwin' ] && alias grep='ggrep --exclude-dir=.git --color' \
   || alias grep='grep --exclude-dir=.git --color'
+
+
 [ "$(uname)" = 'Darwin' ] && export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
   LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
+
 [ "$(uname)" = 'Darwin' ] && alias pip=pip3
 
 source ~/Documents/scripts/source-me_colors.sh
