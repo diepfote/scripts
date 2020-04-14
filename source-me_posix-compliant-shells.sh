@@ -16,6 +16,9 @@ if [ "$(uname)" = 'Darwin' ]; then
   export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
+  export PATH="/usr/local/opt/python@3.8/bin:$PATH"
+  export LDFLAGS="-L/usr/local/opt/python@3.8/lib"
+
   export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
   LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
