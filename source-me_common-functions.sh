@@ -75,7 +75,6 @@ _complete_files_and_dirs_helper () {
 	fi
 }
 
-
 _complete_files_and_dirs()
 {
   # completion file for bash
@@ -140,5 +139,38 @@ _complete_files_and_dirs()
 		COMPREPLY+=($(compgen -W "${commands}" -- ${cur}))
 		_complete_files_and_dirs_helper 1
 	#fi
+}
+
+
+set_kubecontext()
+{
+  export KUBECONFIG=~/.kube/"$1"
+}
+
+refresh_tmux_kubecontext()
+{
+  echo "$KUBECONFIG" > ~/._kubeconfig
+  tmux refresh-client &
+}
+
+
+# docker config for ANSIBLE
+export ANSIBLE_DEV_ENV_IMG="$(~/Documents/scripts/read_toml_setting.sh ~/Documents/config/work.conf ANSIBLE_DEV_ENV_IMG  2>/dev/null)"
+ansible_dev_env ()
+{
+  docker run --rm -ti \
+    --cap-drop=ALL \
+    --hostname "ansible-dev" \
+    --entrypoint=/bin/bash \
+    "$@" \
+     -v `pwd`:/work \
+     -v ~/.m2/settings.xml:/root/.m2/settings.xml \
+    -v ~/.ssh:/tmp/.ssh.host \
+    -v ~/.vpass:/tmp/.vpass \
+    -v ~/.jenkins-api-tokens.vpass:/tmp/jenkins-api-tokens.vpass:ro \
+    -v ~/.jenkins-api-tokens.yml:/tmp/jenkins-api-tokens.yml:ro \
+    -v ~/openrc.sh:/tmp/openrc.sh \
+    -w /work \
+    "${ANSIBLE_DEV_ENV_IMG}"
 }
 
