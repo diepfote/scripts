@@ -141,6 +141,10 @@ _complete_files_and_dirs()
 	#fi
 }
 
+set_openstack_context()
+{
+  source ~/.openstack/"$1"
+}
 
 set_kubecontext()
 {

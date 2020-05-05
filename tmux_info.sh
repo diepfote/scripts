@@ -6,7 +6,7 @@ tmux_id ()
     tmux list-pane | grep active | cut -d ']' -f3 | cut -d ' ' -f2
 }
 
-set_kubernetes_vars ()
+_set_kubernetes_vars ()
 {
   export KUBECONFIG="$(cat ~/._kubeconfig 2>/dev/null)"
   context="$(kubectl config current-context 2>/dev/null)"
@@ -18,7 +18,7 @@ set_kubernetes_vars ()
 
 show_kubernetes_context ()
 {
-  set_kubernetes_vars
+  _set_kubernetes_vars
 
 
   if [ -n "$context" ]; then
@@ -37,7 +37,7 @@ show_kubernetes_context ()
 
 show_kubernetes_namespace ()
 {
-  set_kubernetes_vars
+  _set_kubernetes_vars
 
   if [ -n "$namespace" ]; then
     local output=">$namespace< "
