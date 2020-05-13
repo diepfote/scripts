@@ -24,7 +24,7 @@ file_version="$(ls Boxcryptor* | sed -r "$sed_command" || true )"
 set +x
 shopt -s failglob  # error on unexpaned globs
 
-if [ "$upstream_version" != "$file_version" ]; then
+if [ "$upstream_version" != "$file_version" ] || [ "$1" = -f ]; then
   set -x
   shopt -u failglob
   rm -f Boxcryptor*
