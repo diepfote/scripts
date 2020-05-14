@@ -3,7 +3,6 @@ export VISUAL=nvim
 export LESSSECURE=1
 readonly LESSSECURE
 
-export FZF_DEFAULT_COMMAND="find ~"
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
