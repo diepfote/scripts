@@ -20,14 +20,15 @@ else
 fi
 set -u
 
+echo -e '-----------------\n'
+
 for file in $FILES; do
   dir="$(dirname "$file" | sed -r 's#.*\.password-store##g;s#^/##')"
   file="$(basename "$file" | sed 's#\.gpg##')"
 
-  echo '-----------------'
   echo "dir $dir"
   echo "file $file"
-
+  echo
 
   if [ -n "$dir" ]; then
     mkdir -p "$password_storage_folder/$dir"
@@ -37,6 +38,8 @@ for file in $FILES; do
   fi
 
 done
+
+echo '-----------------'
 
 sleep infinity
 
