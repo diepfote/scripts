@@ -13,7 +13,7 @@ write_current_videos_to_file()
 {
   find ~/Videos -path "$HOME/Videos/watched" -prune -o -name '*.mp4' -exec sh -c \
     'end="$(echo "{}" | sed "s#.*-##;s#.mp4##")"; python3 -c "import sys; end = sys.argv[1]; name = sys.argv[2]; \
-    print(name.split(\"Videos/\")[1]) if len(end) == 11 else print(end=\"\")" "$end" "{}"' \; > "$dir"/videos.txt 2>/dev/null || true
+    print(\"- \" + name.split(\"Videos/\")[1]) if len(end) == 11 else print(end=\"\")" "$end" "{}"' \; > "$dir"/videos.txt 2>/dev/null || true
 }
 
 dir=~/Documents/misc/videos
