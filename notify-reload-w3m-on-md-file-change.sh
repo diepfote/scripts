@@ -32,7 +32,8 @@ while file=$(inotifywait -e modify --format "%w%f" "$watch_dir"); do
      [ "$EXT" = "jpg" ] || \
      [ "$EXT" == "png" ]; then
 
-    tmux send-keys -t "$(_get_w3m_pane_id)" R
+    tmux send-keys -t "$(_get_w3m_pane_id)" \
+      q y C-m "pandoc $file | w3m -T text/html" C-m
 
   fi
 
