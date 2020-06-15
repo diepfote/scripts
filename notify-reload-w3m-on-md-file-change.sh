@@ -37,7 +37,7 @@ source ~/Documents/scripts/source-me_common-functions.sh
 
 watch_dir="$1"
 [ "$(uname)" = Darwin ] && \
-  cmd="fswatch -1 $watch_dir" || \
+  cmd="fswatch -e .git -1 $watch_dir" || \
   cmd="inotifywait -e modify --format '%w%f' $watch_dir"
 
 set -x
