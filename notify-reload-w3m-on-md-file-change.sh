@@ -38,7 +38,7 @@ source ~/Documents/scripts/source-me_common-functions.sh
 watch_dir="$1"
 [ "$(uname)" = Darwin ] && \
   cmd="fswatch -e .git -1 $watch_dir" || \
-  cmd="inotifywait -e modify --format '%w%f' $watch_dir"
+  cmd="inotifywait -e modify --format %w%f $watch_dir"
 
 set -x
 while file=$($cmd); do
@@ -49,7 +49,7 @@ while file=$($cmd); do
      [ -n "$(echo "$file" | grep goutputstream)" ] || \
      [ "$EXT" = "MD" ] || \
      [ "$EXT" = "jpg" ] || \
-     [ "$EXT" == "png" ]; then
+     [ "$EXT" = "png" ]; then
 
     tmux send-keys -t "$(_get_cmd_tmux_pane_id w3m)" \
       q y C-m "pandoc $file | w3m -T text/html" C-m
