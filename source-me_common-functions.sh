@@ -16,14 +16,19 @@ die()
 }
 
 
-_get_w3m_pane_id() {
+_get_cmd_tmux_pane_id() {
+  cmd_to_search_for="$1"
 
+  if [ "$(uname)" = Darwin ]; then
+    local pane_to_reload="$(ps -f | grep "$cmd_to_search_for" | grep -v grep | tr -s ' ' | cut -d ' ' -f4)"
+  else
    local pane_to_reload="$(for pane_pid in $(tmux list-panes -F '#{pane_pid}'); do \
     ps -f --ppid "$pane_pid" \
     | awk '{ print substr($0, index($0,$8))}' \
     | grep /w3m 1>/dev/null && itis=true; \
       set +u; [ "$itis" = true ] \
       && echo "$pane_pid"; itis=false; set -u ; done)"
+  fi
 
    pane_ids=$(tmux list-panes -F "#{pane_pid} #{pane_id}" \
      | grep "$pane_to_reload" | cut -d ' ' -f2)

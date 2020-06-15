@@ -36,8 +36,12 @@ shopt -s failglob  # error on unexpaned globs
 source ~/Documents/scripts/source-me_common-functions.sh
 
 watch_dir="$1"
+[ "$(uname)" = Darwin ] && \
+  cmd="fswatch -1 $watch_dir" || \
+  cmd="inotifywait -e modify --format '%w%f' $watch_dir"
 
-while file=$(inotifywait -e modify --format "%w%f" "$watch_dir"); do
+set -x
+while file=$($cmd); do
 
   EXT=$(echo "$file" | \
     python3 -c "filename = input(); print(filename.rsplit('.', 1)[1])")
@@ -47,10 +51,10 @@ while file=$(inotifywait -e modify --format "%w%f" "$watch_dir"); do
      [ "$EXT" = "jpg" ] || \
      [ "$EXT" == "png" ]; then
 
-    tmux send-keys -t "$(_get_w3m_pane_id)" \
+    tmux send-keys -t "$(_get_cmd_tmux_pane_id w3m)" \
       q y C-m "pandoc $file | w3m -T text/html" C-m
 
   fi
 
 done
-
+set +x
