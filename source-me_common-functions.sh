@@ -25,7 +25,7 @@ _get_cmd_tmux_pane_id() {
    local pane_to_reload="$(for pane_pid in $(tmux list-panes -F '#{pane_pid}'); do \
     ps -f --ppid "$pane_pid" \
     | awk '{ print substr($0, index($0,$8))}' \
-    | grep /w3m 1>/dev/null && itis=true; \
+    | grep "/$cmd_to_search_for" 1>/dev/null && itis=true; \
       set +u; [ "$itis" = true ] \
       && echo "$pane_pid"; itis=false; set -u ; done)"
   fi
