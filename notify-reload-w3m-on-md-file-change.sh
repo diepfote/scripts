@@ -51,7 +51,7 @@ while file=$($cmd); do
      [ "$EXT" = "jpg" ] || \
      [ "$EXT" = "png" ]; then
 
-    tmux send-keys -t "$(_get_cmd_tmux_pane_id w3m)" \
+    tmux send-keys -t "$(_get_cmd_tmux_pane_id 'w3m -T')" \
       q y C-m "pandoc -f gfm $file | w3m -T text/html" C-m
 
   fi

@@ -20,8 +20,10 @@ _get_cmd_tmux_pane_id() {
   cmd_to_search_for="$1"
 
   if [ "$(uname)" = Darwin ]; then
+    set -x
     # get parent process id for some command
     local pane_to_reload="$(ps -f | grep "$cmd_to_search_for" | grep -v grep | tr -s ' ' | cut -d ' ' -f4)"
+    set +x
   else
    local pane_to_reload="$(for pane_pid in $(tmux list-panes -F '#{pane_pid}'); do \
     ps -f --ppid "$pane_pid" \
@@ -31,8 +33,12 @@ _get_cmd_tmux_pane_id() {
       && echo "$pane_pid"; itis=false; set -u ; done)"
   fi
 
-   pane_ids=$(tmux list-panes -F "#{pane_pid} #{pane_id}" \
+   # ensure nothing is returned in case there is no match
+   #
+   if [ -n "$pane_to_reload" ]; then
+    pane_ids=$(tmux list-panes -F "#{pane_pid} #{pane_id}" \
      | grep "$pane_to_reload" | cut -d ' ' -f2)
+   fi
 
    echo $pane_ids | tr ' ' '\n' | tail -n 1
 }
