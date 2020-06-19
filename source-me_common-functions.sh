@@ -171,7 +171,9 @@ _complete_files_and_dirs()
 
 set_openstack_context()
 {
+  set -a
   source ~/.openstack/"$1"
+  set +a
 }
 
 set_kubecontext()

@@ -6,7 +6,7 @@ readonly LESSSECURE
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
-export PATH="$PATH":$HOME/.krew/bin
+export PATH="$HOME/.krew/bin:$PATH"
 
 # -------------------------
 # DARWIN
@@ -16,7 +16,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
   export PATH="/usr/local/opt/python@3.8/bin:$PATH"
-  export PATH="~/Library/Python/3.8/bin:$PATH"
+  export PATH="$HOME/Library/Python/3.8/bin:$PATH"
   export LDFLAGS="-L/usr/local/opt/python@3.8/lib"
 
   export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
