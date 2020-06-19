@@ -33,8 +33,7 @@ _get_cmd_tmux_pane_id() {
    pane_ids=$(tmux list-panes -F "#{pane_pid} #{pane_id}" \
      | grep "$pane_to_reload" | cut -d ' ' -f2)
 
-   [ "$(echo $pane_ids | tr ' ' '\n' | wc -l)" -lt 2 ] && \
-     echo "$pane_ids"
+   echo $pane_ids | tr ' ' '\n' | tail -n 1
 }
 
 
