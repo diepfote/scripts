@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ( echo "PACKAGE SIZE(MB)";
 for A in /var/lib/pacman/local/*/desc; do
   egrep -A1 '%(NAME|SIZE)' $A  \

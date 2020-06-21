@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo
 echo -e "\033[1;33mBegin remove diagnostics\033[0m"

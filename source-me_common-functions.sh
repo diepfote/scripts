@@ -221,7 +221,7 @@ ansible_dev_env ()
   docker run --rm -ti \
     --cap-drop=ALL \
     --hostname "ansible-dev" \
-    --entrypoint=/bin/bash \
+    --entrypoint=/usr/bin/env bash \
     "$@" \
      -v `pwd`:/work \
      -v ~/.m2/settings.xml:/root/.m2/settings.xml \

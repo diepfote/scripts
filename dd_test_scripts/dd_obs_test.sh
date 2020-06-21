@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 ## taken from https://github.com/tdg5/blog/blob/master/_includes/scripts/dd_obs_test.sh
 #
