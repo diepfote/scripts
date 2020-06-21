@@ -7,6 +7,7 @@ export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
 export PATH="$HOME/.krew/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
 
 # -------------------------
 # DARWIN
