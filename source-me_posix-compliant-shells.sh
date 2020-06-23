@@ -1,7 +1,10 @@
 export EDITOR=nvim
 export VISUAL=nvim
+
 export LESSSECURE=1
 readonly LESSSECURE
+
+export NNN_COLORS=2136  # use a different color for each context -> version >= 3.2
 export NNN_TRASH=1
 export NNN_BMS='d:~/Documents;h:~;D:~/Downloads;f:~/.config/fish/functions;s:~/Documents/scripts;L:~/Library/LaunchAgents;l:~/Documents/systemd-user;S:~/.config/systemd/user;E:/etc/'  # jump locations for nnn
 
