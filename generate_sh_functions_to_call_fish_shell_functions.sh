@@ -41,6 +41,8 @@ for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
   echo "$basename_no_ext"
   if [[ "$basename_no_ext" =~ commit ]]; then
     echo 'function '"$basename_no_ext"' {  commands="'\''$@'\''"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
+  elif [ "$basename_no_ext" = unset ]; then
+    :  # do not replace bash's unset!
   else
     echo 'function '"$basename_no_ext"' {  commands="$@"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
   fi
