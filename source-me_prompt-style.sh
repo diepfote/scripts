@@ -13,6 +13,8 @@ export GIT_PS1_SHOWUPSTREAM='verbose'  # 'u='=no difference, 'u+1'=ahead by 1 co
 
 show_openstack_project()
 {
+  local cloud="$(env | grep OS_CLOUD | cut -d = -f2)"
+  local auth_url="$(env | grep OS_AUTH_URL | cut -d = -f2)"
   local project="$(env | grep OS_PROJECT_NAME | cut -d = -f2 )"
   local tenant="$(env | grep OS_TENANT_NAME | cut -d = -f2)"
   local auth_url="$(env | grep OS_AUTH_URL | cut -d = -f2)"
@@ -25,6 +27,12 @@ show_openstack_project()
     echo -en "$YELLOW OS_T$NC:$tenant"
   fi
 
-  echo -en "$YELLOW OS_U$NC:$user$YELLOW OS_URL$NC:$auth_url"
+  if [ -n "$auth_url" ] && [ -n "$user" ]; then
+    echo -en "$YELLOW OS_U$NC:$user$YELLOW OS_URL$NC:$auth_url"
+  fi
+
+  if [ -n "$cloud" ]; then
+    echo -en "$YELLOW OS_C$NC:$cloud"
+  fi
 }
 
