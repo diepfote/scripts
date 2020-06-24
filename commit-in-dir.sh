@@ -18,7 +18,7 @@ git status -sb
 echo -e '\n----------------\n'
 
 source ~/.sh_functions
-git l -2 --stat
+git --no-pager l -2 --stat
 echo -e '\n----------------\n'
 
 sleep 2
