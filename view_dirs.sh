@@ -10,15 +10,26 @@ source ~/Documents/scripts/source-me_progressbar.sh
 
 
 DIR=~/Documents
-FILES=$@
+SUBDIRS=$@
 
 iterate_files()
 {
   command="$1"
 
-  for file in $FILES; do
-    $command $DIR/$file
+  for subdir in $SUBDIRS; do
+    set -x
+    $command "$DIR/$subdir"
+    set +x
   done
+
+
+  set +u
+  if [ -n "$initial"  ]; then
+    set -x
+    nnn "$DIR/$subdir"
+    set +x
+  fi
+  set -u
 
 }
 
@@ -26,7 +37,7 @@ iterate_files()
 trap 'echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"' EXIT
 
 iterate_files "sudo chown -R $USER:$USER"
-iterate_files 'sudo chmod -R 700'
+initial=true iterate_files 'sudo chmod -R 700'
 
 progressbar 'waiting to re-chown to root and re-chmod to 000' &
 
