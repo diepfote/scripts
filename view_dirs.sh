@@ -1,25 +1,26 @@
 #!/usr/bin/env bash
 
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+source ~/Documents/scripts/source-me_progressbar.sh
+
+
 DIR=~/Documents
-FILES="$@"
+FILES=$@
 
 iterate_files()
 {
   command="$1"
 
   for file in $FILES; do
-    echo "$command $DIR/$file"
-    $(echo "$command $DIR/$file")
+    $command $DIR/$file
   done
 
 }
-
-
-#asdf()
-#{
-  #echo blub
-#}
-#trap 'asdf' EXIT
 
 
 trap 'echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"' EXIT
@@ -27,11 +28,10 @@ trap 'echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -
 iterate_files "sudo chown -R $USER:$USER"
 iterate_files 'sudo chmod -R 700'
 
+progressbar 'waiting to re-chown to root and re-chmod to 000' &
+
 while (true); do
-  sudo echo -en '\r...'
+  sudo -v
   sleep 60
 done
-
-
-sleep infinity
 
