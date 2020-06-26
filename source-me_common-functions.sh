@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-yesno()
+yesno ()
 {
 	[[ -t 0 ]] || return 0
 	local response
@@ -9,14 +9,16 @@ yesno()
 	[[ $response == [yY] ]] || die "Received no answer for yesno!"
 }
 
-die()
+die ()
 {
 	echo "$@" >&2
 	exit 1
 }
 
 
-_get_cmd_tmux_pane_id() {
+
+
+_get_cmd_tmux_pane_id () {
 # BSD 2-Clause License
 
 # Copyright (c) 2020, Florian Begusch
@@ -69,6 +71,12 @@ _get_cmd_tmux_pane_id() {
    echo $pane_ids | tr ' ' '\n' | tail -n 1
 }
 
+
+
+
+
+#############################
+# copied pass functions start
 
 _complete_files_and_dirs_helper () {
   # completion file for bash
@@ -195,6 +203,13 @@ _complete_files_and_dirs()
 	#fi
 }
 
+# copied pass functions end
+###########################
+
+
+# kubernetes & openstack start
+################
+
 set_openstack_context()
 {
   set -a
@@ -202,16 +217,19 @@ set_openstack_context()
   set +a
 }
 
-set_kubecontext()
+set_kubecontext ()
 {
   export KUBECONFIG=~/.kube/"$1"
 }
 
-refresh_tmux_kubecontext()
+refresh_tmux_kubecontext ()
 {
   echo "$KUBECONFIG" > ~/._kubeconfig
   tmux refresh-client &
 }
+
+# kubernetes end
+################
 
 
 # docker config for ANSIBLE
