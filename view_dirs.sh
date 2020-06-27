@@ -42,7 +42,7 @@ trap 'echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -
 iterate_files "sudo chown -R $USER:$USER"
 initial=true iterate_files 'sudo chmod -R 700'
 
-progressbar 'waiting to re-chown to root and re-chmod to 000' &
+progressbar 'waiting to re-chown to root and re-chmod to 000'
 
 while (true); do
   sudo -v
