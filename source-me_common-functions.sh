@@ -17,6 +17,11 @@ die ()
 
 
 
+get_random_alphanumeric ()
+{
+  cat /dev/urandom | tr -dc _A-Z-a-z-0-9 | head -c "$1"
+}
+
 
 _get_cmd_tmux_pane_id () {
 # BSD 2-Clause License
