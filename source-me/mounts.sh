@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source ~/Documents/scripts/source-me_common-functions.sh
-source ~/Documents/scripts/source-me_progressbar.sh
+source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Documents/scripts/source-me/progressbar.sh
 
 mount_luks_device ()
 {

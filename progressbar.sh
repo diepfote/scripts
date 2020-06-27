@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-source source-me_progressbar.sh
+source source-me/progressbar.sh
 
 
 progressbar "emit some $PURPLE text$NC"

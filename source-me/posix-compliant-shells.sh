@@ -59,10 +59,10 @@ alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero
 
 # -------------------------
 # files to source
-source ~/Documents/scripts/source-me_colors.sh
-source ~/Documents/scripts/source-me_prompt-style.sh
+source ~/Documents/scripts/source-me/colors.sh
+source ~/Documents/scripts/source-me/prompt-style.sh
 source ~/Documents/scripts/tmux_info.sh 1>/dev/null 2>/dev/null
-for name in $(find ~/Documents/scripts -name 'source-me_completions*'); do
+for name in $(find ~/Documents/scripts/source-me -name 'completions*'); do
   source "$name"
 done
 

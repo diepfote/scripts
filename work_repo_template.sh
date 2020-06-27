@@ -2,7 +2,7 @@
 
 trap "cd $PWD" EXIT
 
-source ~/Documents/scripts/source-me_colors.sh
+source ~/Documents/scripts/source-me/colors.sh
 
 _arbitrary_command()
 {

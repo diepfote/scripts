@@ -33,7 +33,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me_common-functions.sh
+source ~/Documents/scripts/source-me/common-functions.sh
 
 watch_dir="$1"
 [ "$(uname)" = Darwin ] && \

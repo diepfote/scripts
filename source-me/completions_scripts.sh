@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 script_dir="$HOME/Documents/scripts"
-source "$script_dir/source-me_common-functions.sh"
+source "$script_dir/source-me/common-functions.sh"
 
 _scripts_complete ()
 {

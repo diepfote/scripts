@@ -7,7 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me_mounts.sh
+source ~/Documents/scripts/source-me/mounts.sh
 
 device_partition="$1"
 mount_luks_device "$(pass encrypted_drives/backup_drive)" "$device_partition" /run/media/"$USER"/encrypted-backup-drive
