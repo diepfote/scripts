@@ -12,12 +12,14 @@ mount_luks_device ()
 
   trap "sudo umount "$mount_point"; sudo rm -r "$mount_point"; sudo cryptsetup close "$mapper_name"" EXIT
 
+  sudo -v
   echo "$pass" | sudo cryptsetup open "$device_partition" "$mapper_name"
   sudo mkdir "$mount_point" || true  # dir exists
   sudo mount /dev/mapper/"$mapper_name" "$mount_point"
 
   tmux split-window -d -v
   tmux send-keys -t .+ "n $mount_point" C-m
+  tmux selectp -t .+
 
   progressbar 'waiting to close encrypted drive'
 

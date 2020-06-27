@@ -7,6 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 source ~/Documents/scripts/source-me_progressbar.sh
+source ~/Documents/scripts/source-me_bash-nnn.sh
 
 
 DIR=~/Documents
@@ -26,7 +27,9 @@ iterate_files()
   set +u
   if [ -n "$initial"  ]; then
     set -x
-    nnn "$DIR/$subdir"
+    tmux split-window -d -v
+    tmux send-keys -t .+ "n $DIR/$subdir" C-m
+    tmux selectp -t .+
     set +x
   fi
   set -u
