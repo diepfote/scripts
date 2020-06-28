@@ -41,10 +41,9 @@ for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
   echo "$basename_no_ext"
   if [[ "$basename_no_ext" =~ commit ]]; then
     echo 'function '"$basename_no_ext"' {  commands="'\''$@'\''"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
-  elif [ "$basename_no_ext" = unset ] || [ "$basename_no_ext" = n ]; then
+  elif [ "$basename_no_ext" = unset ]; then
     :
     # 1) do not replace bash's unset!
-    # 2) nnn cd on quit uses different functions for fish and bash!
   else
     echo 'function '"$basename_no_ext"' {  commands="$@"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
   fi
