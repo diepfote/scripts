@@ -9,9 +9,6 @@ shopt -s failglob  # error on unexpaned globs
 source ~/Documents/scripts/source-me/progressbar.sh
 source ~/.sh_functions
 
-DIR=~/Documents
-SUBDIRS=$@
-
 iterate_files()
 {
   command="$1"
@@ -20,22 +17,27 @@ iterate_files()
     set -x
     $command "$DIR/$subdir"
     set +x
+
+    set +u
+    if [ -n "$open_nnn"  ]; then
+      unset open_nnn
+      n-for-dir-in-tmux-pane-below "$DIR/$subdir"
+    fi
+    set -u
   done
 
 
-  set +u
-  if [ -n "$initial"  ]; then
-    n-for-dir-in-tmux-pane-below "$dir"
-  fi
-  set -u
-
 }
+
+
+DIR=~/Documents
+SUBDIRS=$@
 
 
 trap 'echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"' EXIT
 
 iterate_files "sudo chown -R $USER:$USER"
-initial=true iterate_files 'sudo chmod -R 700'
+open_nnn=true iterate_files 'sudo chmod -R 700'
 
 progressbar 'waiting to re-chown to root and re-chmod to 000'
 
