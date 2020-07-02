@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-trap "cd $PWD" EXIT
+#trap "cd $PWD" EXIT
 
 source ~/Documents/scripts/source-me/colors.sh
 
