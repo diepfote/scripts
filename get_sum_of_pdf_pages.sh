@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#
+# How to run:
+# $ sum_of_pdf_pages . -maxdepth 3 -iname '*.pdf'
+#
+
 
 #set -x
 
