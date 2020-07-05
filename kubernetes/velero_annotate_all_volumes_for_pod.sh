@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-source ~/Documents/scripts/kubernetes/source-me/common_functions.sh
+source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
 
 set -e
 #set -u
