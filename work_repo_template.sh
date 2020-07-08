@@ -13,7 +13,8 @@ _arbitrary_command()
     exit
   fi
 
-  echo "$dir"
+  export NC="\033[0m"  # fix ^0 in output on Mac OS
+  echo -e "$PURPLE$dir$NC"
   if [ -d "$dir/.git" ]; then
     cd "$dir"
     $command_to_run
