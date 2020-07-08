@@ -13,7 +13,7 @@ _arbitrary_command()
     exit
   fi
 
-  export NC="\033[0m"  # fix ^0 in output on Mac OS
+  export NC="$(echo "$NC" | tr -d "$(echo -ne '\x0f')")" # fix ^0 in output on Mac OS
   echo -e "$PURPLE$dir$NC"
   if [ -d "$dir/.git" ]; then
     cd "$dir"
