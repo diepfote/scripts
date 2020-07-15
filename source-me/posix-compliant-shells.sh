@@ -38,8 +38,14 @@ fi
 # common aliases
 ls='ls --color=auto'
 
-[ "$(uname)" = 'Darwin' ] && alias grep='ggrep --exclude-dir=.git --color' \
-  || alias grep='grep --exclude-dir=.git --color'
+[ "$(uname)" = 'Darwin' ] && alias grep='ggrep --exclude-dir=.git \
+                                               --exclude-dir=.tox \
+                                               --exclude-dir=.venv \
+                                               --color' \
+                          || alias grep='grep --exclude-dir=.git \
+                                               --exclude-dir=.tox \
+                                               --exclude-dir=.venv \
+                                               --color'
 
 # pipenv aliases
 alias pipsh="pipenv shell"
