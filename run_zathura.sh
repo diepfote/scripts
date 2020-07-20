@@ -27,6 +27,6 @@ docker run \
   --rm \
   -it \
   --name zathura \
-  zathura:0.1 \
+  zathura \
   $command
 

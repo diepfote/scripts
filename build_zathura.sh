@@ -11,6 +11,6 @@ trap "popd" EXIT
 pushd ~/Documents/dockerfiles/zathura
 
 set -x
-docker build --no-cache -t zathura:0.1 .
+docker build --no-cache -t zathura .
 set +x
 
