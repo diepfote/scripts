@@ -10,6 +10,7 @@ export NNN_BMS="d:~/Documents;h:~;D:~/Downloads;f:~/.config/fish/functions;s:~/D
 export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='p:preview-tui'  # curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 
+alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
 
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
