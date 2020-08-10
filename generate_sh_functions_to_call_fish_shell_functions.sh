@@ -39,12 +39,16 @@ echo
 for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
   basename_no_ext="$(basename "$file" | sed 's/\.[^.]*$//')"
   echo "$basename_no_ext"
-  if [[ "$basename_no_ext" =~ commit ]] || [[ "$basename_no_ext" =~ mpv ]]; then
+  if [[ "$basename_no_ext" =~ commit|mpv ]]; then
     echo 'function '"$basename_no_ext"' {  commands="'\''$@'\''"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
   elif [ "$basename_no_ext" = unset ] || [ "$basename_no_ext" = n ]; then
     :
     # 1) do not replace bash's unset!
     # 2) nnn cd on quit uses different functions for fish and bash!
+  elif [[ "$basename_no_ext" =~ dl-youtube ]]; then
+    echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' $1 '\''$2'\''"'\; } >> "$aliases_file"
+  elif [[ "$basename_no_ext" =~ formats-youtube-dl ]]; then
+    echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext" ''\''$1'\''"'\; } >> "$aliases_file"
   else
     echo 'function '"$basename_no_ext"' {  commands="$@"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
   fi
