@@ -24,6 +24,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+  export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
 
   export PATH="/usr/local/opt/python@3.8/bin:$PATH"
   export PATH="$HOME/Library/Python/3.8/bin:$PATH"
@@ -37,16 +38,12 @@ fi
 
 # -------------------------
 # common aliases
-ls='ls --color=auto'
+alias ls='ls --color=auto'
 
-[ "$(uname)" = 'Darwin' ] && alias grep='ggrep --exclude-dir=.git \
-                                               --exclude-dir=.tox \
-                                               --exclude-dir=.venv \
-                                               --color' \
-                          || alias grep='grep --exclude-dir=.git \
-                                               --exclude-dir=.tox \
-                                               --exclude-dir=.venv \
-                                               --color'
+alias grep='grep --exclude-dir=.git \
+                 --exclude-dir=.tox \
+                 --exclude-dir=.venv \
+                 --color'
 
 # pipenv aliases
 alias pipsh="pipenv shell"
