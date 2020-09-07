@@ -66,14 +66,16 @@ _get_cmd_tmux_pane_id () {
       && echo "$pane_pid"; itis=false; set -u ; done)"
   fi
 
-   # ensure nothing is returned in case there is no match
+   # in case there is no match
+   # ensure the subsequent pane is chosen
    #
    if [ -n "$pane_to_reload" ]; then
     pane_ids=$(tmux list-panes -F "#{pane_pid} #{pane_id}" \
      | grep "$pane_to_reload" | cut -d ' ' -f2)
    fi
+   [ -z "$pane_ids" ] && pane_ids='.+'
 
-   echo $pane_ids | tr ' ' '\n' | tail -n 1
+   echo "$pane_ids" | tr ' ' '\n' | tail -n 1
 }
 
 

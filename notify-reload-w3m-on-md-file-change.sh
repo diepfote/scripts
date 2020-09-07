@@ -51,10 +51,18 @@ while file=$($cmd); do
      [ "$EXT" = "jpg" ] || \
      [ "$EXT" = "png" ]; then
 
-    tmux send-keys -t "$(_get_cmd_tmux_pane_id 'w3m -T')" \
-      q y C-m "pandoc -f gfm $file | w3m -T text/html" C-m
+    pane_to_act_on="$(_get_cmd_tmux_pane_id 'w3m -T')"
 
+    if [ "$pane_to_act_on" = .+ ]; then
+      # no need to quit w3m, it's not running
+
+      # TODO not working yet (pane does not receive command)
+      tmux send-keys -t "$pane_to_act_on"  \
+        "pandoc -f gfm $file | w3m -T text/html" C-m
+    else
+      tmux send-keys -t "$pane_to_act_on"  \
+        qy C-m "pandoc -f gfm $file | w3m -T text/html" C-m
+    fi
   fi
-
 done
 set +x
