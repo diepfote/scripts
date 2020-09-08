@@ -39,7 +39,7 @@ echo
 for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
   basename_no_ext="$(basename "$file" | sed 's/\.[^.]*$//')"
   echo "$basename_no_ext"
-  if [[ "$basename_no_ext" =~ commit ]]; then
+  if [[ "$basename_no_ext" =~ git_execute_on_all_repos|commit ]]; then
     echo 'function '"$basename_no_ext"' {  commands="'\''$@'\''"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
   elif [ "$basename_no_ext" = unset ] || [ "$basename_no_ext" = n ]; then
     :
