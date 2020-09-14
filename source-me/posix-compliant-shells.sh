@@ -61,6 +61,9 @@ alias kx="kubectx"
 alias ktx="kubectx"
 alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh "$@"'
 
+# openstack aliases
+alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
+
 # -------------------------
 
 
