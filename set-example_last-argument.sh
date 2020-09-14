@@ -11,7 +11,10 @@ echo -e "${@:1:3}"
 #array=( "$@" )
 #unset "array[${#array[@]}-1]"    # Removes last element -- also see: help unset
 #set "$array"
-set -- "${@:1:$(($#-1))}"
+last_arg="${@:$#}"
+set -- "${@:1:$(($#-1))}"  # all except last
 
 echo $@
+
+echo "$last_arg"
 
