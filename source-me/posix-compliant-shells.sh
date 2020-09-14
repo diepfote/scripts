@@ -45,6 +45,20 @@ alias grep='grep --exclude-dir=.git \
                  --exclude-dir=.venv \
                  --color'
 
+ed () {
+  last_arg="${@:$#}";
+
+  if [ "$#" -gt 2 ]; then
+    set -- "${@:1:$(($#-1))}";
+    input="$(echo -n "$@" | tr -s ' ' '\n')";
+
+    echo -e "$input" | command ed "$last_arg"
+  else
+    command ed "$last_arg"
+  fi
+}
+
+
 # pipenv aliases
 alias pipsh="pipenv shell"
 
