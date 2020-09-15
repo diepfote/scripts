@@ -16,7 +16,7 @@ rclone sync --exclude .DS_Store --delete-excluded -v 'fastmail:'$username'.fastm
 
 #brew info --installed --json | jq .[].name | sed 's#"##g' > ~/Documents/misc/mac-os/brew-pkgs.txt
 brew list > "$dir"/brew-pkgs.txt
-brew cask list > "$dir"/brew-cask-pkgs.txt
+brew list --cask > "$dir"/brew-cask-pkgs.txt
 kubectl krew list > "$dir"/krew-pkgs.txt
 
 rclone sync --exclude .DS_Store --delete-excluded -v "$dir" 'fastmail:'$username'.fastmail.com/files/-configs/mac-os'
