@@ -8,7 +8,6 @@ shopt -s failglob  # error on unexpaned globs
 
 [ -z "$*" ] && command=bash || command=$@
 
-
 if [ "$(uname)" = Darwin ]; then
   ip="$(ifconfig en0  | grep -E 'inet\b' | sed 's#.*inet ##;s# netmask.*##')"
   xhost + "$ip"
@@ -16,8 +15,6 @@ if [ "$(uname)" = Darwin ]; then
 else
   DISPLAY="$DISPLAY"
 fi
-
-
 
 docker run \
   -u build-user \
@@ -28,5 +25,5 @@ docker run \
   -it \
   --name yay \
   yay \
-  $command
+  $command || docker exec -it yay bash  # try exec on failure
 
