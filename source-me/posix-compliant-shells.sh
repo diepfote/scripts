@@ -45,6 +45,8 @@ alias grep='grep --exclude-dir=.git \
                  --exclude-dir=.venv \
                  --color'
 
+type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
+
 # pipenv aliases
 alias pipsh="pipenv shell"
 

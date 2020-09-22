@@ -41,10 +41,12 @@ for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
   echo "$basename_no_ext"
   if [[ "$basename_no_ext" =~ git_execute_on_all_repos|commit ]]; then
     echo 'function '"$basename_no_ext"' {  commands="'\''$@'\''"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
-  elif [ "$basename_no_ext" = unset ] || [ "$basename_no_ext" = n ]; then
+  elif [ "$basename_no_ext" = unset ] || [ "$basename_no_ext" = n ] || [ "$basename_no_ext" = vim ]; then
     :
+    # skip
     # 1) do not replace bash's unset!
     # 2) nnn cd on quit uses different functions for fish and bash!
+    # 3) vim should just be an alias
   elif [[ "$basename_no_ext" =~ dl-youtube ]]; then
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' $1 '\''$2'\''"'\; } >> "$aliases_file"
   elif [[ "$basename_no_ext" =~ formats-youtube-dl ]]; then
