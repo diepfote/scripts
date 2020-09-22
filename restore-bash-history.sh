@@ -9,6 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 
 tmp_bash_history_file="/tmp/.bash_history"
 bash_history_file=~/.bash_history
+ls -al "$tmp_bash_history_file"
 trap "sleep 60 && rm "$tmp_bash_history_file" &" EXIT  # keep file for x seconds
 
 path=~/.bash_backup/
