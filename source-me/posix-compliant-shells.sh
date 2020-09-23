@@ -66,6 +66,9 @@ alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero
 # openstack aliases
 alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
 
+# for the ***REMOVED*** ***REMOVED***_openshift repo
+alias tox='cp "$KUBECONFIG" ~/.kube/config; tox'
+
 # -------------------------
 
 
