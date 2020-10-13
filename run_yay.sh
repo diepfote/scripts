@@ -20,7 +20,8 @@ fi
 
 docker run \
   -u build-user \
-  -v ~/.bash_history:/root/.bash_history \
+  -v ~/.bash_history:/build/.bash_history \
+  --network=host \
   -e DISPLAY="$DISPLAY" \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   --rm \
