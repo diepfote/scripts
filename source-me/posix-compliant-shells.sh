@@ -33,6 +33,9 @@ if [ "$(uname)" = 'Darwin' ]; then
   export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
   LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
+
+  alias tss_pass='pass ***REMOVED***D***/***REMOVED*** -c'
+  alias tss_user='pass ***REMOVED***D***/***REMOVED*** | tail -n 1 | pbcopy'
 fi
 # -------------------------
 
