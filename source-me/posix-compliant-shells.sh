@@ -48,6 +48,8 @@ alias grep='grep --exclude-dir=.git \
                  --exclude-dir=.venv \
                  --color'
 
+alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
+
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
 
 # pipenv aliases
