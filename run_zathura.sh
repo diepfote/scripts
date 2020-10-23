@@ -13,9 +13,9 @@ ip="$(ifconfig en0  | grep -E 'inet\b' | sed 's#.*inet ##;s# netmask.*##')"
 xhost + "$ip"
 
 docker run \
-  -v ~/.config/zathura:/root/.config/zathura \
-  -v ~/.local/share/zathura:/root/.local/share/zathura \
-  -v ~/.bash_history:/root/.bash_history \
+  -v ~/.config/zathura:/root/.config/zathura:ro \
+  -v ~/.local/share/zathura:/root/.local/share/zathura:ro \
+  -v ~/.bash_history:/root/.bash_history:ro \
   -v /tmp:/tmp:ro \
   -v ~/Documents/books\&documentation:/books:ro \
   -v ~/Downloads:/downloads:ro \
@@ -29,5 +29,5 @@ docker run \
   -it \
   --name zathura \
   zathura \
-  $command
+  $command || docker exec -it zathura bash
 
