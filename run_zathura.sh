@@ -17,10 +17,11 @@ docker run \
   -v ~/.local/share/zathura:/root/.local/share/zathura:ro \
   -v ~/.bash_history:/root/.bash_history:ro \
   -v /tmp:/tmp:ro \
+  -v "$PWD":/pwd:ro \
+  -w /pwd \
   -v ~/Documents/books\&documentation:/books:ro \
   -v ~/Downloads:/downloads:ro \
   -v ~/Documents/cheatsheets:/cheatsheets:ro \
-  -w /books \
   -e DISPLAY="$ip":0 \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   --security-opt=no-new-privileges \
