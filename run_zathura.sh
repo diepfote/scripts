@@ -16,6 +16,7 @@ docker run \
   -v ~/.config/zathura:/root/.config/zathura \
   -v ~/.local/share/zathura:/root/.local/share/zathura \
   -v ~/.bash_history:/root/.bash_history \
+  -v /tmp:/tmp:ro \
   -v ~/Documents/books\&documentation:/books:ro \
   -v ~/Downloads:/downloads:ro \
   -v ~/Documents/cheatsheets:/cheatsheets:ro \
