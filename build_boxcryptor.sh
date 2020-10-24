@@ -24,7 +24,9 @@ file_version="$(ls Boxcryptor* | sed -r "$sed_command" || true )"
 set +x
 shopt -s failglob  # error on unexpaned globs
 
+set +u
 if [ "$upstream_version" != "$file_version" ] || [ "$1" = -f ]; then
+set -u
   set -x
   shopt -u failglob
   rm -f Boxcryptor*
@@ -35,4 +37,4 @@ if [ "$upstream_version" != "$file_version" ] || [ "$1" = -f ]; then
   podman build --squash --no-cache -t boxcryptor:0.1 .
   set +x
 fi
-
+set -u
