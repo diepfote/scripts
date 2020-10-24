@@ -6,7 +6,7 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-echo -e "${@:1:3}"
+echo -e "second argument: ${@:2:1}"  # ${@:which_arg_to_start_on:how_long_to_continue}
 
 #array=( "$@" )
 #unset "array[${#array[@]}-1]"    # Removes last element -- also see: help unset
