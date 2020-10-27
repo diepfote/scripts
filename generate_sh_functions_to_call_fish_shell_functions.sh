@@ -5,8 +5,7 @@
 # Copyright (c) 2020, Florian Begusch
 # All rights reserved.
 
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
+# Redistribution and use in source and binary forms, with or without # modification, are permitted provided that the following conditions are met:
 
 # * Redistributions of source code must retain the above copyright notice, this
   # list of conditions and the following disclaimer.
@@ -44,6 +43,7 @@ for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
   elif [ "$basename_no_ext" = unset ] || \
        [ "$basename_no_ext" = n ] || \
        [ "$basename_no_ext" = vim ] || \
+       [ "$basename_no_ext" = test-sed ] || \
        [ "$basename_no_ext" = git_goto_toplevel ] ; then
     :
     # skip
@@ -54,7 +54,9 @@ for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' $1 '\''$2'\''"'\; } >> "$aliases_file"
   elif [[ "$basename_no_ext" =~ formats-youtube-dl ]]; then
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext" ''\''$1'\''"'\; } >> "$aliases_file"
-  elif [[ "$basename_no_ext" =~ mpv|cheat ]]; then
+  elif [[ "$basename_no_ext" =~ cheat ]]; then
+    echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' \"$1\" \"$2\" "'\; } >> "$aliases_file"
+  elif [[ "$basename_no_ext" =~ mpv ]]; then
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" "'\; } >> "$aliases_file"
   else
     echo 'function '"$basename_no_ext"' {  commands="$@"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
