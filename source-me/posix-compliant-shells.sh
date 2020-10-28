@@ -26,9 +26,9 @@ if [ "$(uname)" = 'Darwin' ]; then
   export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
 
-  export PATH="/usr/local/opt/python@3.8/bin:$PATH"
-  export PATH="$HOME/Library/Python/3.8/bin:$PATH"
-  export LDFLAGS="-L/usr/local/opt/python@3.8/lib"
+  export PATH="/usr/local/opt/python@3.9/libexec/bin:$PATH"
+  export LDFLAGS="-L/usr/local/opt/python@3.8/lib:$LDFLAGS"
+  export PKG_CONFIG_PATH="/usr/local/opt/python@3.8/lib/pkgconfig:$PKG_CONFIG_PATH"
 
   export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
