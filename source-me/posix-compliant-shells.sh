@@ -36,6 +36,7 @@ if [ "$(uname)" = 'Darwin' ]; then
 
   alias tss_pass='pass ***REMOVED***D***/***REMOVED*** -c'
   alias tss_user='pass ***REMOVED***D***/***REMOVED*** | tail -n 1 | pbcopy'
+  alias keepass_doc_internal='pass ***REMOVED***D***/***REMOVED***passwords/***REMOVED*** -c'
 fi
 # -------------------------
 
