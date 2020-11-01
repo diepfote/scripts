@@ -29,6 +29,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   export PATH="/usr/local/opt/python@3.9/libexec/bin:$PATH"
   export LDFLAGS="-L/usr/local/opt/python@3.8/lib:$LDFLAGS"
   export PKG_CONFIG_PATH="/usr/local/opt/python@3.8/lib/pkgconfig:$PKG_CONFIG_PATH"
+  export PATH="/Users/florian/Library/Python/3.9/bin:$PATH"
 
   export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
@@ -76,7 +77,7 @@ alias krew='kubectl krew'
 alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
 
 # for the ***REMOVED*** ***REMOVED***_openshift repo
-alias tox='cp "$KUBECONFIG" ~/.kube/config; tox'
+alias tox='cp "$KUBECONFIG" ~/.kube/config; tox; rm ~/.kube/config'
 
 # -------------------------
 
