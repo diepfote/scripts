@@ -59,20 +59,6 @@ type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
 # pipenv aliases
 alias pipsh="pipenv shell"
 
-# kubernetes aliases
-alias kb=kubectl
-alias kbg="kubectl get"
-alias kc=kubectl
-alias kcg="kubectl get"
-alias kn="kubens"
-alias kbD="kubectl delete"
-alias kba="kubectl apply"
-alias kctx="kubectx"
-alias kx="kubectx"
-alias ktx="kubectx"
-alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh "$@"'
-alias krew='kubectl krew'
-
 # openstack aliases
 alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
 

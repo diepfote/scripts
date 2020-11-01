@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
 
+alias kctx="kubectx"
+alias kx="kubectx"
+alias ktx="kubectx"
+alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh "$@"'
+alias krew='kubectl krew'
+
+
+
 get_pod()
 {
   local partial_pod_name="$1"
@@ -34,4 +42,7 @@ get_pod_volumes()
     kubectl get "$pod" -o jsonpath='{.spec.volumes..name}' | tr ' ' "$separator"
   fi
 }
+
+
+oc_get_node_ip () { oc get node "$1" -o jsonpath="{.status.addresses[0].address}" ; }
 
