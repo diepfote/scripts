@@ -13,26 +13,6 @@ export GIT_PS1_SHOWUPSTREAM='verbose'  # 'u='=no difference, 'u+1'=ahead by 1 co
 
 show_openstack_project()
 {
-  local cloud="$(env | grep OS_CLOUD | cut -d = -f2)"
-  local auth_url="$(env | grep OS_AUTH_URL | cut -d = -f2)"
-  local project="$(env | grep OS_PROJECT_NAME | cut -d = -f2 )"
-  local tenant="$(env | grep OS_TENANT_NAME | cut -d = -f2)"
-  local auth_url="$(env | grep OS_AUTH_URL | cut -d = -f2)"
-  local user="$(env | grep OS_USERNAME | cut -d = -f2 | tr '[:upper:]' '[:lower:]')"
-
-  if [ -n "$project" ]; then
-    echo -en "$YELLOW OS_P$NC:$project"
-  fi
-  if [ -n "$tenant" ]; then
-    echo -en "$YELLOW OS_T$NC:$tenant"
-  fi
-
-  if [ -n "$auth_url" ] && [ -n "$user" ]; then
-    echo -en "$YELLOW OS_U$NC:$user$YELLOW OS_URL$NC:$auth_url"
-  fi
-
-  if [ -n "$cloud" ]; then
-    echo -en "$YELLOW OS_C$NC:$cloud"
-  fi
+  ~/Documents/golang/tools/show-openstack-project
 }
 
