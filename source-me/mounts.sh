@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
-source ~/Documents/scripts/source-me/common-functions.sh
-source ~/Documents/scripts/source-me/progressbar.sh
-source ~/.sh_functions
+temp_mount=/temp-mount/
+file=Documents/scripts/source-me/common-functions.sh
+source ~/"$file" || source "$temp_mount$file"
+file=Documents/scripts/source-me/progressbar.sh
+source ~/"$file" || source "$temp_mount$file"
+
+source ~/.sh_functions || /home/builder/.sh_functions
 
 
 mount_luks_device ()
