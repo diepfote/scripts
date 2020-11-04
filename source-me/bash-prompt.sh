@@ -109,48 +109,27 @@ gen_ps1 () {
 	# This needs to be the first command otherwise it will not have correct exit code
 	local ec="$?"
 
-	local red
-	local cyan
 	local grey
-	local nocol
 	local prompt
 	local branch
-	local black
-	local blue
-	local brown
-	local bright_cyan
-	local bright_green
 	local status
 	local div
 	local mdiv
-	local magenta
 	local ediv
 	local git_prompt
 	local venv
-	local root
 	local top
 	local bottom
 
 	PS1=''
-	black='\[\e[0;30m\]'
-	red='\[\e[38;5;9m\]'
-	cyan='\[\e[38;5;80m\]'
-	bright_cyan='\[\e[38;5;111m\]'
-	blue='\[\e[0;34m\]'
 	grey='\[\e[38;5;242m\]'
-	yellow='\[\e[38;5;184m\]'
-	green='\[\e[38;5;77m\]'
-	bright_green='\[\e[38;5;157m\]'
-	magenta='\[\e[38;5;140m\]'
-	brown='\[\e[38;5;137m\]'
-	nocol='\[\e[0m\]'
 
 	# Indicate if previous command succeeded or not
 	prompt='$ '
-	div="${grey}|${nocol} "
+	div="${grey}|${NC} "
 	mdiv='⎨ '
 	ediv=' ⎬'
-	test ${ec} -eq 0 && prompt="${prompt}" || prompt="${red}${prompt}"
+	test ${ec} -eq 0 && prompt="${prompt}" || prompt="${RED}${prompt}"
 
 	# If inside git managed directory show git information
 	git_prompt=''
@@ -163,18 +142,18 @@ gen_ps1 () {
 
 
 		git_prompt="${branch}"
-		test -n "$status" && git_prompt+=" ${blue}${status}${nocol}"
-		git_prompt="${PURPLE}${git_prompt}${nocol} ${div}"
+		test -n "$status" && git_prompt+=" ${BLUE}${status}${NC}"
+		git_prompt="${div}${PURPLE}${git_prompt}${NC}"
 	fi
 
 	# If venv is active show it
   if [ -n "$VIRTUAL_ENV" ]; then
-    venv=""$(echo "${VIRTUAL_ENV}" | sed "s#"$PWD"/##")" ${CONDA_PREFIX}"
-    venv=$(test -n "$venv" && printf "${yellow}${venv}${nocol}${div}" || printf '')
+    venv=""$(echo "${VIRTUAL_ENV}" | sed "s#"$PWD"/##")"${CONDA_PREFIX}"
+    venv=$(test -n "$venv" && printf "$div$YELLOW$venv$NC" || printf '')
   fi
 
-	bottom="${prompt}${nocol}"
-	PS1="$mdiv${venv}${git_prompt}${GREEN}\\w${nocol}${ediv}\\n${bottom}"
+	bottom="${prompt}${NC}"
+	PS1="$mdiv$GREEN\\w $NC$git_prompt$venv$ediv\\n$bottom"
   # echo %HIS2$PS1
 }
 
