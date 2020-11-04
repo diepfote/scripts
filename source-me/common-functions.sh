@@ -229,8 +229,9 @@ set_kubecontext ()
   export KUBECONFIG=~/.kube/"$1"
 }
 
-refresh_tmux_kubecontext ()
+refresh_tmux_openstack_and_kubecontext ()
 {
+  echo "$OS_CLOUD" > ~/._openstack_cloud
   echo "$KUBECONFIG" > ~/._kubeconfig
   tmux refresh-client &
 }

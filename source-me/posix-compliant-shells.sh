@@ -39,6 +39,8 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias tss_user='pass ***REMOVED***D***/***REMOVED*** | tail -n 1 | pbcopy'
   alias doc_internal_keepass_pass='pass ***REMOVED***D***/***REMOVED***passwords/***REMOVED*** -c'
   alias bb_***REMOVED***_pass='pass ***REMOVED***D*** -c'
+
+  export PASSWORD_STORE_DIR=~/.password-store-work
 fi
 # -------------------------
 

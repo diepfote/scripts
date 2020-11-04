@@ -9,10 +9,3 @@ export GIT_PS1_SHOWDIRTYSTATE=1        # + for staged, * if unstaged.
 export GIT_PS1_SHOWUNTRACKEDFILES=1    # % if there are untracked files.
 export GIT_PS1_SHOWUPSTREAM='verbose'  # 'u='=no difference, 'u+1'=ahead by 1 commit
 
-
-
-show_openstack_project()
-{
-  ~/Documents/golang/tools/show-openstack-project
-}
-
