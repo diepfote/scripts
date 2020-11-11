@@ -2,12 +2,11 @@
 
 unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
-export PS1="[ $GREEN\w$NC ]\n$ "
+# export PS1="[ $GREEN\w$NC ]\n$ "
 
 _ps1 ()
 {
-  # PS1="$(~/Documents/python/shortened-pwd.py)"
-  :
+  PS1="$(~/Documents/python/shortened-pwd.py)"
 }
 
 # run refresh_tmux_kubecontext in subshell to supress job output
