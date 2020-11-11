@@ -6,7 +6,7 @@ unset PS1
 
 _ps1 ()
 {
-  PS1="$(~/Documents/python/shortened-pwd.py)"
+  PS1="$(~/Documents/golang/tools/shortened-pwd)"
 }
 
 # run refresh_tmux_kubecontext in subshell to supress job output
