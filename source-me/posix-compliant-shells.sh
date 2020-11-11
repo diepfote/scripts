@@ -66,7 +66,7 @@ alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
 alias terraform='HTTPS_PROXY="socks5://localhost:5555" terraform'
 
 # for the ***REMOVED*** ***REMOVED***_openshift repo
-alias tox='cp "$KUBECONFIG" ~/.kube/config; tox; rm ~/.kube/config'
+alias tox='[ -f "$KUBECONFIG" ] && cp "$KUBECONFIG" ~/.kube/config; tox'
 
 # -------------------------
 
