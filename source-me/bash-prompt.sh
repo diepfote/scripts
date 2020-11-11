@@ -4,10 +4,16 @@ unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
 export PS1="[ $GREEN\w$NC ]\n$ "
 
+_ps1 ()
+{
+  # PS1="$(~/Documents/python/shortened-pwd.py)"
+  :
+}
+
 # run refresh_tmux_kubecontext in subshell to supress job output
 unset PROMPT_COMMAND
 # export PROMPT_COMMAND="gen_ps1; (refresh_tmux_openstack_and_kubecontext); source ~/.sh_functions; history -a; history -n"
-export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); source ~/.sh_functions; history -a; history -n"
+export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); _ps1; source ~/.sh_functions; history -a; history -n"
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
 
