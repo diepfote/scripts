@@ -37,7 +37,8 @@ echo
 
 for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
   basename_no_ext="$(basename "$file" | sed 's/\.[^.]*$//')"
-  echo "$basename_no_ext"
+  # DEBUG
+  # echo "$basename_no_ext"
   if [[ "$basename_no_ext" =~ git_execute_on_all_repos|commit ]]; then
     echo 'function '"$basename_no_ext"' {  commands="'\''$@'\''"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
   elif [ "$basename_no_ext" = unset ] || \
@@ -54,10 +55,8 @@ for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' $1 '\''$2'\''"'\; } >> "$aliases_file"
   elif [[ "$basename_no_ext" =~ formats-youtube-dl ]]; then
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext" ''\''$1'\''"'\; } >> "$aliases_file"
-  elif [[ "$basename_no_ext" =~ cheat ]]; then
+  elif [[ "$basename_no_ext" =~ cheat|mpv ]]; then
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' \"$1\" \"$2\" "'\; } >> "$aliases_file"
-  elif [[ "$basename_no_ext" =~ mpv ]]; then
-    echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' \"$1\" \"$2\" \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" "'\; } >> "$aliases_file"
   else
     echo 'function '"$basename_no_ext"' {  commands="$@"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
   fi
