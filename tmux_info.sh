@@ -38,10 +38,8 @@ display_kubernetes_info()
 display_openstack_info()
 {
   local file=~/._openstack_cloud
-  if [[ -n "$(cat "$file")" ]]; then
-    export OS_CLOUD="$(cat "$file" 2>/dev/null)"
-    echo -en "^$(~/Documents/golang/tools/tmux-helper/show-openstack-project)^"
-  fi
+  export OS_CLOUD="$(cat "$file" 2>/dev/null)"
+  echo -en "$(~/Documents/golang/tools/tmux-helper/tmux-helper)"
 }
 
 display_tmux_info()
