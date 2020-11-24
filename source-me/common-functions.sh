@@ -231,6 +231,7 @@ set_kubecontext ()
 
 refresh_tmux_openstack_and_kubecontext ()
 {
+  echo "$PWD" > ~/._cwd
   echo "$OS_CLOUD" > ~/._openstack_cloud
   echo "$KUBECONFIG" > ~/._kubeconfig
   tmux refresh-client &
