@@ -39,7 +39,7 @@ display_openstack_info()
 {
   local file=~/._openstack_cloud
   export OS_CLOUD="$(cat "$file" 2>/dev/null)"
-  echo -en "$(~/Documents/golang/tools/tmux-helper/tmux-helper)"
+  echo -en "$(~/Documents/golang/tools/tmux-statusbar-right/tmux-statusbar-right)"
 }
 
 display_tmux_info()
