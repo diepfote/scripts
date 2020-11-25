@@ -55,8 +55,10 @@ for file in $(find ~/.config/fish/functions/ -name "*.fish"); do
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' $1 '\''$2'\''"'\; } >> "$aliases_file"
   elif [[ "$basename_no_ext" =~ formats-youtube-dl ]]; then
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext" ''\''$1'\''"'\; } >> "$aliases_file"
-  elif [[ "$basename_no_ext" =~ cheat|mpv ]]; then
+  elif [[ "$basename_no_ext" =~ cheat ]]; then
     echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' \"$1\" \"$2\" "'\; } >> "$aliases_file"
+  elif [[ "$basename_no_ext" =~ mpv ]]; then
+    echo 'function '"$basename_no_ext"' {  fish -c "'"$basename_no_ext"' \"$1\" "'\; } >> "$aliases_file"
   else
     echo 'function '"$basename_no_ext"' {  commands="$@"; fish -c "'"$basename_no_ext"' $commands"'\; } >> "$aliases_file"
   fi
