@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-
-tmux_id ()
-{
-    tmux list-pane | grep active | cut -d ']' -f3 | cut -d ' ' -f2
-}
-
 _set_kubernetes_vars ()
 {
   export KUBECONFIG="$(cat ~/._kubeconfig 2>/dev/null)"
@@ -44,7 +38,7 @@ display_openstack_info()
 
 display_tmux_info()
 {
-  echo -en "[ $(tmux_id) | "$(display_openstack_info)" "$(display_kubernetes_info)"] "
+  echo -en "[ "$(display_openstack_info)" "$(display_kubernetes_info)"] "
 }
 
 
