@@ -32,7 +32,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
 
   # pyenv version 3.6
-  export PATH="$HOME/.pyenv/versions/3.6.12/bin:$PATH"
+  export PATH="$PATH:$HOME/.pyenv/versions/3.6.12/bin"
 
 
   export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
