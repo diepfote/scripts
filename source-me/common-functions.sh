@@ -238,24 +238,3 @@ refresh_tmux_openstack_and_kubecontext () {
 # kubernetes end
 ################
 
-
-# docker config for ANSIBLE
-export ANSIBLE_DEV_ENV_IMG="$(~/Documents/scripts/read_toml_setting.sh ~/Documents/config/work.conf ANSIBLE_DEV_ENV_IMG  2>/dev/null)"
-ansible_dev_env ()
-{
-  docker run --rm -ti \
-    --cap-drop=ALL \
-    --hostname "ansible-dev" \
-    --entrypoint=/usr/bin/env bash \
-    "$@" \
-     -v `pwd`:/work \
-     -v ~/.m2/settings.xml:/root/.m2/settings.xml \
-    -v ~/.ssh:/tmp/.ssh.host \
-    -v ~/.vpass:/tmp/.vpass \
-    -v ~/.jenkins-api-tokens.vpass:/tmp/jenkins-api-tokens.vpass:ro \
-    -v ~/.jenkins-api-tokens.yml:/tmp/jenkins-api-tokens.yml:ro \
-    -v ~/openrc.sh:/tmp/openrc.sh \
-    -w /work \
-    "${ANSIBLE_DEV_ENV_IMG}"
-}
-
