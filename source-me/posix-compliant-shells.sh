@@ -44,6 +44,8 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias doc_internal_keepass_pass='pass ***REMOVED***D***/***REMOVED***passwords/***REMOVED*** -c'
   alias bb_***REMOVED***_pass='pass ***REMOVED***D*** -c'
 
+  alias kn=kubens
+
   export PASSWORD_STORE_DIR=~/.password-store-work
 fi
 # -------------------------
