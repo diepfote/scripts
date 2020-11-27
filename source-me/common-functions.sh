@@ -15,7 +15,17 @@ die ()
 	exit 1
 }
 
+findlast () {
+  # taken from https://stackoverflow.com/questions/4561895/how-to-recursively-find-the-latest-modified-file-in-a-directory/63107922#63107922
 
+  if [ $# -lt 2 ]; then
+    rsync -rL --list-only "$1" | grep -v '^d' | sort -k3,4r | head -n 5
+  elif [ "$1" = -1 ]; then
+    rsync -rL --list-only "$2" | grep -v '^d' | sort -k3,4r
+  else
+    rsync -rL --list-only "$2" | grep -v '^d' | sort -k3,4r | head -n "$1"
+  fi
+}
 
 get_random_alphanumeric ()
 {
