@@ -2,13 +2,12 @@ write_current_videos_to_file()
 {
   local dir="$1"
   local filename="$2"
+  local hist_file=~/.bash_history
 
   if [ "$(uname)" = Darwin ]; then
     local word=Movies
-    local hist_file=~/.bash_history
   else
     local word=Videos
-    local hist_file=~/.local/share/fish/fish_history
   fi
   local path_to_search="$HOME/$word"
 
