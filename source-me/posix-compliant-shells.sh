@@ -28,6 +28,7 @@ if [ "$(uname)" = 'Darwin' ]; then
 
   # python 3.9 = default
   export PATH="/usr/local/opt/python@3.9/libexec/bin:$PATH"
+  export PATH="$HOME/Library/Python/3.9/bin:$PATH"
   export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
   export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
 
