@@ -8,9 +8,9 @@ shopt -s failglob  # error on unexpaned globs
 
 
 trap "popd" EXIT
-pushd ~/Documents/dockerfiles/zathura
+pushd ~/Documents/dockerfiles/"$1"
 
 set -x
-docker build --no-cache -t zathura .
+docker build --no-cache -t "$1" .
 set +x
 
