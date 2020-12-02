@@ -48,7 +48,10 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias kn=kubens
 
   export PASSWORD_STORE_DIR=~/.password-store-work
+else
+  export PASSWORD_STORE_DIR=~/.password-store-private
 fi
+
 # -------------------------
 
 # -------------------------
