@@ -21,6 +21,47 @@ export PATH="$HOME/go/bin:$PATH"
 # -------------------------
 # DARWIN
 if [ "$(uname)" = 'Darwin' ]; then
+
+  __w_pkg_update () {
+
+
+    trap "kill %%; popd; source $VIRTUAL_ENV/bin/activate" EXIT
+    if [ -n "$VIRTUAL_ENV" ]; then
+      deactivate || direnv deny
+    fi
+    pushd ~
+
+    source ~/Documents/scripts/source-me/progressbar.sh
+    progressbar
+
+    echo -e '\n--------\npip\n'
+    for pkg in $(pip3 list --user --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1); do
+      pip3 install --user "$pkg"  | grep -v 'already satisfied'
+    done
+
+    echo -e '\n--------\nnpm\n'
+    for package in $(npm -g outdated --parseable --depth=0 | cut -d: -f2); do
+      # safe upgrade all https://gist.github.com/othiym23/4ac31155da23962afd0e
+      npm -g install "$package"
+    done
+
+
+    echo -e '\n--------\nkrew\n'
+    kubectl krew update
+    kubectl krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin'
+
+    echo -e '\n--------\napm\n'
+    apm upgrade -c false
+
+    echo -e '\n--------\nbrew\n'
+    echo -en "  $PURPLE"; echo -e "[>] pulling updates...$NC"
+    brew update
+
+    echo -en "  $PURPLE"; echo -e "[>] starting upgrades...$NC"
+    brew upgrade
+  }
+  alias w-pkg-update=__w_pkg_update
+
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
   export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
