@@ -23,18 +23,18 @@ export PATH="$HOME/go/bin:$PATH"
 if [ "$(uname)" = 'Darwin' ]; then
 
   __w_pkg_update () {
-    local _old_virtual_env="$VIRTUAL_ENV"
-
-    if [ -n "$VIRTUAL_ENV" ]; then
-      deactivate || pushd ~ && local is_direnv_directory=true
-    fi
-
     source ~/Documents/scripts/source-me/progressbar.sh
     progressbar
 
+
     echo -e '\n--------\npip\n'
-    for pkg in $(pip3 list --user --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1); do
-      pip3 install --user "$pkg"  | grep -v 'already satisfied'
+    #
+    # bypass virtualenv with `-E`
+    #
+    # $ python -E ...
+    #
+    for pkg in $(python3 -E -m pip list --user --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1); do
+      python3 -E -m pip install --user "$pkg"  | grep -v 'already satisfied'
     done
 
     echo -e '\n--------\nnpm\n'
@@ -58,15 +58,7 @@ if [ "$(uname)" = 'Darwin' ]; then
     echo -en "  $PURPLE"; echo -e "[>] starting upgrades...$NC"
     brew upgrade
 
-
-    kill %%
-    if [ -n "$_old_virtual_env" ]; then
-      if [ -n "$is_direnv_directory" ]; then
-        popd
-      else
-        source "$_old_virtual_env/bin/activate"
-      fi
-    fi
+    kill %%  # stop progressbar
   }
   alias w-pkg-update=__w_pkg_update
 
