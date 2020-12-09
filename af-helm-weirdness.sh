@@ -6,8 +6,11 @@ set -u  # exit on undefined
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-git checkout master
-git pull
+git status -sb
+echo "[.] Pausing for 2 seconds"
+sleep 2
+
+git update
 
 [ $# -lt 1 ] && set -- HEAD
 
