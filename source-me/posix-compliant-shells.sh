@@ -24,8 +24,6 @@ if [ "$(uname)" = 'Darwin' ]; then
 
   __w_pkg_update () {
 
-
-    trap "kill %%; popd; source $VIRTUAL_ENV/bin/activate" EXIT
     if [ -n "$VIRTUAL_ENV" ]; then
       deactivate || direnv deny
     fi
@@ -59,6 +57,11 @@ if [ "$(uname)" = 'Darwin' ]; then
 
     echo -en "  $PURPLE"; echo -e "[>] starting upgrades...$NC"
     brew upgrade
+
+
+    kill %%
+    popd
+    source $VIRTUAL_ENV/bin/activate || direnv allow
   }
   alias w-pkg-update=__w_pkg_update
 
