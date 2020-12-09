@@ -23,11 +23,11 @@ export PATH="$HOME/go/bin:$PATH"
 if [ "$(uname)" = 'Darwin' ]; then
 
   __w_pkg_update () {
+    local _old_virtual_env="$VIRTUAL_ENV"
 
     if [ -n "$VIRTUAL_ENV" ]; then
-      deactivate || direnv deny
+      deactivate || pushd ~ && local is_direnv_directory=true
     fi
-    pushd ~
 
     source ~/Documents/scripts/source-me/progressbar.sh
     progressbar
@@ -60,8 +60,13 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 
     kill %%
-    popd
-    source $VIRTUAL_ENV/bin/activate || direnv allow
+    if [ -n "$_old_virtual_env" ]; then
+      if [ -n "$is_direnv_directory" ]; then
+        popd
+      else
+        source "$_old_virtual_env/bin/activate"
+      fi
+    fi
   }
   alias w-pkg-update=__w_pkg_update
 
