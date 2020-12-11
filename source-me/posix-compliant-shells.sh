@@ -10,13 +10,13 @@ export NNN_BMS="d:~/Documents;h:~;D:~/Downloads;f:~/.config/fish/functions;s:~/D
 export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 
-alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
 
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
 export PATH="$HOME/.krew/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
+
 
 # -------------------------
 # DARWIN
@@ -104,10 +104,18 @@ alias grep='grep --exclude-dir=.git \
                  --exclude-dir=.venv \
                  --color'
 
+alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
+
 alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
 alias test-sed=~/Documents/scripts/test-sed.sh
 
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
+
+
+mpv () {
+  command mpv "$1" 1>/dev/null 2>/dev/null &
+}
+
 
 # pipenv aliases
 alias pipsh="pipenv shell"
