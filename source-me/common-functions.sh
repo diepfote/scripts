@@ -27,6 +27,9 @@ findlast () {
   fi
 }
 
+alias sort-unique-keep-line-order-and-overwrite=~/Documents/scripts/sort_unique_keep_line_order_and_overwrite.sh
+
+
 get_random_alphanumeric ()
 {
   cat /dev/urandom | tr -dc _A-Z-a-z-0-9 | head -c "$1"
