@@ -15,7 +15,7 @@ username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
 rclone sync --exclude .DS_Store --delete-excluded -v 'fastmail:'$username'.fastmail.com/files/-configs/mac-os' "$dir"
 
 #brew info --installed --json | jq .[].name | sed 's#"##g' > ~/Documents/misc/mac-os/brew-pkgs.txt
-brew list > "$dir"/brew-pkgs.txt
+brew list --formula > "$dir"/brew-pkgs.txt
 brew list --cask > "$dir"/brew-cask-pkgs.txt
 kubectl krew list > "$dir"/krew-pkgs.txt
 
