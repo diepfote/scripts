@@ -11,7 +11,7 @@ source ~/Documents/scripts/source-me/progressbar.sh
 set +u
 progressbar
 set -u
-# trap "kill %%" EXIT  # stop progressbar
+trap "kill %%" EXIT  # stop progressbar
 
 
 echo -e '\n--------\npip\n'
