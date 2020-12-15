@@ -39,6 +39,16 @@ if [ "$(uname)" = 'Darwin' ]; then
   export PATH="$PATH:$HOME/.pyenv/versions/3.6.12/bin"
 
 
+  # ruby compiler settings
+  export PATH="/usr/local/opt/ruby/bin:$PATH"
+  export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"  # user gem files
+  export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
+  export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
+  export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+
+
+
   export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
   LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
