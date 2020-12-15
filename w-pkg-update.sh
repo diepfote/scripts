@@ -24,12 +24,15 @@ for pkg in $(python3 -E -m pip list --user --outdated --format=freeze | grep -v 
   python3 -E -m pip install --user "$pkg"  | grep -v 'already satisfied' || true
 done
 
+echo -e '\n--------\nruby\n'
+gem update --user  # requires gem install rubygems-update
+
+
 echo -e '\n--------\nnpm\n'
 for package in $(npm -g outdated --parseable --depth=0 | cut -d: -f2); do
   # safe upgrade all https://gist.github.com/othiym23/4ac31155da23962afd0e
   npm -g install "$package"
 done
-
 
 echo -e '\n--------\nkrew\n'
 kubectl krew update
