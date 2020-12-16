@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
 
+alias work_repo_template=~/Documents/scripts/work_repo_template.sh
+alias w-git-delete-gone-branches=~/Documents/scripts/w-git-delete-gone-branches.sh
+alias w-git-update=~/Documents/scripts/w-git-update.sh
+
+
 yesno ()
 {
 	[[ -t 0 ]] || return 0
@@ -90,6 +95,7 @@ _get_cmd_tmux_pane_id () {
 
    echo "$pane_ids" | tr ' ' '\n' | tail -n 1
 }
+
 
 
 
