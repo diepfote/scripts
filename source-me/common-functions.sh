@@ -5,6 +5,11 @@ alias work_repo_template=~/Documents/scripts/work_repo_template.sh
 alias w-git-delete-gone-branches=~/Documents/scripts/w-git-delete-gone-branches.sh
 alias w-git-update=~/Documents/scripts/w-git-update.sh
 
+alias git_execute_on_all_repos=~/Documents/scripts/git_execute_on_all_repos.sh
+w-git_execute_on_all_repos () {
+  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
+}
+
 
 yesno ()
 {
