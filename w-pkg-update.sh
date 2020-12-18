@@ -21,7 +21,7 @@ echo -e '\n--------\npip\n'
 # $ python -E ...
 #
 for pkg in $(python3 -E -m pip list --user --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1); do
-  python3 -E -m pip install --user "$pkg"  | grep -v 'already satisfied' || true
+  python3 -E -m pip install --upgrade --user "$pkg"  | grep -v 'already satisfied' || true
 done
 
 echo -e '\n--------\nruby\n'
