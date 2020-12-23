@@ -7,8 +7,9 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 temp_dir="$(mktemp -d)"
-new_file="$temp_dir/$(basename "$1")"
-cp "$1" "$new_file"
+old_file="$1" && shift
+new_file="$temp_dir/$(basename "$old_file")"
+cp "$old_file" "$new_file"
 
 # trap "rm -rf "$temp_dir" " EXIT
 
@@ -20,4 +21,5 @@ sed -ri 's#(\s+)end#\1fi#' "$new_file"  # end
 # TODO for loop
 
 echo "$new_file"
-git diff --no-index "$1" "$new_file"
+git diff --no-index "$old_file" "$new_file" $@
+
