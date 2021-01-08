@@ -18,7 +18,7 @@ trap "rm -r $temp" EXIT
 #
 # This command works like sort|uniq, but keeps the lines in place
 #
-nl "$1" |sort -k 2|uniq -f 1|sort -n|cut -f 2 > "$temp_file"
+nl "$1" | sed -r 's#\s+$##'  |sort -k 2|uniq -f 1|sort -n|cut -f 2 > "$temp_file"
 #
 # Basically, prepends to each line its number. After sort|uniq-ing, all lines are sorted back according to their original order (using the line number field) and the line number field is removed from the lines.
 #
