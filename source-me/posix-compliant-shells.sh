@@ -53,12 +53,17 @@ if [ "$(uname)" = 'Darwin' ]; then
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
   LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
 
-  alias tss_pass='pass ***REMOVED***D***/***REMOVED*** -c'
-  alias tss_user='pass ***REMOVED***D***/***REMOVED*** | tail -n 1 | pbcopy'
-  alias doc_internal_keepass_pass='pass ***REMOVED***D***/***REMOVED***passwords/***REMOVED*** -c'
+  alias tssr-_pass='pass ***REMOVED***D***/***REMOVED*** -c'
+  alias tss-user='pass ***REMOVED***D***/***REMOVED*** | tail -n 1 | pbcopy'
+  alias ***REMOVED***_***REMOVED***pass='pass ***REMOVED***D***/***REMOVED***passwords/***REMOVED*** -c'
   alias bb_***REMOVED***_pass='pass ***REMOVED***D*** -c'
 
   alias kn=kubens
+
+
+  alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
+  alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
+
 
   export PASSWORD_STORE_DIR=~/.password-store-work
 else
