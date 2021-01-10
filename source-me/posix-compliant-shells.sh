@@ -88,6 +88,7 @@ alias test-sed=~/Documents/scripts/test-sed.sh
 
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
 
+alias view_dirs=~/Documents/scripts/view_dirs.sh
 
 mpv () {
   command mpv "$1" 1>/dev/null 2>/dev/null &
