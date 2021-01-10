@@ -53,7 +53,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
   LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
 
-  alias tssr-_pass='pass ***REMOVED***D***/***REMOVED*** -c'
+  alias tss-pass='pass ***REMOVED***D***/***REMOVED*** -c'
   alias tss-user='pass ***REMOVED***D***/***REMOVED*** | tail -n 1 | pbcopy'
   alias ***REMOVED***_***REMOVED***pass='pass ***REMOVED***D***/***REMOVED***passwords/***REMOVED*** -c'
   alias bb_***REMOVED***_pass='pass ***REMOVED***D*** -c'
