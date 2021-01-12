@@ -41,7 +41,10 @@ alias sort-unique-keep-line-order-and-overwrite=~/Documents/scripts/sort_unique_
 
 
 pacman-get-required-by-for-upgradeable () {
-  pacman -Sup --print-format '%n' | xargs pacman -Qii
+  _pacman-get-required-by-for-upgradeable () {
+    pacman -Sup --print-format '%n' | xargs pacman -Qii
+  }
+  _pacman-get-required-by-for-upgradeable | vim -
 }
 
 
