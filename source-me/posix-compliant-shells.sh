@@ -87,6 +87,7 @@ alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
 alias test-sed=~/Documents/scripts/test-sed.sh
 
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
+alias vimy="vim -c ':set ft=yaml'"
 
 alias view_dirs=~/Documents/scripts/view_dirs.sh
 
