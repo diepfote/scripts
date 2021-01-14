@@ -16,7 +16,7 @@ get_pod ()
 {
   local partial_pod_name="$1"
   local do_not_match="$2"
-  get_pods "$partial_pod_name" "$do_not_match"
+  get_pods "$partial_pod_name" "$do_not_match" | head -n 1
 }
 get_pods ()
 {
@@ -33,7 +33,7 @@ get_pods ()
 
 get_pod_openshift (){
   local do_not_match="build|deploy"
-  get_pod "$1" "$do_not_match"
+  get_pods_openshift "$partial_pod_name" "$do_not_match" | head -n 1
 }
 get_pods_openshift () {
   local do_not_match="build|deploy"
