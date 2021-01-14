@@ -58,7 +58,6 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias ***REMOVED***_***REMOVED***pass='pass ***REMOVED***D***/***REMOVED***passwords/***REMOVED*** -c'
   alias bb_***REMOVED***_pass='pass ***REMOVED***D*** -c'
 
-  alias kn=kubens
 
 
   alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
@@ -102,9 +101,6 @@ alias pipsh="pipenv shell"
 # openstack aliases
 alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
 alias terraform='HTTPS_PROXY="socks5://localhost:5555" terraform'
-
-# for the ***REMOVED*** ***REMOVED***_openshift repo
-alias tox='[ -f "$KUBECONFIG" ] && cp "$KUBECONFIG" ~/.kube/config; tox'
 
 # -------------------------
 

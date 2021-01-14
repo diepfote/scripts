@@ -7,23 +7,37 @@ alias ktx="kubectx"
 alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh "$@"'
 alias krew='kubectl krew'
 
+alias kn=kubens
+# for the ***REMOVED*** ***REMOVED***_openshift repo
+alias tox='[ -f "$KUBECONFIG" ] && cp "$KUBECONFIG" ~/.kube/config; tox'
 
 
-get_pod()
+get_pod ()
 {
   local partial_pod_name="$1"
-  local do_not_match="'$2'"
+  local do_not_match="$2"
+  get_pods "$partial_pod_name" "$do_not_match"
+}
+get_pods ()
+{
+  local partial_pod_name="$1"
+  local do_not_match="$2"
+  set -x
   if [ -n "$namespace" ]; then
-    kubectl get pod -o name -n "$namespace" | grep -vE "$do_not_match"  | grep "$partial_pod_name"  | head -n 1
+    kubectl get pod -o name -n "$namespace" | grep -vE "$do_not_match"  | grep "$partial_pod_name"
   else
-    kubectl get pod -o name | grep -vE "$do_not_match"  | grep "$partial_pod_name"  | head -n 1
+    kubectl get pod -o name | grep -vE "$do_not_match"  | grep "$partial_pod_name"
   fi
+  set +x
 }
 
-get_pod_openshift()
-{
+get_pod_openshift (){
   local do_not_match="build|deploy"
   get_pod "$1" "$do_not_match"
+}
+get_pods_openshift () {
+  local do_not_match="build|deploy"
+  get_pods "$1" "$do_not_match"
 }
 
 alias gp="get_pod"
