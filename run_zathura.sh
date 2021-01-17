@@ -14,7 +14,7 @@ xhost + "$ip"
 
 docker run \
   -v ~/.config/zathura:/root/.config/zathura:ro \
-  -v ~/.local/share/zathura:/root/.local/share/zathura:ro \
+  -v ~/.local/share/zathura:/root/.local/share/zathura \
   -v ~/.bash_history:/root/.bash_history:ro \
   -v /tmp:/tmp:ro \
   -v "$PWD":/pwd:ro \
