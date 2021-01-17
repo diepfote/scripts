@@ -13,6 +13,9 @@ set -u
 command="$1"
 
 for repo_dir in $(cat "$conf_file"); do
+  if [ "$(expr substr "$repo_dir" 1 1)" = '#' ] || [ -z "$repo_dir" ]; then
+    # skip comment line & empty lines
+    continue
+  fi
   ~/Documents/scripts/work_repo_template.sh "$repo_dir" $command
 done
-
