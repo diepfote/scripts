@@ -42,9 +42,9 @@ echo -e '\n--------\napm\n'
 apm upgrade -c false
 
 echo -e '\n--------\nbrew\n'
-echo -en "  $PURPLE"; echo -e "[>] pulling updates...$NC"
+echo -en "  $PURPLE"; echo -e "[>] pulling updates$NC"
 brew update
 
-echo -en "  $PURPLE"; echo -e "[>] starting upgrades...$NC"
+echo -en "  $PURPLE"; echo -e "[>] starting upgrades$NC"
 brew upgrade
 
