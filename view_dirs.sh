@@ -6,7 +6,7 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-source ~/Documents/scripts/source-me/progressbar.sh
+source ~/Documents/scripts/source-me/spinner.sh
 source ~/.sh_functions
 
 iterate_files()
@@ -39,7 +39,7 @@ trap 'echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -
 iterate_files "sudo chown -R $USER:$USER"
 open_nnn=true iterate_files 'sudo chmod -R 700'
 
-progressbar 'waiting to re-chown to root and re-chmod to 000'
+spinner 'waiting to re-chown to root and re-chmod to 000'
 
 while (true); do
   sudo -v

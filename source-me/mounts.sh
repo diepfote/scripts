@@ -3,7 +3,7 @@
 temp_mount=/temp-mount/
 file=Documents/scripts/source-me/common-functions.sh
 source ~/"$file" || source "$temp_mount$file"
-file=Documents/scripts/source-me/progressbar.sh
+file=Documents/scripts/source-me/spinner.sh
 source ~/"$file" || source "$temp_mount$file"
 
 source ~/.sh_functions || /home/builder/.sh_functions
@@ -24,7 +24,7 @@ mount_luks_device ()
   sudo mount /dev/mapper/"$mapper_name" "$mount_point"
 
   n-for-dir-in-tmux-pane-below "$mount_point"
-  progressbar 'waiting to close encrypted drive'
+  spinner 'waiting to close encrypted drive'
 
   while true; do
     sudo -v
@@ -54,7 +54,7 @@ mount_vdi ()
   set +x
 
   n-for-dir-in-tmux-pane-below "$temp"
-  progressbar 'waiting to close vdi file'
+  spinner 'waiting to close vdi file'
 
   while true; do
     sudo -v
@@ -71,7 +71,7 @@ mount_iso ()
   trap "sudo umount "$temp"; rm -r "$temp"" EXIT
 
   n-for-dir-in-tmux-pane-below "$temp"
-  progressbar 'waiting to close iso file'
+  spinner 'waiting to close iso file'
 
   while true; do
     sudo -v

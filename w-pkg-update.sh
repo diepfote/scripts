@@ -7,11 +7,11 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/progressbar.sh
+source ~/Documents/scripts/source-me/spinner.sh
 set +u
-progressbar
+spinner
 set -u
-trap "kill %%" EXIT  # stop progressbar
+trap "kill %%" EXIT  # stop spinner
 
 
 echo -e '\n--------\npip\n'
