@@ -14,7 +14,6 @@ export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.git
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
-export PATH="$HOME/.krew/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 
 
@@ -65,6 +64,16 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 
   export PASSWORD_STORE_DIR=~/.password-store-work
+elif grep -L 'Arch Linux' /etc/os-release; then
+  # Arch only | Arch Linux only | Archlinux only
+
+  pacman-get-required-by-for-upgradeable () {
+    _pacman-get-required-by-for-upgradeable () {
+      pacman -Sup --print-format '%n' | xargs pacman -Qii
+    }
+    _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
+  }
+
 else
   export PASSWORD_STORE_DIR=~/.password-store-private
 fi

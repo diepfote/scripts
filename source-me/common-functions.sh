@@ -40,14 +40,6 @@ findlast () {
 alias sort-unique-keep-line-order-and-overwrite=~/Documents/scripts/sort_unique_keep_line_order_and_overwrite.sh
 
 
-pacman-get-required-by-for-upgradeable () {
-  _pacman-get-required-by-for-upgradeable () {
-    pacman -Sup --print-format '%n' | xargs pacman -Qii
-  }
-  _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
-}
-
-
 get_random_alphanumeric ()
 {
   cat /dev/urandom | tr -dc _A-Z-a-z-0-9 | head -c "$1"

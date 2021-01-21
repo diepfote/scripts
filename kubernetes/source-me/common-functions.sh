@@ -6,6 +6,7 @@ alias kx="kubectx"
 alias ktx="kubectx"
 alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh "$@"'
 alias krew='kubectl krew'
+export PATH="$HOME/.krew/bin:$PATH"
 
 alias kn=kubens
 # for the ***REMOVED*** ***REMOVED***_openshift repo
