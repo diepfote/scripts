@@ -44,7 +44,7 @@ pacman-get-required-by-for-upgradeable () {
   _pacman-get-required-by-for-upgradeable () {
     pacman -Sup --print-format '%n' | xargs pacman -Qii
   }
-  _pacman-get-required-by-for-upgradeable | vim -
+  _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
 }
 
 
