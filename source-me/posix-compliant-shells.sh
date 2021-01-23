@@ -74,7 +74,7 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
   }
 
-else
+
   export PASSWORD_STORE_DIR=~/.password-store-private
 fi
 
