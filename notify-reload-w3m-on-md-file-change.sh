@@ -58,10 +58,10 @@ while file=$($cmd); do
 
       # TODO not working yet (pane does not receive command)
       tmux send-keys -t "$pane_to_act_on"  \
-        "pandoc -f gfm $file | w3m -T text/html" C-m
+        "pandoc -f gfm \"$file\" | w3m -T text/html" C-m
     else
       tmux send-keys -t "$pane_to_act_on"  \
-        qy C-m "pandoc -f gfm $file | w3m -T text/html" C-m
+        qy C-m "pandoc -f gfm \"$file\" | w3m -T text/html" C-m
     fi
   fi
 done
