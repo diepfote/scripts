@@ -12,7 +12,11 @@ _ps1 ()
 # run refresh_tmux_kubecontext in subshell to supress job output
 unset PROMPT_COMMAND
 # export PROMPT_COMMAND="gen_ps1; (refresh_tmux_openstack_and_kubecontext); source ~/.sh_functions; history -a; history -n"
-export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); _ps1; source ~/.sh_functions; history -a; history -n"
+if [ "$(uname)" = Darwin ]; then
+  export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); _ps1; source ~/.sh_functions; history -a; history -n"
+else
+  export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; history -n"
+fi
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
 
