@@ -64,8 +64,8 @@ set_kubecontext () {
 }
 
 refresh_tmux_openstack_and_kubecontext () {
-  echo "$OS_CLOUD" > ~/._openstack_cloud
-  echo "$KUBECONFIG" > ~/._kubeconfig
+  echo "$OS_CLOUD" > /tmp/._openstack_cloud
+  echo "$KUBECONFIG" > /tmp/._kubeconfig
   tmux refresh-client &
 }
 
