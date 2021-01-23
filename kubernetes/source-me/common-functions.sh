@@ -12,11 +12,10 @@ if [ "$(uname)" = Darwin ]; then
   # for the ***REMOVED*** ***REMOVED***_openshift repo
   alias tox='[ -f "$KUBECONFIG" ] && cp "$KUBECONFIG" ~/.kube/config; tox'
 
-
   oc-get-pod () {
     local partial_pod_name="$1"
     local do_not_match="$2"
-    oc-get-pods "$partial-pod-name" "$do-not-match" | head -n 1
+    oc-get-pods "$partial_pod_name" "$do_not_match" | head -n 1
   }
   oc-get-pods () {
     local partial_pod_name="$1"
@@ -33,11 +32,11 @@ if [ "$(uname)" = Darwin ]; then
 
   oc-get-pod-openshift () {
     local do_not_match="build|deploy"
-    oc-get-pods-openshift "$partial-pod-name" "$do-not-match" | head -n 1
+    oc-get-pods-openshift "$partial_pod_name" "$do_not_match" | head -n 1
   }
   oc-get-pods-openshift () {
     local do_not_match="build|deploy"
-    oc-get-pods "$1" "$do-not-match"
+    oc-get-pods "$1" "$do_not_match"
   }
 
 
