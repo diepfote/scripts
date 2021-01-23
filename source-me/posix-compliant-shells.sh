@@ -58,12 +58,16 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias bb_***REMOVED***_pass='pass ***REMOVED***D*** -c'
 
 
+  alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
+  alias terraform='HTTPS_PROXY="socks5://localhost:5555" terraform'
+
 
   alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
   alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
 
 
   export PASSWORD_STORE_DIR=~/.password-store-work
+
 elif grep -L 'Arch Linux' /etc/os-release; then
   # Arch only | Arch Linux only | Archlinux only
 
@@ -108,9 +112,6 @@ mpv () {
 # pipenv aliases
 alias pipsh="pipenv shell"
 
-# openstack aliases
-alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
-alias terraform='HTTPS_PROXY="socks5://localhost:5555" terraform'
 
 # -------------------------
 
@@ -118,9 +119,6 @@ alias terraform='HTTPS_PROXY="socks5://localhost:5555" terraform'
 # -------------------------
 # files to source
 source ~/Documents/scripts/source-me/colors.sh
-source ~/Documents/scripts/source-me/prompt-style.sh
-source ~/Documents/scripts/tmux_info.sh 1>/dev/null 2>/dev/null
-
 
 # source fish functions
 sh_functions_file=~/.sh_functions

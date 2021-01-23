@@ -39,9 +39,9 @@ shift $((OPTIND - 1))
 partial_pod_name="$1"
 echo -e "${GREEN}namespace:$namespace ${PURPLE}pod:$partial_pod_name$NC ${PURPLE}do_not_match:$do_not_match\n"
 
-pod="$(get_pod $partial_pod_name $do_not_match)"
+pod="$(oc-get-pod "$partial-pod-name" "$do-not-match")"
 volume_name_separator=','
-volume_names="$(get_pod_volumes $volume_name_separator)"
+volume-names="$(oc-get-pod-volumes "$volume-name-separator")"
 
 set -x
 kubectl -n "$namespace" annotate "$pod" backup.velero.io/backup-volumes="$volume_names" --overwrite

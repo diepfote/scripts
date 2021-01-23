@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-
 alias kctx="kubectx"
 alias kx="kubectx"
 alias ktx="kubectx"
-alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh "$@"'
+alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh'
 alias krew='kubectl krew'
 export PATH="$HOME/.krew/bin:$PATH"
 
@@ -13,17 +12,16 @@ alias kn=kubens
 alias tox='[ -f "$KUBECONFIG" ] && cp "$KUBECONFIG" ~/.kube/config; tox'
 
 
-get_pod ()
-{
+oc-get-pod () {
   local partial_pod_name="$1"
   local do_not_match="$2"
-  get_pods "$partial_pod_name" "$do_not_match" | head -n 1
+  oc-get-pods "$partial-pod-name" "$do-not-match" | head -n 1
 }
-get_pods ()
-{
+oc-get-pods () {
   local partial_pod_name="$1"
   local do_not_match="$2"
   set -x
+  # shellcheck disable=SC2154
   if [ -n "$namespace" ]; then
     kubectl get pod -o name -n "$namespace" | grep -vE "$do_not_match"  | grep "$partial_pod_name"
   else
@@ -32,21 +30,17 @@ get_pods ()
   set +x
 }
 
-get_pod_openshift (){
+oc-get-pod-openshift () {
   local do_not_match="build|deploy"
-  get_pods_openshift "$partial_pod_name" "$do_not_match" | head -n 1
+  oc-get-pods-openshift "$partial-pod-name" "$do-not-match" | head -n 1
 }
-get_pods_openshift () {
+oc-get-pods-openshift () {
   local do_not_match="build|deploy"
-  get_pods "$1" "$do_not_match"
+  oc-get-pods "$1" "$do-not-match"
 }
 
-alias gp="get_pod"
-alias gpo="get_pod_openshift"
 
-
-get_pod_volumes()
-{
+oc-get-pod-volumes () {
   local separator="$1"
 
   [[ -z "$pod" ]] && pod="$2"
@@ -59,5 +53,16 @@ get_pod_volumes()
 }
 
 
-oc_get_node_ip () { oc get node "$1" -o jsonpath="{.status.addresses[0].address}" ; }
+oc-get-node-ip () { oc get node "$1" -o jsonpath="{.status.addresses[0].address}" ; }
+
+
+set_kubecontext () {
+  export KUBECONFIG=~/.kube/"$1"
+}
+
+refresh_tmux_openstack_and_kubecontext () {
+  echo "$OS_CLOUD" > ~/._openstack_cloud
+  echo "$KUBECONFIG" > ~/._kubeconfig
+  tmux refresh-client &
+}
 

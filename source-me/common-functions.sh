@@ -187,28 +187,3 @@ _complete_files_and_dirs()
 # copied pass functions end
 ###########################
 
-
-# kubernetes & openstack start
-################
-
-set_openstack_context()
-{
-  set -a
-  source ~/.openstack/"$1"
-  set +a
-}
-
-set_kubecontext ()
-{
-  export KUBECONFIG=~/.kube/"$1"
-}
-
-refresh_tmux_openstack_and_kubecontext () {
-  echo "$OS_CLOUD" > ~/._openstack_cloud
-  echo "$KUBECONFIG" > ~/._kubeconfig
-  tmux refresh-client &
-}
-
-# kubernetes end
-################
-
