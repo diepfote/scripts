@@ -177,61 +177,11 @@ _complete_files_and_dirs()
   # This file is licensed under the GPLv2+. Please see COPYING for more information.
 	COMPREPLY=()
 	local cur="${COMP_WORDS[COMP_CWORD]}"
-	#local commands="init ls find grep show insert generate edit rm mv cp git help version ${PASSWORD_STORE_EXTENSION_COMMANDS[*]}"
-	#if [[ $COMP_CWORD -gt 1 ]]; then
-		#local lastarg="${COMP_WORDS[$COMP_CWORD-1]}"
-		#case "${COMP_WORDS[1]}" in
-			#init)
-				#if [[ $lastarg == "-p" || $lastarg == "--path" ]]; then
-					#_pass_complete_folders
-					#compopt -o nospace
-				#else
-					#COMPREPLY+=($(compgen -W "-p --path" -- ${cur}))
-					#_pass_complete_keys
-				#fi
-				#;;
-			#ls|list|edit)
-				#_complete_files_and_dirs_helper
-				#;;
-			#show|-*)
-				#COMPREPLY+=($(compgen -W "-c --clip" -- ${cur}))
-				#_complete_files_and_dirs_helper 1
-				#;;
-			#insert)
-				#COMPREPLY+=($(compgen -W "-e --echo -m --multiline -f --force" -- ${cur}))
-				#_complete_files_and_dirs_helper
-				#;;
-			#generate)
-				#COMPREPLY+=($(compgen -W "-n --no-symbols -c --clip -f --force -i --in-place" -- ${cur}))
-				#_complete_files_and_dirs_helper
-				#;;
-			#cp|copy|mv|rename)
-				#COMPREPLY+=($(compgen -W "-f --force" -- ${cur}))
-				#_complete_files_and_dirs_helper
-				#;;
-			#rm|remove|delete)
-				#COMPREPLY+=($(compgen -W "-r --recursive -f --force" -- ${cur}))
-				#_complete_files_and_dirs_helper
-				#;;
-			#git)
-				#COMPREPLY+=($(compgen -W "init push pull config log reflog rebase" -- ${cur}))
-				#;;
-		#esac
-
-		## To add completion for an extension command define a function like this:
-		## __password_store_extension_complete_<COMMAND>() {
-		##     COMPREPLY+=($(compgen -W "-o --option" -- ${cur}))
-		##     _complete_files_and_dirs_helper 1
-		## }
-		##
-		## and add the command to the $PASSWORD_STORE_EXTENSION_COMMANDS array
-		#if [[ " ${PASSWORD_STORE_EXTENSION_COMMANDS[*]} " == *" ${COMP_WORDS[1]} "* ]] && type "__password_store_extension_complete_${COMP_WORDS[1]}" &> /dev/null; then
-			#"__password_store_extension_complete_${COMP_WORDS[1]}"
-		#fi
-	#else
+  # content deleted
+  # .
+  # .
 		COMPREPLY+=($(compgen -W "${commands}" -- ${cur}))
 		_complete_files_and_dirs_helper 1
-	#fi
 }
 
 # copied pass functions end
