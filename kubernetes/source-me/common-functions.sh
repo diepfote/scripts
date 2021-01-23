@@ -55,6 +55,9 @@ oc-get-pod-volumes () {
 
 oc-get-node-ip () { oc get node "$1" -o jsonpath="{.status.addresses[0].address}" ; }
 
+oc-get-users-for-scc () {
+  oc get scc "$1" -o jsonpath='{.users}' | sed 's#\[##;s#\]##' | tr ' ' '\n';
+}
 
 set_kubecontext () {
   export KUBECONFIG=~/.kube/"$1"
