@@ -28,15 +28,20 @@ if [ "$(uname)" = 'Darwin' ]; then
   _add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"
   _add_to_PATH "/usr/local/opt/grep/libexec/gnubin"
 
-  # python 3.9 = default
-  _add_to_PATH "/usr/local/opt/python@3.9/libexec/bin"
-  _add_to_PATH "$HOME/Library/Python/3.9/bin"
-  export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
-  export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
-
+  # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
+  # otherwise 3.6 will end up being resolved first
+  #
   # pyenv version 3.6
   _add_to_PATH "$HOME/.pyenv/versions/3.6.12/bin"
 
+  # python 3.9 = default
+  python_39_path="/usr/local/opt/python@3.9/libexec/bin"
+  ln -sf "$python_39_path"/python "$python_39_path"/python3
+  _add_to_PATH "$python_39_path"
+  _add_to_PATH "$HOME/Library/Python/3.9/bin"
+
+  export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
+  export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
 
   # ruby compiler settings
   _add_to_PATH "/usr/local/opt/ruby/bin"
