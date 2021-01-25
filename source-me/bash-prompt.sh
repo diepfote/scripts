@@ -9,13 +9,17 @@ _ps1 ()
   PS1="$(~/Documents/golang/tools/bash-helper/bash-helper)"
 }
 
-# run refresh_tmux_kubecontext in subshell to supress job output
+# General comments on PROMPT_COMMAND
+#
+# 1) run refresh_tmux_kubecontext in subshell to supress job output
+# 2) sed ... is used to delete trailing whitespace presumably introduced
+#    by fzf ctrl-r completion
+#
 unset PROMPT_COMMAND
-# export PROMPT_COMMAND="gen_ps1; (refresh_tmux_openstack_and_kubecontext); source ~/.sh_functions; history -a; history -n"
 if [ "$(uname)" = Darwin ]; then
-  export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); _ps1; source ~/.sh_functions; history -a; history -n"
+  export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); _ps1; source ~/.sh_functions; history -a; sed -ir 's#\s+\$##' ~/.bash_history; history -n"
 else
-  export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; history -n"
+  export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; sed -ir 's#\s+\$##' ~/.bash_history; history -n"
 fi
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
