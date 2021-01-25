@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+
+_old_path="$PATH"
+trap 'set +x; export PATH="$_old_path"' EXIT
+
+# reset to system python
+export PATH="$(echo "$PATH" | python -c 'paths = input().split(":"); paths_new = []; [ paths_new.append(path) for path in paths if not ("python" in path.lower() or ".pyenv" in path) ]; print(":".join(paths_new))')"
+
+set -x
+offlineimap $@
+

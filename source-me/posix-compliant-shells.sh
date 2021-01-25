@@ -70,6 +70,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
   alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
 
+  alias offlineimap=~/Documents/scripts/bin/darwin/offlineimap.sh
 
   export PASSWORD_STORE_DIR=~/.password-store-work
 
