@@ -14,7 +14,7 @@ export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.git
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
-export PATH="$HOME/go/bin:$PATH"
+_add_to_PATH "$HOME/go/bin"
 
 
 # -------------------------
@@ -23,24 +23,24 @@ if [ "$(uname)" = 'Darwin' ]; then
 
   alias w-pkg-update=~/Documents/scripts/w-pkg-update.sh
 
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-  export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
-  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-  export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+  _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"
+  _add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"
+  _add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"
+  _add_to_PATH "/usr/local/opt/grep/libexec/gnubin"
 
   # python 3.9 = default
-  export PATH="/usr/local/opt/python@3.9/libexec/bin:$PATH"
-  export PATH="$HOME/Library/Python/3.9/bin:$PATH"
+  _add_to_PATH "/usr/local/opt/python@3.9/libexec/bin"
+  _add_to_PATH "$HOME/Library/Python/3.9/bin"
   export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
   export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
 
   # pyenv version 3.6
-  export PATH="$PATH:$HOME/.pyenv/versions/3.6.12/bin"
+  _add_to_PATH "$HOME/.pyenv/versions/3.6.12/bin"
 
 
   # ruby compiler settings
-  export PATH="/usr/local/opt/ruby/bin:$PATH"
-  export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"  # user gem files
+  _add_to_PATH "/usr/local/opt/ruby/bin"
+  _add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"  # user gem files
   export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
   export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
   export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"

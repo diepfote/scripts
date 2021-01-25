@@ -11,6 +11,18 @@ w-git_execute_on_all_repos () {
 }
 
 
+_add_to_PATH () {
+  local path_to_add="$1"
+
+ # shellcheck disable=2076
+ # we want literal matching in this case
+ #
+ if [[ ! "$PATH" =~ "$path_to_add" ]]; then
+   # new path not yet present
+   export PATH="$PATH:$path_to_add"
+ fi
+}
+
 yesno ()
 {
 	[[ -t 0 ]] || return 0
