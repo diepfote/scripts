@@ -19,7 +19,7 @@ _add_to_PATH () {
  #
  if [[ ! "$PATH" =~ "$path_to_add" ]]; then
    # new path not yet present
-   export PATH="$PATH:$path_to_add"
+   export PATH="$path_to_add:$PATH"
  fi
 }
 
