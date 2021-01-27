@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 export EDITOR=nvim
 export VISUAL=nvim
 
@@ -15,13 +17,12 @@ export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
 _add_to_PATH "$HOME/go/bin"
+_add_to_PATH "$HOME/Documents/scripts/bin"
 
 
 # -------------------------
 # DARWIN
 if [ "$(uname)" = 'Darwin' ]; then
-
-  alias w-pkg-update=~/Documents/scripts/w-pkg-update.sh
 
   _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"
   _add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"
@@ -90,8 +91,11 @@ fi
 
 # -------------------------
 
+
 # -------------------------
-# common aliases
+# common aliases START
+#
+
 alias ls='ls --color=auto'
 
 alias grep='grep --exclude-dir=.git \
@@ -102,7 +106,6 @@ alias grep='grep --exclude-dir=.git \
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
 
 alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
-alias test-sed=~/Documents/scripts/test-sed.sh
 
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
 alias vimy="vim -c ':set ft=yaml'"
