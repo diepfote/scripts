@@ -122,7 +122,156 @@ mpv () {
 alias pipsh="pipenv shell"
 
 
+# common aliases END
 # -------------------------
+
+
+# ---------------------------
+# git repo helpers START
+#
+
+_checkout-wrapper () {
+  local dir="$1"
+  set -- "${@:2:$(($#))}"; # drop first arg
+
+  work_repo_template "$dir" git checkout -- $@
+}
+
+checkout-dot-files () {
+  _checkout-wrapper ~/ $@
+}
+checkout-function () {
+  _checkout-wrapper ~/.config/fish/functions $@
+}
+checkout-go () {
+  _checkout-wrapper ~/Documents/golang $@
+}
+checkout-python () {
+  _checkout-wrapper ~/Documents/python $@
+}
+checkout-script () {
+  _checkout-wrapper ~/Documents/scripts $@
+}
+checkout-vim () {
+  _checkout-wrapper ~/.vim $@
+}
+
+_diff-wrapper () {
+  local dir="$1"
+  set -- "${@:2:$(($#))}"; # drop first arg
+
+  work_repo_template "$dir" git diff $@
+}
+
+diff-dot-files () {
+  _diff-wrapper ~ $@
+}
+diff-firejail () {
+  _diff-wrapper /etc/firejail $@
+}
+diff-function () {
+  _diff-wrapper ~/.config/fish/functions $@
+}
+diff-go () {
+  _diff-wrapper ~/Documents/golang $@
+}
+diff-pacman-hooks () {
+  _diff-wrapper /etc/pacman.d/hooks $@
+}
+diff-python () {
+  _diff-wrapper ~/Documents/python $@
+}
+diff-script () {
+  _diff-wrapper ~/Documents/scripts $@
+}
+diff-vim () {
+  _diff-wrapper ~/.vim $@
+}
+
+_log-wrapper () {
+  local dir="$1"
+  set -- "${@:2:$(($#))}"; # drop first arg
+
+  work_repo_template "$dir" git l $@
+}
+
+log-dot-files () {
+  _log-wrapper ~/ $@
+}
+log-function () {
+  _log-wrapper ~/.config/fish/functions $@
+}
+log-go () {
+  _log-wrapper ~/Documents/golang $@
+}
+log-python () {
+  _log-wrapper ~/Documents/python $@
+}
+log-script () {
+  _log-wrapper ~/Documents/scripts $@
+}
+log-vim () {
+  _log-wrapper ~/.vim $@
+}
+
+_reset-wrapper () {
+  work_repo_template "$1" git reset --hard
+  work_repo_template "$1" git clean -df
+}
+
+reset-dot-files () {
+ _reset-wrapper ~/
+}
+reset-function () {
+ _reset-wrapper ~/.config/fish/functions
+}
+reset-go () {
+ _reset-wrapper ~/Documents/golang
+}
+reset-python () {
+ _reset-wrapper ~/Documents/python
+}
+reset-script () {
+ _reset-wrapper ~/Documents/scripts
+}
+reset-vim () {
+ _reset-wrapper ~/.vim
+}
+
+_status-wrapper () {
+  work_repo_template "$1" git status -sb
+}
+
+status-dot-files () {
+  _status-wrapper ~
+}
+status-firejail () {
+  _status-wrapper /etc/firejail
+}
+status-function () {
+  _status-wrapper ~/.config/fish/functions
+}
+status-go () {
+  _status-wrapper ~/Documents/golang
+}
+status-pacman-hooks () {
+  _status-wrapper /etc/pacman.d/hooks
+}
+status-python () {
+  _status-wrapper ~/Documents/python
+}
+status-script () {
+  _status-wrapper ~/Documents/scripts
+}
+status-vim () {
+  _status-wrapper ~/.vim
+}
+
+#
+# git repo helpers END
+# ---------------------------
+
+
 
 
 # -------------------------
