@@ -8,6 +8,8 @@ shopt -s failglob  # error on unexpaned globs
 
 
 source ~/Documents/scripts/source-me/spinner.sh
+source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
 set +u
 spinner
 set -u
@@ -46,5 +48,7 @@ echo -en "  $PURPLE"; echo -e "[>] pulling updates$NC"
 brew update
 
 echo -en "  $PURPLE"; echo -e "[>] starting upgrades$NC"
-brew upgrade
+brew upgrade || true
+echo -en "  $PURPLE"; echo -e "[>] starting greedy cask upgrades$NC"
+brew upgrade --cask --greedy
 
