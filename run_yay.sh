@@ -20,10 +20,12 @@ fi
 
 docker run \
   -u build-user \
-  -v ~/.bash_history:/build/.bash_history:ro \
   --network=host \
+  -v ~/.bash_history:/build/.bash_history:ro \
+  -v "$PWD":/pwd:ro \
   -e DISPLAY="$DISPLAY" \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+  --security-opt=no-new-privileges \
   --rm \
   -it \
   --name yay \

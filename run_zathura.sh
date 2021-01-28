@@ -9,8 +9,15 @@ shopt -s failglob  # error on unexpaned globs
 [ -z "$*" ] && command=bash || command=$@
 
 
-ip="$(ifconfig en0  | grep -E 'inet\b' | sed 's#.*inet ##;s# netmask.*##')"
-xhost + "$ip"
+if [ "$(uname)" = Darwin ]; then
+  set +e  # start container even if the interface does not have an ip assigned
+  ip="$(ifconfig en0  | grep -E 'inet\b' | sed 's#.*inet ##;s# netmask.*##')"
+  xhost + "$ip"
+  set -e
+  DISPLAY="$ip":0
+else
+  DISPLAY="$DISPLAY"
+fi
 
 docker run \
   -v ~/.config/zathura:/root/.config/zathura:ro \
@@ -22,7 +29,7 @@ docker run \
   -v ~/Documents/books\&documentation:/books:ro \
   -v ~/Downloads:/downloads:ro \
   -v ~/Documents/cheatsheets:/cheatsheets:ro \
-  -e DISPLAY="$ip":0 \
+  -e DISPLAY="$DISPLAY" \
   -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
   --security-opt=no-new-privileges \
   --cap-drop=ALL \
@@ -30,5 +37,5 @@ docker run \
   -it \
   --name zathura \
   zathura \
-  $command || docker exec -it zathura bash
+  $command || docker exec -it yay bash  # try exec on failure
 
