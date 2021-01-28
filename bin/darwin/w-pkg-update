@@ -49,6 +49,13 @@ brew update
 
 echo -en "  $PURPLE"; echo -e "[>] starting upgrades$NC"
 brew upgrade || true
-echo -en "  $PURPLE"; echo -e "[>] starting greedy cask upgrades$NC"
-brew upgrade --cask --greedy
+
+# ---------------------------------------------------
+
+if [ "$#" -gt 0 ]; then
+  if [ "$1" = --greedy ]; then
+    echo -en "  $PURPLE"; echo -e "[>] starting greedy cask upgrades$NC"
+    brew upgrade --cask --greedy
+  fi
+fi
 
