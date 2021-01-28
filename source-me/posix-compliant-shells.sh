@@ -16,6 +16,7 @@ export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.git
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
+_add_to_PATH "$HOME/.bin"
 _add_to_PATH "$HOME/go/bin"
 _add_to_PATH "$HOME/Documents/scripts/bin"
 
