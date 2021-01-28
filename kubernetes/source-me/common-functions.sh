@@ -63,10 +63,30 @@ if [ "$(uname)" = Darwin ]; then
     export KUBECONFIG=~/.kube/"$1"
   }
 
+
+  _watch-namespace-wrapper () {
+    tmux split-window -d
+    sleep 10
+    tmux send-keys -t .+ "set_kubecontext "$1"; watch oc get pod -n $2" C-m
+ }
+
+  watch-9-namespace () {
+    _watch-namespace-wrapper prod-9-os-muc "$1"
+  }
+  watch-10-namespace () {
+    _watch-namespace-wrapper 10-prod-os-muc "$1"
+  }
+  watch-12-namespace () {
+    _watch-namespace-wrapper 12-prod-os-muc "$1"
+  }
+
+
   refresh_tmux_openstack_and_kubecontext () {
     echo "$OS_CLOUD" > /tmp/._openstack_cloud
     echo "$KUBECONFIG" > /tmp/._kubeconfig
     tmux refresh-client &
   }
+
+
 fi
 
