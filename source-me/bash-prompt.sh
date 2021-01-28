@@ -4,9 +4,12 @@ unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
 # export PS1="[ $GREEN\w$NC ]\n$ "
 
-_ps1 ()
-{
+_ps1 () {
   PS1="$(~/Documents/golang/tools/bash-helper/bash-helper)"
+}
+
+_rm_trailing_whitespace_bashhist () {
+  sed -ri 's#\s+$##' ~/.bash_history
 }
 
 # General comments on PROMPT_COMMAND
@@ -17,9 +20,9 @@ _ps1 ()
 #
 unset PROMPT_COMMAND
 if [ "$(uname)" = Darwin ]; then
-  export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); _ps1; source ~/.sh_functions; history -a; sed -ir 's#\s+\$##' ~/.bash_history; history -n"
+  export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); _ps1; source ~/.sh_functions; history -a; _rm_trailing_whitespace_bashhist; history -n"
 else
-  export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; sed -ir 's#\s+\$##' ~/.bash_history; history -n"
+  export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; _rm_trailing_whitespace_bashhist; history -n"
 fi
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
