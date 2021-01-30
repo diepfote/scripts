@@ -17,5 +17,5 @@ for repo_dir in $(cat "$conf_file"); do
     # skip comment line & empty lines
     continue
   fi
-  ~/Documents/scripts/work_repo_template.sh "$repo_dir" $command
+  work_repo_template "$repo_dir" $command
 done

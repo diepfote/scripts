@@ -22,7 +22,8 @@ _add_to_PATH "$HOME/Documents/scripts/bin"
 
 
 # -------------------------
-# DARWIN
+# OS specific START
+
 if [ "$(uname)" = 'Darwin' ]; then
 
   _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"
@@ -90,7 +91,20 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   export PASSWORD_STORE_DIR=~/.password-store-private
 fi
 
+# OS specific END
 # -------------------------
+
+
+w-git_execute_on_all_repos () {
+  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
+}
+
+
+mpv () {
+  command mpv "$1" 1>/dev/null 2>/dev/null &
+}
+
+
 
 
 # -------------------------
@@ -111,12 +125,6 @@ alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
 alias vimy="vim -c ':set ft=yaml'"
 alias vimj="vim -c ':set ft=json'"
-
-alias view_dirs=~/Documents/scripts/view_dirs.sh
-
-mpv () {
-  command mpv "$1" 1>/dev/null 2>/dev/null &
-}
 
 
 # pipenv aliases

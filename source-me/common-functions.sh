@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
 
-w-git_execute_on_all_repos () {
-  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
-}
-
-
 _add_to_PATH () {
   local path_to_add="$1"
 
@@ -43,9 +38,6 @@ findlast () {
     rsync -rL --list-only "$2" | grep -v '^d' | sort -k3,4r | head -n "$1"
   fi
 }
-
-alias sort-unique-keep-line-order-and-overwrite=~/Documents/scripts/sort_unique_keep_line_order_and_overwrite.sh
-
 
 get_random_alphanumeric ()
 {
