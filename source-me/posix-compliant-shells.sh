@@ -95,17 +95,34 @@ fi
 # -------------------------
 
 
-w-git_execute_on_all_repos () {
-  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
-}
-
-
 mpv () {
   command mpv "$1" 1>/dev/null 2>/dev/null &
 }
 
 
+w-git_execute_on_all_repos () {
+  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
+}
 
+
+dl-youtube () {
+  set -x
+  youtube-dl -f $@
+  set +x
+}
+
+
+dl-playlist () {
+  first_arg="$1"
+  second_arg="$2"
+  set -- "${@:2:$(($#))}"; # drop first and second arg
+
+  set -x
+  youtube-dl -f "$first_arg" "$@" \
+    -o '%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s' \
+    "$second_arg"
+  set +x
+}
 
 # -------------------------
 # common aliases START
@@ -121,6 +138,8 @@ alias grep='grep --exclude-dir=.git \
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
 
 alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
+
+alias formats-youtube-dl='youtube-dl -F'
 
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
 alias vimy="vim -c ':set ft=yaml'"
