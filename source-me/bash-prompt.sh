@@ -19,10 +19,10 @@ _rm_trailing_whitespace_bashhist () {
 #    by fzf ctrl-r completion
 #
 unset PROMPT_COMMAND
+export PROMPT_COMMAND="_ps1; source ~/.sh_functions; tmux refresh-client; history -a; _rm_trailing_whitespace_bashhist; history -n"
+
 if [ "$(uname)" = Darwin ]; then
-  export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); _ps1; source ~/.sh_functions; history -a; _rm_trailing_whitespace_bashhist; history -n"
-else
-  export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; _rm_trailing_whitespace_bashhist; history -n"
+  export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); $PROMPT_COMMAND"
 fi
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
