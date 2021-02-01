@@ -65,9 +65,9 @@ if [ "$(uname)" = Darwin ]; then
 
 
   _watch-namespace-wrapper () {
-    tmux split-window -d
+    tmux split-window -d  'export BASH_SOURCE_IT=true; bash'
     sleep 10
-    tmux send-keys -t .+ "set_kubecontext "$1"; watch oc get pod -n $2" C-m
+    tmux send-keys -t .+ "source ~/.bashrc; set_kubecontext \"$1\"; watch oc get pod -n $2" C-m
  }
 
   watch-9-namespace () {
