@@ -34,12 +34,13 @@ DIR=~/Documents
 SUBDIRS=$@
 
 
-trap 'echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"' EXIT
+trap 'kill "$spinner_pid"; echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"' EXIT
 
 iterate_files "sudo chown -R $USER:$USER"
 open_nnn=true iterate_files 'sudo chmod -R 700'
 
 spinner 'waiting to re-chown to root and re-chmod to 000'
+spinner_pid="$!"
 
 while (true); do
   sudo -v
