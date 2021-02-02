@@ -104,6 +104,10 @@ w-git_execute_on_all_repos () {
   git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
 }
 
+w-git-cleanup () {
+ w-git-update
+ w-git-delete-gone-branches
+}
 
 dl-youtube () {
   set -x
