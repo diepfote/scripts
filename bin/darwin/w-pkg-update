@@ -60,3 +60,10 @@ if [ "$#" -gt 0 ]; then
   fi
 fi
 
+
+echo -e '\n\n--------\nListing Darwin updates\n'
+# softwareupdate -i --no-scan -a
+# sudo softwareupdate -i --no-scan -a -R
+#
+softwareupdate --all -l --force
+
