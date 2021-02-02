@@ -71,13 +71,13 @@ if [ "$(uname)" = Darwin ]; then
  }
 
   watch-9-namespace () {
-    _watch-namespace-wrapper prod-9-os-muc "$1"
+    _watch-namespace-wrapper prod-9-os-muc "$1" &
   }
   watch-10-namespace () {
-    _watch-namespace-wrapper 10-prod-os-muc "$1"
+    _watch-namespace-wrapper 10-prod-os-muc "$1" &
   }
   watch-12-namespace () {
-    _watch-namespace-wrapper 12-prod-os-muc "$1"
+    _watch-namespace-wrapper 12-prod-os-muc "$1" &
   }
 
 
