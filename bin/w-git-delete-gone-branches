@@ -10,6 +10,7 @@ conf_file=~/Documents/config/work-repo.conf
 command='git delete-gone-branches'
 
 for repo_dir in $(cat "$conf_file"); do
-  ~/Documents/scripts/work_repo_template.sh $repo_dir $command
+  [ -z "$repo_dir" ] && continue
+  work_repo_template "$repo_dir" $command
 done
 
