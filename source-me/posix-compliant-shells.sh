@@ -73,6 +73,15 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
   alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
 
+
+  stop-jamf () {
+    for pid in $(ps -ef | grep -i jamf | grep -v grep | tr -s ' ' | cut -d ' ' -f3); do
+      set -x
+      sudo kill -9 "$pid"
+      set +x
+    done
+  }
+
   _add_to_PATH "$HOME/Documents/scripts/bin/darwin"
 
   export PASSWORD_STORE_DIR=~/.password-store-work
