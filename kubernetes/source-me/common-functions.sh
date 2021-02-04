@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ~/Documents/scripts/source-me/common-functions.sh
+
 if [ "$(uname)" = Darwin ]; then
   alias kctx="kubectx"
   alias kx="kubectx"
