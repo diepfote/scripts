@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+source ~/Documents/scripts/source-me/mounts.sh
+
+
+vdi_file="$1"
+mount_partition="$2"
+[[ -z "$mount_partition" ]] && mount_partition=2
+
+temp="$(mktemp -d)"
+
+trap "sudo umount '$temp'; rm -rf '$temp'; sudo qemu-nbd -d /dev/nbd0" EXIT
+
+sudo modprobe -v nbd
+
+set -x
+# mount as disk
+sudo qemu-nbd -c /dev/nbd0 "$vdi_file"
+
+# mount partition
+echo -en "$PURPLE"; echo -e "[?] attempting to mount partition 2 (might have to be changed).$NC"
+sudo mount /dev/nbd0p"$mount_partition" "$temp"
+set +x
+
+n-for-dir-in-tmux-pane-below "$temp"
+spinner 'waiting to close vdi file'
+
+while true; do
+  sudo -v
+  sleep 60
+done
+
