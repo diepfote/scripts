@@ -6,7 +6,7 @@
 # Except shell scripts
 !*.sh
 !*.bash
-!bin/
+!bin/**
 
 !.gitignore
 !Makefile
