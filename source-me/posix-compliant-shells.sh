@@ -98,6 +98,21 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
 
   export PASSWORD_STORE_DIR=~/.password-store-private
+
+  diff-firejail () {
+    _diff-wrapper /etc/firejail $@
+  }
+  diff-pacman-hooks () {
+    _diff-wrapper /etc/pacman.d/hooks $@
+  }
+
+  status-firejail () {
+    _status-wrapper /etc/firejail
+  }
+  status-pacman-hooks () {
+    _status-wrapper /etc/pacman.d/hooks
+  }
+
 fi
 
 # OS specific END
@@ -207,17 +222,11 @@ _diff-wrapper () {
 diff-dot-files () {
   _diff-wrapper ~ $@
 }
-diff-firejail () {
-  _diff-wrapper /etc/firejail $@
-}
 diff-function () {
   _diff-wrapper ~/.config/fish/functions $@
 }
 diff-go () {
   _diff-wrapper ~/Documents/golang $@
-}
-diff-pacman-hooks () {
-  _diff-wrapper /etc/pacman.d/hooks $@
 }
 diff-python () {
   _diff-wrapper ~/Documents/python $@
@@ -286,17 +295,11 @@ _status-wrapper () {
 status-dot-files () {
   _status-wrapper ~
 }
-status-firejail () {
-  _status-wrapper /etc/firejail
-}
 status-function () {
   _status-wrapper ~/.config/fish/functions
 }
 status-go () {
   _status-wrapper ~/Documents/golang
-}
-status-pacman-hooks () {
-  _status-wrapper /etc/pacman.d/hooks
 }
 status-python () {
   _status-wrapper ~/Documents/python
