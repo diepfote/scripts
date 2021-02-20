@@ -71,46 +71,10 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 
   alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
-  alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd"
-
-
-  stop-jamf () {
-    for pid in $(ps -ef | grep -i jamf | grep -v grep | tr -s ' ' | cut -d ' ' -f3); do
-      set -x
-      sudo kill -9 "$pid"
-      set +x
-    done
-  }
-
-  _add_to_PATH "$HOME/Documents/scripts/bin/darwin"
-
-  export PASSWORD_STORE_DIR=~/.password-store-work
-
-elif grep -L 'Arch Linux' /etc/os-release; then
-  # Arch only | Arch Linux only | Archlinux only
-
-  pacman-get-required-by-for-upgradeable () {
-    _pacman-get-required-by-for-upgradeable () {
-      pacman -Sup --print-format '%n' | xargs pacman -Qii
-    }
-    _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
-  }
-
-
-  export PASSWORD_STORE_DIR=~/.password-store-private
-
-  diff-firejail () {
-    _diff-wrapper /etc/firejail $@
-  }
-  diff-pacman-hooks () {
-    _diff-wrapper /etc/pacman.d/hooks $@
-  }
-
-  status-firejail () {
-    _status-wrapper /etc/firejail
-  }
-  status-pacman-hooks () {
-    _status-wrapper /etc/pacman.d/hooks
+  alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
+    sudo systemctl stop dhcpcd@wlp4s0.service
+    sudo systemctl stop wpa_supplicant@wlp4s0.service
+    set +x
   }
 
 fi
