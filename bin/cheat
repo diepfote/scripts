@@ -35,14 +35,18 @@ if [ "$extension" = pdf ] || [ "$extension" = png ]  || \
 
 else
   command=bat
+  num_args_to_remove=1
   if [ "$1" = '--edit' ]; then
+    num_args_to_remove=2
     command=vim
-    filename="${@:(($#-1)):1}"  # next to last argument
+    filename="${@:$#}"  # last argument
     file=~/Documents/cheatsheets/"$filename"
   fi
 
-  # remove 2 starting args and 2 ending args
-  set -- "${@:3:$(($#-3))}"
+  # remove '--edit' arg
+  # remove 'filename' arg
+  #
+  set -- "${@:2:$(($#-$num_args_to_remove))}"
 
   [ "$command" = vim ] && "$command" $@ "$file" \
                        || "$command" "$file"
