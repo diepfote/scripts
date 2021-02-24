@@ -51,6 +51,30 @@ open_mac-os_app () {
   open /Applications/"$app" -n --args "$1" "$2"
 }
 
+call_browser () {
+  source ~/Documents/scripts/source-me/common-functions.sh
+
+  if [ $# -lt 2 ]; then
+    private='--private-window'
+    TMP_FILE="$1"
+  else
+    TMP_FILE="$2"
+  fi
+
+  if [ "$(uname)" = Darwin ]; then
+    source ~/.sh_functions
+  set -x
+    open_mac-os_app Firefox.app "$private" "$TMP_FILE"
+  set +x
+  else
+  set -x
+    firefox "$private" "$TMP_FILE" 2>/dev/null 1>/dev/null &
+  set +x
+  fi
+
+  sleep 2
+}
+
 _get_cmd_tmux_pane_id () {
 # BSD 2-Clause License
 
