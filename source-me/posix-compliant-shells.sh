@@ -141,6 +141,8 @@ alias vimj="vim -c ':set ft=json'"
 # pipenv aliases
 alias pipsh="pipenv shell"
 
+# ensure saved attachments end up in Downloads
+alias neomutt='(cd ~/Downloads/mutt && neomutt)'
 
 # common aliases END
 # -------------------------
