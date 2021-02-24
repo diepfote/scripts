@@ -281,6 +281,13 @@ status-vim () {
 # git repo helpers END
 # ---------------------------
 
+# ---------------------------
+# misc functions START
+#
+
+#
+# misc functions END
+# ---------------------------
 
 
 

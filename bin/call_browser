@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+source ~/Documents/scripts/source-me/common-functions.sh
 
 if [ $# -lt 2 ]; then
   private='--private-window'

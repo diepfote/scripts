@@ -45,6 +45,12 @@ get_random_alphanumeric ()
 }
 
 
+open_mac-os_app () {
+  local app="$1"
+  shift
+  open /Applications/"$app" -n --args "$1" "$2"
+}
+
 _get_cmd_tmux_pane_id () {
 # BSD 2-Clause License
 

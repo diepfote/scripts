@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+[ "$(uname)" = Darwin ] && base_temp_dir="$(mktemp -d)" \
+                        || base_temp_dir=~/Downloads
+
+file=~/Documents/cheatsheets/"$1"
+f_basename="$(basename "$file")"
+extension="$(echo "$f_basename" | sed 's#.*\.##')"
+
+if [ "$extension" = pdf ] || [ "$extension" = png ]  || \
+   [ "$extension" = jpg ] || [ "$extension" = html ] || \
+   [ "$extension" = gif ]; then
+
+  if [ "$extension" = html ]; then
+    temp_file="$base_temp_dir"/"$f_basename"
+    trap "rm '""$temp_file""'" EXIT
+    cp "$file" "$temp_file"
+
+    call_browser "$temp_file"
+    sleep 1
+  else
+    [ "$(uname)" = Darwin ] && open "$file" \
+                            || xdg-open "$file"
+  fi
+
+else
+  command=bat
+  if [ "$1" = '--edit' ]; then
+    command=vim
+    filename="${@:(($#-1)):1}"  # next to last argument
+    file=~/Documents/cheatsheets/"$filename"
+  fi
+
+  # remove 2 starting args and 2 ending args
+  set -- "${@:3:$(($#-3))}"
+
+  [ "$command" = vim ] && "$command" $@ "$file" \
+                       || "$command" "$file"
+
+fi
