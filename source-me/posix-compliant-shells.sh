@@ -120,6 +120,9 @@ dl-playlist () {
 # common aliases START
 #
 
+alias less='less -I'
+alias ccat='pygmentize -g'
+
 alias ls='ls --color=auto'
 
 alias grep='grep --exclude-dir=.git \
@@ -146,6 +149,19 @@ alias neomutt='(cd ~/Downloads/mutt && neomutt)'
 
 # common aliases END
 # -------------------------
+
+
+# ---------------------------
+# common functions START
+#
+
+lessc () {
+  ccat "$1" | command less -IR
+}
+
+#
+# common functions END
+# ---------------------------
 
 
 # ---------------------------
@@ -280,15 +296,6 @@ status-vim () {
 #
 # git repo helpers END
 # ---------------------------
-
-# ---------------------------
-# misc functions START
-#
-
-#
-# misc functions END
-# ---------------------------
-
 
 
 # -------------------------
