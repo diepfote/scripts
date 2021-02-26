@@ -45,13 +45,13 @@ if [ "$(uname)" = 'Darwin' ]; then
   _add_to_PATH "$python_39_path"
   _add_to_PATH "$HOME/Library/Python/3.9/bin"
 
-  export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
+  # export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
   export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
 
   # ruby compiler settings
   _add_to_PATH "/usr/local/opt/ruby/bin"
   _add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"  # user gem files
-  export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
+  # export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
   export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
   export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
 
