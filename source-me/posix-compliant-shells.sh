@@ -123,6 +123,24 @@ dl-playlist () {
 #
 
 alias less='less -I'
+# less () {
+
+#   if [ $# -lt 1 ]; then
+#     cat - > /tmp/tmp.docker-less
+#     set -- /tmp/tmp.docker-less
+
+#     # TODO this does not handle signals
+#     # and does not receive input from the keyboard :(
+#   fi
+#   docker run -it --rm  \
+#     -it \
+#     -v ~/.less:/root/.less \
+#     -v ~/.lesskey:/root/.lesskey \
+#     -v "$(realpath "$1")":/asdf/"$(basename "$1")":ro \
+#     -w /asdf \
+#     archlinux/base /usr/sbin/less -I -k /root/.less /asdf/"$(basename "$1")"
+# }
+
 alias ccat='pygmentize -g'
 
 alias ls='ls --color=auto'
