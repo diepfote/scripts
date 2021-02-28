@@ -23,6 +23,18 @@ export PROMPT_COMMAND="_ps1; source ~/.sh_functions; tmux refresh-client; histor
 
 if [ "$(uname)" = Darwin ]; then
   export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); $PROMPT_COMMAND"
+else
+  __test_ping () {
+    local file=/tmp/tmp.ping-success
+    ping -c 1 -W 5 archlinux.org >/dev/null 2>&1
+    if [ "$?" -eq 0 ]; then
+      touch "$file"
+    else
+        rm "$file" 2>/dev/null
+    fi
+  }
+  export PROMPT_COMMAND="(__test_ping &); $PROMPT_COMMAND"
+
 fi
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
