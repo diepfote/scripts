@@ -182,6 +182,13 @@ lessc () {
   ccat "$1" | command less -IR
 }
 
+xinput-reverse-mouse-buttons () {
+  xinput set-button-map "$1" 3 2 1
+}
+xinput-reset-mouse-buttons () {
+  xinput set-button-map "$1" 1 2 3
+}
+
 #
 # common functions END
 # ---------------------------
