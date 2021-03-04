@@ -18,7 +18,17 @@ yesno ()
 	[[ -t 0 ]] || return 0
 	local response
 	read -r -p "$1 [y/N] " response
-	[[ $response == [yY] ]] || die "Received no answer for yesno!"
+	[[ "$response" == [yY] ]] && \
+    return 0 || \
+    return 1
+}
+
+yesno_safe ()
+{
+	[[ -t 0 ]] || return 0
+	local response
+	read -r -p "$1 [y/N] " response
+	[[ "$response" == [yY] ]] || die "Received no answer for yesno!"
 }
 
 die ()
