@@ -9,7 +9,9 @@ _ps1 () {
 }
 
 _rm_trailing_whitespace_bashhist () {
-  sed -ri 's#\s+$##' ~/.bash_history
+  # set -x
+  sed -ir 's#\s*$##' ~/.bash_history
+  # set +x
 }
 
 # General comments on PROMPT_COMMAND
