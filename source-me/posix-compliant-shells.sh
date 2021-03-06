@@ -89,44 +89,17 @@ if [ "$(uname)" = 'Darwin' ]; then
     set +x
   }
 
+  xinput-reverse-mouse-buttons () {
+    xinput set-button-map "$1" 3 2 1
+  }
+  xinput-reset-mouse-buttons () {
+    xinput set-button-map "$1" 1 2 3
+  }
+
 fi
 
 # OS specific END
 # -------------------------
-
-
-mpv () {
-  command mpv "$1" 1>/dev/null 2>/dev/null &
-}
-
-
-w-git_execute_on_all_repos () {
-  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
-}
-
-w-git-cleanup () {
- w-git-update
- w-git-delete-gone-branches
-}
-
-dl-youtube () {
-  set -x
-  youtube-dl -f $@
-  set +x
-}
-
-
-dl-playlist () {
-  first_arg="$1"
-  second_arg="$2"
-  set -- "${@:2:$(($#))}"; # drop first and second arg
-
-  set -x
-  youtube-dl -f "$first_arg" "$@" \
-    -o '%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s' \
-    "$second_arg"
-  set +x
-}
 
 # -------------------------
 # common aliases START
@@ -185,15 +158,58 @@ alias neomutt='(cd ~/Downloads/mutt && neomutt)'
 # common functions START
 #
 
+mpv () {
+  command mpv "$1" 1>/dev/null 2>/dev/null &
+}
+
+
+w-git_execute_on_all_repos () {
+  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
+}
+
+w-git-cleanup () {
+ w-git-update
+ w-git-delete-gone-branches
+}
+
+dl-youtube () {
+  set -x
+  youtube-dl -f $@
+  set +x
+}
+
+
+dl-playlist () {
+  first_arg="$1"
+  second_arg="$2"
+  set -- "${@:2:$(($#))}"; # drop first and second arg
+
+  set -x
+  youtube-dl -f "$first_arg" "$@" \
+    -o '%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s' \
+    "$second_arg"
+  set +x
+}
+
+
 lessc () {
   ccat "$1" | command less -IR
 }
 
-xinput-reverse-mouse-buttons () {
-  xinput set-button-map "$1" 3 2 1
+
+pdf-extract-pages () {
+  gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
+     -dFirstPage="$3" -dLastPage="$4" \
+     -sOutputFile="$2" "$1"
 }
-xinput-reset-mouse-buttons () {
-  xinput set-button-map "$1" 1 2 3
+
+pdf-merge () {
+  array=( $@ )
+  len=${#array[@]}
+  last=${array[$len-1]}
+  _args=( ${array[@]:0:$len-1} )
+
+  gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="$last" $_args
 }
 
 #
