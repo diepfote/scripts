@@ -68,27 +68,28 @@ if [ "$(uname)" = Darwin ]; then
 
   _watch-namespace-wrapper () {
     tmux split-window -d  'export BASH_SOURCE_IT=true; bash'
-    sleep 10
+    sleep 5
     tmux send-keys -t .+ "source ~/.bashrc; set_kubecontext \"$1\"; watch oc get pod -n $2" C-m
  }
 
-  watch-9-namespace () {
-    _watch-namespace-wrapper prod-9-os-muc "$1" &
-  }
-  watch-10-namespace () {
-    _watch-namespace-wrapper 10-prod-os-muc "$1" &
-  }
-  watch-12-namespace () {
-    _watch-namespace-wrapper 12-prod-os-muc "$1" &
-  }
+  watch-namespace () {
+    local region
 
+    if [[ "$1" =~ 9 ]]; then
+      region=prod-9-os-muc
+    elif [[ "$1" =~ 10 ]]; then
+      region=10-prod-os-muc
+    elif [[ "$1" =~ 12 ]]; then
+      region=12-prod-os-muc
+    fi
 
-  refresh_tmux_openstack_and_kubecontext () {
-    echo "$OS_CLOUD" > /tmp/._openstack_cloud
-    echo "$KUBECONFIG" > /tmp/._kubeconfig
-    tmux refresh-client &
+    if [ -z "$region" ]; then
+      echo -e "${RED}Invalid region (empty)!"
+      return 1
+    fi
+
+    _watch-namespace-wrapper  "$region" "$2" &
   }
-
 
 fi
 

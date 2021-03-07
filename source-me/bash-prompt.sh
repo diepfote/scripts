@@ -14,6 +14,13 @@ _rm_trailing_whitespace_bashhist () {
   # set +x
 }
 
+refresh_tmux_openstack_and_kubecontext () {
+  echo "$OS_CLOUD" > /tmp/._openstack_cloud
+  echo "$KUBECONFIG" > /tmp/._kubeconfig
+  tmux refresh-client &
+}
+
+
 # General comments on PROMPT_COMMAND
 #
 # 1) run refresh_tmux_kubecontext in subshell to supress job output
@@ -21,7 +28,7 @@ _rm_trailing_whitespace_bashhist () {
 #    by fzf ctrl-r completion
 #
 unset PROMPT_COMMAND
-export PROMPT_COMMAND="_ps1; source ~/.sh_functions; tmux refresh-client; history -a; _rm_trailing_whitespace_bashhist; history -n"
+export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; _rm_trailing_whitespace_bashhist; history -n"
 
 if [ "$(uname)" = Darwin ]; then
   export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); $PROMPT_COMMAND"

@@ -204,12 +204,12 @@ pdf-extract-pages () {
 }
 
 pdf-merge () {
-  array=( $@ )
-  len=${#array[@]}
-  last=${array[$len-1]}
-  _args=( ${array[@]:0:$len-1} )
+  last_arg="${@:$#}"
+  set -- "${@:1:$(($#-1))}"  # all except last
 
-  gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="$last" $_args
+  set -x
+  gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="$last_arg" $@
+  set +x
 }
 
 #
