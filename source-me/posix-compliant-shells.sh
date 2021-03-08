@@ -146,35 +146,6 @@ mpv () {
   command mpv "$1" 1>/dev/null 2>/dev/null &
 }
 
-work-sync () {
-  conf_file=~/Documents/config/repo.conf
-  command='git pull'
-
-  for repo_dir in $(cat "$conf_file"); do
-    [ -z "$repo_dir" ] && continue  # skip empty lines
-
-    work_repo_template "$repo_dir" $command
-  done
-
-}
-
-work-checked-in () {
-  __work-checked-in-wrapper ~/Documents/config/repo.conf
-}
-
-w-checked-in () {
-  __work-checked-in-wrapper ~/Documents/config/work-repo.conf
-}
-
-
-w-git_execute_on_all_repos () {
-  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
-}
-
-w-git-cleanup () {
- w-git-update
- w-git-delete-gone-branches
-}
 
 
 dl-youtube () {
@@ -233,7 +204,7 @@ keybase_gc_all () {
 
 
 # ---------------------------
-# git repo helpers START
+# git helpers START
 #
 
 _checkout-wrapper () {
@@ -382,8 +353,40 @@ status-vim () {
   _status-wrapper ~/.vim
 }
 
+
+work-sync () {
+  conf_file=~/Documents/config/repo.conf
+  command='git pull'
+
+  for repo_dir in $(cat "$conf_file"); do
+    [ -z "$repo_dir" ] && continue  # skip empty lines
+
+    work_repo_template "$repo_dir" $command
+  done
+
+}
+
+work-checked-in () {
+  __work-checked-in-wrapper ~/Documents/config/repo.conf
+}
+
+w-checked-in () {
+  __work-checked-in-wrapper ~/Documents/config/work-repo.conf
+}
+
+
+w-git_execute_on_all_repos () {
+  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
+}
+
+w-git-cleanup () {
+ w-git-update
+ w-git-delete-gone-branches
+}
+
+
 #
-# git repo helpers END
+# git helpers END
 # ---------------------------
 
 
