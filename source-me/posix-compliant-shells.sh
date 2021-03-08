@@ -147,6 +147,15 @@ mpv () {
 }
 
 
+work-checked-in () {
+  __work-checked-in-wrapper ~/Documents/config/repo.conf
+}
+
+w-checked-in () {
+  __work-checked-in-wrapper ~/Documents/config/work-repo.conf
+}
+
+
 w-git_execute_on_all_repos () {
   git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
 }
@@ -156,12 +165,12 @@ w-git-cleanup () {
  w-git-delete-gone-branches
 }
 
+
 dl-youtube () {
   set -x
   youtube-dl -f $@
   set +x
 }
-
 
 dl-playlist () {
   first_arg="$1"
