@@ -188,16 +188,6 @@ pdf-merge () {
 }
 
 
-keybase_gc_all () {
-  for repo_name in $(keybase git list | tr -s ' ' | cut -d ' ' -f2 | tail -n +2 | head -n -1); do
-
-    cmd='keybase git gc '"$repo_name"
-    set -x
-    $cmd || $cmd
-    set +x
-  done
-}
-
 #
 # common functions END
 # ---------------------------

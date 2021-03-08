@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+trap 'set +x' EXIT
+
+
+for repo_name in $(keybase git list | tr -s ' ' | cut -d ' ' -f2 | tail -n +2 | head -n -1); do
+
+  cmd='keybase git gc '"$repo_name"
+  set -x
+  $cmd || $cmd
+  set +x
+done
+
