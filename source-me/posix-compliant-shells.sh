@@ -3,8 +3,11 @@
 export EDITOR=nvim
 export VISUAL=nvim
 
-export LESSSECURE=1
-readonly LESSSECURE
+# cannot use this any longer
+# this breaks custom lesskey files
+#
+# export LESSSECURE=1
+# readonly LESSSECURE
 
 export GO111MODULE=off
 
@@ -104,25 +107,6 @@ fi
 # -------------------------
 # common aliases START
 #
-
-alias less='less -I'
-# less () {
-
-#   if [ $# -lt 1 ]; then
-#     cat - > /tmp/tmp.docker-less
-#     set -- /tmp/tmp.docker-less
-
-#     # TODO this does not handle signals
-#     # and does not receive input from the keyboard :(
-#   fi
-#   docker run -it --rm  \
-#     -it \
-#     -v ~/.less:/root/.less \
-#     -v ~/.lesskey:/root/.lesskey \
-#     -v "$(realpath "$1")":/asdf/"$(basename "$1")":ro \
-#     -w /asdf \
-#     archlinux/base /usr/sbin/less -I -k /root/.less /asdf/"$(basename "$1")"
-# }
 
 alias ccat='pygmentize -g'
 
