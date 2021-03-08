@@ -247,6 +247,27 @@ checkout-vim () {
   _checkout-wrapper ~/.vim $@
 }
 
+
+commit-dot-files () {
+  ~/Documents/scripts/commit-in-dir.sh ~ $@
+}
+commit-function () {
+  ~/Documents/scripts/commit-in-dir.sh ~/.config/fish/functions $@
+}
+commit-go () {
+  ~/Documents/scripts/commit-in-dir.sh ~/Documents/golang $@
+}
+commit-python () {
+  ~/Documents/scripts/commit-in-dir.sh ~/Documents/python $@
+}
+commit-script () {
+  ~/Documents/scripts/commit-in-dir.sh ~/Documents/scripts $@
+}
+commit-vim () {
+  ~/Documents/scripts/commit-in-dir.sh ~/.vim $@
+}
+
+
 _diff-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
