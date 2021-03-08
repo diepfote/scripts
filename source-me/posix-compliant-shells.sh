@@ -146,6 +146,17 @@ mpv () {
   command mpv "$1" 1>/dev/null 2>/dev/null &
 }
 
+work-sync () {
+  conf_file=~/Documents/config/repo.conf
+  command='git pull'
+
+  for repo_dir in $(cat "$conf_file"); do
+    [ -z "$repo_dir" ] && continue  # skip empty lines
+
+    work_repo_template "$repo_dir" $command
+  done
+
+}
 
 work-checked-in () {
   __work-checked-in-wrapper ~/Documents/config/repo.conf
@@ -203,6 +214,17 @@ pdf-merge () {
   set -x
   gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="$last_arg" $@
   set +x
+}
+
+
+keybase_gc_all () {
+  for repo_name in $(keybase git list | tr -s ' ' | cut -d ' ' -f2 | tail -n +2 | head -n -1); do
+
+    cmd='keybase git gc '"$repo_name"
+    set -x
+    $cmd || $cmd
+    set +x
+  done
 }
 
 #
