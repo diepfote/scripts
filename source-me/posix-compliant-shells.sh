@@ -3,6 +3,12 @@
 export EDITOR=nvim
 export VISUAL=nvim
 
+
+export MANPAGER=less
+# colorize man pages with 'bat'
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+
 # cannot use this any longer
 # this breaks custom lesskey files
 #
