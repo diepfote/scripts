@@ -114,8 +114,6 @@ fi
 # common aliases START
 #
 
-alias ccat='pygmentize -g'
-
 alias ls='ls --color=auto'
 
 alias grep='grep --exclude-dir=.git \
@@ -173,8 +171,12 @@ dl-playlist () {
 }
 
 
+ccat () {
+  pygmentize -g $@
+}
+
 lessc () {
-  ccat "$1" | command less -IR
+  ccat "$1" | less -R
 }
 
 
