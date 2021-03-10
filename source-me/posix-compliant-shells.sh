@@ -135,9 +135,6 @@ alias vimj="vim -c ':set ft=json'"
 # pipenv aliases
 alias pipsh="pipenv shell"
 
-# ensure saved attachments end up in Downloads
-alias neomutt='(cd ~/Downloads/mutt && neomutt)'
-
 # common aliases END
 # -------------------------
 
@@ -150,6 +147,11 @@ mpv () {
   command mpv "$1" 1>/dev/null 2>/dev/null &
 }
 
+
+neomutt () {
+  # ensure saved attachments end up in Downloads
+  (cd ~/Downloads && command neomutt $@)
+}
 
 
 dl-youtube () {
