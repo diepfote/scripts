@@ -87,11 +87,15 @@ if [ "$(uname)" = 'Darwin' ]; then
 
   n_empty-trash () {
     local dir=~/.local/share/Trash
+    if [ ! -e "$dir/files" ]; then
+      return
+    fi
+
     ls -alh "$dir"/files
 
     echo 'Do you want to empty the trash?'
     if yesno; then
-      set -x
+      set -u
       rm -rf "$dir"/****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
