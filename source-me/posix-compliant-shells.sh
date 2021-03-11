@@ -239,22 +239,22 @@ checkout-vim () {
 
 
 commit-dot-files () {
-  ~/Documents/scripts/commit-in-dir.sh ~ $@
+  commit-in-dir ~ $@
 }
 commit-function () {
-  ~/Documents/scripts/commit-in-dir.sh ~/.config/fish/functions $@
+  commit-in-dir ~/.config/fish/functions $@
 }
 commit-go () {
-  ~/Documents/scripts/commit-in-dir.sh ~/Documents/golang $@
+  commit-in-dir ~/Documents/golang $@
 }
 commit-python () {
-  ~/Documents/scripts/commit-in-dir.sh ~/Documents/python $@
+  commit-in-dir ~/Documents/python $@
 }
 commit-script () {
-  ~/Documents/scripts/commit-in-dir.sh ~/Documents/scripts $@
+  commit-in-dir ~/Documents/scripts $@
 }
 commit-vim () {
-  ~/Documents/scripts/commit-in-dir.sh ~/.vim $@
+  commit-in-dir ~/.vim $@
 }
 
 
