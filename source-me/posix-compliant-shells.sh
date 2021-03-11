@@ -96,7 +96,7 @@ if [ "$(uname)" = 'Darwin' ]; then
     echo 'Do you want to empty the trash?'
     if yesno; then
       set -u
-      rm -rf "$dir"/****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
+      rm -rf "${dir:?}"/****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
     set +x
