@@ -202,6 +202,84 @@ pdf-merge () {
 }
 
 
+pkgbuild () {
+  _get_pkgname () {
+    echo "$1" | sed "s#.*/##"
+  }
+
+  _get_repo_type () {
+    if echo "$1" | grep '/' 1>/dev/null 2>/dev/null; then
+      echo "$1" | sed "s#/.*#/#"
+    else
+      echo aur/
+    fi
+  }
+
+  _set_urls () {
+    local aur_base_url='https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h='
+    local core_base_url='https://git.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/'
+    local community_base_url='https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/'
+
+    local browser_aur_base_url='https://aur.archlinux.org/packages/'
+    local REPOTYPE_PLACEHOLDER=REPOTYPE
+    local browser_main_base_url="https://www.archlinux.org/packages/$REPOTYPE_PLACEHOLDER"'x86_64/'
+
+    local repo_type="$(_get_repo_type "$1")"
+    local pkgname="$(_get_pkgname "$1")"
+
+    echo -en "$RED" 1>&2; echo -e "repo type:$NC $repo_type" 1>&2
+
+    case "$repo_type" in
+      'extra/' | 'core/')
+        url="$core_base_url$pkgname"
+        browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")"$pkgname")"
+        ;;
+
+      'multilib/' | 'community/')
+        url="$community_base_url$pkgname"
+        browser_url"$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")"$pkgname")"
+        ;;
+
+      'aur/' | '' | '*')
+        url="$aur_base_url$pkgname"
+        browser_url="$browser_aur_base_url$pkgname"
+        ;;
+
+      esac
+  }
+
+  if [ "$1" = -c ]; then
+    no_pager=true
+    open_browser="$3"
+
+    _set_urls "$2"
+  else
+    open_browser="$2"
+
+    _set_urls "$1"
+  fi
+
+  echo -en "$GREEN" 1>&2; echo -e "browser_url:$NC $browser_url" 1>&2
+  if [ -n "$open_browser" ]; then
+    call_browser "$browser_url"
+  fi
+
+  set -x
+  if [ -n "$no_pager" ]; then
+    curl -sL "$url"
+  else
+    curl -sL "$url" | lessc
+  fi
+  set +x
+
+  unset url browser_url open_browser no_pager
+}
+
+pkgbuildv () {
+  pkgbuild $@ | vim -
+}
+
+
 #
 # common functions END
 # ---------------------------
