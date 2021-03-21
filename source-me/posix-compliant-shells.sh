@@ -437,8 +437,10 @@ status-vim () {
 
 
 work-sync () {
-  conf_file=~/Documents/config/repo.conf
-  command='git pull'
+  rclone_fastmail_sync_cheatsheets_from_remote
+
+  local conf_file=~/Documents/config/repo.conf
+  local command='git pull'
 
   for repo_dir in $(cat "$conf_file"); do
     [ -z "$repo_dir" ] && continue  # skip empty lines
