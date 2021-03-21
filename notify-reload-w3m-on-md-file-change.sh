@@ -38,7 +38,7 @@ source ~/Documents/scripts/source-me/common-functions.sh
 watch_dir="$1"
 [ "$(uname)" = Darwin ] && \
   cmd="fswatch -e .git -1 $watch_dir" || \
-  cmd="inotifywait -e modify --format %w%f $watch_dir"
+  cmd="inotifywait -r -e modify --format %w%f $watch_dir"
 
 set -x
 while file=$($cmd); do
