@@ -55,10 +55,10 @@ get_random_alphanumeric ()
 }
 
 
-open_mac-os_app () {
-  local app="$1"
-  shift
-  open /Applications/"$app" -n --args "$1" "$2"
+_rclone_verbose_sync_operation () {
+  set -x
+  rclone sync --exclude '.DS_Store' --exclude '.*.un~' --exclude '.~lock*' -L -v "$@"
+  set +x
 }
 
 call_browser () {
