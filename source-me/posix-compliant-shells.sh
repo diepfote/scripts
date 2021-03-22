@@ -27,9 +27,26 @@ export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.git
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
+
+# -------------------------
+# files to source
+source ~/Documents/scripts/source-me/colors.sh
+
+# source fish functions
+sh_functions_file=~/.sh_functions
+[[ ! -f "$sh_functions_file" ]] && \
+  ~/Documents/scripts/generate_sh_functions_based_on_fish_shell_functions.sh
+source "$sh_functions_file"
+
+# -------------------------
+
+
+
 _add_to_PATH "$HOME/.bin"
 _add_to_PATH "$HOME/go/bin"
 _add_to_PATH "$HOME/Documents/scripts/bin"
+
+
 
 
 # -------------------------
@@ -475,7 +492,6 @@ status-vim () {
 
 work-sync () {
 
-
   if ! rclone_fastmail_sync_cheatsheets_from_remote --dry-run 2>&1 | ag --passthrough 'There was nothing to transfer'; then
     echo 'Do you want to trigger a sync?'
     if yesno; then
@@ -483,7 +499,6 @@ work-sync () {
     fi
 
   fi
-
 
   local conf_file=~/Documents/config/repo.conf
   local command='git pull'
@@ -500,35 +515,7 @@ work-checked-in () {
   __work-checked-in-wrapper ~/Documents/config/repo.conf
 }
 
-w-checked-in () {
-  __work-checked-in-wrapper ~/Documents/config/work-repo.conf
-}
-
-
-w-git_execute_on_all_repos () {
-  git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
-}
-
-w-git-cleanup () {
- w-git-update
- w-git-delete-gone-branches
-}
-
 
 #
 # git helpers END
 # ---------------------------
-
-
-# -------------------------
-# files to source
-source ~/Documents/scripts/source-me/colors.sh
-
-# source fish functions
-sh_functions_file=~/.sh_functions
-[[ ! -f "$sh_functions_file" ]] && \
-  ~/Documents/scripts/generate_sh_functions_based_on_fish_shell_functions.sh
-source "$sh_functions_file"
-
-# -------------------------
-
