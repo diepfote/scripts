@@ -149,6 +149,9 @@ _get_cmd_tmux_pane_id () {
 # copied pass functions start
 
 _complete_files_and_dirs_helper () {
+  DO_NOT_ADD_SLASH_AFTER_DIR=${DO_NOT_ADD_SLASH_AFTER_DIR:-}
+
+
   # completion file for bash
 
   # Copyright (C) 2012 - 2014 Jason A. Donenfeld <Jason@zx2c4.com> and
@@ -190,7 +193,7 @@ _complete_files_and_dirs_helper () {
 		fi
 
 		# append / to directories
-		[[ -d $item ]] && item="$item/"
+		[[ -d $item && -z "$DO_NOT_ADD_SLASH_AFTER_DIR" ]] && item="$item/"
 
 		item="${item%$suffix}"
 		COMPREPLY+=("${item#$prefix}")
