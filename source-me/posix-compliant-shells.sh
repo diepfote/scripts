@@ -177,19 +177,17 @@ neomutt () {
 
 dl-youtube () {
   set -x
-  youtube-dl -f $@
+  youtube-dl -f "$@"
   set +x
 }
 
 dl-playlist () {
   first_arg="$1"
-  second_arg="$2"
-  set -- "${@:2:$(($#))}"; # drop first and second arg
+  shift
 
   set -x
   youtube-dl -f "$first_arg" "$@" \
-    -o '%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s' \
-    "$second_arg"
+    -o '%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s'
   set +x
 }
 
