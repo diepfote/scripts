@@ -8,19 +8,6 @@ _ps1 () {
   PS1="$(~/Documents/golang/tools/bash-helper/bash-helper)"
 }
 
-_rm_trailing_whitespace_bashhist () {
-  # set -x
-  sed -ir 's#\s*$##' ~/.bash_history
-  # set +x
-}
-
-refresh_tmux_openstack_and_kubecontext () {
-  echo "$OS_CLOUD" > /tmp/._openstack_cloud
-  echo "$KUBECONFIG" > /tmp/._kubeconfig
-  tmux refresh-client &
-}
-
-
 # General comments on PROMPT_COMMAND
 #
 # 1) run refresh_tmux_kubecontext in subshell to supress job output
@@ -28,11 +15,7 @@ refresh_tmux_openstack_and_kubecontext () {
 #    by fzf ctrl-r completion
 #
 unset PROMPT_COMMAND
-export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; _rm_trailing_whitespace_bashhist; history -n"
-
-if [ "$(uname)" = Darwin ]; then
-  export PROMPT_COMMAND="(refresh_tmux_openstack_and_kubecontext); $PROMPT_COMMAND"
-fi
+export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; history -n"
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
 
