@@ -332,6 +332,33 @@ rclone_fastmail_sync_cheatsheets_to_remote () {
 }
 
 
+# nicked from https://leahneukirchen.org/dotfiles/bin/tarhash
+tarhash () {
+  # tarhash [--HASH] ARCHIVES... - hash files in archives without extracting
+
+  HASH=sha1
+  case "$1" in
+    --md5|--rmd160|--sha1|--sha256|--sha384|--sha512) HASH=${1#--}; shift
+  esac
+
+    for archive; do
+    bsdtar -cf - --format mtree --options mtree:$HASH @- <$archive |
+      while read -r -A line; do
+        [[ $line[-1] == ${HASH}digest=* ]] &&
+          print "${line[-1]#${HASH}digest=}  ${(g:o:)line[1]}"
+      done
+  done
+}
+
+
+# nicked from https://leahneukirchen.org/dotfiles/bin/zombies
+list-zombies-and-parents () {
+  ps -eo state,pid,ppid,comm | awk '
+    { cmds[$2] = $NF }
+    /^Z/ { print $(NF-1) "/" $2 " zombie child of " cmds[$3] "/" $3 }'
+  }
+
+
 #
 # common functions END
 # ---------------------------
