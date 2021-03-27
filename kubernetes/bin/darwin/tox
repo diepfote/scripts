@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# used for ***REMOVED*** ***REMOVED*** openshift repo
+#
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+default_kube_config_file=~/.kube/config
+trap "rm \"$default_kube_config_file\"" EXIT
+
+if [ -f "$KUBECONFIG" ]; then
+  cp "$KUBECONFIG" "$default_kube_config_file"
+fi
+
+/usr/local/bin/tox "$@"
+

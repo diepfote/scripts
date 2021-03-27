@@ -11,8 +11,7 @@ if [ "$(uname)" = Darwin ]; then
   _add_to_PATH "$HOME/.krew/bin"
 
   alias kn=kubens
-  # for the ***REMOVED*** ***REMOVED***_openshift repo
-  alias tox='[ -f "$KUBECONFIG" ] && cp "$KUBECONFIG" ~/.kube/config; tox'
+
 
   oc-get-pod () {
     local partial_pod_name="$1"
