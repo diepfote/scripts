@@ -20,7 +20,7 @@ PASTE_PRIVATE=1  # public = 0, unlisted = 1, private = 2
 EXPIRATION_DATE=24H
 
 
-echo $@
+echo "$@"
 echo $CONTENT
 
 # for more options see the pastebin.com API ( https://pastebin.com/api )

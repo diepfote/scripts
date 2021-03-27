@@ -6,7 +6,7 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-[ -z "$*" ] && command=bash || command=$@
+[ -z "$*" ] && command=(bash) || command=("$@")
 
 if [ "$(uname)" = Darwin ]; then
   set +e  # start container even if the interface does not have an ip assigned
@@ -29,5 +29,5 @@ docker run \
   -it \
   --name yay \
   yay \
-  $command || docker exec -it yay bash  # try exec on failure
+  "${command[@]}" || docker exec -it yay bash  # try exec on failure
 

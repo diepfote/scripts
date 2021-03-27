@@ -171,7 +171,7 @@ mpv () {
 
 neomutt () {
   # ensure saved attachments end up in Downloads
-  (cd ~/Downloads && command neomutt $@)
+  (cd ~/Downloads && command neomutt "$@")
 }
 
 
@@ -193,7 +193,7 @@ dl-playlist () {
 
 
 ccat () {
-  pygmentize -g $@
+  pygmentize -g "$@"
 }
 
 lessc () {
@@ -212,7 +212,7 @@ pdf-merge () {
   set -- "${@:1:$(($#-1))}"  # all except last
 
   set -x
-  gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="$last_arg" $@
+  gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="$last_arg" "$@"
   set +x
 }
 
@@ -291,7 +291,7 @@ pkgbuild () {
 }
 
 pkgbuildv () {
-  pkgbuild $@ | vim -
+  pkgbuild "$@" | vim -
 }
 
 
@@ -372,46 +372,46 @@ _checkout-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  work_repo_template "$dir" git checkout -- $@
+  work_repo_template "$dir" git checkout -- "$@"
 }
 
 checkout-dot-files () {
-  _checkout-wrapper ~/ $@
+  _checkout-wrapper ~/ "$@"
 }
 checkout-function () {
-  _checkout-wrapper ~/.config/fish/functions $@
+  _checkout-wrapper ~/.config/fish/functions "$@"
 }
 checkout-go () {
-  _checkout-wrapper ~/Documents/golang $@
+  _checkout-wrapper ~/Documents/golang "$@"
 }
 checkout-python () {
-  _checkout-wrapper ~/Documents/python $@
+  _checkout-wrapper ~/Documents/python "$@"
 }
 checkout-script () {
-  _checkout-wrapper ~/Documents/scripts $@
+  _checkout-wrapper ~/Documents/scripts "$@"
 }
 checkout-vim () {
-  _checkout-wrapper ~/.vim $@
+  _checkout-wrapper ~/.vim "$@"
 }
 
 
 commit-dot-files () {
-  commit-in-dir ~ $@
+  commit-in-dir ~ "$@"
 }
 commit-function () {
-  commit-in-dir ~/.config/fish/functions $@
+  commit-in-dir ~/.config/fish/functions "$@"
 }
 commit-go () {
-  commit-in-dir ~/Documents/golang $@
+  commit-in-dir ~/Documents/golang "$@"
 }
 commit-python () {
-  commit-in-dir ~/Documents/python $@
+  commit-in-dir ~/Documents/python "$@"
 }
 commit-script () {
-  commit-in-dir ~/Documents/scripts $@
+  commit-in-dir ~/Documents/scripts "$@"
 }
 commit-vim () {
-  commit-in-dir ~/.vim $@
+  commit-in-dir ~/.vim "$@"
 }
 
 
@@ -419,52 +419,52 @@ _diff-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  work_repo_template "$dir" git diff $@
+  work_repo_template "$dir" git diff "$@"
 }
 
 diff-dot-files () {
-  _diff-wrapper ~ $@
+  _diff-wrapper ~ "$@"
 }
 diff-function () {
-  _diff-wrapper ~/.config/fish/functions $@
+  _diff-wrapper ~/.config/fish/functions "$@"
 }
 diff-go () {
-  _diff-wrapper ~/Documents/golang $@
+  _diff-wrapper ~/Documents/golang "$@"
 }
 diff-python () {
-  _diff-wrapper ~/Documents/python $@
+  _diff-wrapper ~/Documents/python "$@"
 }
 diff-script () {
-  _diff-wrapper ~/Documents/scripts $@
+  _diff-wrapper ~/Documents/scripts "$@"
 }
 diff-vim () {
-  _diff-wrapper ~/.vim $@
+  _diff-wrapper ~/.vim "$@"
 }
 
 _log-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  work_repo_template "$dir" git l $@
+  work_repo_template "$dir" git l "$@"
 }
 
 log-dot-files () {
-  _log-wrapper ~/ $@
+  _log-wrapper ~/ "$@"
 }
 log-function () {
-  _log-wrapper ~/.config/fish/functions $@
+  _log-wrapper ~/.config/fish/functions "$@"
 }
 log-go () {
-  _log-wrapper ~/Documents/golang $@
+  _log-wrapper ~/Documents/golang "$@"
 }
 log-python () {
-  _log-wrapper ~/Documents/python $@
+  _log-wrapper ~/Documents/python "$@"
 }
 log-script () {
-  _log-wrapper ~/Documents/scripts $@
+  _log-wrapper ~/Documents/scripts "$@"
 }
 log-vim () {
-  _log-wrapper ~/.vim $@
+  _log-wrapper ~/.vim "$@"
 }
 
 _reset-wrapper () {

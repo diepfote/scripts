@@ -34,7 +34,7 @@ while getopts "hn:e:" opt; do  # ':' signify that a given flag takes an argument
 done
 
 shift $((OPTIND - 1))
-#echo "remainder: ${RED}$@$NC"
+#echo "remainder: ${RED}"$@"$NC"
 
 partial_pod_name="$1"
 echo -e "${GREEN}namespace:$namespace ${PURPLE}pod:$partial_pod_name$NC ${PURPLE}do_not_match:$do_not_match\n"

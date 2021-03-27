@@ -13,7 +13,7 @@ iterate_files()
 {
   command="$1"
 
-  for subdir in $SUBDIRS; do
+  for subdir in "${SUBDIRS[@]}"; do
     set -x
     $command "$DIR/$subdir"
     set +x
@@ -31,7 +31,7 @@ iterate_files()
 
 
 DIR=~/Documents
-SUBDIRS=$@
+SUBDIRS=("$@")
 
 
 trap 'kill "$spinner_pid"; echo; iterate_files "sudo chown -R root:root"; iterate_files "sudo chmod -R 000"' EXIT
