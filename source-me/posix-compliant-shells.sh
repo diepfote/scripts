@@ -332,25 +332,6 @@ rclone_fastmail_sync_cheatsheets_to_remote () {
 }
 
 
-# nicked from https://leahneukirchen.org/dotfiles/bin/tarhash
-tarhash () {
-  # tarhash [--HASH] ARCHIVES... - hash files in archives without extracting
-
-  HASH=sha1
-  case "$1" in
-    --md5|--rmd160|--sha1|--sha256|--sha384|--sha512) HASH=${1#--}; shift
-  esac
-
-    for archive; do
-    bsdtar -cf - --format mtree --options mtree:$HASH @- <$archive |
-      while read -r -A line; do
-        [[ $line[-1] == ${HASH}digest=* ]] &&
-          print "${line[-1]#${HASH}digest=}  ${(g:o:)line[1]}"
-      done
-  done
-}
-
-
 # nicked from https://leahneukirchen.org/dotfiles/bin/zombies
 list-zombies-and-parents () {
   ps -eo state,pid,ppid,comm | awk '
@@ -515,6 +496,18 @@ status-vim () {
 }
 
 
+_work-wrapper () {
+  local conf_file="$1"
+  shift
+  local command=("$@")
+
+  while read -r repo_dir; do
+    [ -z "$repo_dir" ] && continue  # skip empty lines
+
+    work_repo_template "$repo_dir" "${command[@]}"
+  done <"$conf_file"
+}
+
 work-sync () {
 
   if ! rclone_fastmail_sync_cheatsheets_from_remote --dry-run 2>&1 | ag --passthrough 'There was nothing to transfer'; then
@@ -526,14 +519,23 @@ work-sync () {
   fi
 
   local conf_file=~/Documents/config/repo.conf
-  local command='git pull'
+  local command=('git' 'pull')
 
-  for repo_dir in $(cat "$conf_file"); do
-    [ -z "$repo_dir" ] && continue  # skip empty lines
+  _work-wrapper "$conf_file" "${command[@]}"
+}
 
-    work_repo_template "$repo_dir" $command
-  done
+work_push () {
+  local conf_file=~/Documents/config/repo.conf
+  local command=('git' 'push')
 
+  _work-wrapper "$conf_file" "${command[@]}"
+}
+
+work_fetch () {
+  local conf_file=~/Documents/config/repo.conf
+  local command=('git' 'fetch')
+
+  _work-wrapper "$conf_file" "${command[@]}"
 }
 
 work-checked-in () {
