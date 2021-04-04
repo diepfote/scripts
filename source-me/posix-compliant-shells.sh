@@ -117,6 +117,9 @@ if [ "$(uname)" = 'Darwin' ]; then
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
     set +x
+
+    # refresh i3status
+    killall -SIGUSR1 i3status
   }
 
   xinput-reverse-mouse-buttons () {
