@@ -73,13 +73,12 @@ call_browser () {
 
   if [ "$(uname)" = Darwin ]; then
     source ~/.sh_functions
-  set -x
+    set -x
     open_mac-os_app Firefox.app "$private" "$TMP_FILE"
-  set +x
+    set +x
   else
-  set -x
-    firefox "$private" "$TMP_FILE" 2>/dev/null 1>/dev/null &
-  set +x
+    # -N ... allow network access
+    firewardened-firefox -N "$TMP_FILE" 2>/dev/null 1>/dev/null &
   fi
 
   sleep 2
