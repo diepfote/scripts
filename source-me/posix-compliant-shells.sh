@@ -168,7 +168,7 @@ alias pipsh="pipenv shell"
 #
 
 mpv () {
-  command mpv "$1" 1>/dev/null 2>/dev/null &
+  (command mpv "$1" 1>/dev/null 2>/dev/null &)
 }
 
 

@@ -11,8 +11,7 @@ source ~/Documents/scripts/source-me/spinner.sh
 source ~/Documents/scripts/source-me/common-functions.sh
 source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
 set +u
-spinner  # start spinner
-spinner_pid="$!"
+(spinner; export spinner_pid="$!")
 set -u
 trap "kill $spinner_pid" EXIT  # stop spinner
 
