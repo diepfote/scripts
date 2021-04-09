@@ -6,6 +6,9 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+trap 'set +x' EXIT
+
+
 [ -z "$*" ] && command=(bash) || command=("$@")
 
 
@@ -18,6 +21,8 @@ if [ "$(uname)" = Darwin ]; then
 else
   DISPLAY="$DISPLAY"
 fi
+
+set -x
 
 docker run \
   -v ~/.config/zathura:/root/.config/zathura:ro \
