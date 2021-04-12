@@ -1,5 +1,5 @@
 if which tput >/dev/null 2>&1; then
-  ncolors=$(tput colors)
+  ncolors="$(tput colors || true)"
 fi
 if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
   export RED="$(tput setaf 1)"
@@ -9,5 +9,6 @@ if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
   export PURPLE="$(tput setaf 5)"
   export BOLD="$(tput bold)"
   export NC="$(tput sgr0)"  # no color
+  unset ncolors
 fi
 

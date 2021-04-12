@@ -13,6 +13,26 @@ if [ "$(uname)" = Darwin ]; then
   alias kn=kubens
 
 
+  ***REMOVED*** () {
+    set -x
+    set_kubecontext prod-9-os-muc
+    set +x
+
+    local ***REMOVED***="$(oc get pod -n ***REMOVED***-ci -o name | grep '***REMOVED***-***REMOVED***-' | sed 's#^pod/##' | tail -n1)"
+
+    ***REMOVED*** () {
+      set -x
+      oc exec -it "$1"  -n ***REMOVED***-ci -- cp ***REMOVED***/***REMOVED***/id_rsa /tmp/; chmod 600 /tmp/id_rsa
+      oc exec -it "$1"  -n ***REMOVED***-ci -- chmod 600 /tmp/id_rsa; ssh -t -i /tmp/id_rsa ***REMOVED***"$2" -- bash
+      oc exec -it "$1"  -n ***REMOVED***-ci -- ssh -t -i /tmp/id_rsa ***REMOVED***"$2"
+    }
+
+    ***REMOVED*** "$***REMOVED***" "$1" || set +x
+    set +x
+  }
+
+
+
   oc-get-pod () {
     local partial_pod_name="$1"
     local do_not_match="$2"
