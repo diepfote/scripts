@@ -19,6 +19,12 @@ if rclone sync --exclude .DS_Store --delete-excluded -v 'fastmail:'"$username"'.
   brew list --cask > "$dir"/brew-cask-pkgs.txt
   kubectl krew list > "$dir"/krew-pkgs.txt
 
+  defaults read -g NSUserKeyEquivalents > "$dir"/nsuserkeyequivalents.txt
+  defaults read com.google.Chrome NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
+  defaults read com.toggl.toggldesktop.TogglDesktop NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
+  defaults read com.apple.Safari  NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
+  defaults read com.microsoft.edgemac NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
+
   rclone sync --exclude .DS_Store --delete-excluded -v "$dir" 'fastmail:'"$username"'.fastmail.com/files/-configs/mac-os'
 
 fi
