@@ -113,7 +113,45 @@ if [ "$(uname)" = 'Darwin' ]; then
     echo 'Do you want to empty the trash?'
     if yesno; then
       set -u
-      rm -rf "${dir:?}"/****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
+      rm -rf "${dir:?}"/*
+      set +u
+    fi
+  }
+
+  kill-jamf () {
+    for pid in $(ps -ef | grep -i jamf | grep -v grep | tr -s ' ' | cut -d ' ' -f3); do
+      set -x
+      sudo kill -9 "$pid"
+      set +x
+    done
+  }
+  kill-symantec () {
+    for pid in $(ps -ef | grep -i symantec | grep -v grep | tr -s ' ' | cut -d ' ' -f3); do
+      set -x
+      sudo kill -9 "$pid"
+      set +x
+    done
+  }
+
+
+  mute-active-microphone () {
+    osascript -e "set volume input volume 0"
+  }
+
+  unmute-active-microphone () {
+    osascript -e "set volume input volume 100"
+  }
+
+  open_mac-os_app () {
+    local app="$1"
+    shift
+    open /Applications/"$app" -n --args "$1" "$2"
+  }
+
+  tmutil-compare-last-2-backups () {
+    sudo tmutil listbackups |\
+      tail -2 |\
+      sed 's/.****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
     set +x
