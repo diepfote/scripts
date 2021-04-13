@@ -6,15 +6,27 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+source ~/Documents/scripts/source-me/common-functions.sh
 
-tmp_bash_history_file="/tmp/.bash_history"
+
+tmp_dir="$(mktemp -d)"
+set -x
+tmp_bash_history_file="$tmp_dir/.bash_history"
+set +x
 bash_history_file=~/.bash_history
 ls -al "$bash_history_file"
-trap "sleep 60 && rm "$tmp_bash_history_file" &" EXIT  # keep file for x seconds
 
-path=~/.bash_backup/
-largest_backup_file="$path/$(ls -S "$path" | head -n1)"
-ls -al "$largest_backup_file"
+cleanup () {
+  set -x
+  sleep 90
+  rm -r "$tmp_dir"
+  set +x
+}
+
+trap "set +x; (cleanup 1>/dev/null 2>&1 &)" EXIT  # keep file for x seconds
+
+backup_dir=~/.bash_backup
+largest_backup_file="$backup_dir/$(ls -S "$backup_dir" | head -n1 || die "${RED}[ERROR] no backup file.")"
 
 cp "$largest_backup_file" "$tmp_bash_history_file"
 cat "$bash_history_file" >> "$tmp_bash_history_file"
