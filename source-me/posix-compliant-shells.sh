@@ -151,7 +151,101 @@ if [ "$(uname)" = 'Darwin' ]; then
   tmutil-compare-last-2-backups () {
     sudo tmutil listbackups |\
       tail -2 |\
-      sed 's/.****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
+      sed 's/.*/"&"/' |\
+      xargs  sudo tmutil compare
+  }
+
+
+
+
+  w-checked-in () {
+    __work-checked-in-wrapper ~/Documents/config/work-repo.conf
+  }
+
+
+  w-git_execute_on_all_repos () {
+    git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
+  }
+
+  w-git-cleanup () {
+   w-git-update
+   w-git-delete-gone-branches
+  }
+
+
+  _add_to_PATH "$HOME/Documents/scripts/bin/darwin"
+  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
+  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
+
+
+  export PASSWORD_STORE_DIR=~/.password-store-work
+
+elif grep -L 'Arch Linux' /etc/os-release; then
+  # Arch only | Arch Linux only | Archlinux only
+
+
+
+  snap_all () {
+    local vol_group_mapper=/dev/mapper/VolGroup00
+    # create a local timestamp
+    local d=$(date +%FT%T%Z | sed 's/:/_/g')
+    local d="${d//:/-}"
+
+    local dir=home
+    local size='10GB'
+    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+
+    local dir=root
+    local size='1.5GB'
+    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+
+    local dir=boot
+    local size=356MB
+    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+
+    local dir=var
+    local size='4GB'
+    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+
+    local dir=opt
+    local size='2GB'
+    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+  }
+
+  snap_subset () {
+    local vol_group_mapper=/dev/mapper/VolGroup00
+    # create a local timestamp
+    local d=$(date +%FT%T%Z | sed 's/:/_/g')
+    local d="${d//:/-}"
+
+    local is_private_laptop="$(hostname | grep arch-dev)"
+    # only on private laptop
+    if [ ! -z $is_private_laptop ]; then
+      local dir=boot
+      local size=356MB
+      sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+    fi
+
+    local dir=home
+    local size='10GB'
+    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+
+    local dir=root
+    local size='8GB'
+    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+
+
+    #local dir=var
+    #local size='2GB'
+    #sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+
+    #local dir=opt
+    #local size='2.5GB'
+    #sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+  }
+
+  snap-renew () {
+    sudo lvremove -y /dev/VolGroup00/s_****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
     set +x

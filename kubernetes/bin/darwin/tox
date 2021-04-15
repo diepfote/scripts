@@ -11,11 +11,17 @@ shopt -s failglob  # error on unexpaned globs
 
 
 default_kube_config_file=~/.kube/config
-trap "rm \"$default_kube_config_file\"" EXIT
 
-if [ -f "$KUBECONFIG" ]; then
+# shellcheck disable=SC2064
+trap "rm \"$default_kube_config_file\" 2>/dev/null" EXIT
+
+set +u
+if [ -e "$KUBECONFIG" ]; then
   cp "$KUBECONFIG" "$default_kube_config_file"
+else
+    echo -e "${RED}[ERROR] no KUBECONFIG!$NC\n"
 fi
+set -u
 
 /usr/local/bin/tox "$@"
 
