@@ -10,11 +10,9 @@ source ~/Documents/scripts/source-me/common-functions.sh
 
 
 tmp_dir="$(mktemp -d)"
-set -x
 tmp_bash_history_file="$tmp_dir/.bash_history"
-set +x
 bash_history_file=~/.bash_history
-ls -al "$bash_history_file"
+ls -lh "$bash_history_file"
 
 cleanup () {
   set -x
@@ -28,9 +26,13 @@ trap "set +x; (cleanup 1>/dev/null 2>&1 &)" EXIT  # keep file for x seconds
 backup_dir=~/.bash_backup
 largest_backup_file="$backup_dir/$(ls -S "$backup_dir" | head -n1 || die "${RED}[ERROR] no backup file.")"
 
+
+set -x
+ls -lh "$largest_backup_file"
+set +x
 cp "$largest_backup_file" "$tmp_bash_history_file"
 cat "$bash_history_file" >> "$tmp_bash_history_file"
-ls -al "$tmp_bash_history_file"
+ls -lh "$tmp_bash_history_file"
 
 cp "$bash_history_file" "$bash_history_file".bck
 cp "$tmp_bash_history_file" "$bash_history_file"
