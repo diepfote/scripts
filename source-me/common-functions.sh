@@ -74,6 +74,7 @@ call_browser () {
   if [ "$(uname)" = Darwin ]; then
     source ~/.sh_functions
     set -x
+    # chrome-cli open file://"$TMP_FILE" -i
     open_mac-os_app Firefox.app "$private" "$TMP_FILE"
     set +x
   else
