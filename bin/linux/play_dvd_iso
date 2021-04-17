@@ -9,7 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 source ~/Documents/scripts/source-me/common-functions.sh
 
 
-mount_dir=/tmp/play_dvd_mount
+mount_dir="$(mktemp -d)"
 mkdir -p "$mount_dir"  # p flag to avoid errors if exists
 
 dir="$(read_toml_setting ~/Documents/config/sync.conf movies)"
@@ -21,22 +21,20 @@ if [ ! -f "$file" ]; then
 fi
 
 cleanup () {
-  set -x
-  # TODO: use fusermount -u "$mount_dir"
-  (sudo umount "$mount_dir" &)
+  fusermount -u "$mount_dir"
+  rm -r "$mount_dir"
   set +x
 }
 trap "cleanup" EXIT
 
-# TODO: use fuseiso
-sudo mount -o loop  "$file" "$mount_dir"
+fuseiso "$file" "$mount_dir"
 
 if [ $# -lt 2 ]; then
   set -x
-  command mpv "$mount_dir"
-  set +x
+  /usr/bin/mpv "$mount_dir"
 else
-  vlc "$mount_dir"
+  set -x
+  /usr/bin/vlc "$mount_dir"
 fi
 
 
