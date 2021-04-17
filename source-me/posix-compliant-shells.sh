@@ -318,6 +318,28 @@ dl-youtube () {
   set +x
 }
 
+_dl-youtube-filter()
+{
+  local url="$1"
+  local filter="$2"
+  local message="$3"
+  local quality="$4"
+
+  if [ -z "$quality" ]; then
+    local quality=best
+  fi
+
+  set -x
+	local OUTPUT="$(dl-youtube "$quality" --match-filter "$filter" -w --add-metadata "$url" | grep 'Destination')"
+  set +x
+
+  if [ -z "$OUTPUT" ]; then
+    echo -e "$message"
+  else
+    echo -e "$OUTPUT"
+  fi
+}
+
 dl-playlist () {
   first_arg="$1"
   shift
