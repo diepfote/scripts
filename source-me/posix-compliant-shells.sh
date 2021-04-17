@@ -184,6 +184,8 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   # Arch only | Arch Linux only | Archlinux only
 
 
+  _add_to_PATH "$HOME/Documents/scripts/bin/linux"
+
 
   snap_all () {
     local vol_group_mapper=/dev/mapper/VolGroup00

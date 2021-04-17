@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+source ~/Documents/scripts/source-me/common-functions.sh
+
+
+mount_dir=/tmp/play_dvd_mount
+mkdir -p "$mount_dir"  # p flag to avoid errors if exists
+
+dir="$(read_toml_setting ~/Documents/config/sync.conf movies)"
+file="$dir/$1"
+
+# check is in default movie directory
+if [ ! -f "$file" ]; then
+  file="$1"
+fi
+
+cleanup () {
+  set -x
+  # TODO: use fusermount -u "$mount_dir"
+  (sudo umount "$mount_dir" &)
+  set +x
+}
+trap "cleanup" EXIT
+
+# TODO: use fuseiso
+sudo mount -o loop  "$file" "$mount_dir"
+
+if [ $# -lt 2 ]; then
+  set -x
+  command mpv "$mount_dir"
+  set +x
+else
+  vlc "$mount_dir"
+fi
+
+

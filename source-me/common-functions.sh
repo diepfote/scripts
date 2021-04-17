@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
 
+read_toml_setting () {
+  # config_file = $1
+  # setting     = $2
+  ~/Documents/python/read_toml_setting.py "$@"
+}
+
+
 _add_to_PATH () {
   local path_to_add="$1"
 
