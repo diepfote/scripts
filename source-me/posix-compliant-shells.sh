@@ -402,7 +402,9 @@ pkgbuild () {
 
   if [ "$1" = -c ]; then
     no_pager=true
+    set +u
     open_browser="$3"
+    set -u
 
     _set_urls "$2"
   else

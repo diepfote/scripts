@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
+
+trap "set +x" EXIT
+
+_yay-update-firejail () {
+  if ! yay -Qu | grep firejail-git; then
+    return
+  fi
+
+  if pkgbuild -c firejail-git | sha256sum | grep -f - ~/.firejail.sha256sum; then
+    echo
+    set -x
+    yay --noconfirm -Sa firejail-git
+    set +x
+  else
+    source ~/Documents/scripts/source-me/colors.sh
+    echo -en "$RED"
+    echo     "[!] checksums do not match."
+    echo -e "     Not updating automatically!$NC"
+  fi
+}
+
+_yay-update-anything-but-firejail () {
+  if yay -Qyyua | grep -vE '^$|firejail'; then
+    set -x
+    yay -Syua
+    set +x
+  fi
+}
+
+pacman_cmd=('sudo' 'pacman' '-Syu')
+
+if [ "$1" = --retry ]; then
+  pacman_cmd+=('--noconfirm')
+else
+  pacman_cmd+=('-y')
+fi
+
+set -x
+"${pacman_cmd[@]}" || exit
+set +x
+_yay-update-firejail || exit
+_yay-update-anything-but-firejail || exit
+
