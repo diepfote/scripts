@@ -6,7 +6,9 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-source ~/.sh_functions
+
+source ~/Documents/scripts/source-me/common-functions.sh
+
 
 dir=~/Documents/misc/mac-os
 [ ! -d "$dir" ] && mkdir "$dir"
