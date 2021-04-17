@@ -41,9 +41,12 @@ _yay-update-anything-but-firejail () {
 
 pacman_cmd=('sudo' 'pacman' '-Syu')
 
+set +u
 if [ "$1" = --retry ]; then
+  set -u
   pacman_cmd+=('--noconfirm')
 else
+  set -u
   pacman_cmd+=('-y')
 fi
 
