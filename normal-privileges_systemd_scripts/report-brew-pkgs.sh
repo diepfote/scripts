@@ -14,8 +14,11 @@ dir=~/Documents/misc/mac-os
 [ ! -d "$dir" ] && mkdir "$dir"
 
 username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
-if rclone sync --exclude .DS_Store --delete-excluded -v 'fastmail:'"$username"'.fastmail.com/files/-configs/mac-os' "$dir"; then
+fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/mac-os'
 
+if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; then
+
+  set -x
   #brew info --installed --json | jq .[].name | sed 's#"##g' > ~/Documents/misc/mac-os/brew-pkgs.txt
   brew list --formula > "$dir"/brew-pkgs.txt
   brew list --cask > "$dir"/brew-cask-pkgs.txt
@@ -26,8 +29,9 @@ if rclone sync --exclude .DS_Store --delete-excluded -v 'fastmail:'"$username"'.
   defaults read com.toggl.toggldesktop.TogglDesktop NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
   defaults read com.apple.Safari  NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
   defaults read com.microsoft.edgemac NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
+  set +x
 
-  rclone sync --exclude .DS_Store --delete-excluded -v "$dir" 'fastmail:'"$username"'.fastmail.com/files/-configs/mac-os'
+  _rclone_verbose_sync_operation --delete-excluded "$dir" "$fastmail_path"
 
 fi
 

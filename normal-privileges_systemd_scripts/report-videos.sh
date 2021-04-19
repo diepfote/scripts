@@ -15,13 +15,14 @@ dir=~/Documents/misc/videos
 [ ! -d "$dir" ] && mkdir "$dir"
 
 username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+fastmail_path='fastmail:'"$username"'.fastmail.com/files/videos'
 
-if rclone sync --delete-excluded -v 'fastmail:'"$username"'.fastmail.com/files/videos' "$dir"; then
+if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; then
   [ "$(uname)" = Darwin ] && filename=videos-work.txt \
                           || filename=videos-home.txt
   write_current_videos_to_file "$dir" "$filename"
 
-  rclone sync --delete-excluded -v "$dir" 'fastmail:'"$username"'.fastmail.com/files/videos'
+  _rclone_verbose_sync_operation --delete-excluded "$dir" "$fastmail_path"
 
 fi
 

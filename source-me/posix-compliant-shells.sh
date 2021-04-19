@@ -489,7 +489,7 @@ rclone_fastmail_sync_cheatsheets_to_remote () {
   src=~/Documents/cheatsheets/
   dst='fastmail:'"$username"'.fastmail.com/files/cheatsheets/'
 
-  _rclone_verbose_sync_operation "$src" "$dst" "$@"
+  _rclone_verbose_sync_operation --delete-excluded "$src" "$dst" "$@"
 }
 
 
