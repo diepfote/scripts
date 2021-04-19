@@ -42,5 +42,5 @@ docker run \
   -it \
   --name zathura \
   zathura \
-  "${command[@]}" || docker exec -it yay bash  # try exec on failure
+  "${command[@]}" || docker exec -it zathura bash  # try exec on failure
 

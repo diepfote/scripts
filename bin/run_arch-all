@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+trap 'set +x' EXIT
+
+
+[ -z "$*" ] && command=(bash) || command=("$@")
+
+set -x
+
+docker run \
+  -u build-user \
+  --network=host \
+  -v ~/:/build:ro \
+  -v "$PWD":/pwd:ro \
+  --rm \
+  -it \
+  --name arch-all \
+  arch-all \
+  "${command[@]}" || docker exec -it arch-all bash  # try exec on failure
+
