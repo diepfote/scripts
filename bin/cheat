@@ -35,7 +35,7 @@ if [ "$extension" = pdf ] || [ "$extension" = png ]  || \
   fi
 
 else
-  command=lessc
+  command=bat
   num_args_to_remove=1
   if [ "$1" = '--edit' ]; then
     num_args_to_remove=2

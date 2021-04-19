@@ -27,6 +27,8 @@ export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.git
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 
+export BAT_STYLE=plain  # use change for + signs next to modifications --> git
+
 
 # -------------------------
 # files to source
