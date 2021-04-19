@@ -4,8 +4,14 @@ unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
 # export PS1="[ $GREEN\w$NC ]\n$ "
 
+filename="bash-helper"
+
+if [ "$(hostname)" = docker-desktop ]; then
+  filename="bash-helper-linux"
+fi
+
 _ps1 () {
-  PS1="$(~/Documents/golang/tools/bash-helper/bash-helper)"
+  PS1="$(~/Documents/golang/tools/bash-helper/"$filename")"
 }
 
 # General comments on PROMPT_COMMAND
