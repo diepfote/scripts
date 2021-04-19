@@ -10,6 +10,12 @@ shopt -s failglob  # error on unexpaned globs
 trap "popd" EXIT
 pushd ~/Documents/dockerfiles/"$1"
 
+if [ "$1" = arch-all ]; then
+  set -x
+  ./arch-package-template.py
+  set +x
+fi
+
 set -x
 docker build --no-cache -t "$1" .
 set +x
