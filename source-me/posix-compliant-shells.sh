@@ -681,6 +681,22 @@ work-sync () {
 
   fi
 
+
+  local username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+
+  if [ "$(uname)" = Darwin ]; then
+    local fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/arch'
+    local dir=~/Documents/misc/arch
+    [ ! -d "$dir" ] && mkdir -p "$dir"
+  else
+    local fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/mac-os'
+    local dir=~/Documents/misc/mac-os
+  fi
+
+  [ ! -d "$dir" ] && mkdir -p "$dir"
+  _rclone_verbose_sync_operation "$fastmail_path" "$dir"
+
+
   local conf_file=~/Documents/config/repo.conf
   local command=('git' 'pull')
 

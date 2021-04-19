@@ -12,7 +12,7 @@ source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
 dir=~/Documents/misc/arch
-[ ! -d "$dir" ] && mkdir "$dir"
+[ ! -d "$dir" ] && mkdir -p "$dir"
 
 username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
 fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/arch'
