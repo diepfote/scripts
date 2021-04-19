@@ -19,8 +19,16 @@ fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/arch'
 
 if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; then
 
-  # TODO pacman logic
+  # save list of pacman packages
+  misc_arch_dir="$HOME/Documents/misc/arch"
+  if [ ! -e "$misc_arch_dir" ]; then
+    mkdir -p "$misc_arch_dir"
+  fi
 
+  pacman -Qqem > "$misc_arch_dir/packages_explicit_external"
+  pacman -Qqen > "$misc_arch_dir/packages_explicit_internal"
+  pacman -Qqm  > "$misc_arch_dir/packages_all_external"
+  pacman -Qqn  > "$misc_arch_dir/packages_all_internal"
 
   _rclone_verbose_sync_operation --delete-excluded "$dir" "$fastmail_path"
 
