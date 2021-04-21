@@ -4,14 +4,14 @@ unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
 # export PS1="[ $GREEN\w$NC ]\n$ "
 
-filename="bash-helper"
+BASH_HELPER_FILENAME="bash-helper"
 
 if [ "$(hostname)" = docker-desktop ]; then
-  filename="bash-helper-linux"
+  BASH_HELPER_FILENAME="bash-helper-linux"
 fi
 
 _ps1 () {
-  PS1="$(~/Documents/golang/tools/bash-helper/"$filename")"
+  PS1="$(~/Documents/golang/tools/bash-helper/"$BASH_HELPER_FILENAME")"
 }
 
 # General comments on PROMPT_COMMAND
@@ -25,6 +25,7 @@ export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; history -n"
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
 
+# shellcheck disable=SC1090
 [[ -x kubectl ]] && source <(kubectl completion bash)
 
 eval "$(direnv hook bash 2>/dev/null || true)"
