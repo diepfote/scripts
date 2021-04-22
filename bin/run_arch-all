@@ -21,6 +21,8 @@ docker run \
   -v ~/:/build:ro \
   -v "$PWD":/pwd:ro \
   --rm \
+ --cap-add SYS_ADMIN \
+ --device /dev/fuse \
   -it \
   --name arch-all \
   arch-all \
