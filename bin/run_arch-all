@@ -16,6 +16,8 @@ set -x
 docker run \
   -u build-user \
   --network=host \
+  -v ~/.cache/yay:/build/.cache/yay \
+  -v ~/.gnupg:/build/.gnupg \
   -v ~/:/build:ro \
   -v "$PWD":/pwd:ro \
   --rm \
