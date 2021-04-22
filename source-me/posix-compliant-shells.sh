@@ -262,7 +262,91 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   }
 
   snap-renew () {
-    sudo lvremove -y /dev/VolGroup00/s_****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
+    sudo lvremove -y /dev/VolGroup00/s_*; snap_subset
+  }
+
+  xdg-open () {
+    (command xdg-open "$@" >/dev/null 2>&1 &)
+  }
+
+  _firewardened-app () {
+    set -x
+    (firewarden "$@" 1>/dev/null 2>&1 &)
+    set +x
+  }
+
+  firewardened-firefox () {
+    flags=()
+    if [ "$1" = '-N' ]; then
+      flags+=('-N')
+      shift
+    fi
+    _firewardened-app "${flags[@]}" /usr/bin/firefox "$@"
+  }
+
+  firewardened-chromium () {
+    _firewardened-app /usr/bin/chromium --js-flags=--noexpose_wasm "$@"
+  }
+
+
+  pacman-get-required-by-for-upgradeable () {
+    _pacman-get-required-by-for-upgradeable () {
+      pacman -Sup --print-format '%n' | xargs pacman -Qii
+    }
+    _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
+  }
+
+
+  export PASSWORD_STORE_DIR=~/.password-store-private
+
+
+  commit-firejail () {
+    commit-in-dir /etc/firejail "$@"
+  }
+  commit-pacman-hooks () {
+    commit-in-dir /etc/pacman.d/hooks "$@"
+  }
+
+
+  diff-firejail () {
+    _diff-wrapper /etc/firejail "$@"
+  }
+  diff-pacman-hooks () {
+    _diff-wrapper /etc/pacman.d/hooks "$@"
+  }
+
+  status-firejail () {
+    _status-wrapper /etc/firejail
+  }
+  status-pacman-hooks () {
+    _status-wrapper /etc/pacman.d/hooks
+  }
+
+
+  do_sync () {
+    echo
+    echo Sync ***REMOVED***
+    rsync -av ~/Videos/***REMOVED***/***REMOVED***_bluemchen/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
+
+    echo
+    echo Sync ***REMOVED***
+    rsync -av ~/Videos/***REMOVED***/***REMOVED***_***REMOVED***UN***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
+
+    echo
+    echo Sync yoga
+    rsync -av ~/Videos/***REMOVED***/yoga/ "$(read_toml_setting ~/Documents/config/sync.conf yoga)"
+
+    echo
+    echo Sync ***REMOVED*** ***REMOVED***
+    rsync -av ~/Videos/***REMOVED***/***REMOVED***_***REMOVED***-***REMOVED***_***REMOVED***-und***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
+
+    echo
+    echo Sync Löwenzahn
+    rsync -av ~/Videos/***REMOVED***/***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
+
+    echo
+    echo Sync photos
+    rsync -av ~/Documents/iphone_pictures/****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
     set +x
