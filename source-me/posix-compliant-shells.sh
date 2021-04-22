@@ -56,6 +56,12 @@ _add_to_PATH "$HOME/Documents/scripts/bin"
 
 if [ "$(uname)" = 'Darwin' ]; then
 
+  export GIT_AUTHOR_NAME='Florian Begusch'
+  export GIT_AUTHOR_EMAIL='florian.begusch@***REMOVED***.***REMOVED***.com'
+  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+
+
   _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"
   _add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"
   _add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"
@@ -184,6 +190,13 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 elif grep -L 'Arch Linux' /etc/os-release; then
   # Arch only | Arch Linux only | Archlinux only
+
+
+  export GIT_AUTHOR_NAME='Florian Begusch'
+  export GIT_AUTHOR_EMAIL='florian.begusch@gmail.com'
+  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+
 
 
   _add_to_PATH "$HOME/Documents/scripts/bin/linux"
