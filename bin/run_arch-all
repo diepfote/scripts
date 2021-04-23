@@ -18,6 +18,7 @@ docker run \
   --network=host \
   -v ~/.cache/yay:/build/.cache/yay \
   -v ~/.gnupg:/build/.gnupg \
+  -v ~/.container:/build/.container \
   -v ~/:/build:ro \
   -v "$PWD":/pwd:ro \
   --rm \
