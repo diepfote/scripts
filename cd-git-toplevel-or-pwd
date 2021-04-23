@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
-cd "$(git rev-parse --show-toplevel 2>/dev/null || echo -n "$PWD")"
-bash
+__cd_dir () {
+  local git_top_level
+  git_top_level="$(git rev-parse --show-toplevel 2>/dev/null)"
+
+  if [ "$git_top_level" = "$HOME" ]; then
+    cd "$PWD"
+  else
+    cd "$git_top_level"
+  fi
+
+  # shellcheck disable=SC2164
+}
+
+trap bash EXIT
+
+__cd_dir
 
