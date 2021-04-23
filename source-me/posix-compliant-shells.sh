@@ -358,9 +358,15 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   }
 
   xinput-reverse-mouse-buttons () {
+    if [ $# -lt 1 ]; then
+      set -- "$(xinput list | grep Triathlon | tr '\t' ' ' | tr -s ' ' | cut -d ' ' -f6 | cut -d = -f2 | head -n1)"
+    fi
     xinput set-button-map "$1" 3 2 1
   }
   xinput-reset-mouse-buttons () {
+    if [ $# -lt 1 ]; then
+      set -- "$(xinput list | grep Triathlon | tr '\t' ' ' | tr -s ' ' | cut -d ' ' -f6 | cut -d = -f2 | head -n1)"
+    fi
     xinput set-button-map "$1" 1 2 3
   }
 
