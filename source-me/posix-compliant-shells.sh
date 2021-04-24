@@ -204,63 +204,57 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   _add_to_PATH "$HOME/Documents/scripts/bin/linux"
 
 
+  _snap () {
+    local d
+    local dir
+    local size
+
+    dir="$1"
+    d="$2"
+
+    if [ $# -lt 3 ]; then
+      size='4GB'
+    else
+      size="$3"
+    fi
+    sudo lvcreate -L "$size" -s -n "s_$dir-$d" "$vol_group_mapper-$dir"
+  }
+
   snap_all () {
     local vol_group_mapper=/dev/mapper/VolGroup00
-    # create a local timestamp
-    local d=$(date +%FT%T%Z | sed 's/:/_/g')
-    local d="${d//:/-}"
 
-    local dir=home
-    local size='10GB'
-    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+    local d
+    local dir
+    local lvs
 
-    local dir=root
-    local size='1.5GB'
-    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+    d="$(date +%FT%T%Z)"
+    d="${d//:/-}"
 
-    local dir=boot
-    local size=356MB
-    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+    LVs=($(IFS='$\n'; sudo lvs -o lv_name | tail -n +2 | awk '{ print $1 }' | sed -r '/[0-9]{4}/d'))
 
-    local dir=var
-    local size='4GB'
-    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
-
-    local dir=opt
-    local size='2GB'
-    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+    for dir in "${LVs[@]}"; do
+      _snap "$dir" "$d"
+    done
   }
 
   snap_subset () {
     local vol_group_mapper=/dev/mapper/VolGroup00
-    # create a local timestamp
-    local d=$(date +%FT%T%Z | sed 's/:/_/g')
-    local d="${d//:/-}"
 
-    local is_private_laptop="$(hostname | grep arch-dev)"
-    # only on private laptop
-    if [ ! -z $is_private_laptop ]; then
-      local dir=boot
-      local size=356MB
-      sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
-    fi
+    local d
+    local dir
+    local size
 
-    local dir=home
-    local size='10GB'
-    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+    d="$(date +%FT%T%Z)"
+    d="${d//:/-}"
+
+    dir=home
+    size='10GB'
+    _snap "$dir" "$d" "$size"
+
 
     local dir=root
     local size='8GB'
-    sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
-
-
-    #local dir=var
-    #local size='2GB'
-    #sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
-
-    #local dir=opt
-    #local size='2.5GB'
-    #sudo lvcreate -L $size -s -n s_$dir-$d $vol_group_mapper-$dir
+    _snap "$dir" "$d" "$size"
   }
 
   snap-renew () {
