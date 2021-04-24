@@ -741,26 +741,29 @@ reset-vim () {
 }
 
 _status-wrapper () {
-  work_repo_template "$1" git status -sb
+  local dir="$1"
+  shift
+
+  work_repo_template "$dir" git status -sb "$@"
 }
 
 status-dot-files () {
-  _status-wrapper ~
+  _status-wrapper ~ "$@"
 }
 status-function () {
-  _status-wrapper ~/.config/fish/functions
+  _status-wrapper ~/.config/fish/functions "$@"
 }
 status-go () {
-  _status-wrapper ~/Documents/golang
+  _status-wrapper ~/Documents/golang "$@"
 }
 status-python () {
-  _status-wrapper ~/Documents/python
+  _status-wrapper ~/Documents/python "$@"
 }
 status-script () {
-  _status-wrapper ~/Documents/scripts
+  _status-wrapper ~/Documents/scripts "$@"
 }
 status-vim () {
-  _status-wrapper ~/.vim
+  _status-wrapper ~/.vim "$@"
 }
 
 
