@@ -3,13 +3,22 @@
 trap "popd" EXIT
 
 pushd "$1"
+shift
 
 git status -sb
 echo -e '\n----------------\n'
 
-git add .
+message="$1"
+shift
+
+if [ $# -lt 1 ]; then
+  git add .
+else
+  for path in "$@"; do
+    git add "$path"
+  done
+fi
 echo
-message="${@:2}"
 [ -n "$message" ] && git commit -m "$message" \
   || git commit
 echo -e '\n----------------\n'
