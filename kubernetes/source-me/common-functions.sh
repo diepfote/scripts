@@ -29,6 +29,11 @@ if [ "$(uname)" = Darwin ]; then
   }
 
 
+  operator-exec-pod () {
+    ~/Documents/***REMOVED***/***REMOVED***.sh -p "$(pass ***REMOVED***D***/***REMOVED*** | head -n1)" "$(pass tail ***REMOVED***D***/***REMOVED*** | head -n1)"
+  }
+
+
 
   oc-get-pod () {
     local partial_pod_name="$1"
