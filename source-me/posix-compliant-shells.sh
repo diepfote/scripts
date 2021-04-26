@@ -109,8 +109,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
   alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
 
-
-  alias brew-leaves-and-their-deps='brew leaves | xargs brew deps --installed --for-each | sed "s/^.*:/$BLUE&$NC/"'
+  alias brew-leaves-required-by='brew leaves | xargs brew-required-by'
 
   n_empty-trash () {
     local dir=~/.local/share/Trash
