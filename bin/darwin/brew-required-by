@@ -6,6 +6,16 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+set +u
+if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
+  set -u
+  for pkg in "$@"; do
+    brew info "$pkg"
+    echo
+  done
+fi
+set -u
+
 brew deps --installed --for-each "$@" \
     | sed "s/^.*:/$BLUE&$NC/"
 
