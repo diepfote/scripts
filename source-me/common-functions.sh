@@ -20,6 +20,7 @@ _add_to_PATH () {
  fi
 }
 
+# shellcheck disable=SC2120
 yesno ()
 {
 	[[ -t 0 ]] || return 0

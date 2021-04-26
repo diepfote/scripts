@@ -230,12 +230,15 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
     local d
     local dir
-    local lvs
+    local LVs=()
 
     d="$(date +%FT%T%Z)"
     d="${d//:/-}"
 
-    LVs=($(IFS='$\n'; sudo lvs -o lv_name | tail -n +2 | awk '{ print $1 }' | sed -r '/[0-9]{4}/d'))
+
+    while IFS='' read -r line; do
+      LVs+=("$line")
+    done < <(sudo lvs -o lv_name | tail -n +2 | awk '{ print $1 }' | sed -r '/[0-9]{4}/d')
 
     for dir in "${LVs[@]}"; do
       _snap "$dir" "$d"

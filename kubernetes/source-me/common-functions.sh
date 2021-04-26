@@ -14,11 +14,8 @@ if [ "$(uname)" = Darwin ]; then
 
 
   ***REMOVED*** () {
-    set -x
-    set_kubecontext prod-9-os-muc
-    set +x
-
-    local ***REMOVED***="$(oc get pod -n ***REMOVED***-ci -o name | grep '***REMOVED***-***REMOVED***-' | sed 's#^pod/##' | tail -n1)"
+    local ***REMOVED***
+    ***REMOVED***="$(oc get pod -n ***REMOVED***-ci -o name | grep '***REMOVED***-***REMOVED***-' | sed 's#^pod/##' | tail -n1)"
 
     ***REMOVED*** () {
       set -x
@@ -41,14 +38,20 @@ if [ "$(uname)" = Darwin ]; then
   oc-get-pods () {
     local partial_pod_name="$1"
     local do_not_match="$2"
-    set -x
     # shellcheck disable=SC2154
     if [ -n "$namespace" ]; then
-      kubectl get pod -o name -n "$namespace" | grep -vE "$do_not_match"  | grep "$partial_pod_name"
+      if [ -n "$do_not_match" ]; then
+        kubectl get pod -o name -n "$namespace" | grep -vE "$do_not_match"  | grep "$partial_pod_name"
+      else
+        kubectl get pod -o name -n "$namespace"  | grep "$partial_pod_name"
+      fi
     else
-      kubectl get pod -o name | grep -vE "$do_not_match"  | grep "$partial_pod_name"
+      if [ -n "$do_not_match" ]; then
+        kubectl get pod -o name | grep -vE "$do_not_match"  | grep "$partial_pod_name"
+      else
+        kubectl get pod -o name | grep "$partial_pod_name"
+      fi
     fi
-    set +x
   }
 
   oc-get-pod-openshift () {
