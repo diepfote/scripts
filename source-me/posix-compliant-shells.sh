@@ -567,7 +567,7 @@ pkgbuild () {
 }
 
 pkgbuildv () {
-  pkgbuild "$@" | vim -
+  pkgbuild -c "$@" | vim -
 }
 
 
