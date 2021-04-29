@@ -7,14 +7,58 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+# Parse arguments
+positional_args=()
+GREEDY=''
+REINSTALL_XCODE=''
+while [ $# -gt 0 ]; do
+  key="$1"
+  case "$key" in
+    -g|--greedy)
+    GREEDY=true
+    shift
+    ;;
+
+    -r|--reinstall-xcode)
+    REINSTALL_XCODE=true
+    shift
+    ;;
+
+    -h|--help)
+    help
+    exit 0
+    ;;
+
+    *) # unknown option
+    positional_args+=("$1") # save in an array for later
+    shift
+    ;;
+  esac
+done
+set -- "${positional_args[@]}"
+
+
+# shellcheck source=/dev/null
 source ~/Documents/scripts/source-me/spinner.sh
+# shellcheck source=/dev/null
 source ~/Documents/scripts/source-me/common-functions.sh
+# shellcheck source=/dev/null
 source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
+
 set +u
 spinner
 spinner_pid="$!"
 set -u
-trap "kill $spinner_pid" EXIT  # stop spinner
+
+cleanup () {
+  set +x
+
+  local spinner_pid="$1"
+  kill "$spinner_pid"
+}
+
+# shellcheck disable=SC2064
+trap "cleanup \"$spinner_pid\"" EXIT  # stop spinner
 
 
 echo -e '\n--------\npip\n'
@@ -53,11 +97,9 @@ brew upgrade || true
 
 # ---------------------------------------------------
 
-if [ "$#" -gt 0 ]; then
-  if [ "$1" = --greedy ]; then
-    echo -en "  $PURPLE"; echo -e "[>] starting greedy cask upgrades$NC"
-    brew upgrade --cask --greedy
-  fi
+if [ -n "$GREEDY" ]; then
+  echo -en "  $PURPLE"; echo -e "[>] starting greedy cask upgrades$NC"
+  brew upgrade --cask --greedy
 fi
 
 
@@ -66,4 +108,14 @@ echo -e '\n\n--------\nListing Darwin updates\n'
 # sudo softwareupdate -i --no-scan -a -R
 #
 softwareupdate --all -l --force
+
+if [ -n "$REINSTALL_XCODE" ]; then
+  echo -en "  $PURPLE"; echo -e "[>] reinstallig xcode commandline tools$NC"
+
+  set -x
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+  sudo -k
+  set +x
+fi
 
