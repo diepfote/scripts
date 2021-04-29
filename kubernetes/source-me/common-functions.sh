@@ -92,21 +92,52 @@ if [ "$(uname)" = Darwin ]; then
     export KUBECONFIG=~/.kube/"$1"
   }
 
-
-  _watch-namespace-wrapper () {
-    tmux split-window -d  'export BASH_SOURCE_IT=true; bash'
-    sleep 5
-    tmux send-keys -t .+ "source ~/.bashrc; set_kubecontext \"$1\"; watch oc get pod -n $2" C-m
- }
-
   watch-namespace () {
-    local region
 
-    if [[ "$1" =~ 9 ]]; then
+    # Parse arguments
+    local positional_args=()
+    local namespace=''
+    local region=''
+    while [ $# -gt 0 ]; do
+      key="$1"
+      case "$key" in
+        -n|--namespace)
+        namespace="$2"
+        shift 2
+        ;;
+
+        -r|--region)
+        region="$2"
+        shift 2
+        ;;
+
+        -h|--help)
+        _help() {
+cat <<EOF
+USAGE: watch-namespace -n <NAMESPACE> -r <REGION>
+
+OPTIONS:
+  -n|--namespace NAMESPACE Namespace to watch
+  -r|--region    REGION    Datacenter region
+EOF
+        }
+        _help
+        return
+        ;;
+
+        *) # unknown option
+        positional_args+=("$1") # save in an array for later
+        shift
+        ;;
+      esac
+    done
+    set -- "${positional_args[@]}"
+
+    if [[ "$region" =~ 9 ]]; then
       region=prod-9-os-muc
-    elif [[ "$1" =~ 10 ]]; then
+    elif [[ "$region" =~ 10 ]]; then
       region=10-prod-os-muc
-    elif [[ "$1" =~ 12 ]]; then
+    elif [[ "$region" =~ 12 ]]; then
       region=12-prod-os-muc
     fi
 
@@ -115,7 +146,11 @@ if [ "$(uname)" = Darwin ]; then
       return 1
     fi
 
-    _watch-namespace-wrapper  "$region" "$2" &
+    tmux split-window -d  'export BASH_SOURCE_IT=true; bash'
+    sleep 5
+    tmux send-keys -t .+ "source ~/.bashrc; \
+      set_kubecontext '$region'; \
+      watch oc get pod -n '$namespace' " C-m
   }
 
 fi
