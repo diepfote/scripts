@@ -146,11 +146,15 @@ EOF
       return 1
     fi
 
-    tmux split-window -d  'export BASH_SOURCE_IT=true; bash'
-    sleep 5
-    tmux send-keys -t .+ "source ~/.bashrc; \
-      set_kubecontext '$region'; \
-      watch oc get pod -n '$namespace' " C-m
+    _split_and_run_tmux_command () {
+      tmux split-window -d  'export BASH_SOURCE_IT=true; bash'
+      sleep 5
+      tmux send-keys -t .+ "source ~/.bashrc; \
+        set_kubecontext '$region'; \
+        watch oc get pod -n '$namespace' " C-m
+      }
+
+    (_split_and_run_tmux_command &)
   }
 
 fi
