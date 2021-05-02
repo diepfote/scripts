@@ -34,6 +34,7 @@ _yay-update-firejail () {
 _yay-update-anything-but-firejail () {
   if yay -Qyyua | grep -vE '^$|firejail'; then
     set -x
+    # TODO list packages first
     yay -Syua
     set +x
   fi
@@ -47,12 +48,16 @@ if [ "$1" = --retry ]; then
   pacman_cmd+=('--noconfirm')
 else
   set -u
-  pacman_cmd+=('-y')
+  set -x
+  echo n |"${pacman_cmd[@]}" -y || :
+  pacman-get-required-by-for-upgradeable || :
+  set +x
 fi
 
 set -x
 "${pacman_cmd[@]}" || exit
 set +x
+
 _yay-update-firejail || exit
 _yay-update-anything-but-firejail || exit
 
