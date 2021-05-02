@@ -12,6 +12,17 @@ temp="$(mktemp -d)"
 _cleanup () {
   git config --global color.ui auto
   rm -rf "$temp"
+
+  _post-pass-private
+}
+
+_pre-pass-private () {
+  find "$1" -type l -delete
+}
+
+_post-pass-private () {
+  # shellcheck disable=SC1090 
+  (source ~/.sh_functions; _link-shared-password-store &)
 }
 
 
@@ -27,9 +38,16 @@ git config --global color.ui always  # like grep --color=always
 while read -r repo_dir; do
    [ -z "$repo_dir" ] && continue  # skip empty lines
 
+
+  if [ "$repo_dir" = ~/.password-store-private ] || \
+     [ "$repo_dir" = ~/.password-store-work ]; then
+    _pre-pass-private "$repo_dir"
+  fi
+
   if [ "$repo_dir" = "$HOME" ]; then
     # prevent line 9 from showing up
     work_repo_template "$repo_dir" "${command[@]}" | grep -v .gitconfig >> "$file"
+
   else
     work_repo_template "$repo_dir" "${command[@]}" >> "$file"
   fi

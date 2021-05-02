@@ -297,7 +297,8 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     _pacman-get-required-by-for-upgradeable () {
       pacman -Sup --print-format '%n' | xargs pacman -Qii
     }
-    _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
+    # _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
+    _pacman-get-required-by-for-upgradeable | vim -
   }
 
 
