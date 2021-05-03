@@ -295,10 +295,28 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
   pacman-get-required-by-for-upgradeable () {
     _pacman-get-required-by-for-upgradeable () {
-      pacman -Sup --print-format '%n' | xargs pacman -Qii
+      pkgs=()
+      
+      while IFS='' read -r line; do
+        pkgs+=( "$line" )
+      done < <(pacman -Sup --print-format '%n')
+
+      # no upgradable packages?
+      if [ ${#pkgs[@]} -gt 1 ]; then
+        echo "${pkgs[@]}" | xargs pacman -Qii
+      fi
     }
-    # _pacman-get-required-by-for-upgradeable | vim -c 'v/\v(Required By |Name |^$)/d' -
-    _pacman-get-required-by-for-upgradeable | vim -
+
+    pkg_info=()
+    
+    while IFS='' read -r line; do
+      pkg_info+=( "$line" )
+    done < <(_pacman-get-required-by-for-upgradeable)
+
+    if [ "${#pkg_info[@]}" -gt 1 ]; then
+      # snatched from https://stackoverflow.com/a/15692004
+      printf '%s\n' "${pkg_info[@]}" | vim -c '/Required By' -
+    fi
   }
 
 

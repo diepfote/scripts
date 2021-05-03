@@ -49,9 +49,10 @@ if [ "$1" = --retry ]; then
 else
   set -u
   set -x
-  echo n |"${pacman_cmd[@]}" -y || :
-  pacman-get-required-by-for-upgradeable || :
+  echo n | "${pacman_cmd[@]}" -y || :
   set +x
+  pacman-get-required-by-for-upgradeable || :
+  set +x  # keep
 fi
 
 set -x
