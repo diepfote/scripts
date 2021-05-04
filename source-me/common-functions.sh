@@ -70,20 +70,14 @@ _rclone_verbose_sync_operation () {
 }
 
 call_browser () {
+  # shellcheck disable=SC1090
   source ~/Documents/scripts/source-me/common-functions.sh
 
-  if [ $# -lt 2 ]; then
-    private='--private-window'
-    TMP_FILE="$1"
-  else
-    TMP_FILE="$2"
-  fi
-
   if [ "$(uname)" = Darwin ]; then
+    # shellcheck disable=SC1090
     source ~/.sh_functions
     set -x
-    # chrome-cli open file://"$TMP_FILE" -i
-    open_mac-os_app Firefox.app "$private" "$TMP_FILE"
+    chromium-cli open file://"$TMP_FILE" -i
     set +x
   else
     # -N ... allow network access
