@@ -205,6 +205,8 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
 
+  export SYSTEMD_COLORS=0
+
 
   _add_to_PATH "$HOME/Documents/scripts/bin/linux"
 
