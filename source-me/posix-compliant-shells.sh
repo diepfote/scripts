@@ -141,7 +141,7 @@ if [ "$(uname)" = 'Darwin' ]; then
     done
   }
   kill-symantec () {
-    for pid in $(ps -ef | grep -i symantec | grep -v grep | tr -s ' ' | cut -d ' ' -f3); do
+    for pid in $(ps -ef | grep -Ei 'symantec|com.broadcom.mes.systemextension' | grep -v grep | awk '{ print $2 }'); do
       set -x
       sudo kill -9 "$pid"
       set +x
