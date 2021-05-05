@@ -104,10 +104,31 @@ fi
 
 
 echo -e '\n\n--------\nListing Darwin updates\n'
-# softwareupdate -i --no-scan -a
-# sudo softwareupdate -i --no-scan -a -R
-#
-softwareupdate --all -l --force
+pkg_info=()
+
+while IFS='' read -r line; do
+  pkg_info+=( "$line" )
+done < <( softwareupdate --all -l --force )
+
+for line in "${pkg_info[@]}"; do
+  echo "$line"
+done
+
+if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
+  set -x
+  softwareupdate -i --no-scan -a
+  set +x
+
+  echo 'Do you want to update & restart?'
+  set +u
+  if yesno; then
+    set -x
+    sudo softwareupdate -i --no-scan -a -R
+    set +x
+  fi
+  set -u
+fi
+
 
 if [ -n "$REINSTALL_XCODE" ]; then
   echo -en "  $PURPLE"; echo -e "[>] reinstallig xcode commandline tools$NC"
