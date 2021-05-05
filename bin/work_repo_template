@@ -19,7 +19,7 @@ _arbitrary_command()
   echo -e "$PURPLE$dir$NC"
 
   if [ -d "$dir/.git" ]; then
-    (cd "$dir"; "$@")
+    (cd "$dir" && "$@")
   else
     echo -en "$YELLOW"; echo -en "No .git dir in $dir$NC\n"
   fi

@@ -802,8 +802,21 @@ _work-wrapper () {
   while read -r repo_dir; do
     [ -z "$repo_dir" ] && continue  # skip empty lines
 
+    if [ "$repo_dir" = /etc ] || \
+       [ "$repo_dir" = /etc/pacman.d/hooks ] || \
+       [ "$repo_dir" = /etc/firejail ]; then
+      if [ "${command[1]}" = pull ] || \
+         [ "${command[1]}" = fetch ]; then
+        # shellcheck disable=SC1090
+        source ~/Documents/scripts/source-me/colors.sh
+        echo "${RED}Only running fetch!$NC"
+        command[1]=fetch
+      fi
+    fi
+
     work_repo_template "$repo_dir" "${command[@]}"
   done <"$conf_file"
+  set +x
 }
 
 work-sync () {
