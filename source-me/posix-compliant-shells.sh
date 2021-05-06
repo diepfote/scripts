@@ -371,7 +371,7 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
     echo
     echo Sync photos
-    rsync -av ~/Documents/iphone_pictures/****REMOVED***@***REMOVED***5.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
+    rsync -av ~/Documents/iphone_pictures/****REMOVED***@***REMOVED***6.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
     set +x
