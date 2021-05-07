@@ -115,6 +115,17 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias flush-dns="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
 
+  # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L58
+  # IP addresses
+  alias public-ip="dig +short myip.opendns.com @resolver1.opendns.com"
+  alias local-ip="ipconfig getifaddr en0"
+  alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+
+
+  # used in sniff & httpdump 
+  export _ngrep_interface=en0
+
 
   brew-leaves-required-by () {
     if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
@@ -177,6 +188,12 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 
   _add_to_PATH "$HOME/Documents/scripts/bin/linux"
+
+
+  # IP addresses
+  alias public-ip="drill myip.opendns.com @resolver1.opendns.com | awk '/IN\s+A\s+\w+/ { print $5 }'"
+  alias local-ip="ip addr show dev wlp4s0 | awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
+  alias ips="ip addr | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 
   _snap () {
@@ -454,24 +471,12 @@ alias reload="exec ${SHELL}"
 alias path='echo -e ${PATH//:/\\n}'
 
 
-  # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L86
-  # View HTTP traffic
-  alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-  alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
+# snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L126
+# Intuitive map function
+# For example, to list all directories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map="xargs -n1"
 
-
-  # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L126
-  # Intuitive map function
-  # For example, to list all directories that contain a certain file:
-  # find . -name .gitattributes | map dirname
-  alias map="xargs -n1"
-
-
-  # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L58
-  # IP addresses
-  alias public-ip="dig +short myip.opendns.com @resolver1.opendns.com"
-  alias local-ip="ipconfig getifaddr en0"
-  alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 
 # common aliases END
@@ -481,6 +486,15 @@ alias path='echo -e ${PATH//:/\\n}'
 # ---------------------------
 # common functions START
 #
+
+
+
+# snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L86
+# View HTTP traffic
+alias sniff="sudo ngrep -d \"\$_ngrep_interface\" -t '^(GET|POST) ' 'tcp and port 80'"
+# shellcheck disable=SC2139
+alias httpdump="sudo tcpdump -i \"\$_ngrep_interface\" -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
+
 
 mpv () {
   (command mpv "$1" 1>/dev/null 2>/dev/null &)
@@ -505,7 +519,6 @@ _dl-youtube-filter()
   local url="$1"
   local filter_type="$2"
   local filter="$3"
-  local message="$4"
   shift 4
 
   if [ -z "$1" ]; then
@@ -585,8 +598,10 @@ pkgbuild () {
     local REPOTYPE_PLACEHOLDER=REPOTYPE
     local browser_main_base_url="https://www.archlinux.org/packages/$REPOTYPE_PLACEHOLDER"'x86_64/'
 
-    local repo_type="$(_get_repo_type "$1")"
-    local pkgname="$(_get_pkgname "$1")"
+    local repo_type
+    local pkgname
+    repo_type="$(_get_repo_type "$1")"
+    pkgname="$(_get_pkgname "$1")"
 
     echo -en "$RED" 1>&2; echo -e "repo type:$NC $repo_type" 1>&2
 
@@ -631,6 +646,7 @@ pkgbuild () {
   if [ -n "$no_pager" ]; then
     curl -sL "$url"
   else
+    # shellcheck disable=SC2119
     curl -sL "$url" | lessc
   fi
   set +x
@@ -650,7 +666,7 @@ rclone_fastmail_sync_bewerbungen_cvs_arbeitszeugnisse () {
 
   username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
   src=~/Documents/bewerbungen_cvs_arbeitszeugnisse/
-  dst="$(echo 'fastmail:'"$username"'.fastmail.com/files/bewerbungen_cvs_arbeitszeugnisse/')"
+  dst='fastmail:'"$username"'.fastmail.com/files/bewerbungen_cvs_arbeitszeugnisse/'
 
   _rclone_verbose_sync_operation "$src" "$dst" "$@"
 }
@@ -699,7 +715,7 @@ list-zombies-and-parents () {
 
 _checkout-wrapper () {
   local dir="$1"
-  set -- "${@:2:$(($#))}"; # drop first arg
+  shift
 
   work_repo_template "$dir" git checkout -- "$@"
 }
@@ -883,7 +899,8 @@ work-sync () {
   fi
 
 
-  local username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+  local username
+  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
 
   if [ "$(uname)" = Darwin ]; then
     local fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/arch'
