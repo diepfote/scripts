@@ -111,8 +111,11 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 
 
+  # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L92
   # Flush Directory Service cache
   alias flush-dns="dscacheutil -flushcache && killall -HUP mDNSResponder"
+
+
 
   brew-leaves-required-by () {
     if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
@@ -437,6 +440,26 @@ alias reload="exec ${SHELL} -l"
 # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L148
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
+
+
+  # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L86
+  # View HTTP traffic
+  alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+  alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
+
+
+  # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L126
+  # Intuitive map function
+  # For example, to list all directories that contain a certain file:
+  # find . -name .gitattributes | map dirname
+  alias map="xargs -n1"
+
+
+  # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L58
+  # IP addresses
+  alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+  alias localip="ipconfig getifaddr en0"
+  alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 
 # common aliases END
