@@ -29,7 +29,6 @@ export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
-
 # -------------------------
 # files to source
 source ~/Documents/scripts/source-me/colors.sh
@@ -174,46 +173,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   tmutil-compare-last-2-backups () {
     sudo tmutil listbackups |\
       tail -2 |\
-      sed 's/.*/"&"/' |\
-      xargs  sudo tmutil compare
-  }
-
-
-
-
-  w-checked-in () {
-    __work-checked-in-wrapper ~/Documents/config/work-repo.conf
-  }
-
-
-  w-git_execute_on_all_repos () {
-    git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
-  }
-
-  w-git-cleanup () {
-   w-git-update
-   w-git-delete-gone-branches
-  }
-
-
-  _add_to_PATH "$HOME/Documents/scripts/bin/darwin"
-  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
-  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
-
-
-  export PASSWORD_STORE_DIR=~/.password-store-work
-
-elif grep -L 'Arch Linux' /etc/os-release; then
-  # Arch only | Arch Linux only | Archlinux only
-
-
-  export GIT_AUTHOR_NAME='Florian Begusch'
-  export GIT_AUTHOR_EMAIL='florian.begusch@gmail.com'
-  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-
-
-  export SYSTEMD_COLORS=0
+      sed 's/.****REMOVED***@***REMOVED***6.***REMOVED***.com.udp'
 
 
   _add_to_PATH "$HOME/Documents/scripts/bin/linux"
@@ -379,7 +339,59 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
     echo
     echo Sync photos
-    rsync -av ~/Documents/iphone_pictures/****REMOVED***@***REMOVED***6.***REMOVED******REMOVED***@***REMOVED***5.***REMOVED***.com.udp
+    rsync -av ~/Documents/iphone_pictures/* "$(read_toml_setting ~/Documents/config/sync.conf photos)"
+
+  }
+
+
+  __restart_unit_if_inactive () {
+    set +x
+    local unit="$1"
+    if [ ! "$(systemctl is-active "$unit")" = active ]; then
+       sudo systemctl restart "$unit"
+    fi
+  }
+
+  __delayed-refresh-i3status () {
+    sleep 1
+    # refresh i3status
+    (killall -SIGUSR1 i3status &)
+  }
+
+  _enable-network () {
+    set -x
+    __restart_unit_if_inactive 'wpa_supplicant@wlp4s0.service'
+    set -x
+    __restart_unit_if_inactive 'dhcpcd@wlp4s0.service'
+    set -x
+
+    __restart_unit_if_inactive "$_vpn_systemd_unit"
+    set -x
+
+    sleep 1
+
+    vpn_file="/tmp/tmp.ping-success"
+    ping_cmd=('ping' '-c' '2' '-W' '.5' 'archlinux.org')
+    if ! "${ping_cmd[@]}" >/dev/null 2>&1 ; then
+      sudo systemctl restart "$_vpn_systemd_unit"
+
+      sleep 1
+      if ! "${ping_cmd[@]}" >/dev/null 2>&1; then
+        rm "$vpn_file"
+      else
+        touch "$vpn_file"
+      fi
+    else
+      touch "$vpn_file"
+    fi
+    set +x
+
+    __delayed-refresh-i3status
+  }
+
+  _disable-network () {
+    set -x
+    sudo systemctl stop "$_vpn_systemd_unit"
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
     set +x
