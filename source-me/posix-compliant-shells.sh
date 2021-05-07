@@ -435,7 +435,7 @@ alias pipsh="pipenv shell"
 # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L145
 # Reload the shell (i.e. invoke as a login shell)
 # shellcheck disable=SC2139
-alias reload="exec ${SHELL} -l"
+alias reload="exec ${SHELL}"
 
 # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L148
 # Print each PATH entry on a separate line
