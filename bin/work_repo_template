@@ -7,7 +7,8 @@ source ~/Documents/scripts/source-me/colors.sh
 _arbitrary_command()
 {
   dir="$1"
-  if [ "$(expr substr "$dir" 1 1)" = '#' ]; then
+  if [ "$(expr substr "$dir" 1 1)" = '#' ] || \
+     [ -z "$dir" ]; then
     # ignore commented lines
     exit
   fi
