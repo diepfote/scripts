@@ -457,8 +457,8 @@ alias path='echo -e ${PATH//:/\\n}'
 
   # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L58
   # IP addresses
-  alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-  alias localip="ipconfig getifaddr en0"
+  alias public-ip="dig +short myip.opendns.com @resolver1.opendns.com"
+  alias local-ip="ipconfig getifaddr en0"
   alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 
