@@ -36,9 +36,6 @@ command=('git' 'status' '-sb')
 git config --global color.ui always  # like grep --color=always
 
 while read -r repo_dir; do
-   [ -z "$repo_dir" ] && continue  # skip empty lines
-
-
   if [ "$repo_dir" = ~/.password-store-private ] || \
      [ "$repo_dir" = ~/.password-store-work ]; then
     _pre-pass-private "$repo_dir"

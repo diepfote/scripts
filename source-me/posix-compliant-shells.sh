@@ -109,6 +109,11 @@ if [ "$(uname)" = 'Darwin' ]; then
   alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
   alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
 
+
+
+  # Flush Directory Service cache
+  alias flush-dns="dscacheutil -flushcache && killall -HUP mDNSResponder"
+
   brew-leaves-required-by () {
     if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
       BREW_REQUIRED_BY_LIST_INFO="$BREW_REQUIRED_BY_LIST_INFO" brew leaves | xargs brew-required-by
@@ -422,6 +427,17 @@ alias vimj="vim -c ':set ft=json'"
 
 # pipenv aliases
 alias pipsh="pipenv shell"
+
+
+# snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L145
+# Reload the shell (i.e. invoke as a login shell)
+# shellcheck disable=SC2139
+alias reload="exec ${SHELL} -l"
+
+# snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L148
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
+
 
 # common aliases END
 # -------------------------

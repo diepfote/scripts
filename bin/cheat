@@ -35,11 +35,11 @@ if [ "$extension" = pdf ] || [ "$extension" = png ]  || \
   fi
 
 else
-  command=bat
+  command=('lessc')
   num_args_to_remove=1
   if [ "$1" = '--edit' ]; then
     num_args_to_remove=2
-    command=nvim
+    command=('nvim')
     filename="${@:$#}"  # last argument
     file=~/Documents/cheatsheets/"$filename"
   fi
@@ -49,7 +49,7 @@ else
   #
   set -- "${@:2:$(($#-$num_args_to_remove))}"
 
-  [[ "$command" =~ vim ]] && "$command" "$@" "$file" \
-                          || "$command" "$file"
+  [[ "$command" =~ vim ]] && "${command[@]}" "$@" "$file" \
+                          || "${command[@]}" "$@" "$file"
 
 fi
