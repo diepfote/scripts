@@ -11,6 +11,6 @@ command='git update'
 
 for repo_dir in $(cat "$conf_file"); do
   [ -z "$repo_dir" ] && continue
-  work_repo_template "$repo_dir" $command
+  work_repo_template -d "$repo_dir" $command
 done
 

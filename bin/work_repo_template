@@ -1,30 +1,58 @@
 #!/usr/bin/env bash
 
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
 
 # shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/colors.sh
 
 
-_arbitrary_command()
-{
-  dir="$1"
-  shift  # drop first arg
-  if echo "$dir" | grep -E '^\s*#|^\s*$' 1>/dev/null 2>&1; then
-    # ignore commented lines
-    exit
-  fi
+# Parse arguments
+positional_args=()
+USE_SUDO=''
+while [ $# -gt 0 ]; do
+  key="$1"
+  case "$key" in
+    -r|--root)
+    USE_SUDO=true
+    shift
+    ;;
 
-  NC="$(echo "$NC" | tr -d "$(echo -ne '\x0f')")" # fix ^0 in output on Mac OS
-  export NC
-  echo -e "$PURPLE$dir$NC"
+    -d|--dir)
+    DIR="$2"
+    shift 2
+    ;;
 
-  if [ -d "$dir/.git" ]; then
-    (cd "$dir" && "$@")
-  else
-    echo -en "$YELLOW"; echo -en "No .git dir in $dir$NC\n"
-  fi
-  echo
-}
+    -h|--help)
+    help
+    exit 0
+    ;;
 
-_arbitrary_command "$@"
+    *) # unknown option
+    positional_args+=("$1") # save in an array for later
+    shift
+    ;;
+  esac
+done
+set -- "${positional_args[@]}"
+
+if echo "$DIR" | grep -E '^\s*#|^\s*$' 1>/dev/null 2>&1; then
+  # ignore commented lines
+  exit
+fi
+
+NC="$(echo "$NC" | tr -d "$(echo -ne '\x0f')")" # fix ^0 in output on Mac OS
+export NC
+echo -e "$PURPLE$DIR$NC"
+
+if [ -d "$DIR/.git" ]; then
+  (cd "$DIR" && "$@")
+else
+  echo -en "$YELLOW"; echo -en "No .git DIR in $DIR$NC\n"
+fi
+echo
 
