@@ -87,7 +87,7 @@ else
 fi
 
 if ! _run_command_in_dir "$@"; then
-  echo -en "$YELLOW"; echo -en "No .git DIR in $DIR$NC\n"
+  echo -en "$YELLOW"; echo -en "No .git/ in $DIR$NC\n"
 fi
 echo
 
