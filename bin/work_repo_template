@@ -9,7 +9,7 @@ _arbitrary_command()
 {
   dir="$1"
   shift  # drop first arg
-  if echo "$dir" | grep -E '^\s*#|^\s*$' 2>/dev/null; then
+  if echo "$dir" | grep -E '^\s*#|^\s*$' 1>/dev/null 2>&1; then
     # ignore commented lines
     exit
   fi
