@@ -939,7 +939,7 @@ work_fetch () {
 }
 
 work-checked-in () {
-  __work-checked-in-wrapper ~/Documents/config/repo.conf
+  __work-checked-in-wrapper ~/Documents/config/repo.conf "$@"
 }
 
 

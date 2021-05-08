@@ -31,6 +31,7 @@ trap _cleanup EXIT
 file="$temp"/work-checked-in
 
 conf_file="$1"
+shift
 command=('git' 'status' '-sb')
 
 git config --global color.ui always  # like grep --color=always
@@ -44,23 +45,8 @@ while read -r repo_dir; do
   if [ "$repo_dir" = "$HOME" ]; then
     # prevent line 9 from showing up
     work_repo_template -d "$repo_dir" "${command[@]}" | grep -v .gitconfig >> "$file"
-
-# TODO: improve flag handling to allow for --root flag --> use sudo
-# if given
-#
-#   elif [ "$repo_dir" = /root ]; then
-#     set -x
-#     sudo chown "$USER" /root
-#     set +x
-
-#     work_repo_template -d "$repo_dir" "${command[@]}" >> "$file"
-
-#     set -x
-#     sudo chown root /root
-#     sudo -k
-#     set +x
   else
-    work_repo_template -d "$repo_dir" "${command[@]}" >> "$file"
+    work_repo_template "$@" -d "$repo_dir" "${command[@]}" >> "$file"
   fi
 
 done <"$conf_file"

@@ -49,9 +49,44 @@ NC="$(echo "$NC" | tr -d "$(echo -ne '\x0f')")" # fix ^0 in output on Mac OS
 export NC
 echo -e "$PURPLE$DIR$NC"
 
+
+_run_command_in_dir () {
+  if [ -z "$TRY_SUDO" ]; then
+    (cd "$DIR" && "$@")
+    return 0
+  elif [ -n "$USE_SUDO" ] && [ -n "$TRY_SUDO" ]; then
+    set -x
+    sudo chown "$USER" "$DIR"
+    set +x
+
+    unset_chown () {
+      set -x
+      sudo chown root "$DIR"
+      sudo -k
+      set +x
+    }
+    trap unset_chown EXIT
+
+    if [ -d "$DIR/.git" ]; then
+      (cd "$DIR" && "$@")
+      return 0
+    else
+      return 1
+    fi
+  else
+    return 1
+  fi
+}
+
+
+
 if [ -d "$DIR/.git" ]; then
-  (cd "$DIR" && "$@")
+  TRY_SUDO=''
 else
+  TRY_SUDO=true
+fi
+
+if ! _run_command_in_dir "$@"; then
   echo -en "$YELLOW"; echo -en "No .git DIR in $DIR$NC\n"
 fi
 echo
