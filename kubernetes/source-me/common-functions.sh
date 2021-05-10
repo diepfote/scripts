@@ -147,9 +147,13 @@ EOF
     fi
 
     _split_and_run_tmux_command () {
+      local pane_id
+
       tmux split-window -d  'export BASH_SOURCE_IT=true; bash'
+      pane_id="$(tmux display -pt ".+" '#{pane_id}')"
       sleep 5
-      tmux send-keys -t .+ "source ~/.bashrc; \
+
+      tmux send-keys -t "$pane_id" "source ~/.bashrc; \
         set_kubecontext '$region'; \
         watch oc get pod -n '$namespace' " C-m
       }
