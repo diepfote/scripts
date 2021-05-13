@@ -25,9 +25,6 @@ export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; history -n"
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
 
-# shellcheck disable=SC1090
-[[ -x kubectl ]] && source <(kubectl completion bash)
-
 eval "$(direnv hook bash 2>/dev/null || true)"
 
 eval "$(gh completion -s bash 2>/dev/null || true)"
