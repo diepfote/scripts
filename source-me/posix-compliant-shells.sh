@@ -35,8 +35,6 @@ source ~/Documents/scripts/source-me/colors.sh
 
 # source fish functions
 sh_functions_file=~/.sh_functions
-[[ ! -f "$sh_functions_file" ]] && \
-  ~/Documents/scripts/generate_sh_functions_based_on_fish_shell_functions.sh
 source "$sh_functions_file"
 
 # -------------------------
@@ -123,7 +121,7 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 
 
-  # used in sniff & httpdump 
+  # used in sniff & httpdump
   export _ngrep_interface=en0
 
 
@@ -286,7 +284,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   pacman-get-required-by-for-upgradeable () {
     _pacman-get-required-by-for-upgradeable () {
       pkgs=()
-      
+
       while IFS='' read -r line; do
         pkgs+=( "$line" )
       done < <(pacman -Sup --print-format '%n')
@@ -299,7 +297,7 @@ if [ "$(uname)" = 'Darwin' ]; then
     }
 
     pkg_info=()
-    
+
     while IFS='' read -r line; do
       pkg_info+=( "$line" )
     done < <(_pacman-get-required-by-for-upgradeable)
