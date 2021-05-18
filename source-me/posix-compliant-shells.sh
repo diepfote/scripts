@@ -290,7 +290,7 @@ if [ "$(uname)" = 'Darwin' ]; then
       done < <(pacman -Sup --print-format '%n')
 
       # no upgradable packages?
-      if [ ${#pkgs[@]} -gt 1 ]; then
+      if [ ${#pkgs[@]} -gt 0 ]; then
         echo "${pkgs[@]}" | xargs pacman -Qii 2>&1 | \
           grep -E '^\s*$|^Name|^Required By'
       fi
