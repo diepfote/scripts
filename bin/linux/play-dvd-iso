@@ -14,6 +14,20 @@ mkdir -p "$mount_dir"  # p flag to avoid errors if exists
 
 dir="$(read_toml_setting ~/Documents/config/sync.conf movies)"
 
+_help () {
+cat <<EOF
+USAGE: play-dvd-iso (-vlc) ISO_FILE
+
+OPTIONS:
+  -vlc    [boolean] use vlc instead of mpv
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
 # Parse arguments
 positional_args=()
 USE_VLC=''
@@ -26,7 +40,7 @@ while [ $# -gt 0 ]; do
     ;;
 
     -h|--help)
-    help
+    _help
     exit 0
     ;;
 

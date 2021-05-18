@@ -1,9 +1,24 @@
 
+_help() {
+cat <<EOF
+USAGE: watch-namespace -n <NAMESPACE> -r <REGION>
+
+OPTIONS:
+  -n|--namespace NAMESPACE Namespace to watch
+  -r|--region    REGION    Datacenter region
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
 # Parse arguments
 positional_args=()
 USE_SUDO=''
 while [ $# -gt 0 ]; do
-  key="$1"
+key="$1"
   case "$key" in
     -r|--root)
     USE_SUDO=true
@@ -16,7 +31,7 @@ while [ $# -gt 0 ]; do
     ;;
 
     -h|--help)
-    help
+    _help
     exit 0
     ;;
 
