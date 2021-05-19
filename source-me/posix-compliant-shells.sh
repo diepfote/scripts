@@ -31,19 +31,22 @@ export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 # -------------------------
 # files to source
+
+# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/colors.sh
 
 # source fish functions
 sh_functions_file=~/.sh_functions
+# shellcheck disable=SC1090
 source "$sh_functions_file"
 
 # -------------------------
 
 
 
-_add_to_PATH "$HOME/.bin"
-_add_to_PATH "$HOME/go/bin"
-_add_to_PATH "$HOME/Documents/scripts/bin"
+_add_to_PATH "$HOME/.bin"  || true
+_add_to_PATH "$HOME/go/bin"  || true
+_add_to_PATH "$HOME/Documents/scripts/bin"  || true
 
 
 
@@ -59,29 +62,29 @@ if [ "$(uname)" = 'Darwin' ]; then
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
 
-  _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"
-  _add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"
-  _add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"
-  _add_to_PATH "/usr/local/opt/grep/libexec/gnubin"
+  _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"  || true
+  _add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"  || true
+  _add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"  || true
+  _add_to_PATH "/usr/local/opt/grep/libexec/gnubin"  || true
 
   # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
   # otherwise 3.6 will end up being resolved first
   #
   # pyenv version 3.6
-  _add_to_PATH "$HOME/.pyenv/versions/3.6.12/bin"
+  _add_to_PATH "$HOME/.pyenv/versions/3.6.12/bin"  || true
 
   # python 3.9 = default
   python_39_path="/usr/local/opt/python@3.9/libexec/bin"
   ln -sf "$python_39_path"/python "$python_39_path"/python3
-  _add_to_PATH "$python_39_path"
-  _add_to_PATH "$HOME/Library/Python/3.9/bin"
+  _add_to_PATH "$python_39_path"  || true
+  _add_to_PATH "$HOME/Library/Python/3.9/bin"  || true
 
   # export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
   export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
 
   # ruby compiler settings
-  _add_to_PATH "/usr/local/opt/ruby/bin"
-  _add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"  # user gem files
+  _add_to_PATH "/usr/local/opt/ruby/bin"  || true
+  _add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"  || true # user gem files
   # export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
   export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
   export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
@@ -204,9 +207,9 @@ if [ "$(uname)" = 'Darwin' ]; then
   }
 
 
-  _add_to_PATH "$HOME/Documents/scripts/bin/darwin"
-  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
-  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
+  _add_to_PATH "$HOME/Documents/scripts/bin/darwin"  || true
+  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"  || true
+  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"  || true
 
 
   export PASSWORD_STORE_DIR=~/.password-store-work
@@ -226,10 +229,11 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   # used in sniff & httpdump
   export _ngrep_interface=wlp4s0
 
-  export _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
+  _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
+  export _vpn_systemd_unit
 
 
-  _add_to_PATH "$HOME/Documents/scripts/bin/linux"
+  _add_to_PATH "$HOME/Documents/scripts/bin/linux"  || true
 
 
   # IP addresses
@@ -670,12 +674,12 @@ pkgbuild () {
     case "$repo_type" in
       'extra/' | 'core/')
         url="$core_base_url$pkgname"
-        browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")"$pkgname")"
+        browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")$pkgname)"
         ;;
 
       'multilib/' | 'community/')
         url="$community_base_url$pkgname"
-        browser_url"$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")"$pkgname")"
+        browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")$pkgname)"
         ;;
 
       'aur/' | '' | '*')
