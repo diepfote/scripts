@@ -439,7 +439,7 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
     counter=0
     while ! ping -c 2 -W .5 archlinux.org  >/dev/null 2>&1 ; do
-      if [ "$counter" -gt 2 ]; then
+      if [ "$counter" -gt 4 ]; then
         return
       fi
 
