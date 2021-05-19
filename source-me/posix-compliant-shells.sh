@@ -416,8 +416,28 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   }
 
   __delayed-refresh-i3status () {
+    sleep 3
+
+    vpn_file="/tmp/tmp.ping-success"
+
+    counter=0
+    while ! ping -c 2 -W .5 archlinux.org  >/dev/null 2>&1 ; do
+      if [ "$counter" -gt 2 ]; then
+        return
+      fi
+
+      rm "$vpn_file"
+      sudo systemctl restart "$_vpn_systemd_unit"
+      sleep .5
+
+      ((counter=counter+1))
+    done
+
+    touch "$vpn_file"
+
+    sleep 1.5
     # refresh i3status
-    (sleep 2; killall -SIGUSR1 i3status &)
+    killall -SIGUSR1 i3status
   }
 
   _enable-network () {
@@ -428,27 +448,11 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     set -x
 
     __restart_unit_if_inactive "$_vpn_systemd_unit"
+
+
     set -x
-
-    sleep 1
-
-    vpn_file="/tmp/tmp.ping-success"
-    ping_cmd=('ping' '-c' '2' '-W' '.5' 'archlinux.org')
-    if ! "${ping_cmd[@]}" >/dev/null 2>&1 ; then
-      sudo systemctl restart "$_vpn_systemd_unit"
-
-      sleep 1
-      if ! "${ping_cmd[@]}" >/dev/null 2>&1; then
-        rm "$vpn_file"
-      else
-        touch "$vpn_file"
-      fi
-    else
-      touch "$vpn_file"
-    fi
+    (__delayed-refresh-i3status &)
     set +x
-
-    __delayed-refresh-i3status
   }
 
   _disable-network () {
