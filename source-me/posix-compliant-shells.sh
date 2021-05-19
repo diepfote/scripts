@@ -419,7 +419,20 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     fi
   }
 
-  __delayed-refresh-i3status () {
+  refresh-i3status () {
+    killall -SIGUSR1 i3status
+  }
+
+  _enable-network () {
+    set -x
+    __restart_unit_if_inactive 'wpa_supplicant@wlp4s0.service'
+    set -x
+    __restart_unit_if_inactive 'dhcpcd@wlp4s0.service'
+    set -x
+
+    __restart_unit_if_inactive "$_vpn_systemd_unit"
+    set -x
+
     sleep 3
 
     vpn_file="/tmp/tmp.ping-success"
@@ -440,22 +453,7 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     touch "$vpn_file"
 
     sleep 1.5
-    # refresh i3status
-    killall -SIGUSR1 i3status
-  }
-
-  _enable-network () {
-    set -x
-    __restart_unit_if_inactive 'wpa_supplicant@wlp4s0.service'
-    set -x
-    __restart_unit_if_inactive 'dhcpcd@wlp4s0.service'
-    set -x
-
-    __restart_unit_if_inactive "$_vpn_systemd_unit"
-
-
-    set -x
-    (__delayed-refresh-i3status &)
+    refresh-i3status
     set +x
   }
 
@@ -464,10 +462,9 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     sudo systemctl stop "$_vpn_systemd_unit"
     sudo systemctl stop dhcpcd@wlp4s0.service
     sudo systemctl stop wpa_supplicant@wlp4s0.service
-    set +x
 
-    # refresh i3status
-    killall -SIGUSR1 i3status
+    refresh-i3status
+    set +x
   }
 
   xinput-reverse-mouse-buttons () {
