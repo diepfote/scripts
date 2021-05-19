@@ -21,8 +21,8 @@ _pre-pass-private () {
 }
 
 _post-pass-private () {
-  # shellcheck disable=SC1090 
-  (source ~/.sh_functions; _link-shared-password-store &)
+  # shellcheck disable=SC1090
+  (bash -i -c '_link-shared-password-store' 2>/dev/null &)
 }
 
 

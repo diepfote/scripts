@@ -536,6 +536,24 @@ alias map="xargs -n1"
 # common functions START
 #
 
+_link-shared-password-store () {
+
+    if [ -z "$PASSWORD_STORE_DIR" ]; then
+      echo -en "$RED"; echo -e "[!] unable to link files.$NC\n    PASSWORD_STORE_DIR variable empty!"
+      exit 1
+    fi
+
+
+    # ensure all subdirectories exist to be able to link
+    # files into them
+    find ~/.password-store -path ~/.password-store/.git -prune -o -type d \
+         -exec sh -c \ 'mkdir -p "$(echo "$0" | sed "s#.*password-store#$PASSWORD_STORE_DIR#")" ' {} \;
+
+
+    find ~/.password-store -path ~/.password-store/.git -prune -o -regextype posix-egrep -regex '.*\.(bash|gpg)' \
+         -exec sh -c 'ln -sf "$0" "$(echo "$0" | sed "s#.*password-store#$PASSWORD_STORE_DIR#")"' {} \;
+
+}
 
 
 # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L86
