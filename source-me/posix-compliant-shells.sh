@@ -182,7 +182,51 @@ if [ "$(uname)" = 'Darwin' ]; then
   tmutil-compare-last-2-backups () {
     sudo tmutil listbackups |\
       tail -2 |\
-      sed 's/.****REMOVED***@***REMOVED***6.***REMOVED***.com.udp'
+      sed 's/.*/"&"/' |\
+      xargs  sudo tmutil compare
+  }
+
+
+
+
+  w-checked-in () {
+    __work-checked-in-wrapper ~/Documents/config/work-repo.conf
+  }
+
+
+  w-git_execute_on_all_repos () {
+    git_execute_on_all_repos "$1" ~/Documents/config/work-repo.conf
+  }
+
+  w-git-cleanup () {
+   w-git-update
+   w-git-delete-gone-branches
+  }
+
+
+  _add_to_PATH "$HOME/Documents/scripts/bin/darwin"
+  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
+  _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
+
+
+  export PASSWORD_STORE_DIR=~/.password-store-work
+
+elif grep -L 'Arch Linux' /etc/os-release; then
+  # Arch only | Arch Linux only | Archlinux only
+
+
+  export GIT_AUTHOR_NAME='Florian Begusch'
+  export GIT_AUTHOR_EMAIL='florian.begusch@gmail.com'
+  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+
+
+  export SYSTEMD_COLORS=0
+
+  # used in sniff & httpdump
+  export _ngrep_interface=wlp4s0
+
+  export _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
 
 
   _add_to_PATH "$HOME/Documents/scripts/bin/linux"
@@ -292,7 +336,7 @@ if [ "$(uname)" = 'Darwin' ]; then
       # no upgradable packages?
       if [ ${#pkgs[@]} -gt 0 ]; then
         echo "${pkgs[@]}" | xargs pacman -Qii 2>&1 | \
-          grep -E '^\s*$|^Name|^Required By'
+          grep -E '^\s*$|^Description|^Name|^Required By'
       fi
     }
 
@@ -372,9 +416,8 @@ if [ "$(uname)" = 'Darwin' ]; then
   }
 
   __delayed-refresh-i3status () {
-    sleep 1
     # refresh i3status
-    (killall -SIGUSR1 i3status &)
+    (sleep 2; killall -SIGUSR1 i3status &)
   }
 
   _enable-network () {

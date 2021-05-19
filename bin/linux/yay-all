@@ -7,7 +7,9 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/common-functions.sh
+# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
@@ -24,6 +26,7 @@ _yay-update-firejail () {
     yay --noconfirm -Sa firejail-git
     set +x
   else
+    # shellcheck disable=SC1090
     source ~/Documents/scripts/source-me/colors.sh
     echo -en "$RED"
     echo     "[!] checksums do not match."
@@ -49,7 +52,7 @@ if [ "$1" = --retry ]; then
 else
   set -u
   set -x
-  echo n | "${pacman_cmd[@]}" -y || :
+  echo n | "${pacman_cmd[@]}" || :
   set +x
   pacman-get-required-by-for-upgradeable || :
   set +x  # keep
