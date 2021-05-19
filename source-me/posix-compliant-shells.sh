@@ -541,11 +541,6 @@ alias sniff="sudo ngrep -d \"\$_ngrep_interface\" -t '^(GET|POST) ' 'tcp and por
 alias httpdump="sudo tcpdump -i \"\$_ngrep_interface\" -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
 
 
-mpv () {
-  (command mpv "$1" 1>/dev/null 2>/dev/null &)
-}
-
-
 neomutt () {
   # ensure saved attachments end up in Downloads
   (cd ~/Downloads && command neomutt "$@")
