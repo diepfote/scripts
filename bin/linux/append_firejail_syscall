@@ -1,0 +1,4 @@
+file=/etc/firejail/"$2"
+line_to_edit="$(grep -nE '^seccomp.keep' "$file" | cut -d ':' -f1)"
+
+append_line_with  "$1" "$file" "$line_to_edit" as_root
