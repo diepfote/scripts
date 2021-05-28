@@ -56,8 +56,8 @@ _add_to_PATH "$HOME/Documents/scripts/bin"  || true
 
 if [ "$(uname)" = 'Darwin' ]; then
 
-  export GIT_AUTHOR_NAME='Florian Begusch'
-  export GIT_AUTHOR_EMAIL='florian.begusch@***REMOVED***.***REMOVED***.com'
+  export GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
+  export GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
   export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
