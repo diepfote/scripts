@@ -29,6 +29,14 @@ export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
 export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
+
+
+export GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
+export GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
+export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+
+
 # -------------------------
 # files to source
 
@@ -55,12 +63,6 @@ _add_to_PATH "$HOME/Documents/scripts/bin"  || true
 # OS specific START
 
 if [ "$(uname)" = 'Darwin' ]; then
-
-  export GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
-  export GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
-  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-
 
   _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"  || true
   _add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"  || true
@@ -216,13 +218,6 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 elif grep -L 'Arch Linux' /etc/os-release; then
   # Arch only | Arch Linux only | Archlinux only
-
-
-  export GIT_AUTHOR_NAME='Florian Begusch'
-  export GIT_AUTHOR_EMAIL='florian.begusch@gmail.com'
-  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-
 
   export SYSTEMD_COLORS=0
 
