@@ -88,7 +88,7 @@ call_browser () {
     # shellcheck disable=SC1090
     source ~/.sh_functions
     set -x
-    chromium-cli open file://"$TMP_FILE" -i
+    chrome-cli open file://"$TMP_FILE" -i
     set +x
   else
     # -N ... allow network access

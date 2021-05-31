@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+trap popd EXIT
+
+pushd ~/Downloads
+
+start="$1"
+duration="$2"
+url="$3"
+
+youtube-dl -f 140 --postprocessor-args "-ss $start -t $duration" "$url"
+
