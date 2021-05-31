@@ -573,6 +573,16 @@ deny_all_outbound_traffic () {
   sudo systemctl restart iptables.service
 }
 
+# get word definition
+def () {
+  dict -d gcide "$1" | lessc
+}
+
+doi_view () {
+  #firefox --private-window "https://doi.org/$1"
+  call_browser "https://doi.org/$1"
+}
+
 
 neomutt () {
   # ensure saved attachments end up in Downloads

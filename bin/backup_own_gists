@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+source ~/Documents/scripts/source-me/{common-functions,posix-compliant-shells}.sh
+
+echo -e "$YELLOW\n---------------------\nUpdating own gist backup$NC\n"
+trap popd EXIT
+
+pushd /tmp/asdf
+
+gist-backup "$(read_toml_setting ~/Documents/config/github.conf username)"
+
