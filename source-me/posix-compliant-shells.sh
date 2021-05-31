@@ -559,6 +559,21 @@ alias sniff="sudo ngrep -d \"\$_ngrep_interface\" -t '^(GET|POST) ' 'tcp and por
 alias httpdump="sudo tcpdump -i \"\$_ngrep_interface\" -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
 
 
+allow_all_outbound_traffic () {
+  sudo sed -i 's/#-A OUTPUT -j ACCEPT/-A OUTPUT -j ACCEPT/g' /etc/iptables/iptables.rules
+  sudo systemctl restart iptables.service
+}
+
+
+disallow_all_outbound_traffic () {
+  deny_all_outbound_traffic
+}
+deny_all_outbound_traffic () {
+  sudo sed -i 's/-A OUTPUT -j ACCEPT/#-A OUTPUT -j ACCEPT/g' /etc/iptables/iptables.rules
+  sudo systemctl restart iptables.service
+}
+
+
 neomutt () {
   # ensure saved attachments end up in Downloads
   (cd ~/Downloads && command neomutt "$@")
