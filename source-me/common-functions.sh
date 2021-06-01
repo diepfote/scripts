@@ -18,6 +18,17 @@ EOF
 
 }
 
+_add_to_MANPATH () {
+  local path_to_add="$1"
+
+ # shellcheck disable=2076
+ # we want literal matching in this case
+ #
+ if [[ ! "$MANPATH" =~ "$path_to_add" ]]; then
+   # new path not yet present
+   export MANPATH="$path_to_add:$MANPATH"
+ fi
+}
 
 _add_to_PATH () {
   local path_to_add="$1"

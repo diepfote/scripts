@@ -65,9 +65,16 @@ _add_to_PATH "$HOME/Documents/scripts/bin"  || true
 if [ "$(uname)" = 'Darwin' ]; then
 
   _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"  || true
+  _add_to_MANPATH "/usr/local/opt/coreutils/libexec/gnuman"  || true
+
   _add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"  || true
+  _add_to_MANPATH "/usr/local/opt/findutils/libexec/gnuman"  || true
+
   _add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"  || true
+  _add_to_MANPATH "/usr/local/opt/gnu-sed/libexec/gnuman"  || true
+
   _add_to_PATH "/usr/local/opt/grep/libexec/gnubin"  || true
+  _add_to_MANPATH "/usr/local/opt/grep/libexec/gnuman"  || true
 
   # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
   # otherwise 3.6 will end up being resolved first
