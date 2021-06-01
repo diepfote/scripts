@@ -19,7 +19,10 @@ docker run \
   -v ~/.cache/yay:/build/.cache/yay \
   -v ~/.gnupg:/build/.gnupg \
   -v ~/.container:/build/.container \
-  -v ~/:/build:ro \
+  -v ~/Documents/config:/build/Documents/config:ro \
+  -v ~/Documents/scripts:/build/Documents/scripts:ro \
+  -v ~/Documents/python:/build/Documents/python:ro \
+  -v ~/Documents/golang:/build/Documents/golang:ro \
   -v "$PWD":/pwd:ro \
   --rm \
  --cap-add SYS_ADMIN \

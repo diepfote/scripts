@@ -12,7 +12,11 @@ pushd ~/Documents/dockerfiles/"$1"
 
 if [ "$1" = arch-all ]; then
   set -x
+
+  cp ~/.bashrc .bashrc
+
   ./arch-package-template.py
+
   set +x
 fi
 

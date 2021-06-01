@@ -224,8 +224,10 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   # used in sniff & httpdump
   export _ngrep_interface=wlp4s0
 
-  _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
-  export _vpn_systemd_unit
+  if [ "$(hostname)" != docker-desktop ]; then
+    _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
+    export _vpn_systemd_unit
+  fi
 
 
   _add_to_PATH "$HOME/Documents/scripts/bin/linux"  || true
