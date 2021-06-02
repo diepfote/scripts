@@ -20,7 +20,8 @@ fastmail_path='fastmail:'"$username"'.fastmail.com/files/videos'
 if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; then
   [ "$(uname)" = Darwin ] && filename=videos-work.txt \
                           || filename=videos-home.txt
-  write_current_videos_to_file "$dir" "$filename"
+
+  write_current_videos_to_file "$dir/$filename"
 
   _rclone_verbose_sync_operation --delete-excluded "$dir" "$fastmail_path"
 
