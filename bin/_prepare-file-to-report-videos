@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+filename="$1"
+hist_file=~/.bash_history
+
+if [ "$(uname)" = Darwin ]; then
+  word=Movies
+else
+  word=Videos
+fi
+path_to_search="$HOME/$word"
+
+find "$path_to_search" \
+  -path "$path_to_search/jonathan blow" -prune -o \
+  -path "$path_to_search/totalbiscuit" -prune -o \
+  -path "$path_to_search/audio-only/tgs_podcasts" -prune -o \
+  -path "$path_to_search/watched" -prune -o \
+  -path "$path_to_search/***REMOVED***" -prune -o \
+  -iregex '.*\.\(mp4\|m4a\)' | sed "s#.*$word/##" > "$filename"
+
+echo >> "$filename"
+grep -E "^mpv " "$hist_file" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"
+

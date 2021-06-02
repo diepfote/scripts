@@ -8,7 +8,6 @@ shopt -s failglob  # error on unexpaned globs
 
 
 source ~/Documents/scripts/source-me/common-functions.sh
-source ~/Documents/scripts/source-me/prepare-file-to-report-videos.sh
 
 
 dir=~/Documents/misc/videos
@@ -21,7 +20,7 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; the
   [ "$(uname)" = Darwin ] && filename=videos-work.txt \
                           || filename=videos-home.txt
 
-  write_current_videos_to_file "$dir/$filename"
+  ~/Documents/scripts/bin/_prepare-file-to-report-videos "$dir/$filename"
 
   _rclone_verbose_sync_operation --delete-excluded "$dir" "$fastmail_path"
 
