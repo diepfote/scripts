@@ -253,6 +253,26 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   alias ips="ip addr |  awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
 
 
+  asm_dev () {
+    gehard_slides_open="$(ps -ef | grep zathura | grep 'gehard \- SS18')"
+    gehard_recommendation_open="$(ps -ef | grep zathura | grep 'pcasm\-book')"
+
+    if [ -z "$gehard_slides_open" ]; then
+      xdg-open "/home/$USER/Documents/cheatsheets/asm_cheatsheets/gehard - SS18_IMS_OpSys_ASM.pdf" >/dev/null 2>&1
+    fi
+
+    if [ -z "$gehard_recommendation_open" ]; then
+      xdg-open "/home/$USER/Documents/books&documentation/assembly/pcasm-book.pdf" >/dev/null 2>&1
+    fi
+
+    if [ -z "$guide_open" ]; then
+      xdg-open "/home/$USER/Documents/cheatsheets/asm_cheatsheets/Guide to x86 Assembly.pdf" >/dev/null 2>&1
+    fi
+
+    asm_dir=/home/$USER/Documents/asm
+    cd "$asm_dir"
+  }
+
   _snap () {
     local d
     local dir

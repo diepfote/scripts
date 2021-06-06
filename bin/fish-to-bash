@@ -20,6 +20,6 @@ sed -ri 's#\$argv\[([0-9]+)\]#"$\1"#' "$new_file"  # argv
 sed -ri 's#(\s+)end#\1fi#' "$new_file"  # end
 # TODO for loop
 
-echo "$new_file"
-git diff --no-index "$old_file" "$new_file" "$@"
+cat "$new_file"
+git diff --no-index "$old_file" "$new_file" "$@" 1>&2
 
