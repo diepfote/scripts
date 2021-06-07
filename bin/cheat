@@ -100,7 +100,7 @@ if [ -n "$use_system_open" ]; then
 elif [ "$extension" = html ]; then
   temp_file="$base_temp_dir"/"$filename"
   trap "rm '""$temp_file""'" EXIT
-  cp "$file" "$temp_file"
+  cp "$file" "$temp_file"  # for firejail on Linux
 
   call_browser "$temp_file"
   sleep 1
