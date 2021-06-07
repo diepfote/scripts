@@ -6,14 +6,17 @@ _spinner()
 {
   text="$1"
   echo -n "$text"
+  sleep .5
 
-  sp='/-\|'
-  printf ' '
-  sleep .1
+  # shellcheck disable=SC2001
+  spaces="$(echo "$text" | sed 's#.# #g')"
+  echo -en "\r$spaces"
+  spinner_items=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
   while true; do
-    printf '\b%.1s' "$sp"
-    sp=${sp#?}${sp%???}
-    sleep .1
+    for item in "${spinner_items[@]}"; do
+      sleep .1
+      echo -ne "\r\b$item"
+    done
   done
 }
 
