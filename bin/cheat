@@ -7,49 +7,109 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+find_path="$HOME/Documents/cheatsheets"
+
+# snatched from https://stackoverflow.com/a/11396899
+declare -A map
+for name in pdf png jpg gif; do
+  map["$name"]=1
+done
+
+_help() {
+cat <<EOF
+USAGE: cheat [--edit|--search] [FILENAME]
+
+Displays files in less, image viewer, pdf viewer or browser by default.
+If \`-e\` is specified the file will be openend for editing in vim (if not one of $(for key in "${!map[@]}"; do echo -n "$key, "; done)html.
+If \`-s\` is specified find will be run. A path is already set for find: \`$find_path\`.
+
+OPTIONS:
+  -e|--edit
+  -s|--search OPTIONS  FIND_STRING   Run find in cheatsheets DIR
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+# Parse arguments
+positional_args=()
+command=('lessc')
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -e|--edit)
+    command=('nvim')
+    shift
+    ;;
+
+    -s|--search)
+    command=('find' "$find_path")
+    shift
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    *) # unknown option
+    positional_args+=("$1") # save in an array for later
+    shift
+    ;;
+  esac
+done
+set -- "${positional_args[@]}"
+
+
+# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/common-functions.sh
+# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
 [ "$(uname)" = Darwin ] && base_temp_dir="$(mktemp -d)" \
                         || base_temp_dir=~/Downloads
 
-file=~/Documents/cheatsheets/"$1"
-f_basename="$(basename "$file")"
-extension="$(echo "$f_basename" | sed 's#.*\.##')"
 
-if [ "$extension" = pdf ] || [ "$extension" = png ]  || \
-   [ "$extension" = jpg ] || [ "$extension" = html ] || \
-   [ "$extension" = gif ]; then
+if [ "${command[0]}" = 'find' ]; then
+  "${command[@]}" "$@"
+  exit
+fi
 
-  if [ "$extension" = html ]; then
-    temp_file="$base_temp_dir"/"$f_basename"
-    trap "rm '""$temp_file""'" EXIT
-    cp "$file" "$temp_file"
 
-    call_browser "$temp_file"
-    sleep 1
+filename="${*:$#}"  # last argument
+file=~/Documents/cheatsheets/"$filename"
+# shellcheck disable=SC2001
+extension="$(echo "$filename" | sed 's#.*\.##')"
+
+use_system_open=""
+if [[ ${map["$extension"]} ]] ; then
+  use_system_open="true"
+fi
+
+if [ -n "$use_system_open" ]; then
+  if [ "$(uname)" = Darwin ]; then
+    open "$file"
   else
-    [ "$(uname)" = Darwin ] && open "$file" \
-                            || xdg-open "$file"
+    xdg-open "$file"
   fi
 
+elif [ "$extension" = html ]; then
+  temp_file="$base_temp_dir"/"$filename"
+  trap "rm '""$temp_file""'" EXIT
+  cp "$file" "$temp_file"
+
+  call_browser "$temp_file"
+  sleep 1
 else
-  command=('lessc')
-  num_args_to_remove=1
-  if [ "$1" = '--edit' ]; then
-    num_args_to_remove=2
-    command=('nvim')
-    filename="${@:$#}"  # last argument
-    file=~/Documents/cheatsheets/"$filename"
+  if [ $# -eq 0 ]; then
+    set -- "$find_path"
+  else
+    set -- "${@:1:$(($#-1))}"   # all except last = filename
   fi
 
-  # remove '--edit' arg
-  # remove 'filename' arg
-  #
-  set -- "${@:2:$(($#-$num_args_to_remove))}"
-
-  [[ "$command" =~ vim ]] && "${command[@]}" "$@" "$file" \
-                          || "${command[@]}" "$@" "$file"
-
+  "${command[@]}" "$@" "$file"
 fi
