@@ -86,9 +86,11 @@ file=~/Documents/cheatsheets/"$filename"
 extension="$(echo "$filename" | sed 's#.*\.##')"
 
 use_system_open=""
+set +u
 if [[ ${map["$extension"]} ]] ; then
   use_system_open="true"
 fi
+set -u
 
 if [ -n "$use_system_open" ]; then
   if [ "$(uname)" = Darwin ]; then
