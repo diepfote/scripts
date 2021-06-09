@@ -389,7 +389,7 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
 
   commit-firejail () {
-    commit-in-dir /etc/firejail "$@"
+    commit-in-dir ~/.config/firejail "$@"
   }
   commit-pacman-hooks () {
     commit-in-dir /etc/pacman.d/hooks "$@"
@@ -397,14 +397,14 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
 
   diff-firejail () {
-    _diff-wrapper /etc/firejail "$@"
+    _diff-wrapper ~/.config/firejail "$@"
   }
   diff-pacman-hooks () {
     _diff-wrapper /etc/pacman.d/hooks "$@"
   }
 
   status-firejail () {
-    _status-wrapper /etc/firejail
+    _status-wrapper ~/.config/firejail
   }
   status-pacman-hooks () {
     _status-wrapper /etc/pacman.d/hooks
@@ -995,8 +995,7 @@ _work-wrapper () {
     [ -z "$repo_dir" ] && continue  # skip empty lines
 
     if [ "$repo_dir" = /etc ] || \
-       [ "$repo_dir" = /etc/pacman.d/hooks ] || \
-       [ "$repo_dir" = /etc/firejail ]; then
+       [ "$repo_dir" = /etc/pacman.d/hooks ]; then
       if [ "${command[1]}" = pull ] || \
          [ "${command[1]}" = fetch ]; then
         # shellcheck disable=SC1090
