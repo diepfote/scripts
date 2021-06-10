@@ -521,7 +521,10 @@ alias ls='ls --color=auto'
 
 alias grep='grep --exclude-dir=.git \
                  --exclude-dir=.tox \
-                 --exclude-dir=.venv \
+                 --exclude-dir=.eggs \
+                 --exclude-dir=*venv* \
+                 --exclude-dir=*build* \
+                 --exclude-dir=htmlcov \
                  --color'
 
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
