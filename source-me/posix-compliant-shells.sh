@@ -827,6 +827,55 @@ list-zombies-and-parents () {
   ~/Documents/scripts/normal-privileges_systemd_scripts/***REMOVED***--***REMOVED***_***REMOVED***UN***REMOVED***.sh
 }
 
+
+edit-firejail () {
+  _edit-wrapper --dir ~/.config/firejail --overwrite-firejail "$1"
+}
+
+_edit-wrapper () {
+  if [ $# -eq 0 ]; then
+    _help
+    exit
+  fi
+
+  # Parse arguments
+  positional_args=()
+  OVERWRITE_FIREJAIL=''
+  while [ $# -gt 0 ]; do
+  key="$1"
+    case "$key" in
+      --overwrite-firejail)
+      OVERWRITE_FIREJAIL=true
+      shift
+      ;;
+
+      -d|--dir)
+      DIR="$2"
+      shift 2
+      ;;
+
+      -h|--help)
+      _help
+      exit 0
+      ;;
+
+      *) # unknown option
+      positional_args+=("$1") # save in an array for later
+      shift
+      ;;
+    esac
+  done
+  set -- "${positional_args[@]}"
+
+  command=('vim')
+  if [ -n "$OVERWRITE_FIREJAIL" ]; then
+    command=('/usr/bin/nvim')
+  fi
+
+  "${command[@]}" "$DIR"/"$1"
+}
+
+
 #
 # common functions END
 # ---------------------------
