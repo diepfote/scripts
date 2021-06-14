@@ -1084,8 +1084,9 @@ work-sync () {
     if yesno; then
       rclone_fastmail_sync_cheatsheets_from_remote
     fi
-
   fi
+
+  rm "$sync_file"
 
 
   set +x
