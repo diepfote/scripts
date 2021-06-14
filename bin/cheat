@@ -25,7 +25,14 @@ If \`-s\` is specified find will be run. A path is already set for find: \`$find
 
 OPTIONS:
   -e|--edit
-  -s|--search OPTIONS  FIND_STRING   Run find in cheatsheets DIR
+  -f|--find OPTIONS  FIND_STRING   Run find in cheatsheets DIR
+    $ cheat -f -name '*find*'
+    + find $HOME/Documents/cheatsheets -name '*find*'
+
+  -s|--grep OPTIONS  GREP_STRING   Run grep in cheatsheets DIR
+    $ cheat -s -n ' find '
+    + grep -n ' find ' --color=always -r $HOME/Documents/cheatsheets
+
 EOF
 }
 
@@ -45,8 +52,13 @@ key="$1"
     shift
     ;;
 
-    -s|--search)
+    -f|--find)
     command=('find' "$find_path")
+    shift
+    ;;
+
+    -s|--grep)
+    command=('grep')
     shift
     ;;
 
@@ -75,7 +87,14 @@ source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
 if [ "${command[0]}" = 'find' ]; then
+  set -x
   "${command[@]}" "$@"
+  set +x
+  exit
+elif [ "${command[0]}" = 'grep' ]; then
+  set -x
+  "${command[@]}" "$@" --color=always -r "$find_path"
+  set +x
   exit
 fi
 
