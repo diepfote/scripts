@@ -258,15 +258,15 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     gehard_recommendation_open="$(ps -ef | grep zathura | grep 'pcasm\-book')"
 
     if [ -z "$gehard_slides_open" ]; then
-      xdg-open "/home/$USER/Documents/cheatsheets/asm_cheatsheets/gehard - SS18_IMS_OpSys_ASM.pdf" >/dev/null 2>&1
+      xdg-open "$HOME/Documents/cheatsheets/asm_cheatsheets/gehard - SS18_IMS_OpSys_ASM.pdf" >/dev/null 2>&1
     fi
 
     if [ -z "$gehard_recommendation_open" ]; then
-      xdg-open "/home/$USER/Documents/books&documentation/assembly/pcasm-book.pdf" >/dev/null 2>&1
+      xdg-open "$HOME/Documents/books&documentation/assembly/pcasm-book.pdf" >/dev/null 2>&1
     fi
 
     if [ -z "$guide_open" ]; then
-      xdg-open "/home/$USER/Documents/cheatsheets/asm_cheatsheets/Guide to x86 Assembly.pdf" >/dev/null 2>&1
+      xdg-open "$HOME/Documents/cheatsheets/asm_cheatsheets/Guide to x86 Assembly.pdf" >/dev/null 2>&1
     fi
 
     asm_dir=/home/$USER/Documents/asm
@@ -333,9 +333,18 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     sudo lvremove -y /dev/VolGroup00/s_*; snap_subset
   }
 
+
+  open_file_if_not_open () {
+    local filename="$1"
+    if [ -z "$(ps -ef | grep -v grep | grep "$(basename "$filename")")" ]; then
+      xdg-open "$filename"  # xdg-open should be a function already
+    fi
+  }
+
   xdg-open () {
     (command xdg-open "$@" >/dev/null 2>&1 &)
   }
+
 
   _firewardened-app () {
     set -x
@@ -1064,8 +1073,13 @@ _work-wrapper () {
 }
 
 work-sync () {
+  local sync_file=/tmp/work-sync.tmp
+  rclone_fastmail_sync_cheatsheets_from_remote --dry-run > "$sync_file" 2>&1
 
-  if ! rclone_fastmail_sync_cheatsheets_from_remote --dry-run 2>&1 | ag --passthrough 'There was nothing to transfer'; then
+  # skip sync if output contains "There is nothing to transfer" and "Skipped " is not present
+  # in the ouput
+  if ! ag --passthrough 'There was nothing to transfer' "$sync_file" || \
+     ! grep -v 'Skipped ' "$sync_file" 1>/dev/null 2>&1; then
     echo 'Do you want to trigger a sync?'
     if yesno; then
       rclone_fastmail_sync_cheatsheets_from_remote
@@ -1074,6 +1088,7 @@ work-sync () {
   fi
 
 
+  set +x
   local username
   username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
 
