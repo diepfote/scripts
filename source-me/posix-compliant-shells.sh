@@ -1073,21 +1073,14 @@ _work-wrapper () {
 }
 
 work-sync () {
-  local sync_file=/tmp/work-sync.tmp
-  rclone_fastmail_sync_cheatsheets_from_remote --dry-run > "$sync_file" 2>&1
+  # skip sync if output does not "Skipped "
+  if rclone_fastmail_sync_cheatsheets_from_remote --dry-run  | ag --passthrough 'Skipped ' ; then
 
-  # skip sync if output contains "There is nothing to transfer" and "Skipped " is not present
-  # in the ouput
-  if ! ag --passthrough 'There was nothing to transfer' "$sync_file" || \
-     ! grep -v 'Skipped ' "$sync_file" 1>/dev/null 2>&1; then
     echo 'Do you want to trigger a sync?'
     if yesno; then
       rclone_fastmail_sync_cheatsheets_from_remote
     fi
   fi
-
-  rm "$sync_file"
-
 
   set +x
   local username
