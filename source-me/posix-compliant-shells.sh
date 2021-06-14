@@ -796,7 +796,7 @@ rclone_fastmail_sync_bewerbungen_cvs_arbeitszeugnisse () {
   src=~/Documents/bewerbungen_cvs_arbeitszeugnisse/
   dst='fastmail:'"$username"'.fastmail.com/files/bewerbungen_cvs_arbeitszeugnisse/'
 
-  _rclone_verbose_sync_operation "$src" "$dst" "$@"
+  _rclone_verbose_sync_operation "$@" "$src" "$dst"
 }
 
 rclone_fastmail_sync_cheatsheets_from_remote () {
@@ -808,7 +808,7 @@ rclone_fastmail_sync_cheatsheets_from_remote () {
   src='fastmail:'"$username"'.fastmail.com/files/cheatsheets/'
   dst=~/Documents/cheatsheets/
 
-  _rclone_verbose_sync_operation "$src" "$dst" "$@"
+  _rclone_verbose_sync_operation --delete-excluded "$@" "$src" "$dst"
 }
 
 rclone_fastmail_sync_cheatsheets_to_remote () {
@@ -820,7 +820,7 @@ rclone_fastmail_sync_cheatsheets_to_remote () {
   src=~/Documents/cheatsheets/
   dst='fastmail:'"$username"'.fastmail.com/files/cheatsheets/'
 
-  _rclone_verbose_sync_operation --delete-excluded "$src" "$dst" "$@"
+  _rclone_verbose_sync_operation --delete-excluded "$@" "$src" "$dst"
 }
 
 
