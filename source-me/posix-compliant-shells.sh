@@ -828,6 +828,10 @@ list-zombies-and-parents () {
 }
 
 
+edit-go () {
+  _edit-wrapper --dir ~/Documents/golang/tools "$1"
+}
+
 edit-firejail () {
   _edit-wrapper --dir ~/.config/firejail --overwrite-firejail "$1"
 }
