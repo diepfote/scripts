@@ -577,6 +577,13 @@ alias map="xargs -n1"
 # common functions START
 #
 
+
+get-yt-links-for-downloads () {
+  find "$1" -mindepth 1 | sed -r 's|(.*)-(.*)\..*|\2  # \1|
+                                  /^\s*$/d
+                                  s#^#https://youtu.be/#'
+}
+
 _link-shared-password-store () {
 
     if [ -z "$PASSWORD_STORE_DIR" ]; then
