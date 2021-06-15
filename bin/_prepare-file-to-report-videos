@@ -24,7 +24,14 @@ find "$path_to_search" \
   -path "$path_to_search/audio-only/tgs_podcasts" -prune -o \
   -path "$path_to_search/watched" -prune -o \
   -path "$path_to_search/***REMOVED***" -prune -o \
-  -iregex '.*\.\(mp4\|m4a\)' | sed "s#.*$word/##" > "$filename"
+  -iregex '.*\.\(mp4\|m4a\)' | \
+      sed "s#.*$word/##
+           /movies_and_series/d
+           /jonathan blow/d
+           /totalbiscuit/d
+           /audio-only/d
+           /watched/d
+           /***REMOVED***/d"  > "$filename"
 
 echo >> "$filename"
 grep -E "^mpv " "$hist_file" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"
