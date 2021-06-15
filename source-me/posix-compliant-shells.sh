@@ -1081,7 +1081,7 @@ _work-wrapper () {
 
 work-sync () {
   # skip sync if output does not "Skipped "
-  if rclone_fastmail_sync_cheatsheets_from_remote --dry-run  | ag --passthrough 'Skipped ' ; then
+  if rclone_fastmail_sync_cheatsheets_from_remote --dry-run  2>&1 | ag --passthrough 'Skipped ' ; then
 
     echo 'Do you want to trigger a sync?'
     if yesno; then
