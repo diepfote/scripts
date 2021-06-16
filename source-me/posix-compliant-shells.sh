@@ -568,7 +568,6 @@ alias path='echo -e ${PATH//:/\\n}'
 alias map="xargs -n1"
 
 
-
 # common aliases END
 # -------------------------
 
@@ -579,7 +578,7 @@ alias map="xargs -n1"
 
 
 get-yt-links-for-downloads () {
-  find "$1" -mindepth 1 | sed -r 's|(.*)-(.*)\..*|\2  # \1|
+  find "$1" -mindepth 1 | sed -r 's|(.*)([A-z0-9-]{11})\.[A-z0-9]{2,6}|\2 #  \1|
                                   /^\s*$/d
                                   s#^#https://youtu.be/#'
 }
