@@ -577,11 +577,23 @@ alias map="xargs -n1"
 #
 
 
+video-sync () {
+  local dir
+  dir=~/Movies
+  if [ "$(uname)" != Darwin ]; then
+    dir=~/Videos
+  fi
+
+  ~/Documents/golang/tools/video-syncer/video-syncer "$dir"
+}
+
+
 get-yt-links-for-downloads () {
   find "$1" -mindepth 1 | sed -r 's|(.*)([A-z0-9-]{11})\.[A-z0-9]{2,6}|\2 #  \1|
                                   /^\s*$/d
                                   s#^#https://youtu.be/#'
 }
+
 
 _link-shared-password-store () {
 
