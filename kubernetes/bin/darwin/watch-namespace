@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+_help() {
+cat <<EOF
+USAGE: watch-namespace -n <NAMESPACE> -r <REGION>
+
+OPTIONS:
+-n|--namespace NAMESPACE Namespace to watch
+-r|--region    REGION    Datacenter region
+EOF
+}
+
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+# Parse arguments
+positional_args=()
+namespace=''
+region=''
+while [ $# -gt 0 ]; do
+  key="$1"
+  case "$key" in
+    -n|--namespace)
+    namespace="$2"
+    shift 2
+    ;;
+
+    -r|--region)
+    region="$2"
+    shift 2
+    ;;
+
+    -h|--help)
+    _help
+    exit
+    ;;
+
+    *) # unknown option
+    positional_args+=("$1") # save in an array for later
+    shift
+    ;;
+  esac
+done
+set -- "${positional_args[@]}"
+
+if [[ "$region" =~ 9 ]]; then
+  region=prod-9-os-muc
+elif [[ "$region" =~ 10 ]]; then
+  region=10-prod-os-muc
+elif [[ "$region" =~ 12 ]]; then
+  region=12-prod-os-muc
+fi
+
+if [ -z "$region" ]; then
+  echo -e "${RED}Invalid region (empty)!"
+  exit 1
+fi
+
+_split_and_run_tmux_command () {
+  local pane_id
+
+  tmux split-window -d  'export BASH_SOURCE_IT=true; bash'
+  pane_id="$(tmux display -pt ".+" '#{pane_id}')"
+  sleep 5
+
+  tmux send-keys -t "$pane_id" "source ~/.bashrc; \
+    set_kubecontext '$region'; \
+    watch oc get pod -n '$namespace' " C-m
+  }
+
+(_split_and_run_tmux_command &)
+
