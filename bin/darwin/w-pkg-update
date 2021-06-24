@@ -58,7 +58,7 @@ cleanup () {
 }
 
 # shellcheck disable=SC2064
-trap "cleanup \"$spinner_pid\"" EXIT  # stop spinner
+trap 'cleanup "$spinner_pid"' EXIT  # stop spinner
 
 
 echo -e '\n--------\npip\n'
@@ -94,6 +94,8 @@ echo -e '\n--------\nbrew\n'
 echo -en "  $PURPLE"; echo -e "[>] pulling updates$NC"
 brew update
 
+kill "$spinner_pid"
+
 echo -en "  $PURPLE"; echo -e "[>] starting upgrades$NC"
 brew upgrade || true
 
@@ -104,8 +106,12 @@ if [ -n "$GREEDY" ]; then
   brew upgrade --cask --greedy
 fi
 
+set +u
+spinner
+spinner_pid="$!"
+set -u
 
-echo -e '\n\n--------\nListing Darwin updates\n'
+echo -e '\n\n--------\n\nListing Darwin updates'
 pkg_info=()
 
 while IFS='' read -r line; do
