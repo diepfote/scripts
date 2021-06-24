@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+mkdir -p /tmp/tnef-tmp
+tnef --overwrite  -C /tmp/tnef-tmp "$1"
+find /tmp/tnef-tmp -mindepth 1 -printf "%T@ %Tc %p\n" 2>&1 |\
+     sort -n |\
+     awk '{ $1=$2=$3=$4=$5=$6=""; print $0 }' |\
+     sed -r 's#\s*##' | head -n1 | xargs -d '\n' bat -A
