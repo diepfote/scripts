@@ -104,7 +104,7 @@ call_browser () {
   else
     # -N ... allow network access
     set -x
-    firewardened-firefox -N file://"$TMP_FILE" 2>/dev/null 1>/dev/null &
+    firewardened-chromium -N file://"$TMP_FILE" 2>/dev/null 1>/dev/null &
     set +x
   fi
 
