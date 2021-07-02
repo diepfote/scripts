@@ -577,6 +577,11 @@ alias map="xargs -n1"
 #
 
 
+mpv () {
+  (command mpv "$@" 1>/dev/null 2>/dev/null &)
+}
+
+
 video-sync () {
   local dir
   dir=~/Movies
