@@ -589,6 +589,8 @@ video-sync () {
     dir=~/Videos
   fi
 
+  ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
+
   ~/Documents/golang/tools/video-syncer/video-syncer "$dir"
 }
 
