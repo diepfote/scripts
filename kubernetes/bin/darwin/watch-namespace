@@ -19,7 +19,7 @@ EOF
 
 
 if [ $# -eq 0 ]; then
-  _help
+  _help >&2
   exit
 fi
 
@@ -41,7 +41,7 @@ while [ $# -gt 0 ]; do
     ;;
 
     -h|--help)
-    _help
+    _help >&2
     exit
     ;;
 
@@ -62,7 +62,8 @@ elif [[ "$region" =~ 12 ]]; then
 fi
 
 if [ -z "$region" ]; then
-  echo -e "${RED}Invalid region (empty)!"
+  echo -e "${RED}Incomplete input. Region (empty)!$NC\n" >&2
+  _help >&2
   exit 1
 fi
 
