@@ -6,6 +6,15 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+_help() {
+cat <<EOF
+USAGE: w-pkg-update [-g] [-r]
+
+FLAGS:
+-g    greedy option for brew
+-r    restart if there are mac updates
+EOF
+}
 
 # Parse arguments
 positional_args=()
@@ -25,13 +34,14 @@ while [ $# -gt 0 ]; do
     ;;
 
     -h|--help)
-    help
+    _help >&2
     exit 0
     ;;
 
     *) # unknown option
-    positional_args+=("$1") # save in an array for later
-    shift
+    echo -e "{$RED}Invalid parameter:$NC '$1'!"
+    _help >&2
+    exit 1
     ;;
   esac
 done
