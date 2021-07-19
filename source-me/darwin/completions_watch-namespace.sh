@@ -4,7 +4,7 @@
 
 
 _print_namespaces () {
-  for name in "${all_namespaces[@]}"; do
+  for name in "${_all_namespaces[@]}"; do
     echo "$name"
   done
 }
@@ -16,22 +16,22 @@ _watch-namespace_completions()
   local prev_word="${COMP_WORDS["$COMP_CWORD"-1]}"
   local suggestions
 
-  if [ -z "$all_namespaces" ]; then
-    read -r -d '' -a all_namespaces < <(oc get project -o json | jq '.items[].metadata.name' | sed 's#^"##;s#"$##')
-    export all_namespaces
-
-    # all_namespaces=('test-something-blub' 'test-something-minus')
-fi
-
   case "${prev_word}" in
     -n)
+    if [ -z "$_all_namespaces" ]; then
+      read -r -d '' -a _all_namespaces < <(oc get project -o json | jq '.items[].metadata.name' | sed 's#^"##;s#"$##')
+      export _all_namespaces
+
+      # _all_namespaces=('test-something-blub' 'test-something-minus')
+fi
+
       COMPREPLY=($(compgen -W "$(_print_namespaces)" -- "$cur_word"))
       ;;
     -r)
-      COMPREPLY=($(compgen -W "9 10 12" -- "$cur_word"))
+      COMPREPLY=($(compgen -W "$(echo -e '9\n10\n12')" -- "$cur_word"))
       ;;
     *)
-      COMPREPLY=($(compgen -W "-n -r" -- "$cur_word"))
+      COMPREPLY=($(compgen -W "$(echo -e '-h\n-n\n-r')" -- "$cur_word"))
       ;;
   esac
 

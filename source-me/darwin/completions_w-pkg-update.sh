@@ -8,7 +8,7 @@ _w-pkg-update_completions()
 
   case "${prev_word}" in
     *)
-      COMPREPLY=($(compgen -W "-g -r -h" -- "$cur_word"))
+      COMPREPLY=($(compgen -W "$(echo -e '-g\n-r\n-h')" -- "$cur_word"))
       ;;
   esac
 
