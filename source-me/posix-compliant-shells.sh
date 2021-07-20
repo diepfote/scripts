@@ -536,6 +536,7 @@ alias grep='grep --exclude-dir=.git \
                  --exclude-dir=.eggs \
                  --exclude-dir=*venv* \
                  --exclude-dir=*build* \
+                 --exclude-dir=__pycache__ \
                  --exclude-dir=htmlcov \
                  --color'
 
