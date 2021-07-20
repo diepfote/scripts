@@ -517,6 +517,9 @@ elif grep -L 'Arch Linux' /etc/os-release; then
     xinput set-button-map "$1" 1 2 3
   }
 
+
+  alias xclip='command xclip -selection clipboard'
+
 fi
 
 # OS specific END
