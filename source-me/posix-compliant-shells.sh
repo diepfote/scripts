@@ -389,7 +389,7 @@ elif grep -L 'Arch Linux' /etc/os-release; then
 
     if [ "${#pkg_info[@]}" -gt 1 ]; then
       # snatched from https://stackoverflow.com/a/15692004
-      printf '%s\n' "${pkg_info[@]}" | less
+      printf '%s\n' "${pkg_info[@]}" | vim -c 'set buftype=nofile' -
     fi
   }
 
