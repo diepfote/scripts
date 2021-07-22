@@ -30,10 +30,18 @@ largest_backup_file="$backup_dir/$(ls -S "$backup_dir" | head -n1 || die "${RED}
 set -x
 ls -lh "$largest_backup_file"
 set +x
-cp "$largest_backup_file" "$tmp_bash_history_file"
-cat "$bash_history_file" >> "$tmp_bash_history_file"
-ls -lh "$tmp_bash_history_file"
 
-cp "$bash_history_file" "$bash_history_file".bck
-cp "$tmp_bash_history_file" "$bash_history_file"
+current_bash_history_filesize="$(ls -al "$bash_history_file" | awk '{ print $5 }')"
+
+if [ "$current_bash_history_filesize" -gt 1000 ]; then
+  cp "$largest_backup_file" "$bash_history_file"
+else
+  cp "$largest_backup_file" "$tmp_bash_history_file"
+  cat "$bash_history_file" >> "$tmp_bash_history_file"
+
+  cp "$bash_history_file" "$bash_history_file".bck
+  cp "$tmp_bash_history_file" "$bash_history_file"
+fi
+
+ls -lh "$bash_history_file"
 
