@@ -39,7 +39,7 @@ while [ $# -gt 0 ]; do
     ;;
 
     *) # unknown option
-    echo -e "{$RED}Invalid parameter:$NC '$1'!"
+    echo -e "${RED}Invalid parameter:$NC '$1'!"
     _help >&2
     exit 1
     ;;
