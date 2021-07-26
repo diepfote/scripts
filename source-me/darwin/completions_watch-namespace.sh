@@ -3,14 +3,14 @@
 # https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial
 
 
-_print_namespaces () {
-  for name in "${_all_namespaces[@]}"; do
-    echo "$name"
-  done
-}
-
 _watch-namespace_completions()
 {
+  _print () {
+    for name in "$@"; do
+      echo "$name"
+    done
+  }
+
   COMPREPLY=()
   local cur_word="${COMP_WORDS["$COMP_CWORD"]}"
   local prev_word="${COMP_WORDS["$COMP_CWORD"-1]}"
@@ -25,7 +25,7 @@ _watch-namespace_completions()
       # _all_namespaces=('test-something-blub' 'test-something-minus')
 fi
 
-      COMPREPLY=($(compgen -W "$(_print_namespaces)" -- "$cur_word"))
+      COMPREPLY=($(compgen -W "$(_print "${_all_namespaces[@]}")" -- "$cur_word"))
       ;;
     -r)
       COMPREPLY=($(compgen -W "$(echo -e '9\n10\n12')" -- "$cur_word"))

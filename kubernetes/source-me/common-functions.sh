@@ -87,7 +87,11 @@ oc-get-users-for-scc () {
   oc get scc "$1" -o jsonpath='{.users}' | sed 's#\[##;s#\]##' | tr ' ' '\n';
 }
 
-set_kubecontext () {
+set-kubecontext () {
   export KUBECONFIG=~/.kube/"$1"
+}
+
+set-openstack-cloud () {
+  export OS_CLOUD="$1"
 }
 
