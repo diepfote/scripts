@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
+_help() {
+cat <<EOF
+USAGE: pkgbuild [-b|-c|-v] [<REPO_TYPE>/]<PKGNAME>
+
+OPTIONS:
+  -c   No pager
+  -v   Open output in vim
+  -b   Open pkg in browser
+EOF
+}
+
+_get_pkgname () {
+  echo "$1" | sed "s#.*/##"
+}
+
+_get_repo_type () {
+  if echo "$1" | grep '/' 1>/dev/null 2>/dev/null; then
+    echo "$1" | sed "s#/.*#/#"
+  else
+    echo aur/
+  fi
+}
+
+_set_urls () {
+  local aur_base_url='https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h='
+  local core_base_url='https://git.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/'
+  local community_base_url='https://git.archlinux.org/svntogit/community.git/plain/trunk/PKGBUILD?h=packages/'
+
+  local browser_aur_base_url='https://aur.archlinux.org/packages/'
+  local REPOTYPE_PLACEHOLDER=REPOTYPE
+  local browser_main_base_url="https://www.archlinux.org/packages/$REPOTYPE_PLACEHOLDER"'x86_64/'
+
+  local repo_type
+  local pkgname
+  repo_type="$(_get_repo_type "$1")"
+  pkgname="$(_get_pkgname "$1")"
+
+  echo -en "$RED" 1>&2; echo -e "repo type:$NC $repo_type" 1>&2
+
+  case "$repo_type" in
+    'extra/' | 'core/')
+      url="$core_base_url$pkgname"
+      browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")$pkgname)"
+      ;;
+
+    'multilib/' | 'community/')
+      url="$community_base_url$pkgname"
+      browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")$pkgname)"
+      ;;
+
+    'aur/' | '' | '*')
+      url="$aur_base_url$pkgname"
+      browser_url="$browser_aur_base_url$pkgname"
+      ;;
+
+    esac
+}
+
+
+if [ "$#" -eq 0 ]; then
+  _help
+  exit 1
+fi
+
+
+# Parse arguments
+positional_args=()
+USE_VIM=''
+NO_PAGER=''
+OPEN_BROWSER=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -v)
+    USE_VIM=true
+    shift
+    ;;
+
+    -c)
+    NO_PAGER=true
+    shift
+    ;;
+
+    -b)
+    OPEN_BROWSER=true
+    shift
+    ;;
+
+    -h)
+      _help
+      exit
+     ;;
+
+    *) # unknown option
+    positional_args+=("$1") # save in an array for later
+    shift
+    ;;
+  esac
+done
+set -- "${positional_args[@]}"
+
+
+_set_urls "$@"
+
+echo -en "$GREEN" 1>&2; echo -e "browser_url:$NC $browser_url" 1>&2
+if [ -n "$OPEN_BROWSER" ]; then
+  call_browser "$browser_url"
+fi
+
+set -x
+if [ -n "$NO_PAGER" ]; then
+  curl -sL "$url"
+elif [ -n "$USE_VIM" ]; then
+  curl -sL "$url" | vim -c 'set buftype=nofile' -
+else
+  # shellcheck disable=SC2119
+  set +u
+  curl -sL "$url" | lessc
+  set -u
+fi
+set +x
+
+unset url browser_url OPEN_BROWSER NO_PAGER
+
