@@ -75,7 +75,7 @@ _split_and_run_tmux_command () {
   sleep 5
 
   tmux send-keys -t "$pane_id" "source ~/.bashrc; \
-    set_kubecontext '$region'; \
+    set-kubecontext '$region'; \
     watch oc get pod -n '$namespace' " C-m
   }
 
