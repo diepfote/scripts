@@ -9,7 +9,7 @@ _openstack_cloud_completions()
   COMPREPLY=()
   local cur_word="${COMP_WORDS["$COMP_CWORD"]}"
 
-  if [ -z "$_all_namespaces" ]; then
+  if [ -z "$_clouds" ]; then
     read -r -d '' -a _clouds < <(grep -E '^  muc' ~/.config/openstack/clouds.yaml | sed -r 's#:##;s#\s*##g')
     export _clouds
   fi

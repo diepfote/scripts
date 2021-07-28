@@ -46,7 +46,7 @@ source ~/Documents/scripts/source-me/colors.sh
 # source fish functions
 sh_functions_file=~/.sh_functions
 # shellcheck disable=SC1090
-source "$sh_functions_file"
+source "$sh_functions_file" || true
 
 # -------------------------
 
