@@ -6,6 +6,12 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+
+set +u
+source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+set -u
+
 set +u
 if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
   set -u

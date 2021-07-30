@@ -141,11 +141,11 @@ if [ "$(uname)" = 'Darwin' ]; then
   export _ngrep_interface=en0
 
 
-  brew-leaves-required-by () {
+  brew-leaves-require () {
     if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
-      BREW_REQUIRED_BY_LIST_INFO="$BREW_REQUIRED_BY_LIST_INFO" brew leaves | xargs brew-required-by
+      BREW_REQUIRED_BY_LIST_INFO="$BREW_REQUIRED_BY_LIST_INFO" brew leaves | xargs brew-pkg-requires
     else
-      brew leaves | xargs brew-required-by
+      brew leaves | xargs brew-pkg-requires
     fi
   }
 
