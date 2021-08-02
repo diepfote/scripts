@@ -17,21 +17,7 @@ else
 fi
 path_to_search="$HOME/$word"
 
-find "$path_to_search" \
-  -path "$path_to_search/movies_and_series" -prune -o \
-  -path "$path_to_search/jonathan blow" -prune -o \
-  -path "$path_to_search/totalbiscuit" -prune -o \
-  -path "$path_to_search/audio-only/tgs_podcasts" -prune -o \
-  -path "$path_to_search/watched" -prune -o \
-  -path "$path_to_search/***REMOVED***" -prune -o \
-  -iregex '.*\.\(mp4\|m4a\)' | \
-      sed "s#.*$word/##
-           /movies_and_series/d
-           /jonathan blow/d
-           /totalbiscuit/d
-           /audio-only/d
-           /watched/d
-           /***REMOVED***/d"  > "$filename"
+~/Documents/golang/tools/video-syncer/video-syncer "$path_to_search" 'report-files'  > "$filename"
 
 echo >> "$filename"
 grep -E "^mpv " "$hist_file" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"
