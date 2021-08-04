@@ -7,7 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-trap "popd" EXIT
+trap "popd; rm .bashrc" EXIT
 pushd ~/Documents/dockerfiles/"$1"
 
 if [ "$1" = arch-all ]; then

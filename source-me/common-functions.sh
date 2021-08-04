@@ -12,7 +12,7 @@ EOF
 
   # config_file = $1
   # setting     = $2
-  if ! ~/Documents/python/read_toml_setting.py "$@"; then
+  if ! ~/Documents/python/tools/read_toml_setting.py "$@"; then
     _help
   fi
 
