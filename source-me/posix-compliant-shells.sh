@@ -600,6 +600,8 @@ video-sync () {
   ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
 
   ~/Documents/golang/tools/video-syncer/video-syncer "$dir"
+
+  ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
 }
 
 
