@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+
+source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
+
+email_address="$(read_toml_setting ~/Documents/config/git.conf gh_email)"
+gpg_id="$(gpg --list-secret-keys --keyid-format LONG | grep -B 1 "$email_address" | sed 's#\s*##' | head -n1)"
+git config user.signingkey "$gpg_id"
+
 __save_GIT_COMMITTER_EMAIL="$GIT_COMMITTER_EMAIL"
 __save_GIT_AUTHOR_EMAIL="$GIT_AUTHOR_EMAIL"
 unset GIT_COMMITTER_EMAIL GIT_AUTHOR_EMAIL
@@ -29,8 +38,8 @@ else
   done
 fi
 echo
-[ -n "$message" ] && git commit -m "$message" \
-  || git commit
+[ -n "$message" ] && git commit -S -m "$message" \
+  || git commit -S
 echo -e '\n----------------\n'
 
 git status -sb
