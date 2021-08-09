@@ -1,0 +1,25 @@
+6403a6404,6425
+> _oc_watch-namespace()
+> {
+>     last_command="oc_watch_namespace"
+>     flags=()
+>     two_word_flags=()
+>     local_nonpersistent_flags=()
+>     flags_with_completion=()
+>     flags_completion=()
+> 
+>     flags+=("-h")
+>     # flags+=("-r")
+>     two_word_flags+=("-r")
+>     flags_with_completion+=("-r")
+>     flags_completion+=("_watch-namespace_completions")
+>     # flags_completion+=("__oc_region_complete")
+> 
+>     two_word_flags+=("-n")
+>     flags_with_completion+=("-n")
+>     flags_completion+=("_watch-namespace_completions")
+> 
+> }
+> 
+20483a20506
+>     commands+=("watch-namespace")
