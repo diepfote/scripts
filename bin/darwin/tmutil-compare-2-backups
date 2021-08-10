@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+
+# $ tmutil listbackups
+sudo tmutil compare "$1" "$2" |\
+stdbuf -o0 tr '\t' ' ' |\
+stdbuf -o0 tr -s ' ' |\
+stdbuf -o0 awk 'NF == 9 {print $0}' |\
+sort -k2 -h
+

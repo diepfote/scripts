@@ -195,14 +195,13 @@ if [ "$(uname)" = 'Darwin' ]; then
     open /Applications/"$app" -n --args "$1" "$2"
   }
 
+
   tmutil-compare-last-2-backups () {
     sudo tmutil listbackups |\
       tail -2 |\
       sed 's/.*/"&"/' |\
-      xargs  sudo tmutil compare
+      xargs tmutil-compare-2-backups
   }
-
-
 
 
   w-checked-in () {
