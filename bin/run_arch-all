@@ -20,9 +20,12 @@ docker run \
   -v ~/.gnupg:/build/.gnupg \
   -v ~/.container:/build/.container \
   -v ~/Documents/config:/build/Documents/config:ro \
-  -v ~/Documents/scripts:/build/Documents/scripts:ro \
-  -v ~/Documents/python:/build/Documents/python:ro \
-  -v ~/Documents/golang:/build/Documents/golang:ro \
+  -v ~/.vim:/build/.vim \
+  -v ~/.config/coc:/build/.config/coc \
+  -v ~/.config/nvim:/build/.config/nvim \
+  -v ~/Documents/scripts:/build/Documents/scripts \
+  -v ~/Documents/python:/build/Documents/python \
+  -v ~/Documents/golang:/build/Documents/golang \
   -v "$PWD":/pwd:ro \
   --rm \
  --cap-add SYS_ADMIN \
