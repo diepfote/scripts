@@ -1,4 +1,12 @@
-6403a6404,6425
+302,306c302
+<     local template oc_out
+<     template="{{ range .items  }}{{ .metadata.name }} {{ end }}"
+<     if oc_out=$(oc get -o template --template="${template}" namespace 2>/dev/null); then
+<         COMPREPLY=( $( compgen -W "${oc_out[*]}" -- "$cur" ) )
+<     fi
+---
+>   _watch-namespace_completions
+6403a6400,6421
 > _oc_watch-namespace()
 > {
 >     last_command="oc_watch_namespace"
@@ -21,5 +29,5 @@
 > 
 > }
 > 
-20483a20506
+20483a20502
 >     commands+=("watch-namespace")
