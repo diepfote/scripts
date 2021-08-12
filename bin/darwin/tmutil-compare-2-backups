@@ -1,6 +1,32 @@
 #!/usr/bin/env bash
 
 
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+# shellcheck source=/dev/null
+source ~/Documents/scripts/source-me/spinner.sh
+
+
+set +u
+spinner
+spinner_pid="$!"
+set -u
+
+cleanup () {
+  set +x
+
+  local spinner_pid="$1"
+  kill "$spinner_pid"
+}
+
+# shellcheck disable=SC2064
+trap 'cleanup "$spinner_pid"' EXIT  # stop spinner
+
 # $ tmutil listbackups
 sudo tmutil compare "$1" "$2" |\
 stdbuf -o0 tr '\t' ' ' |\
