@@ -1054,6 +1054,11 @@ work-sync () {
   local command=('git' 'pull')
 
   _work-wrapper "$conf_file" "${command[@]}"
+
+  echo 'Do you want to run video-sync?'
+  if yesno; then
+    video-sync
+  fi
 }
 
 work_push () {
