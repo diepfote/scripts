@@ -90,5 +90,6 @@ for dir in "${all_dirs[@]}"; do
   echo "$dir"
 done
 
+# DO NOT RUN THIS MORE THAN ONCE IN A ROW
 # sudo tmutil addexclusion -p "${all_dirs[@]}"
 # sudo tmutil removeexclusion -p "${all_dirs[@]}"
