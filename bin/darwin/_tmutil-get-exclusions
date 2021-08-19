@@ -6,74 +6,89 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-_tmutil_get_exclusions_dirs=()
-_tmutil_get_exclusions_dirs+=(/Applications)
-_tmutil_get_exclusions_dirs+=(/Library)
-_tmutil_get_exclusions_dirs+=(/opt)
-_tmutil_get_exclusions_dirs+=(/private/tmp)
-_tmutil_get_exclusions_dirs+=(/private/var)
-_tmutil_get_exclusions_dirs+=(/usr/local/lib/python*)
-_tmutil_get_exclusions_dirs+=(~/.local/share/fish/generated_completions/)
-_tmutil_get_exclusions_dirs+=(~/.ansible/)
-_tmutil_get_exclusions_dirs+=(~/.dlv)
-_tmutil_get_exclusions_dirs+=(~/.cache/)
-_tmutil_get_exclusions_dirs+=(~/.docker/)
-_tmutil_get_exclusions_dirs+=(~/.elinks/)
-_tmutil_get_exclusions_dirs+=(~/.w3m/)
-_tmutil_get_exclusions_dirs+=(~/.gem)
-_tmutil_get_exclusions_dirs+=(~/.ghc)
-_tmutil_get_exclusions_dirs+=(~/.gradle/)
-_tmutil_get_exclusions_dirs+=(~/.grip)
-_tmutil_get_exclusions_dirs+=(~/.groovy)
-_tmutil_get_exclusions_dirs+=(~/.helm)
-_tmutil_get_exclusions_dirs+=(~/.ipython/)
-_tmutil_get_exclusions_dirs+=(~/.local/share/Trash/)
-_tmutil_get_exclusions_dirs+=(~/.local/share/virtualenvs/)
-_tmutil_get_exclusions_dirs+=(~/.jfrog)
-_tmutil_get_exclusions_dirs+=(~/.krew)
-_tmutil_get_exclusions_dirs+=(~/.mail)
-_tmutil_get_exclusions_dirs+=(~/.m2)
-_tmutil_get_exclusions_dirs+=(~/.mc)
-_tmutil_get_exclusions_dirs+=(~/.minishift/)
-_tmutil_get_exclusions_dirs+=(~/.novaclient/)
-_tmutil_get_exclusions_dirs+=(~/.npm/)
-_tmutil_get_exclusions_dirs+=(~/.offlineimap)
-_tmutil_get_exclusions_dirs+=(~/.pip)
-_tmutil_get_exclusions_dirs+=(~/.pyenv/)
-_tmutil_get_exclusions_dirs+=(~/.pylint.d/)
-_tmutil_get_exclusions_dirs+=(~/.quodlibet/)
-_tmutil_get_exclusions_dirs+=(~/.sdkman/)
-_tmutil_get_exclusions_dirs+=(~/.tox/)
-_tmutil_get_exclusions_dirs+=(~/.Trash/)
-_tmutil_get_exclusions_dirs+=(~/.vim/plugged/)
-_tmutil_get_exclusions_dirs+=(~/Downloads/mutt/)
-_tmutil_get_exclusions_dirs+=(~/Downloads/tmp)
-_tmutil_get_exclusions_dirs+=(~/go/)
-_tmutil_get_exclusions_dirs+=(~/ISOs/)
-_tmutil_get_exclusions_dirs+=(~/Movies)
-_tmutil_get_exclusions_dirs+=(~/Music)
-_tmutil_get_exclusions_dirs+=(~/opt)
-_tmutil_get_exclusions_dirs+=(~/'Standard Notes Backups')
-_tmutil_get_exclusions_dirs+=(~/VirtualBox_VMs)
-_tmutil_get_exclusions_dirs+=(~/Walkme)
+all_dirs=()
+all_dirs+=(/Applications)
+all_dirs+=(/Library)
+all_dirs+=(/opt)
+all_dirs+=(/private/tmp)
+all_dirs+=(/private/var)
+all_dirs+=(/usr/local/lib/python*)
+all_dirs+=(~/.local/share/fish/generated_completions/)
+all_dirs+=(~/.ansible/)
+all_dirs+=(~/.dlv)
+all_dirs+=(~/.cache/)
+all_dirs+=(~/.docker/)
+all_dirs+=(~/.elinks/)
+all_dirs+=(~/.w3m/)
+all_dirs+=(~/.gem)
+all_dirs+=(~/.ghc)
+all_dirs+=(~/.gradle/)
+all_dirs+=(~/.grip)
+all_dirs+=(~/.groovy)
+all_dirs+=(~/.helm)
+all_dirs+=(~/.ipython/)
+all_dirs+=(~/.local/share/Trash/)
+all_dirs+=(~/.local/share/virtualenvs/)
+all_dirs+=(~/.jfrog)
+all_dirs+=(~/.krew)
+all_dirs+=(~/.mail)
+all_dirs+=(~/.m2)
+all_dirs+=(~/.mc)
+all_dirs+=(~/.minishift/)
+all_dirs+=(~/.novaclient/)
+all_dirs+=(~/.npm/)
+all_dirs+=(~/.offlineimap)
+all_dirs+=(~/.pip)
+all_dirs+=(~/.pyenv/)
+all_dirs+=(~/.pylint.d/)
+all_dirs+=(~/.quodlibet/)
+all_dirs+=(~/.sdkman/)
+all_dirs+=(~/.tox/)
+all_dirs+=(~/.Trash/)
+all_dirs+=(~/.vim/plugged/)
+all_dirs+=(~/Downloads/mutt/)
+all_dirs+=(~/Downloads/tmp)
+all_dirs+=(~/go/)
+all_dirs+=(~/ISOs/)
+all_dirs+=(~/Movies)
+all_dirs+=(~/Music)
+all_dirs+=(~/opt)
+all_dirs+=(~/'Standard Notes Backups')
+all_dirs+=(~/VirtualBox_VMs)
+all_dirs+=(~/Walkme)
 
-_tmutil_get_exclusions_dirs+=(/usr/local/{Caskroom,Cellar,Homebrew})
+all_dirs+=(/usr/local/{Caskroom,Cellar,Homebrew})
 
-_tmutil_get_exclusions_dirs+=(~/Library/Application\ Support/{Atom,CrashReporter,discord,'Docker Desktop',Keybase,Signal,'Signal Beta','Standard Notes',TeamViewer,'TeamViewer QuickSupport','Telegram Desktop',virtualenv,XQuartz,zoom.us})
-_tmutil_get_exclusions_dirs+=(~/Library/Group\ Containers/*{Office,ms,OneDrive}*)
-_tmutil_get_exclusions_dirs+=(~/Library/{Caches,Containers,Logs,Python})
+all_dirs+=(~/Library/Application\ Support/{Atom,CrashReporter,discord,'Docker Desktop',Keybase,Signal,'Signal Beta','Standard Notes',TeamViewer,'TeamViewer QuickSupport','Telegram Desktop',virtualenv,XQuartz,zoom.us})
+all_dirs+=(~/Library/Group\ Containers/*{Office,ms,OneDrive}*)
+all_dirs+=(~/Library/{Caches,Containers,Logs,Python})
 
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 10 -type d -name '*CacheStorage*' -print0)
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
 
-  # - find ~/Library/ -maxdepth 10 -type d -name '*CacheStorage*'
-  # - find ~/Library/ -maxdepth 5 -type d -name '*LocalStorage*'
-  # - IndexDB
-  # - find ~/Library/Application\ Support/Firefox/ -maxdepth 5 -type d -name 'storage'
-  # - find ~/Library/ -maxdepth 2 -type d -iname '*SafeBrowsing*'
-  # - .*Metrics.* --> find ~/Library/ -maxdepth 2 -type d -iname '*Crash*'
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 5 -type d -name '*LocalStorage*')
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
 
+# TODO IndexDB
 
-for dir in "${_tmutil_get_exclusions_dirs[@]}"; do
-  # echo -n ""$dir" "
-  printf "${dir@Q}\n"
+ mapfile -d $'\0' tmp_dirs < <(find ~/Library/Application\ Support/Firefox/ -maxdepth 5 -type d -name 'storage')
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 2 -type d -iname '*SafeBrowsing*')
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 2 -type d -iname '*Crash*')
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
+# DEBUG
+for dir in "${all_dirs[@]}"; do
+  echo "$dir"
 done
 
+# sudo tmutil addexclusion -p "${all_dirs[@]}"
+# sudo tmutil removeexclusion -p "${all_dirs[@]}"

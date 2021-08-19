@@ -598,7 +598,9 @@ video-sync () {
 
   ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
 
+  echo
   ~/Documents/golang/tools/video-syncer/video-syncer "$dir"
+  echo
 
   ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
 }
@@ -1055,7 +1057,7 @@ work-sync () {
 
   _work-wrapper "$conf_file" "${command[@]}"
 
-  echo 'Do you want to run video-sync?'
+  echo 'Do you want to run video-syncer?'
   if yesno; then
     video-sync
   fi
