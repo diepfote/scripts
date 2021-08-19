@@ -87,6 +87,15 @@ oc-get-users-for-scc () {
   oc get scc "$1" -o jsonpath='{.users}' | sed 's#\[##;s#\]##' | tr ' ' '\n';
 }
 
+
+ocj () {
+ cat - | oc neat -o json | vimj -c FormatJSON
+}
+ocy () {
+ cat - | oc neat | vimy
+}
+
+
 set-kubecontext () {
   export KUBECONFIG=~/.kube/"$1"
 }
