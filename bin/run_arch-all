@@ -26,6 +26,7 @@ docker run \
   -v ~/Documents/scripts:/build/Documents/scripts \
   -v ~/Documents/python:/build/Documents/python \
   -v ~/Documents/golang:/build/Documents/golang \
+  -v ~/Documents/asm:/build/Documents/asm \
   -v "$PWD":/pwd:ro \
   --rm \
  --cap-add SYS_ADMIN \
