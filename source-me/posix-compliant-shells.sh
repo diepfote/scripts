@@ -15,6 +15,7 @@ export MANPAGER=less
 # export LESSSECURE=1
 # readonly LESSSECURE
 
+# TODO disable this?
 export GO111MODULE=off
 
 export NNN_COLORS=2136  # use a different color for each context -> version >= 3.2
