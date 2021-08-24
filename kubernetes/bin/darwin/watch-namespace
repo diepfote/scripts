@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+
+# MEANT TO BE SYMLINKED TO A DIR EXPOSED IN PATH
+# in my case
+# ln -s ~/Documents/scripts/kubernetes/bin/darwin/watch-namespace \
+#       ~/.bin/kubectl-watch_namespace
+
+
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
 set -e  # exit on non-zero return value
