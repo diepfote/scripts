@@ -7,7 +7,8 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-find_path="$HOME/Documents/cheatsheets"
+find_path="$1"
+shift
 
 # snatched from https://stackoverflow.com/a/11396899
 declare -A map
@@ -27,11 +28,11 @@ OPTIONS:
   -e|--edit
   -f|--find OPTIONS  FIND_STRING   Run find in cheatsheets DIR
     $ cheat -f -name '*find*'
-    + find $HOME/Documents/cheatsheets -name '*find*'
+    + find $find_path -name '*find*'
 
   -s|--grep OPTIONS  GREP_STRING   Run grep in cheatsheets DIR
     $ cheat -s -n ' find '
-    + grep -n ' find ' --color=always -r $HOME/Documents/cheatsheets
+    + grep -n ' find ' --color=always -r $find_path
 
 EOF
 }
@@ -100,7 +101,7 @@ fi
 
 
 filename="${*:$#}"  # last argument
-file=~/Documents/cheatsheets/"$filename"
+file="$find_path"/"$filename"
 # shellcheck disable=SC2001
 extension="$(echo "$filename" | sed 's#.*\.##')"
 

@@ -142,6 +142,9 @@ if [ "$(uname)" = 'Darwin' ]; then
   export _ngrep_interface=en0
 
 
+  alias cheat='~/Documents/scripts/cheat.sh ~/Documents/cheatsheets'
+
+
   brew-leaves-require () {
     if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
       BREW_REQUIRED_BY_LIST_INFO="$BREW_REQUIRED_BY_LIST_INFO" brew leaves | xargs brew-pkg-requires
