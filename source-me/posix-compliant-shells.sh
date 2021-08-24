@@ -223,6 +223,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   _add_to_PATH "$HOME/Documents/scripts/bin/darwin"  || true
   _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"  || true
   _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"  || true
+  _add_to_PATH "$HOME/Documents/scripts/cc/bin"  || true
 
 
   export PASSWORD_STORE_DIR=~/.password-store-work
