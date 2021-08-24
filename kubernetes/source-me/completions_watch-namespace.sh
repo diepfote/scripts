@@ -35,7 +35,7 @@ _watch-namespace_completions()
       _complete-namespaces
       ;;
     -r)
-      COMPREPLY=($(compgen -W "$(echo -e '9\n10\n12')" -- "$cur_word"))
+      _complete_kubektx
       ;;
     *)
       COMPREPLY=($(compgen -W "$(echo -e '-h\n-n\n-r')" -- "$cur_word"))

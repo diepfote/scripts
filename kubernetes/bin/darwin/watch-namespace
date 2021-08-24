@@ -53,14 +53,6 @@ while [ $# -gt 0 ]; do
 done
 set -- "${positional_args[@]}"
 
-if [[ "$region" =~ 9 ]]; then
-  region=prod-9-os-muc
-elif [[ "$region" =~ 10 ]]; then
-  region=10-prod-os-muc
-elif [[ "$region" =~ 12 ]]; then
-  region=12-prod-os-muc
-fi
-
 if [ -z "$region" ]; then
   echo -e "${RED}Incomplete input. Region (empty)!$NC\n" >&2
   _help >&2

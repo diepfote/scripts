@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/common-functions.sh
 
 alias kctx="kubectx"
@@ -12,6 +13,21 @@ _add_to_PATH "$HOME/.krew/bin"
 alias kn=kubens
 
 
+# show completion for kubeconfigs
+_complete_kubektx () {
+  _complete_context_files () {
+    local FILE_EXCHANGE_DIR="$1"
+    # TODO improve robustness
+    IFS=$'\n' tmp=( $(compgen -W "$(ls "$FILE_EXCHANGE_DIR")" -- "${COMP_WORDS[$COMP_CWORD]}" ))
+    COMPREPLY=( "${tmp[@]// /\ }" )
+  }
+
+  local FILE_EXCHANGE_DIR=~/.kube
+  _complete_context_files "$FILE_EXCHANGE_DIR"
+}
+
+
+# shellcheck disable=SC1090
 ***REMOVED*** () {
   local ***REMOVED***
   ***REMOVED***="$(oc get pod -n ***REMOVED***-ci -o name | grep '***REMOVED***-***REMOVED***-' | sed 's#^pod/##' | tail -n1)"
