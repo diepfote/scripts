@@ -203,7 +203,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   tmutil-compare-last-2-backups () {
     sudo tmutil listbackups |\
       tail -2 |\
-      sed 's/.*/"&"/' |\
+      sed 's#.*#"/Volumes/Time Machine Backups/Backups.backupdb/'"$(hostname)"'/&"#' |\
       xargs tmutil-compare-2-backups
   }
 
