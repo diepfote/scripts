@@ -6,6 +6,30 @@
 <     fi
 ---
 >   _watch-namespace_completions
+353c349
+<  
+---
+> 
+367c363
+<  
+---
+> 
+373c369
+<  
+---
+> 
+381c377
+<  
+---
+> 
+397c393
+<  
+---
+> 
+405c401
+<  
+---
+> 
 6403a6400,6421
 > _oc_watch-namespace()
 > {
@@ -29,5 +53,8 @@
 > 
 > }
 > 
-20483a20502
+20483a20502,20505
+>     commands+=("delete-namespace-finalizer")
+>     commands+=("get-all-namespaced-resources")
+>     commands+=("velero-annotate-all-volumes-for-pod")
 >     commands+=("watch-namespace")
