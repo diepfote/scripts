@@ -6,6 +6,27 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+
+# Parse arguments
+positional_args=()
+NAMESPACE=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -n|--namespace)
+    positional_args+=("$1") # save in an array for later
+    positional_args+=("$2") # save in an array for later
+    shift 2
+    ;;
+    *) # unknown option
+    # DROP ALL OTHER
+    # positional_args+=("$1") # save in an array for later
+    shift
+    ;;
+  esac
+done
+set -- "${positional_args[@]}"
+
 oc api-resources --verbs=list --namespaced -o name \
-  | xargs -n 1 oc get --show-kind --ignore-not-found
+  | xargs -n 1 oc get "$@" --show-kind --ignore-not-found
 
