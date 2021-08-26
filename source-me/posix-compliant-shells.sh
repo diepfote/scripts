@@ -32,12 +32,6 @@ export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 
 
-export GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
-export GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
-export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-
-
 # -------------------------
 # files to source
 
@@ -233,6 +227,12 @@ if [ "$(uname)" = 'Darwin' ]; then
 
 elif grep -L 'Arch Linux' /etc/os-release; then
   # Arch only | Arch Linux only | Archlinux only
+
+  export GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
+  export GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
+  export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+  export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+
 
   export SYSTEMD_COLORS=0
 
