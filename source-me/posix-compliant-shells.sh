@@ -49,6 +49,7 @@ source "$sh_functions_file" || true
 
 _add_to_PATH "$HOME/.bin"  || true
 _add_to_PATH "$HOME/go/bin"  || true
+_add_to_PATH "$HOME/.cargo/bin"  || true
 _add_to_PATH "$HOME/Documents/scripts/bin"  || true
 
 

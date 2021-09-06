@@ -6,6 +6,7 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+
 _help() {
 cat <<EOF
 USAGE: w-pkg-update [-g] [-r]
@@ -94,8 +95,8 @@ for package in $(npm -g outdated --parseable --depth=0 | cut -d: -f2); do
 done
 
 echo -e '\n--------\nkrew\n'
-kubectl krew update
-kubectl krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
+oc krew update
+oc krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
 
 echo -e '\n--------\napm\n'
 apm upgrade -c false
