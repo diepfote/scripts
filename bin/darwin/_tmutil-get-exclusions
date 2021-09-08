@@ -6,6 +6,8 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+sudo -v
+
 all_dirs=()
 all_dirs+=(/Applications)
 all_dirs+=(/Library)
@@ -28,6 +30,7 @@ all_dirs+=(~/.groovy)
 all_dirs+=(~/.helm)
 all_dirs+=(~/.ipython/)
 all_dirs+=(~/.local/share/Trash/)
+all_dirs+=(~/.lima)
 all_dirs+=(~/.local/share/virtualenvs/)
 all_dirs+=(~/.jfrog)
 all_dirs+=(~/.krew)
@@ -48,6 +51,7 @@ all_dirs+=(~/.Trash/)
 all_dirs+=(~/.vim/plugged/)
 all_dirs+=(~/Downloads/mutt/)
 all_dirs+=(~/Downloads/tmp)
+all_dirs+=(~/Documents/infosec_pkgs)
 all_dirs+=(~/go/)
 all_dirs+=(~/ISOs/)
 all_dirs+=(~/Movies)
