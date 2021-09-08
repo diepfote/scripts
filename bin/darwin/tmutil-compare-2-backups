@@ -28,6 +28,7 @@ cleanup () {
 trap 'cleanup "$spinner_pid"' EXIT  # stop spinner
 
 # $ tmutil listbackups
+set -x
 sudo tmutil compare "$1" "$2" |\
 stdbuf -o0 tr '\t' ' ' |\
 stdbuf -o0 tr -s ' ' |\
