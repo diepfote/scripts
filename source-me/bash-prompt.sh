@@ -6,7 +6,7 @@ unset PS1
 
 BASH_HELPER_FILENAME="bash-helper"
 
-if [ "$(hostname)" = docker-desktop ]; then
+if [ -n "$IN_CONTAINER" ]; then
   BASH_HELPER_FILENAME="bash-helper-linux"
 fi
 

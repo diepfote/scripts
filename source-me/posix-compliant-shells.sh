@@ -15,7 +15,7 @@ export MANPAGER=less
 # export LESSSECURE=1
 # readonly LESSSECURE
 
-# TODO disable this?
+# TODO remove?
 export GO111MODULE=off
 
 export NNN_COLORS=2136  # use a different color for each context -> version >= 3.2
@@ -32,18 +32,14 @@ export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 
 
-# -------------------------
-# files to source
-
 # shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/colors.sh
 
 # source fish functions
+# TODO remove
 sh_functions_file=~/.sh_functions
 # shellcheck disable=SC1090
 source "$sh_functions_file" || true
-
-# -------------------------
 
 
 
@@ -104,15 +100,8 @@ if [ "$(uname)" = 'Darwin' ]; then
   export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
   LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
   LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
-
-  alias tss-pass='pass ***REMOVED***OVED*** -c'
-  alias tss-user='pass ***REMOVED***OVED*** | tail -n 1 | pbcopy'
-  alias ***REMOVED***_***REMOVED***pass='pass ***REMOVED***OVED***passwords/***REMOVED*** -c'
   alias bb_***REMOVED***_pass='pass ***REMOVED***D*** -c'
 
-
-  alias openstack='HTTPS_PROXY="socks5://localhost:5555" openstack'
-  alias terraform='HTTPS_PROXY="socks5://localhost:5555" terraform'
 
 
   alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
@@ -221,7 +210,6 @@ if [ "$(uname)" = 'Darwin' ]; then
   _add_to_PATH "$HOME/Documents/scripts/bin/darwin"  || true
   _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"  || true
   _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"  || true
-  _add_to_PATH "$HOME/Documents/scripts/cc/bin"  || true
 
 
   export PASSWORD_STORE_DIR=~/.password-store-work
