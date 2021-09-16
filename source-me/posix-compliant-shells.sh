@@ -786,10 +786,19 @@ list-zombies-and-parents () {
 }
 
 
+
+
+new-mutt () {
+  edit-mutt "$@"
+}
+
+
+edit-mutt () {
+  _edit-wrapper --dir ~/.mutt "$1"
+}
 edit-go () {
   _edit-wrapper --dir ~/Documents/golang/tools "$1"
 }
-
 edit-firejail () {
   _edit-wrapper --dir ~/.config/firejail --overwrite-firejail "$1"
 }
@@ -860,6 +869,9 @@ checkout-dot-files () {
 checkout-function () {
   _checkout-wrapper ~/.config/fish/functions "$@"
 }
+checkout-function () {
+  _checkout-wrapper ~/.mutt "$@"
+}
 checkout-go () {
   _checkout-wrapper ~/Documents/golang "$@"
 }
@@ -879,6 +891,9 @@ commit-dot-files () {
 }
 commit-function () {
   commit-in-dir ~/.config/fish/functions "$@"
+}
+commit-mutt () {
+  commit-in-dir ~/.mutt "$@"
 }
 commit-go () {
   commit-in-dir ~/Documents/golang "$@"
@@ -907,6 +922,9 @@ diff-dot-files () {
 diff-function () {
   _diff-wrapper ~/.config/fish/functions "$@"
 }
+diff-mutt () {
+  _diff-wrapper ~/.mutt "$@"
+}
 diff-go () {
   _diff-wrapper ~/Documents/golang "$@"
 }
@@ -933,6 +951,9 @@ log-dot-files () {
 log-function () {
   _log-wrapper ~/.config/fish/functions "$@"
 }
+log-mutt () {
+  _log-wrapper ~/.mutt "$@"
+}
 log-go () {
   _log-wrapper ~/Documents/golang "$@"
 }
@@ -956,6 +977,9 @@ reset-dot-files () {
 }
 reset-function () {
  _reset-wrapper ~/.config/fish/functions
+}
+reset-mutt () {
+ _reset-wrapper ~/.mutt
 }
 reset-go () {
  _reset-wrapper ~/Documents/golang
@@ -982,6 +1006,9 @@ status-dot-files () {
 }
 status-function () {
   _status-wrapper ~/.config/fish/functions "$@"
+}
+status-mutt () {
+  _status-wrapper ~/.mutt "$@"
 }
 status-go () {
   _status-wrapper ~/Documents/golang "$@"

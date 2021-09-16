@@ -15,4 +15,6 @@ complete -o filenames -F _scripts_complete cp-script
 complete -o filenames -F _scripts_complete mv-script
 complete -o filenames -F _scripts_complete rm-script
 complete -o filenames -F _scripts_complete checkout-script
+complete -o filenames -F _scripts_complete status-script
+complete -o filenames -F _scripts_complete diff-script
 

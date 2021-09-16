@@ -15,4 +15,6 @@ complete -o filenames -F _golang_complete cp-go
 complete -o filenames -F _golang_complete mv-go
 complete -o filenames -F _golang_complete rm-go
 complete -o filenames -F _golang_complete checkout-go
+complete -o filenames -F _golang_complete diff-go
+complete -o filenames -F _golang_complete status-go
 
