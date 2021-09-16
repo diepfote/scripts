@@ -526,6 +526,7 @@ alias cheat='~/Documents/scripts/cheat.sh ~/Documents/cheatsheets'
 alias ls='ls --color=auto'
 
 alias grep='grep --exclude-dir=.git \
+                 --exclude-dir=.helm \
                  --exclude-dir=.tox \
                  --exclude-dir=.mypy_cache \
                  --exclude-dir=.eggs \
