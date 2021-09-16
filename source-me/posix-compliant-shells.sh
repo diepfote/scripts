@@ -43,6 +43,8 @@ source "$sh_functions_file" || true
 
 
 
+
+
 _add_to_PATH "$HOME/.bin"  || true
 _add_to_PATH "$HOME/go/bin"  || true
 _add_to_PATH "$HOME/.cargo/bin"  || true
@@ -124,9 +126,6 @@ if [ "$(uname)" = 'Darwin' ]; then
 
   # used in sniff & httpdump
   export _ngrep_interface=en0
-
-
-  alias cheat='~/Documents/scripts/cheat.sh ~/Documents/cheatsheets'
 
 
   brew-leaves-require () {
@@ -521,6 +520,8 @@ fi
 # -------------------------
 # common aliases START
 #
+
+alias cheat='~/Documents/scripts/cheat.sh ~/Documents/cheatsheets'
 
 alias ls='ls --color=auto'
 
