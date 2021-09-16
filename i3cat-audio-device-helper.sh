@@ -28,5 +28,6 @@ while true; do
   else
     i3cat encode "♪: $(get_volume "$device")"
   fi
+  sleep .5
 done
 
