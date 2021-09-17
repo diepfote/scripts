@@ -788,11 +788,17 @@ list-zombies-and-parents () {
 
 
 
+new-docker () {
+  edit-docker "$@"
+}
 new-mutt () {
   edit-mutt "$@"
 }
 
 
+edit-docker () {
+  _edit-wrapper --dir ~/Documents/dockerfiles "$1"
+}
 edit-mutt () {
   _edit-wrapper --dir ~/.mutt "$1"
 }
@@ -869,7 +875,10 @@ checkout-dot-files () {
 checkout-function () {
   _checkout-wrapper ~/.config/fish/functions "$@"
 }
-checkout-function () {
+checkout-docker () {
+  _checkout-wrapper ~/Documents/dockerfiles "$@"
+}
+checkout-mutt () {
   _checkout-wrapper ~/.mutt "$@"
 }
 checkout-go () {
@@ -891,6 +900,9 @@ commit-dot-files () {
 }
 commit-function () {
   commit-in-dir ~/.config/fish/functions "$@"
+}
+commit-docker () {
+  commit-in-dir ~/Documents/dockerfiles "$@"
 }
 commit-mutt () {
   commit-in-dir ~/.mutt "$@"
@@ -922,6 +934,9 @@ diff-dot-files () {
 diff-function () {
   _diff-wrapper ~/.config/fish/functions "$@"
 }
+diff-docker () {
+  _diff-wrapper ~/Documents/dockerfiles "$@"
+}
 diff-mutt () {
   _diff-wrapper ~/.mutt "$@"
 }
@@ -951,6 +966,9 @@ log-dot-files () {
 log-function () {
   _log-wrapper ~/.config/fish/functions "$@"
 }
+log-docker () {
+  _log-wrapper ~/Documents/dockerfiles "$@"
+}
 log-mutt () {
   _log-wrapper ~/.mutt "$@"
 }
@@ -977,6 +995,9 @@ reset-dot-files () {
 }
 reset-function () {
  _reset-wrapper ~/.config/fish/functions
+}
+reset-docker () {
+ _reset-wrapper ~/Documents/dockerfiles
 }
 reset-mutt () {
  _reset-wrapper ~/.mutt
@@ -1006,6 +1027,9 @@ status-dot-files () {
 }
 status-function () {
   _status-wrapper ~/.config/fish/functions "$@"
+}
+status-docker () {
+  _status-wrapper ~/Documents/dockerfiles "$@"
 }
 status-mutt () {
   _status-wrapper ~/.mutt "$@"
