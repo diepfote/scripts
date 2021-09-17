@@ -14,6 +14,12 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+put_args () {
+  for item in "$@"; do
+    echo -n "$item "
+  done
+}
+
 _help() {
 cat <<EOF
 USAGE: watch-namespace -n <NAMESPACE> -r <REGION>
@@ -60,6 +66,7 @@ while [ $# -gt 0 ]; do
 done
 set -- "${positional_args[@]}"
 
+
 if [ -z "$region" ]; then
   echo -e "${RED}Incomplete input. Region (empty)!$NC\n" >&2
   _help >&2
@@ -75,7 +82,8 @@ _split_and_run_tmux_command () {
 
   tmux send-keys -t "$pane_id" "source ~/.bashrc; \
     set-kubecontext '$region'; \
-    watch oc get pod -n '$namespace' " C-m
+    watch oc get pod -n '$namespace' " \
+    "$(put_args "${positional_args[@]}")" C-m
   }
 
 (_split_and_run_tmux_command &)
