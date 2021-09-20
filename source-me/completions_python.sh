@@ -18,4 +18,5 @@ complete -o filenames -F _py_complete rm-python
 complete -o filenames -F _py_complete checkout-python
 complete -o filenames -F _py_complete status-python
 complete -o filenames -F _py_complete diff-python
+complete -o filenames -F _py_complete commit-python
 

@@ -15,4 +15,5 @@ complete -o filenames -F _firejail_complete cp-firejail
 complete -o filenames -F _firejail_complete mv-firejail
 complete -o filenames -F _firejail_complete rm-firejail
 complete -o filenames -F _firejail_complete checkout-firejail
+complete -o filenames -F _firejail_complete commit-firejail
 

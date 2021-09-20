@@ -12,4 +12,5 @@ complete -o filenames -F _complete_funcs cp-function
 complete -o filenames -F _complete_funcs mv-function
 complete -o filenames -F _complete_funcs rm-function
 complete -o filenames -F _complete_funcs checkout-function
+complete -o filenames -F _complete_funcs commit-function
 

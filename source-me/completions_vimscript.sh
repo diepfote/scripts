@@ -17,4 +17,5 @@ complete -o filenames -F _vimscript_complete rm-vim
 complete -o filenames -F _vimscript_complete checkout-vim
 complete -o filenames -F _vimscript_complete diff-vim
 complete -o filenames -F _vimscript_complete status-vim
+complete -o filenames -F _vimscript_complete commit-vim
 

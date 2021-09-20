@@ -17,4 +17,5 @@ complete -o filenames -F _dockerfiles_complete rm-docker
 complete -o filenames -F _dockerfiles_complete checkout-docker
 complete -o filenames -F _dockerfiles_complete status-docker
 complete -o filenames -F _dockerfiles_complete diff-docker
+complete -o filenames -F _dockerfiles_complete commit-docker
 

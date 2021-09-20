@@ -17,4 +17,5 @@ complete -o filenames -F _mutt_complete rm-mutt
 complete -o filenames -F _mutt_complete checkout-mutt
 complete -o filenames -F _mutt_complete status-mutt
 complete -o filenames -F _mutt_complete diff-mutt
+complete -o filenames -F _mutt_complete commit-mutt
 
