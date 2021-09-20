@@ -245,6 +245,10 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   alias ips="ip addr |  awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
 
 
+  chromium () {
+    (command chromium --force-device-scale-factor=1.5 "$@" 1>/dev/null 2>/dev/null &)
+  }
+
   asm_dev () {
     gehard_slides_open="$(ps -ef | grep zathura | grep 'gehard \- SS18')"
     gehard_recommendation_open="$(ps -ef | grep zathura | grep 'pcasm\-book')"
@@ -354,7 +358,7 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   }
 
   firewardened-chromium () {
-    _firewardened-app /usr/bin/chromium --js-flags=--noexpose_wasm "$@"
+    _firewardened-app /usr/bin/chromium --force-device-scale-factor=1.5 --js-flags=--noexpose_wasm "$@"
   }
 
 
@@ -578,7 +582,6 @@ alias map="xargs -n1"
 # ---------------------------
 # common functions START
 #
-
 
 mpv () {
   (command mpv "$@" 1>/dev/null 2>/dev/null &)
