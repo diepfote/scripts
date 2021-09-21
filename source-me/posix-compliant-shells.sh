@@ -39,7 +39,7 @@ source ~/Documents/scripts/source-me/colors.sh
 # TODO remove
 sh_functions_file=~/.sh_functions
 # shellcheck disable=SC1090
-source "$sh_functions_file" || true
+source "$sh_functions_file" || fish -c generate_sh_functions_to_call_fish_shell_functions
 
 
 
