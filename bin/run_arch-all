@@ -23,6 +23,9 @@ docker run \
   -v ~/.vim:/build/.vim \
   -v ~/.config/coc:/build/.config/coc \
   -v ~/.config/nvim:/build/.config/nvim \
+  -v ~/.config/fish:/build/.config/fish \
+  -v ~/.local/share/nvim:/build/.local/share/nvim \
+  -v ~/.local/share/fish:/build/.local/share/fish \
   -v ~/Documents/scripts:/build/Documents/scripts \
   -v ~/Documents/python:/build/Documents/python \
   -v ~/Documents/golang:/build/Documents/golang \
