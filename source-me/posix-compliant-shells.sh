@@ -227,7 +227,7 @@ elif grep -L 'Arch Linux' /etc/os-release; then
   # used in sniff & httpdump
   export _ngrep_interface=wlp4s0
 
-  if [ "$(hostname)" != docker-desktop ]; then
+  if [ -z "$IN_CONTAINER" ]; then
     _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
     export _vpn_systemd_unit
   fi
