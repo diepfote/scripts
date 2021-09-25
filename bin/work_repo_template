@@ -24,6 +24,8 @@ while [ $# -gt 0 ]; do
 
     -d|--dir)
     DIR="$2"
+    # replace $HOME with $HOME value
+    DIR="$(echo "$DIR" | sed "s#\$HOME#$HOME#")"
     shift 2
     ;;
 
