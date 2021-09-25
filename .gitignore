@@ -14,3 +14,5 @@ source-me/**.un~
 !.gitignore
 !Makefile
 
+/cc/
+/bb/
