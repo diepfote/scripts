@@ -10,7 +10,7 @@ shopt -s failglob  # error on unexpaned globs
 # shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/common-functions.sh
 # shellcheck disable=SC1090
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
 
 
 trap "set +x" EXIT
