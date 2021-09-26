@@ -18,7 +18,7 @@ done
 
 _help() {
 cat <<EOF
-USAGE: cheat [--edit|--search] [FILENAME]
+USAGE: cheat [--edit|--find|--grep] [FILENAME]
 
 Displays files in less, image viewer, pdf viewer or browser by default.
 If \`-e\` is specified the file will be openend for editing in vim (if not one of $(for key in "${!map[@]}"; do echo -n "$key, "; done)html.
