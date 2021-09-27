@@ -226,6 +226,17 @@ do_sync () {
 }
 
 
+__stop_related_units_if_active ()
+{
+  local unit="$1"
+
+  for unit_to_stop in $(systemctl list-units | command grep -E '^\s*openvpn-client' | command grep -v "$unit" | awk '{ print $1 }'); do
+    set -x
+    sudo systemctl stop "$unit_to_stop"
+    set +x
+  done
+}
+
 __restart_unit_if_inactive () {
   set +x
   local unit="$1"
@@ -245,6 +256,7 @@ _enable-network () {
   __restart_unit_if_inactive 'dhcpcd@wlp4s0.service'
   set -x
 
+  __stop_related_units_if_active "$_vpn_systemd_unit"
   __restart_unit_if_inactive "$_vpn_systemd_unit"
   set -x
 
