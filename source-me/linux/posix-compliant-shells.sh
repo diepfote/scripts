@@ -32,19 +32,19 @@ chromium () {
 }
 
 asm_dev () {
-  gehard_slides_open="$(ps -ef | grep zathura | grep 'gehard \- SS18')"
-  gehard_recommendation_open="$(ps -ef | grep zathura | grep 'pcasm\-book')"
+  local slides_open="$(ps -ef | grep zathura | grep 'OpSys_ASM')"
+  local recommendation_open="$(ps -ef | grep zathura | grep -- 'pcasm-book')"
 
-  if [ -z "$gehard_slides_open" ]; then
-    xdg-open "$HOME/Documents/cheatsheets/asm_cheatsheets/gehard - SS18_IMS_OpSys_ASM.pdf" >/dev/null 2>&1
+  if [ -z "$slides_open" ]; then
+    xdg-open "$HOME"/Documents/books\ and\ documentation/reverse\ engineering\ re/assembly/*_OpSys_ASM.pdf
   fi
 
-  if [ -z "$gehard_recommendation_open" ]; then
-    xdg-open "$HOME/Documents/books&documentation/assembly/pcasm-book.pdf" >/dev/null 2>&1
+  if [ -z "$recommendation_open" ]; then
+    xdg-open "$HOME/Documents/books and documentation/reverse engineering re/assembly/pcasm-book.pdf"
   fi
 
   if [ -z "$guide_open" ]; then
-    xdg-open "$HOME/Documents/cheatsheets/asm_cheatsheets/Guide to x86 Assembly.pdf" >/dev/null 2>&1
+    xdg-open "$HOME/Documents/cheatsheets/assembly/Guide to x86 Assembly.pdf" >/dev/null 2>&1
   fi
 
   asm_dir=/home/$USER/Documents/asm
