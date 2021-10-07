@@ -13,7 +13,7 @@ USAGE: w-pkg-update [-g] [-r]
 
 FLAGS:
 -g    greedy option for brew
--r    restart if there are mac updates
+-r    re-install xcode commandline tools
 EOF
 }
 
