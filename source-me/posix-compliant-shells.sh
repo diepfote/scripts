@@ -525,28 +525,31 @@ _reset-wrapper () {
 }
 
 reset-dot-files () {
- _reset-wrapper ~/
+  _reset-wrapper ~/
 }
 reset-function () {
- _reset-wrapper ~/.config/fish/functions
+  _reset-wrapper ~/.config/fish/functions
 }
 reset-docker () {
- _reset-wrapper ~/Documents/dockerfiles
+  _reset-wrapper ~/Documents/dockerfiles
 }
 reset-mutt () {
- _reset-wrapper ~/.mutt
+  _reset-wrapper ~/.mutt
 }
 reset-go () {
- _reset-wrapper ~/Documents/golang
+  _reset-wrapper ~/Documents/golang
+}
+reset-firejail () {
+  _reset-wrapper ~/.config/firejail
 }
 reset-python () {
- _reset-wrapper ~/Documents/python
+  _reset-wrapper ~/Documents/python
 }
 reset-script () {
- _reset-wrapper ~/Documents/scripts
+  _reset-wrapper ~/Documents/scripts
 }
 reset-vim () {
- _reset-wrapper ~/.vim
+  _reset-wrapper ~/.vim
 }
 
 _status-wrapper () {
