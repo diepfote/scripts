@@ -21,7 +21,9 @@ _watch-namespace_completions()
 
     # _all_namespaces=('test-something-blub' 'test-something-minus')
 
-    COMPREPLY=($(compgen -W "$(_print "${_all_namespaces[@]}")" -- "$cur_word"))
+      read -r -d '' -a _tmp_general < <(compgen -W "$(echo -e '-h\n-n\n-r')" -- "$cur_word")
+      export COMPREPLY=("${_tmp_general[@]}")
+      unset _tmp_general
   }
 
   COMPREPLY=()
@@ -35,10 +37,12 @@ _watch-namespace_completions()
       _complete-namespaces
       ;;
     -r)
-      _complete_kubektx
+      _set-kubecontext_complete "$cur_word"
       ;;
     *)
-      COMPREPLY=($(compgen -W "$(echo -e '-h\n-n\n-r')" -- "$cur_word"))
+      read -r -d '' -a _tmp_general < <(compgen -W "$(echo -e '-h\n-n\n-r')" -- "$cur_word")
+      export COMPREPLY=("${_tmp_general[@]}")
+      unset _tmp_general
       ;;
   esac
 

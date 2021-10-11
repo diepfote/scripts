@@ -13,17 +13,12 @@ _add_to_PATH "$HOME/.krew/bin"
 alias kn=kubens
 
 
-# show completion for kubeconfigs
-_complete_kubektx () {
-  _complete_context_files () {
-    local FILE_EXCHANGE_DIR="$1"
-    # TODO improve robustness
-    IFS=$'\n' tmp=( $(compgen -W "$(ls "$FILE_EXCHANGE_DIR")" -- "${COMP_WORDS[$COMP_CWORD]}" ))
-    COMPREPLY=( "${tmp[@]// /\ }" )
-  }
+_set-kubecontext_complete ()
+{
+  source ~/Documents/scripts/source-me/common-functions.sh
 
-  local FILE_EXCHANGE_DIR=~/.kube
-  _complete_context_files "$FILE_EXCHANGE_DIR"
+  export DIR_TO_COMPLETE="$HOME/.kube"
+  _complete_files_and_dirs
 }
 
 
