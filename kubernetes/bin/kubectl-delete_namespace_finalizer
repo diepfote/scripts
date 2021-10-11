@@ -1,14 +1,29 @@
 #!/usr/bin/env bash
 
+
+if which kubectl >/dev/null; then
+  binary=kubectl
+elif which oc >/dev/null; then
+  binary=oc
+else
+  echo -e "${RED}Missing kubectl and oc binaries!\nPlugin needs at least one.$NC" >&2
+  exit 1
+fi
+
+
 namespace="$1"
 finalizer_to_remove="${2:-kubernetes}"
 tmp_dir="$(mktemp -d)"
 filename="$tmp_dir/$namespace".yaml
 
-trap "kill %%  2>/dev/null; rm -rf $tmp_dir" EXIT
+cleanup () {
+  kill %%  2>/dev/null
+  rm -rf "$tmp_dir"
+}
+trap cleanup EXIT
 
-kubectl proxy &
-kubectl get namespace "$namespace" -o yaml > "$filename"
+"$binary" proxy &
+"$binary" get namespace "$namespace" -o yaml > "$filename"
 
 sed -i "/- $finalizer_to_remove/d"  "$filename"
 

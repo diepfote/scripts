@@ -13,6 +13,14 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+if which kubectl >/dev/null; then
+  binary=kubectl
+elif which oc >/dev/null; then
+  binary=oc
+else
+  echo -e "${RED}Missing kubectl and oc binaries!\nPlugin needs at least one.$NC" >&2
+  exit 1
+fi
 
 put_args () {
   for item in "$@"; do
@@ -82,7 +90,7 @@ _split_and_run_tmux_command () {
 
   tmux send-keys -t "$pane_id" "source ~/.bashrc; \
     set-kubecontext '$region'; \
-    watch oc get pod -n '$namespace' " \
+    watch "$binary" get pod -n '$namespace' " \
     "$(put_args "${positional_args[@]}")" C-m
   }
 

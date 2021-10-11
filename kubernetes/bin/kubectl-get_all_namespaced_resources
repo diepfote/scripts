@@ -6,10 +6,17 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+if which kubectl >/dev/null; then
+  binary=kubectl
+elif which oc >/dev/null; then
+  binary=oc
+else
+  echo -e "${RED}Missing kubectl and oc binaries!\nPlugin needs at least one.$NC" >&2
+  exit 1
+fi
 
 # Parse arguments
 positional_args=()
-NAMESPACE=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
@@ -27,6 +34,5 @@ key="$1"
 done
 set -- "${positional_args[@]}"
 
-oc api-resources --verbs=list --namespaced -o name \
-  | xargs -n 1 oc get "$@" --show-kind --ignore-not-found
-
+"$binary" api-resources --verbs=list --namespaced -o name \
+  | xargs -n 1 "$binary" get "$@" --show-kind --ignore-not-found
