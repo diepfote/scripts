@@ -320,6 +320,10 @@ list-zombies-and-parents () {
 }
 
 
+edit-bash-history () {
+  # :$ to start at the end of the file
+  vim -c ':$' ~/.bash_history
+}
 
 
 new-docker () {
@@ -339,8 +343,17 @@ edit-mutt () {
 edit-go () {
   _edit-wrapper --dir ~/Documents/golang/tools "$1"
 }
+edit-python () {
+  _edit-wrapper --dir ~/Documents/python/tools "$1"
+}
+edit-function () {
+  _edit-wrapper --dir ~/.config/fish/functions "$1"
+}
 edit-firejail () {
   _edit-wrapper --dir ~/.config/firejail --overwrite-firejail "$1"
+}
+edit-vim () {
+  _edit-wrapper --dir ~/.vim "$1"
 }
 
 _edit-wrapper () {
@@ -419,7 +432,7 @@ checkout-go () {
   _checkout-wrapper ~/Documents/golang "$@"
 }
 checkout-python () {
-  _checkout-wrapper ~/Documents/python "$@"
+  _checkout-wrapper ~/Documents/python/tools "$@"
 }
 checkout-script () {
   _checkout-wrapper ~/Documents/scripts "$@"
@@ -445,7 +458,7 @@ commit-go () {
   commit-in-dir ~/Documents/golang "$@"
 }
 commit-python () {
-  commit-in-dir ~/Documents/python "$@"
+  commit-in-dir ~/Documents/python/tools "$@"
 }
 commit-script () {
   commit-in-dir ~/Documents/scripts "$@"
@@ -478,7 +491,7 @@ diff-go () {
   _diff-wrapper ~/Documents/golang "$@"
 }
 diff-python () {
-  _diff-wrapper ~/Documents/python "$@"
+  _diff-wrapper ~/Documents/python/tools "$@"
 }
 diff-script () {
   _diff-wrapper ~/Documents/scripts "$@"
@@ -510,7 +523,7 @@ log-go () {
   _log-wrapper ~/Documents/golang "$@"
 }
 log-python () {
-  _log-wrapper ~/Documents/python "$@"
+  _log-wrapper ~/Documents/python/tools "$@"
 }
 log-script () {
   _log-wrapper ~/Documents/scripts "$@"
@@ -543,7 +556,7 @@ reset-firejail () {
   _reset-wrapper ~/.config/firejail
 }
 reset-python () {
-  _reset-wrapper ~/Documents/python
+  _reset-wrapper ~/Documents/python/tools
 }
 reset-script () {
   _reset-wrapper ~/Documents/scripts
@@ -575,7 +588,7 @@ status-go () {
   _status-wrapper ~/Documents/golang "$@"
 }
 status-python () {
-  _status-wrapper ~/Documents/python "$@"
+  _status-wrapper ~/Documents/python/tools "$@"
 }
 status-script () {
   _status-wrapper ~/Documents/scripts "$@"

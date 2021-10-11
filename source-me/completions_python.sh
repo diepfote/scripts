@@ -6,7 +6,7 @@ source "$script_dir/source-me/common-functions.sh"
 
 _py_complete ()
 {
-  export DIR_TO_COMPLETE="$HOME/Documents/python"
+  export DIR_TO_COMPLETE="$HOME/Documents/python/tools"
   _complete_files_and_dirs
 }
 
