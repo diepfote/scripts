@@ -15,13 +15,13 @@ _watch-namespace_completions()
 
   _complete-namespaces() {
       if [ -z "$_all_namespaces" ]; then
-        read -r -d '' -a _all_namespaces < <(oc get project -o json | jq '.items[].metadata.name' | sed 's#^"##;s#"$##')
+        read -r -d '' -a _all_namespaces < <(kubectl get namespace -o json | jq '.items[].metadata.name' | sed 's#^"##;s#"$##')
       export _all_namespaces
       fi
 
     # _all_namespaces=('test-something-blub' 'test-something-minus')
 
-      read -r -d '' -a _tmp_general < <(compgen -W "$(echo -e '-h\n-n\n-r')" -- "$cur_word")
+      read -r -d '' -a _tmp_general < <(compgen -W "$(_print "${_all_namespaces[@]}")" -- "$cur_word")
       export COMPREPLY=("${_tmp_general[@]}")
       unset _tmp_general
   }
