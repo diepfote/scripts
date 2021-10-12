@@ -92,8 +92,7 @@ _rclone_verbose_sync_operation () {
 }
 
 call_browser () {
-  # shellcheck disable=SC1090
-  source ~/Documents/scripts/source-me/common-functions.sh
+  local TMP_FILE="$1"
 
   if [ "$(uname)" = Darwin ]; then
     # shellcheck disable=SC1090

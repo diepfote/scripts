@@ -119,13 +119,11 @@ if [ -n "$use_system_open" ]; then
     xdg-open "$file"
   fi
 
-elif [ "$extension" = html ]; then
+elif [ "$extension" = html ] && [ "${command[0]}" != 'nvim' ] ; then
   temp_file="$base_temp_dir"/"$filename"
-  trap "rm '""$temp_file""'" EXIT
   cp "$file" "$temp_file"  # for firejail on Linux
 
   call_browser "$temp_file"
-  sleep 1
 else
   if [ $# -eq 0 ]; then
     set -- "$find_path"
