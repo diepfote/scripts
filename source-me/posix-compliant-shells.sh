@@ -429,7 +429,7 @@ checkout-mutt () {
   _checkout-wrapper ~/.mutt "$@"
 }
 checkout-go () {
-  _checkout-wrapper ~/Documents/golang "$@"
+  _checkout-wrapper ~/Documents/golang/tools "$@"
 }
 checkout-python () {
   _checkout-wrapper ~/Documents/python/tools "$@"
@@ -455,7 +455,7 @@ commit-mutt () {
   commit-in-dir ~/.mutt "$@"
 }
 commit-go () {
-  commit-in-dir ~/Documents/golang "$@"
+  commit-in-dir ~/Documents/golang/tools "$@"
 }
 commit-python () {
   commit-in-dir ~/Documents/python/tools "$@"
@@ -488,7 +488,7 @@ diff-mutt () {
   _diff-wrapper ~/.mutt "$@"
 }
 diff-go () {
-  _diff-wrapper ~/Documents/golang "$@"
+  _diff-wrapper ~/Documents/golang/tools "$@"
 }
 diff-python () {
   _diff-wrapper ~/Documents/python/tools "$@"
@@ -520,7 +520,7 @@ log-mutt () {
   _log-wrapper ~/.mutt "$@"
 }
 log-go () {
-  _log-wrapper ~/Documents/golang "$@"
+  _log-wrapper ~/Documents/golang/tools "$@"
 }
 log-python () {
   _log-wrapper ~/Documents/python/tools "$@"
@@ -550,7 +550,7 @@ reset-mutt () {
   _reset-wrapper ~/.mutt
 }
 reset-go () {
-  _reset-wrapper ~/Documents/golang
+  _reset-wrapper ~/Documents/golang/tools
 }
 reset-firejail () {
   _reset-wrapper ~/.config/firejail
@@ -585,7 +585,7 @@ status-mutt () {
   _status-wrapper ~/.mutt "$@"
 }
 status-go () {
-  _status-wrapper ~/Documents/golang "$@"
+  _status-wrapper ~/Documents/golang/tools "$@"
 }
 status-python () {
   _status-wrapper ~/Documents/python/tools "$@"
