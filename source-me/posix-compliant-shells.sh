@@ -81,8 +81,9 @@ alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
 alias formats-youtube-dl='youtube-dl -F'
 
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
-alias vimy="vim -c 'set buftype=nofile' -c ':set ft=yaml'"
-alias vimj="vim -c 'set buftype=nofile' -c ':set ft=json'"
+alias vimn="vim -c 'set buftype=nofile'"
+alias vimy="vimn -c ':set ft=yaml'"
+alias vimj="vimn -c ':set ft=json'"
 
 
 # pipenv aliases
