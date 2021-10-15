@@ -126,7 +126,7 @@ xdg-open () {
 
 _firewardened-app () {
   set -x
-  (firewarden "$@" 1>/dev/null 2>&1 &)
+  (firewarden "$@" 1>/dev/null 2>&1 & echo "$?")
   set +x
 }
 

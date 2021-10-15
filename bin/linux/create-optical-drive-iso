@@ -55,9 +55,9 @@ size="$(isosize -x /dev/sr0 | cut -d ' ' -f6)"
 sector_count="$(isosize -x /dev/sr0 | cut -d ' ' -f3 | cut -d ',' -f1)"
 
 location_to_write_to="$(read_toml_setting ~/Documents/config/sync.conf movies)"
-# if [ ! -d "$location_to_write_to" ]; then
+if [ ! -d "$location_to_write_to" ]; then
   location_to_write_to=~/Desktop
-# fi
+fi
 output_path="$location_to_write_to/$1.iso"
 
 echo "Writing iso to $output_path"

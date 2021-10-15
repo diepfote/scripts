@@ -79,12 +79,16 @@ set -- "${positional_args[@]}"
 
 # shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/common-functions.sh
-# shellcheck disable=SC1090
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
-[ "$(uname)" = Darwin ] && base_temp_dir="$(mktemp -d)" \
-                        || base_temp_dir=~/Downloads
+if [ "$(uname)" = Darwin ]; then
+  base_temp_dir="$(mktemp -d)"
+else
+  base_temp_dir=~/Downloads
+
+  # shellcheck disable=SC1090
+  source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
+fi
 
 
 if [ "${command[0]}" = 'find' ]; then
