@@ -201,27 +201,27 @@ status-pacman-hooks () {
 do_sync () {
   echo
   echo Sync ***REMOVED***
-  rsync -av ~/Videos/***REMOVED***/***REMOVED***_bluemchen/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
+  rsync --progress -av ~/Videos/***REMOVED***/***REMOVED***_bluemchen/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
 
   echo
   echo Sync ***REMOVED***
-  rsync -av ~/Videos/***REMOVED***/***REMOVED***_***REMOVED***UN***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
+  rsync --progress -av ~/Videos/***REMOVED***/***REMOVED***_***REMOVED***UN***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
 
   echo
   echo Sync yoga
-  rsync -av ~/Videos/***REMOVED***/yoga/ "$(read_toml_setting ~/Documents/config/sync.conf yoga)"
+  rsync --progress -av ~/Videos/***REMOVED***/yoga/ "$(read_toml_setting ~/Documents/config/sync.conf yoga)"
 
   echo
   echo Sync ***REMOVED*** ***REMOVED***
-  rsync -av ~/Videos/***REMOVED***/***REMOVED***_***REMOVED***-***REMOVED***_***REMOVED***-und***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
+  rsync --progress -av ~/Videos/***REMOVED***/***REMOVED***_***REMOVED***-***REMOVED***_***REMOVED***-und***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
 
   echo
   echo Sync Löwenzahn
-  rsync -av ~/Videos/***REMOVED***/***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
+  rsync --progress -av ~/Videos/***REMOVED***/***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
 
   echo
   echo Sync photos
-  rsync -av ~/Documents/iphone_pictures/* "$(read_toml_setting ~/Documents/config/sync.conf photos)"
+  rsync --progress -av ~/Documents/iphone_pictures/* "$(read_toml_setting ~/Documents/config/sync.conf photos)"
 
 }
 
