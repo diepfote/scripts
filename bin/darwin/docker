@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-lima nerdctl "$@"
+limactl shell default podman "$@"
 

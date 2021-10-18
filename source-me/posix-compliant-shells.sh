@@ -31,6 +31,8 @@ export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 
+source ~/Documents/scripts/source-me/completions_*
+
 
 # shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/colors.sh
