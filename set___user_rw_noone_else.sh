@@ -4,12 +4,12 @@ set -e
 set -o pipefail
 set -u
 
-dir="$1"
-
-if [ -z "$dir" ]; then
-  dir=.
+if [ -z "$1" ]; then
+  set -- .
 fi
 
-find "$dir" -type f -exec sh -c 'chmod -f 600 "$0"' {} \; || true  # do not return non-zero return code
-find "$dir" -type d -exec sh -c 'chmod -f 700 "$0"' {} \; || true
-
+set -x
+find "$@" -type f -exec sh -c 'chmod -f 600 "$0"' {} \; || true  # do not return non-zero return code
+find "$@" -type d -exec sh -c 'chmod -f 700 "$0"' {} \; || true
+set +x
+echo
