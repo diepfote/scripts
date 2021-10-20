@@ -79,7 +79,8 @@ set -- "${positional_args[@]}"
 
 # shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/common-functions.sh
-
+# shellcheck disable=SC1090
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 if [ "$(uname)" = Darwin ]; then
   base_temp_dir="$(mktemp -d)"
