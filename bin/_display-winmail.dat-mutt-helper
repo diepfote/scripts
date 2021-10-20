@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-mkdir -p /tmp/tnef-tmp
-tnef --overwrite  -C /tmp/tnef-tmp "$1"
-find /tmp/tnef-tmp -mindepth 1 -printf "%T@ %Tc %p\n" 2>&1 |\
-     sort -n |\
-     awk '{ print $7 }' |\
-     head -n1 | xargs -d '\n' bat -A
+source ~/Documents/scripts/source-me/common-functions.sh
+
+dir=/tmp/tnef-temp
+mkdir -p "$dir"
+
+tnef --overwrite  -C "$dir" "$1"
+
+sorted_find "$dir" \|
+  xargs -n 1 -d '\n' bat -A
 

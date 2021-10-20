@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 
 
+sorted_find () {
+  dir="$1"
+  shift
+
+  # shellcheck disable=SC2227
+  find "$dir" -mindepth 1 "$@" -printf "%T@ %p\n" 2>&1 \
+    | sort -n -r \
+    | awk '{ print $2 }'
+}
+
+
 read_toml_setting () {
   _help() {
 cat <<EOF
