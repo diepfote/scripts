@@ -12,8 +12,6 @@ source ~/Documents/scripts/source-me/common-functions.sh
 mount_dir="$(mktemp -d)"
 mkdir -p "$mount_dir"  # p flag to avoid errors if exists
 
-dir="$(read_toml_setting ~/Documents/config/sync.conf movies)"
-
 _help () {
 cat <<EOF
 USAGE: play-dvd-iso (-vlc) ISO_FILE
@@ -52,11 +50,11 @@ while [ $# -gt 0 ]; do
 done
 set -- "${positional_args[@]}"
 
-file="$dir/$1"
-
+file="$1"
 # check is in default movie directory
 if [ ! -f "$file" ]; then
-  file="$1"
+  dir="$(read_toml_setting ~/Documents/config/sync.conf movies)"
+  file="$dir/$1"
 fi
 
 cleanup () {
