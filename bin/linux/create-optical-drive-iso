@@ -56,7 +56,7 @@ sector_count="$(isosize -x /dev/sr0 | cut -d ' ' -f3 | cut -d ',' -f1)"
 
 location_to_write_to="$(read_toml_setting ~/Documents/config/sync.conf movies)"
 if [ ! -d "$location_to_write_to" ]; then
-  location_to_write_to=~/Desktop
+  location_to_write_to=~/Videos/movies_and_series
 fi
 output_path="$location_to_write_to/$1.iso"
 
