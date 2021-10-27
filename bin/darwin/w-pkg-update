@@ -134,6 +134,16 @@ for line in "${pkg_info[@]}"; do
 done
 
 if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
+  _w-pkg-update-print() {
+    for item in "$@"; do
+      echo "- $item"
+    done
+  }
+
+  echo 'Installing updates that do not require a restart.'
+  echo 'Pkgs are:'
+  _w-pkg-update-print "${pkg_info[@]}"
+
   set -x
   softwareupdate -i --no-scan -a
   set +x
