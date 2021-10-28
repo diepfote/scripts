@@ -71,6 +71,9 @@ cleanup () {
 # shellcheck disable=SC2064
 trap 'cleanup "$spinner_pid"' EXIT  # stop spinner
 
+echo -e '\n--------\nlima archlinux disk images\n'
+
+curl -s https://mirror.pkgbuild.com/images/ | grep href
 
 echo -e '\n--------\npip\n'
 #
