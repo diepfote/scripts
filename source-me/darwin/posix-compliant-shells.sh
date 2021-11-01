@@ -10,6 +10,9 @@ _add_to_MANPATH "/usr/local/opt/gnu-sed/libexec/gnuman"  || true
 _add_to_PATH "/usr/local/opt/grep/libexec/gnubin"  || true
 _add_to_MANPATH "/usr/local/opt/grep/libexec/gnuman"  || true
 
+_add_to_PATH "/usr/local/opt/gnu-getopt/bin"  || true
+_add_to_PATH "/usr/local/opt/gnu-getopt/share/man"  || true
+
 # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
 # otherwise 3.6 will end up being resolved first
 #
