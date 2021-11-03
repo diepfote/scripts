@@ -21,17 +21,18 @@ cat <<EOF
 USAGE: cheat [--edit|--find|--grep] [FILENAME]
 
 Displays files in less, image viewer, pdf viewer or browser by default.
-If \`-e\` is specified the file will be openend for editing in vim (if not one of $(for key in "${!map[@]}"; do echo -n "$key, "; done)html.
-If \`-s\` is specified find will be run. A path is already set for find: \`$find_path\`.
+If \`edit\` is specified, the file will be openend for editing in vim (if not one of $(for key in "${!map[@]}"; do echo -n "$key, "; done)html.
+If \`find\` is specified, find will be run in the cheatsheets dir.
+If \`grep\` is specified, grep will be run in the cheatsheets dir.
 
-OPTIONS:
-  -e|--edit
-  -f|--find OPTIONS  FIND_STRING   Run find in cheatsheets DIR
-    $ cheat -f -name '*find*'
+COMMANDS:
+  edit
+  find OPTIONS  FIND_STRING   Run find in cheatsheets DIR
+    $ cheat find -name '*find*'
     + find $find_path -name '*find*'
 
-  -s|--grep OPTIONS  GREP_STRING   Run grep in cheatsheets DIR
-    $ cheat -s -n ' find '
+  grep OPTIONS  GREP_STRING   Run grep in cheatsheets DIR
+    $ cheat grep -n ' find '
     + grep -n ' find ' --color=always -r $find_path
 
 EOF
@@ -48,17 +49,17 @@ command=('lessc')
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
-    -e|--edit)
+    edit)
     command=('nvim')
     shift
     ;;
 
-    -f|--find)
-    command=('find' "$find_path")
+    find)
+    command=('find')
     shift
     ;;
 
-    -s|--grep)
+    grep)
     command=('grep')
     shift
     ;;
@@ -94,7 +95,7 @@ fi
 
 if [ "${command[0]}" = 'find' ]; then
   set -x
-  "${command[@]}" "$@"
+  "${command[@]}" "$find_path" "$@"
   set +x
   exit
 elif [ "${command[0]}" = 'grep' ]; then
