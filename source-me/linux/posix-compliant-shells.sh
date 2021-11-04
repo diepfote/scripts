@@ -251,7 +251,9 @@ refresh-i3status () {
 
 _disable-network () {
   set -x
-  sudo systemctl stop "$_vpn_systemd_unit"
+  if [ "$_vpn_systemd_unit" != None ]; then
+    sudo systemctl stop "$_vpn_systemd_unit"
+  fi
   sudo systemctl stop dhcpcd@wlp4s0.service
   sudo systemctl stop wpa_supplicant@wlp4s0.service
 
