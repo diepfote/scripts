@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
+
+cleanup () {
+  set +x
+}
+
+set -x
+__restart_unit_if_inactive 'wpa_supplicant@wlp4s0.service'
+set -x
+__restart_unit_if_inactive 'dhcpcd@wlp4s0.service'
+set -x
+
+__stop_related_units_if_active "$_vpn_systemd_unit"
+__restart_unit_if_inactive "$_vpn_systemd_unit"
+set -x
+
+sleep 3
+
+vpn_file="/tmp/tmp.ping-success"
+
+counter=0
+while ! ping -c 2 -W .5 archlinux.org  >/dev/null 2>&1 ; do
+  if [ "$counter" -gt 4 ]; then
+    return
+  fi
+
+  rm "$vpn_file"
+  sudo systemctl restart "$_vpn_systemd_unit"
+  sleep .5
+
+  ((counter=counter+1))
+done
+
+touch "$vpn_file"
+
+sleep 1.5
+refresh-i3status
+

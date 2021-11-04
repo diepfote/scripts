@@ -249,41 +249,6 @@ refresh-i3status () {
   killall -SIGUSR1 i3status
 }
 
-_enable-network () {
-  set -x
-  __restart_unit_if_inactive 'wpa_supplicant@wlp4s0.service'
-  set -x
-  __restart_unit_if_inactive 'dhcpcd@wlp4s0.service'
-  set -x
-
-  __stop_related_units_if_active "$_vpn_systemd_unit"
-  __restart_unit_if_inactive "$_vpn_systemd_unit"
-  set -x
-
-  sleep 3
-
-  vpn_file="/tmp/tmp.ping-success"
-
-  counter=0
-  while ! ping -c 2 -W .5 archlinux.org  >/dev/null 2>&1 ; do
-    if [ "$counter" -gt 4 ]; then
-      return
-    fi
-
-    rm "$vpn_file"
-    sudo systemctl restart "$_vpn_systemd_unit"
-    sleep .5
-
-    ((counter=counter+1))
-  done
-
-  touch "$vpn_file"
-
-  sleep 1.5
-  refresh-i3status
-  set +x
-}
-
 _disable-network () {
   set -x
   sudo systemctl stop "$_vpn_systemd_unit"
@@ -293,6 +258,7 @@ _disable-network () {
   refresh-i3status
   set +x
 }
+
 
 xinput-reverse-mouse-buttons () {
   if [ $# -lt 1 ]; then
