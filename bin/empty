@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+command=''
+if [ "$(uname)" = Darwin ]; then
+  command=pbcopy
+else
+  command=xclip
+  if which "${command[@]}" >/dev/null 2>&1; then
+    :  # test command
+  else
+    command=xsel
+    # do not redirect stderr if it fails this indicates a real failure
+    if which "${command[@]}" >/dev/null; then
+      :  # test command
+    fi
+  fi
+fi
+
+echo -n '' | "${command[@]}"
+
