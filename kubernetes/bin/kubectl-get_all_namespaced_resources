@@ -34,5 +34,6 @@ key="$1"
 done
 set -- "${positional_args[@]}"
 
-"$binary" api-resources --verbs=list --namespaced -o name \
-  | xargs -n 1 "$binary" get "$@" --show-kind --ignore-not-found
+"$binary" api-resources --verbs=list --namespaced -o name |\
+  grep -v event |\
+  xargs -n 1 "$binary" get "$@" --show-kind --ignore-not-found
