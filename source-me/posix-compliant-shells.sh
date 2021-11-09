@@ -210,6 +210,14 @@ dl-youtube () {
   set +x
 }
 
+dl-youtube-part-of-m4a () {
+  local start="$1"
+  local duration="$2"
+  local url="$3"
+
+  youtube-dl -f 140 --postprocessor-args "-ss $start -t $duration" "$url"
+}
+
 _dl-youtube-filter()
 {
   set +u
