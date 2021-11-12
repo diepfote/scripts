@@ -20,7 +20,9 @@ _yay-update-firejail () {
     return
   fi
 
-  if pkgbuild -c firejail-git | sha256sum | grep -f - ~/.firejail.sha256sum; then
+  local yay_cache=~/.cache/yay
+  (cd "$yay_cache" && yay -G firejail-git)
+  if  sha256sum "$yay_cache"/firejail-git/PKGBUILD | grep -f ~/.firejail.sha256sum; then
     echo
     set -x
     yay --noconfirm -Sa firejail-git
