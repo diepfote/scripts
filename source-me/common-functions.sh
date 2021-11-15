@@ -42,14 +42,25 @@ _add_to_MANPATH () {
 }
 
 _add_to_PATH () {
-  local path_to_add="$1"
+  local path_to_add reverse_order
+  reverse_order=''
+  path_to_add="$1"
+
+  if [ $# -gt 1 ]; then
+    reverse_order=true
+  fi
 
  # shellcheck disable=2076
  # we want literal matching in this case
  #
  if [[ ! "$PATH" =~ "$path_to_add" ]]; then
    # new path not yet present
-   export PATH="$path_to_add:$PATH"
+
+   if [ -z "$reverse_order" ]; then
+     export PATH="$path_to_add:$PATH"
+   else
+     export PATH="$PATH:$path_to_add"
+   fi
  fi
 }
 

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+default_kube_config_file=~/.kube/config
+
+cleanup () {
+  rm "$default_kube_config_file" || :
+}
+trap cleanup EXIT
+
+set +u
+if [ -e "$KUBECONFIG" ]; then
+  cp "$KUBECONFIG" "$default_kube_config_file"
+else
+    echo -e "${RED}[ERROR] no KUBECONFIG!$NC\n"
+fi
+set -u
+
+~/.krew/bin/kubectl-tmux_exec "$@"
+

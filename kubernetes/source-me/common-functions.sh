@@ -8,7 +8,7 @@ alias kx="kubectx"
 alias ktx="kubectx"
 alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh'
 alias krew='kubectl krew'
-_add_to_PATH "$HOME/.krew/bin"
+_add_to_PATH "$HOME/.krew/bin"  resolve-last
 
 alias kn=kubens
 
