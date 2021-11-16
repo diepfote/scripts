@@ -1,6 +1,6 @@
 # Bash Scripts
 
-* In my setup I assume this repo lives `~/Documents/scripts`.
+* I assume this repo lives in `~/Documents/scripts`.
 * Compatability is only assured for an up-to date bash (version >= 5).
 
 * My `.bashrc` calls into this repo on a regular basis.
