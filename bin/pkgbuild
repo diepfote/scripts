@@ -106,15 +106,15 @@ key="$1"
 
     --)
     shift
+    break
     ;;
 
-    *) # unknown option
-    positional_args+=("$1") # save in an array for later
-    shift
+    *)
+    break
     ;;
+
   esac
 done
-set -- "${positional_args[@]}"
 
 
 _set_urls "$@"
@@ -124,18 +124,18 @@ if [ -n "$OPEN_BROWSER" ]; then
   call_browser "$browser_url"
 fi
 
-set -x
+command=(curl -sL "$url")
+echo "${GREEN}PKGBUILD fetch$NC: ${command[*]}"
 if [ -n "$NO_PAGER" ]; then
-  curl -sL "$url"
+  "${command[@]}"
 elif [ -n "$USE_VIM" ]; then
-  curl -sL "$url" | vim -c 'set buftype=nofile' -
+  "${command[@]}" | vim -c 'set buftype=nofile' -
 else
   # shellcheck disable=SC2119
   set +u
-  curl -sL "$url" | lessc
+  "${command[@]}" | lessc
   set -u
 fi
-set +x
 
 unset url browser_url OPEN_BROWSER NO_PAGER
 
