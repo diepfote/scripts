@@ -6,20 +6,9 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-
+export SET_COLORS_ALWAYS=true
 set +u
-source ~/Documents/scripts/source-me/common-functions.sh
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
-set -u
-
-set +u
-if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
-  set -u
-  for pkg in "$@"; do
-    brew info "$pkg"
-    echo
-  done
-fi
+source ~/Documents/scripts/source-me/colors.sh
 set -u
 
 brew deps --installed --for-each "$@" \

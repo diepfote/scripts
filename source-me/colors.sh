@@ -1,7 +1,13 @@
+set +u
+if [ ! -t 1 ] && [ -z "$SET_COLORS_ALWAYS" ]; then
+  exit
+fi
+
 if which tput >/dev/null 2>&1; then
   ncolors="$(tput colors || true)"
 fi
-if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+
+if [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
   export RED="$(tput setaf 1)"
   export GREEN="$(tput setaf 2)"
   export YELLOW="$(tput setaf 3)"

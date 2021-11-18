@@ -69,13 +69,6 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 export _ngrep_interface=en0
 
 
-brew-leaves-require () {
-  if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
-    BREW_REQUIRED_BY_LIST_INFO="$BREW_REQUIRED_BY_LIST_INFO" brew leaves | xargs brew-pkg-requires
-  else
-    brew leaves | xargs brew-pkg-requires
-  fi
-}
 
 n_empty-trash () {
   local dir=~/.local/share/Trash

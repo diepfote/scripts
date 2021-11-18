@@ -1,7 +1,3 @@
 #!/usr/bin/env bash
 
-if [ -n "$BREW_REQUIRED_BY_LIST_INFO" ]; then
-  BREW_REQUIRED_BY_LIST_INFO="$BREW_REQUIRED_BY_LIST_INFO" brew leaves | xargs brew-pkg-requires
-else
-  brew leaves | xargs brew formulae-require
-fi
+brew leaves | xargs brew formulae-require
