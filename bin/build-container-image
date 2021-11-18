@@ -21,7 +21,5 @@ if [ "$1" = arch-all ]; then
 fi
 
 set -x
-docker build --no-cache -t "$1" .
-
-docker image prune -f
+docker build -t "$1" .
 set +x
