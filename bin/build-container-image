@@ -23,6 +23,5 @@ fi
 set -x
 docker build --no-cache -t "$1" .
 
-docker builder prune -a -f
 docker image prune -f
 set +x

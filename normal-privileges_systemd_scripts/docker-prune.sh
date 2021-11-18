@@ -6,6 +6,6 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-echo y | docker image prune --filter "until=32h"
-echo y | docker container prune --filter "until=170h"
+docker image prune -f --filter "until=32h"
+docker container prune -f --filter "until=170h"
 
