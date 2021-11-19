@@ -1,6 +1,6 @@
 set +u
 if [ ! -t 1 ] && [ -z "$SET_COLORS_ALWAYS" ]; then
-  exit
+  return
 fi
 
 if which tput >/dev/null 2>&1; then

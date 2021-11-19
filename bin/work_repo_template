@@ -7,10 +7,6 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-# shellcheck disable=SC1090
-source ~/Documents/scripts/source-me/colors.sh
-
-
 # Parse arguments
 positional_args=()
 USE_SUDO=''
