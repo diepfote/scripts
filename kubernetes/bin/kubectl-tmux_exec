@@ -7,20 +7,28 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+source ~/Documents/scripts/source-me/common-functions.sh
+
 default_kube_config_file=~/.kube/config
 
 cleanup () {
-  rm "$default_kube_config_file" || :
+  set +x
+  if yesno "Do you want to clear $default_kube_config_file?" ; then
+    rm "$default_kube_config_file"
+  fi
 }
-trap cleanup EXIT
 
 set +u
 if [ -e "$KUBECONFIG" ]; then
+  trap cleanup EXIT
   cp "$KUBECONFIG" "$default_kube_config_file"
 else
-    echo -e "${RED}[ERROR] no KUBECONFIG!$NC\n"
+  echo -e "${RED}[ERROR] no KUBECONFIG!$NC\n"
+  exit 1
 fi
 set -u
 
-~/.krew/bin/kubectl-tmux_exec "$@"
+ls -alh ~/.kube/config
 
+set -x
+~/.krew/bin/kubectl-tmux_exec "$@"
