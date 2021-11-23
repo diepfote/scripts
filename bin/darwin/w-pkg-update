@@ -9,17 +9,21 @@ shopt -s failglob  # error on unexpaned globs
 
 _help() {
 cat <<EOF
-USAGE: w-pkg-update [-g] [-r]
+USAGE: w-pkg-update [-g] [-r] [--disable-remote-login false]
 
 FLAGS:
 -g    greedy option for brew
 -r    re-install xcode commandline tools
+
+OPTIONS:
+--disable-remote-login false (default=true)
+
 EOF
 }
 
 # Parse arguments
-positional_args=()
 GREEDY=''
+DISABLE_REMOTE_LOGIN=true
 REINSTALL_XCODE=''
 while [ $# -gt 0 ]; do
   key="$1"
@@ -27,6 +31,17 @@ while [ $# -gt 0 ]; do
     -g|--greedy)
     GREEDY=true
     shift
+    ;;
+
+    --disable-remote-login)
+    DISABLE_REMOTE_LOGIN="$2"
+    if [ "$2" != true ] && [ "$2" != false ]; then
+      echo -e "${RED}Invalid option parameter:$NC '$2'!" >&2
+      echo
+      _help >&2
+      exit 1
+    fi
+    shift 2
     ;;
 
     -r|--reinstall-xcode)
@@ -40,13 +55,13 @@ while [ $# -gt 0 ]; do
     ;;
 
     *) # unknown option
-    echo -e "${RED}Invalid parameter:$NC '$1'!"
+    echo -e "${RED}Invalid parameter:$NC '$1'!" >&2
+    echo
     _help >&2
     exit 1
     ;;
   esac
 done
-set -- "${positional_args[@]}"
 
 
 # shellcheck source=/dev/null
@@ -67,6 +82,13 @@ cleanup () {
   local spinner_pid="$1"
   kill "$spinner_pid"
 }
+
+if [ "$DISABLE_REMOTE_LOGIN" = true ]; then
+  echo
+  set -x
+  sudo systemsetup -f -setremotelogin off
+  set +x
+fi
 
 # shellcheck disable=SC2064
 trap 'cleanup "$spinner_pid"' EXIT  # stop spinner
