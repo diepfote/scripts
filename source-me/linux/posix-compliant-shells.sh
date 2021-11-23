@@ -198,6 +198,20 @@ status-pacman-hooks () {
 }
 
 
+allow_all_outbound_traffic () {
+  sudo sed -i -r 's/^.*(-A OUTPUT -j ACCEPT)/\1/g' /etc/iptables/iptables.rules
+  sudo systemctl restart iptables.service
+}
+
+
+disallow_all_outbound_traffic () {
+  deny_all_outbound_traffic
+}
+deny_all_outbound_traffic () {
+  sudo sed -i -r 's/^(-A OUTPUT -j ACCEPT)/#\1/g' /etc/iptables/iptables.rules
+  sudo systemctl restart iptables.service
+}
+
 do_sync () {
   echo
   echo Sync ***REMOVED***
