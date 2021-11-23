@@ -212,33 +212,6 @@ deny_all_outbound_traffic () {
   sudo systemctl restart iptables.service
 }
 
-do_sync () {
-  echo
-  echo Sync ***REMOVED***
-  rsync --progress -av ~/Videos/***REMOVED***/***REMOVED***_bluemchen/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
-
-  echo
-  echo Sync ***REMOVED***
-  rsync --progress -av ~/Videos/***REMOVED***/***REMOVED***_***REMOVED***UN***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
-
-  echo
-  echo Sync yoga
-  rsync --progress -av ~/Videos/***REMOVED***/yoga/ "$(read_toml_setting ~/Documents/config/sync.conf yoga)"
-
-  echo
-  echo Sync ***REMOVED*** ***REMOVED***
-  rsync --progress -av ~/Videos/***REMOVED***/***REMOVED***_***REMOVED***-***REMOVED***_***REMOVED***-und***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
-
-  echo
-  echo Sync Löwenzahn
-  rsync --progress -av ~/Videos/***REMOVED***/***REMOVED***/ "$(read_toml_setting ~/Documents/config/sync.conf ***REMOVED***)"
-
-  echo
-  echo Sync photos
-  rsync --progress -av ~/Documents/iphone_pictures/* "$(read_toml_setting ~/Documents/config/sync.conf photos)"
-
-}
-
 
 __stop_related_units_if_active ()
 {
