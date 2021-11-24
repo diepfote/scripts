@@ -64,11 +64,10 @@ while [ $# -gt 0 ]; do
 done
 
 
-# shellcheck source=/dev/null
 source ~/Documents/scripts/source-me/spinner.sh
-# shellcheck source=/dev/null
 source ~/Documents/scripts/source-me/common-functions.sh
-# shellcheck source=/dev/null
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Documents/scripts/source-me/darwin/posix-compliant-shells.sh
 source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
 
 set +u
