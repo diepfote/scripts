@@ -108,9 +108,12 @@ get_random_alphanumeric ()
 
 
 _rclone_verbose_sync_operation () {
-  set -x
-  rclone sync --exclude '.DS_Store' --exclude '.*.un~' --exclude '.~lock*' -L -v "$@"
-  set +x
+  local command
+  command=(rclone sync --exclude '.DS_Store' --exclude '.*.un~' --exclude '.~lock*' -L -v)
+  echo -n "${command[*]} "
+  # display src dst without fqdn
+  echo "$*" | sed -r 's#[^/]+?(/.*)(\s+)[^/]+?(/.*)#\1\2\3#g'
+  "${command[@]}" "$@"
 }
 
 call_browser () {
