@@ -155,7 +155,7 @@ pacman-get-required-by-for-upgradeable () {
     # no upgradable packages?
     if [ ${#pkgs[@]} -gt 0 ]; then
       echo "${pkgs[@]}" | xargs pacman -Qii 2>&1 | \
-        grep -E '^\s*$|^Description|^Name|^Required By'
+        grep -E '^\s*$|^Description|^Name|^Required By|^Optional For'
     fi
   }
 
