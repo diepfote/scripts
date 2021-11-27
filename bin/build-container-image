@@ -6,20 +6,50 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-
-trap "rm .bashrc; popd" EXIT
+cleanup () {
+  rm .bashrc
+  popd
+}
+trap cleanup EXIT
 pushd ~/Documents/dockerfiles/"$1"
 
-if [ "$1" = arch-all ]; then
+
+build_opts=()
+
+set -x
+image_name=arch-all
+if [ "$1" = "$image_name" ]; then
   set -x
 
   cp ~/.bashrc .bashrc
 
-  ./arch-package-template.py
+  tar_image="$image_name".tar
+  cache_status=cached
 
+  if ! docker images | grep "$image_name" >/dev/null 2>&1; then
+    docker_image_name=localhost/"$image_name"
+
+    if ! docker load -i "$tar_image"; then
+      docker image rm "$docker_image_name" || true
+      cache_status=not-cached
+    fi
+  fi
+
+  ./arch-package-template.py "$image_name" "$cache_status"
+
+  # build_opts+=('-v' '/var/cache/pkgfile:/var/cache/host-pkgfile:ro' '-v' '/var/cache/pacman:/var/cache/host-pacman:ro' '--no-cache')
+  build_opts+=('-v' '/var/cache/pkgfile:/var/cache/pkgfile' '-v' '/var/cache/pacman:/var/cache/pacman' '--no-cache')
   set +x
 fi
+set +x
 
 set -x
-docker build -t "$1" .
+docker build "${build_opts[@]}" -t "$1" .
 set +x
+
+if [ "$1" = arch-all ]; then
+  set -x
+  rm "$tar_image" || true
+  docker image save -o "$tar_image" localhost/arch-all
+  set +x
+fi
