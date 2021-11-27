@@ -106,7 +106,7 @@ done < <(curl -sL "$base_url/$latest_image_location" | grep cloud | "${sed_comma
 
 lima_config_file=~/.lima/default/lima.yaml
 # set image location
-sed -i -r 's#"(https://mirror.pkgbuild.com/images).*"'"#\1/$latest_image_location${image_links[0]}#"  "$lima_config_file"
+sed -i -r 's#("https://mirror.pkgbuild.com/images).*(")'"#\1/$latest_image_location${image_links[0]}\2#"  "$lima_config_file"
 # set image sha256
 image_sha256="$(curl -sL "$base_url/$latest_image_location${image_links[1]}" | awk '{ print $1 }')"
 sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
