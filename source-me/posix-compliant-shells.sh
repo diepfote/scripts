@@ -166,6 +166,9 @@ _link-shared-password-store () {
 
 }
 
+weather () {
+  curl -sL "https://v2.wttr.in/$*"
+}
 
 # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L86
 # View HTTP traffic
