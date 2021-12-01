@@ -59,6 +59,9 @@ _add_to_PATH "$HOME/Documents/scripts/private/bin"  || true
 # common aliases START
 #
 
+alias objdump='objdump -M intel'
+alias ropper='ropper --no-color'
+
 alias cheat='~/Documents/scripts/cheat.sh ~/Documents/cheatsheets'
 
 alias ls='ls --color=auto'
