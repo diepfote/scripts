@@ -31,7 +31,17 @@ run () {
   fi
 
   sleep infinity &
-  echo "re-print volume -> $ kill -SIGUSR1 $!"  1>&2
+  # DO NOT PUT ANYTHING INBETWEEN THESE LINES.
+  # NOT EVEN SAVING PID AND RUNNING ANOTHER PROCESS
+  # like echo to prin the PID.
+  #
+  # OTHERWISE YOU WILL BREAK THIS SCRIPTS SIGNAL
+  # HANDLING CAPABILITIES.
+  #
+  # Tests can be done via
+  #
+  # pactl set-sink-volume @DEFAULT_SINK@ +1% && ps -ef | grep i3cat-audio-device-helper  | grep -v grep | awk '{ print $2 }' | xargs kill -SIGUSR1  # very broad (will kill vim if this file is open)
+  #
   wait "$!"
 }
 
