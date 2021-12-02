@@ -19,7 +19,7 @@ get_volume() {
 # muted = off
 # unmuted = on
 get_device_on_off () {
-  awk -F"[][]" '/%/ { print $4 ; exit }' <(amixer sget "$device")
+  awk -F"[][]" '/%/ { print $6 ; exit }' <(amixer sget "$device")
 }
 
 
