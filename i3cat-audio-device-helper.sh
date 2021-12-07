@@ -19,7 +19,11 @@ get_volume() {
 # muted = off
 # unmuted = on
 get_device_on_off () {
-  awk -F"[][]" '/%/ { print $6 ; exit }' <(amixer sget "$device")
+  if awk -F"[][]" '/%/ { print $0; exit }' <(amixer sget "$device") | grep -- '\[off\]'  >/dev/null 2>&1; then
+    echo off
+  else
+    echo on
+  fi
 }
 
 
@@ -40,7 +44,7 @@ run () {
   #
   # Tests can be done via
   #
-  # pactl set-sink-volume @DEFAULT_SINK@ +1% && ps -ef | grep i3cat-audio-device-helper  | grep -v grep | awk '{ print $2 }' | xargs kill -SIGUSR1  # very broad (will kill vim if this file is open)
+  # pactl set-sink-volume @DEFAULT_SINK@ +1% && ps -ef | grep -E 'i3cat-audio-device-helper.sh [A-Z]+' | grep -v grep | awk '{ print $2 }' | xargs kill -SIGUSR1  # very broad (will kill vim if this file is open)
   #
   wait "$!"
 }
