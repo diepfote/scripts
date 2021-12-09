@@ -286,30 +286,6 @@ rclone_fastmail_sync_bewerbungen_cvs_arbeitszeugnisse () {
   _rclone_verbose_sync_operation "$@" "$src" "$dst"
 }
 
-rclone_fastmail_sync_cheatsheets_from_remote () {
-  local username
-  local src
-  local dst
-
-  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
-  src='fastmail:'"$username"'.fastmail.com/files/cheatsheets/'
-  dst=~/Documents/cheatsheets/
-
-  _rclone_verbose_sync_operation --delete-excluded "$@" "$src" "$dst"
-}
-
-rclone_fastmail_sync_cheatsheets_to_remote () {
-  local username
-  local src
-  local dst
-
-  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
-  src=~/Documents/cheatsheets/
-  dst='fastmail:'"$username"'.fastmail.com/files/cheatsheets/'
-
-  _rclone_verbose_sync_operation --delete-excluded "$@" "$src" "$dst"
-}
-
 
 # nicked from https://leahneukirchen.org/dotfiles/bin/zombies
 list-zombies-and-parents () {
@@ -412,6 +388,25 @@ _edit-wrapper () {
 # ---------------------------
 # git helpers START
 #
+
+cheatsheets_pull () {
+  (
+  if cd ~/Documents/cheatsheets; then
+    git pull
+  fi
+  )
+}
+
+cheatsheets_commit_and_push () {
+  (
+  if cd ~/Documents/cheatsheets; then
+    git add .
+    git commit -m "$(date --iso-8601=minutes)"
+    git push -u origin master
+  fi
+  )
+}
+
 
 _checkout-wrapper () {
   local dir="$1"
@@ -627,15 +622,6 @@ _work-wrapper () {
 }
 
 work-sync () {
-  # skip sync if output does not "Skipped "
-  if rclone_fastmail_sync_cheatsheets_from_remote --dry-run  2>&1 | ag --passthrough 'Skipped ' ; then
-
-    echo 'Do you want to trigger a sync?'
-    if yesno; then
-      rclone_fastmail_sync_cheatsheets_from_remote
-    fi
-  fi
-
   set +x
   local username
   username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
