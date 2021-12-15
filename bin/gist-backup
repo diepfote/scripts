@@ -45,7 +45,10 @@
 #   GIST_URL=https://api.github.com/users/aprescott/gists gist-backup ~/gist-backups/aprescott
 #
 
-token="$2"
+source ~/Documents/scripts/source-me/common-functions.sh
+_add_to_PATH ~/Documents/scripts/bin
+
+token="$(read_toml_setting ~/Documents/config/github.conf gist_backup_token)"
 url=${GIST_URL:-https://api.github.com/gists}
 
 usage() {

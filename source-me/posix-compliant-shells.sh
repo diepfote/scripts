@@ -213,29 +213,13 @@ dl-youtube-part-of-m4a () {
 
 _dl-youtube-filter()
 {
-  set +u
   local url="$1"
-  local filter_type="$2"
-  local filter="$3"
-  shift 4
+  shift
 
-  if [ -z "$1" ]; then
-    local quality=best
-  else
-    quality="$1"
-    shift
-  fi
-  local additional_args=("$@")
-  set -u
-
-  cmd=('dl-youtube' "$quality" '--print-json' "$filter_type" "$filter" '-w' '--add-metadata' "${additional_args[@]}" "$url")
+  cmd=('dl-youtube' "$quality" '--print-json' '-w' '--add-metadata' "$@" -- "$url")
   set -x
-  if ! "${cmd[@]}" | jq ._filename; then
-    quality=best  # re-run with best quality
-    "${cmd[@]}" | jq ._filename
+  "${cmd[@]}" | jq ._filename
   set +x
-
-  fi
 }
 
 dl-playlist () {
