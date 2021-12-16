@@ -365,8 +365,8 @@ edit-python () {
 edit-function () {
   _edit-wrapper --dir ~/.config/fish/functions "$1"
 }
-edit-firejail () {
-  _edit-wrapper --dir ~/.config/firejail --overwrite-firejail "$1"
+edit-script () {
+  _edit-wrapper --dir ~/Documents/scripts "$1"
 }
 edit-vim () {
   _edit-wrapper --dir ~/.vim "$1"
@@ -586,9 +586,6 @@ reset-mutt () {
 }
 reset-go () {
   _reset-wrapper ~/Documents/golang/tools
-}
-reset-firejail () {
-  _reset-wrapper ~/.config/firejail
 }
 reset-python () {
   _reset-wrapper ~/Documents/python/tools

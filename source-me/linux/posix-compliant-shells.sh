@@ -175,6 +175,19 @@ pacman-get-required-by-for-upgradeable () {
 export PASSWORD_STORE_DIR=~/.password-store-private
 
 
+
+edit_iptables_rules () {
+  sudo nvim /etc/iptables/iptables.rules
+
+  sudo systemctl restart iptables.service
+}
+
+
+edit-firejail () {
+  _edit-wrapper --dir ~/.config/firejail --overwrite-firejail "$1"
+}
+
+
 commit-firejail () {
   commit-in-dir ~/.config/firejail "$@"
 }
@@ -196,6 +209,11 @@ status-firejail () {
 status-pacman-hooks () {
   _status-wrapper /etc/pacman.d/hooks
 }
+
+reset-firejail () {
+  _reset-wrapper ~/.config/firejail
+}
+
 
 
 allow_all_outbound_traffic () {
