@@ -153,7 +153,8 @@ get-yt-links-for-downloads () {
 _link-shared-password-store () {
 
     if [ -z "$PASSWORD_STORE_DIR" ]; then
-      echo -en "$RED"; echo -e "[!] unable to link files.$NC\n    PASSWORD_STORE_DIR variable empty!"
+      # shellcheck disable=SC2154
+      echo -e "${RED}[!] unable to link files.$NC\n    PASSWORD_STORE_DIR variable empty!"
       exit 1
     fi
 
@@ -297,6 +298,57 @@ new-mutt () {
   edit-mutt "$@"
 }
 
+_mv-wrapper () {
+
+  DIR=''
+  while [ $# -gt 0 ]; do
+  key="$1"
+    case "$key" in
+      -d|--dir)
+      DIR="$2"
+      shift 2
+      ;;
+
+      --)
+      shift
+      break
+      ;;
+
+      *)
+      break
+      ;;
+
+    esac
+  done
+
+  if [ $# -lt 2 ]; then
+    # shellcheck disable=SC2154
+    echo -e "${YELLOW}[.] Nothing to move.$NC"
+    return
+  fi
+  if [ -z "$DIR" ]; then
+    echo -e "${RED}[!] DIR param is empty.$NC"
+    return
+  fi
+
+  mv "$DIR"/"$1" "$DIR"/"$2"
+}
+
+mv-docker () {
+  _mv-wrapper --dir ~/Documents/dockerfiles "$@"
+}
+mv-go () {
+  _mv-wrapper --dir ~/Documents/golang/tools "$@"
+}
+mv-python () {
+  _mv-wrapper --dir ~/Documents/python/tools "$@"
+}
+mv-script () {
+  _mv-wrapper --dir ~/Documents/scripts "$@"
+}
+mv-vim () {
+  _mv-wrapper --dir ~/.vim "$@"
+}
 
 edit-docker () {
   _edit-wrapper --dir ~/Documents/dockerfiles "$1"
@@ -595,7 +647,7 @@ _work-wrapper () {
          [ "${command[1]}" = fetch ]; then
         # shellcheck disable=SC1090
         source ~/Documents/scripts/source-me/colors.sh
-        echo "${RED}Only running fetch!$NC"
+        echo -e "${RED}Only running fetch!$NC"
         command[1]=fetch
       fi
     fi
