@@ -1,5 +1,8 @@
-export GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
-export GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
+#!/usr/bin/env bash
+
+GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
+GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
+export GIT GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL
 export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
 export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
@@ -94,7 +97,7 @@ snap-renew () {
 
 open_file_if_not_open () {
   local filename="$1"
-  if [ -z "$(ps -ef | grep -v grep | grep "$(basename "$filename")")" ]; then
+  if ! ps -ef | grep -v grep | grep -q "$(basename "$filename")"; then
     xdg-open "$filename"  # xdg-open should be a function already
   fi
 }
@@ -155,11 +158,20 @@ pacman-get-required-by-for-upgradeable () {
 export PASSWORD_STORE_DIR=~/.password-store-private
 
 
+edit_pacman_conf () {
+  sudo nvim /etc/pacman.conf
+}
+
 
 edit_iptables_rules () {
   sudo nvim /etc/iptables/iptables.rules
 
   sudo systemctl restart iptables.service
+}
+
+edit_radare2_history () {
+  vim -c ':$' ~/.cache/radare2/history
+
 }
 
 
