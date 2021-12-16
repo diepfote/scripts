@@ -31,26 +31,6 @@ chromium () {
   (command chromium --force-device-scale-factor=1.5 "$@" 1>/dev/null 2>/dev/null &)
 }
 
-asm_dev () {
-  local slides_open="$(ps -ef | grep zathura | grep 'OpSys_ASM')"
-  local recommendation_open="$(ps -ef | grep zathura | grep -- 'pcasm-book')"
-
-  if [ -z "$slides_open" ]; then
-    xdg-open "$HOME"/Documents/books\ and\ documentation/reverse\ engineering\ re/assembly/*_OpSys_ASM.pdf
-  fi
-
-  if [ -z "$recommendation_open" ]; then
-    xdg-open "$HOME/Documents/books and documentation/reverse engineering re/assembly/pcasm-book.pdf"
-  fi
-
-  if [ -z "$guide_open" ]; then
-    xdg-open "$HOME/Documents/cheatsheets/assembly/Guide to x86 Assembly.pdf" >/dev/null 2>&1
-  fi
-
-  asm_dir=/home/$USER/Documents/asm
-  cd "$asm_dir"
-}
-
 _snap () {
   local d
   local dir
