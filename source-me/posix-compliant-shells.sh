@@ -298,7 +298,8 @@ new-mutt () {
   edit-mutt "$@"
 }
 
-_mv-wrapper () {
+
+_mvcopy-wrapper () {
 
   DIR=''
   while [ $# -gt 0 ]; do
@@ -306,6 +307,11 @@ _mv-wrapper () {
     case "$key" in
       -d|--dir)
       DIR="$2"
+      shift 2
+      ;;
+
+      --op)
+      OP="$2"
       shift 2
       ;;
 
@@ -323,7 +329,7 @@ _mv-wrapper () {
 
   if [ $# -lt 2 ]; then
     # shellcheck disable=SC2154
-    echo -e "${YELLOW}[.] Nothing to move.$NC"
+    echo -e "${YELLOW}[.] Nothing to $OP.$NC"
     return
   fi
   if [ -z "$DIR" ]; then
@@ -331,24 +337,41 @@ _mv-wrapper () {
     return
   fi
 
-  mv "$DIR"/"$1" "$DIR"/"$2"
+  "$OP" "$DIR"/"$1" "$DIR"/"$2"
 }
 
 mv-docker () {
-  _mv-wrapper --dir ~/Documents/dockerfiles "$@"
+  _mvcopy-wrapper --op mv --dir ~/Documents/dockerfiles "$@"
 }
 mv-go () {
-  _mv-wrapper --dir ~/Documents/golang/tools "$@"
+  _mvcopy-wrapper --op mv --dir ~/Documents/golang/tools "$@"
 }
 mv-python () {
-  _mv-wrapper --dir ~/Documents/python/tools "$@"
+  _mvcopy-wrapper --op mv --dir ~/Documents/python/tools "$@"
 }
 mv-script () {
-  _mv-wrapper --dir ~/Documents/scripts "$@"
+  _mvcopy-wrapper --op mv --dir ~/Documents/scripts "$@"
 }
 mv-vim () {
-  _mv-wrapper --dir ~/.vim "$@"
+  _mvcopy-wrapper --op mv --dir ~/.vim "$@"
 }
+
+cp-docker () {
+  _mvcopy-wrapper --op cp --dir ~/Documents/dockerfiles "$@"
+}
+cp-go () {
+  _mvcopy-wrapper --op cp --dir ~/Documents/golang/tools "$@"
+}
+cp-python () {
+  _mvcopy-wrapper --op cp --dir ~/Documents/python/tools "$@"
+}
+cp-script () {
+  _mvcopy-wrapper --op cp --dir ~/Documents/scripts "$@"
+}
+cp-vim () {
+  _mvcopy-wrapper --op cp --dir ~/.vim "$@"
+}
+
 
 edit-docker () {
   _edit-wrapper --dir ~/Documents/dockerfiles "$1"
