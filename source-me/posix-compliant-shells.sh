@@ -372,6 +372,21 @@ cp-vim () {
   _mvcopy-wrapper --op cp --dir ~/.vim "$@"
 }
 
+rm-docker () {
+  _mvcopy-wrapper --op rm --dir ~/Documents/dockerfiles "$@"
+}
+rm-go () {
+  _mvcopy-wrapper --op rm --dir ~/Documents/golang/tools "$@"
+}
+rm-python () {
+  _mvcopy-wrapper --op rm --dir ~/Documents/python/tools "$@"
+}
+rm-script () {
+  _mvcopy-wrapper --op rm --dir ~/Documents/scripts "$@"
+}
+rm-vim () {
+  _mvcopy-wrapper --op rm --dir ~/.vim "$@"
+}
 
 edit-docker () {
   _edit-wrapper --dir ~/Documents/dockerfiles "$1"
