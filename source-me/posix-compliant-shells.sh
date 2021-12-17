@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -31,16 +32,16 @@ export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 
+source ~/Documents/scripts/source-me/common-functions.sh
+
 source ~/Documents/scripts/source-me/completions_*
 
 
-# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/colors.sh
 
 # source fish functions
 # TODO remove
 sh_functions_file=~/.sh_functions
-# shellcheck disable=SC1090
 source "$sh_functions_file" || fish -c generate_sh_functions_to_call_fish_shell_functions
 
 
@@ -80,6 +81,7 @@ alias grep='grep --exclude-dir=.git \
                  --exclude=Session.vim \
                  --color'
 
+# shellcheck disable=SC2154
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
 
 alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
@@ -176,6 +178,7 @@ weather () {
 
 # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L86
 # View HTTP traffic
+# shellcheck disable=SC2154
 alias sniff="sudo ngrep -d \"\$_ngrep_interface\" -t '^(GET|POST) ' 'tcp and port 80'"
 # shellcheck disable=SC2139
 alias httpdump="sudo tcpdump -i \"\$_ngrep_interface\" -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
@@ -183,7 +186,13 @@ alias httpdump="sudo tcpdump -i \"\$_ngrep_interface\" -n -s 0 -w - | grep -a -o
 
 # get word definition
 def () {
+  # shellcheck disable=SC2119
   dict -d gcide "$1" | lessc
+}
+# get synonym
+synonym () {
+  # shellcheck disable=SC2119
+  dict -d moby-thesaurus "$1" | lessc
 }
 
 doi_view () {
@@ -237,7 +246,7 @@ dl-playlist () {
 ccat () {
   pygmentize -g "$@"
 }
-
+# shellcheck disable=SC2120
 lessc () {
   ccat "$1" | less -R
 }
@@ -250,7 +259,7 @@ pdf-extract-pages () {
 }
 
 pdf-merge () {
-  last_arg="${@:$#}"
+  last_arg="${*:$#}"
   set -- "${@:1:$(($#-1))}"  # all except last
 
   set -x
@@ -680,7 +689,6 @@ _work-wrapper () {
        [ "$repo_dir" = /etc/pacman.d/hooks ]; then
       if [ "${command[1]}" = pull ] || \
          [ "${command[1]}" = fetch ]; then
-        # shellcheck disable=SC1090
         source ~/Documents/scripts/source-me/colors.sh
         echo -e "${RED}Only running fetch!$NC"
         command[1]=fetch

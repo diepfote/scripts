@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 
 sorted_find () {
@@ -103,7 +104,7 @@ findlast () {
 
 get_random_alphanumeric ()
 {
-  cat /dev/urandom | tr -dc _A-Z-a-z-0-9 | head -c "$1"
+  tr -dc _A-Z-a-z-0-9 < /dev/urandom| head -c "$1"
 }
 
 
@@ -120,8 +121,6 @@ call_browser () {
   local TMP_FILE="$1"
 
   if [ "$(uname)" = Darwin ]; then
-    # shellcheck disable=SC1090
-    source ~/.sh_functions
     set -x
     chrome-cli open file://"$TMP_FILE" -i
     set +x
@@ -165,13 +164,14 @@ _get_cmd_tmux_pane_id () {
 
   cmd_to_search_for="$1"
 
+  local pane_to_reload
   if [ "$(uname)" = Darwin ]; then
     set -x
     # get parent process id for some command
-    local pane_to_reload="$(ps -f | grep "$cmd_to_search_for" | grep -v grep | tr -s ' ' | cut -d ' ' -f4)"
+    pane_to_reload="$(ps -f | grep "$cmd_to_search_for" | grep -v grep | tr -s ' ' | cut -d ' ' -f4)"
     set +x
   else
-   local pane_to_reload="$(for pane_pid in $(tmux list-panes -F '#{pane_pid}'); do \
+   pane_to_reload="$(for pane_pid in $(tmux list-panes -F '#{pane_pid}'); do \
     ps -f --ppid "$pane_pid" \
     | awk '{ print substr($0, index($0,$8))}' \
     | grep "/$cmd_to_search_for" 1>/dev/null && itis=true; \
