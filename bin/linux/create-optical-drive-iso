@@ -7,7 +7,8 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/{common-functions,posix-compliant-shells}.sh
+# shellcheck disable=SC1090
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
 _help() {
@@ -66,6 +67,7 @@ echo "Writing iso to $output_path"
 if [ -z "$USE_DDRESCUE" ]; then
   set -x
   if ! dd if=/dev/sr0  of="$output_path"  bs="$size" count="$sector_count" conv=noerror,sync  status=progress; then
+    # shellcheck disable=SC2154
     echo "${RED}[!] dd failed for $output_path!$NC"
     exit 1
   fi

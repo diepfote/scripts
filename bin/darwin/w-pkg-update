@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -65,7 +66,6 @@ done
 
 
 source ~/Documents/scripts/source-me/spinner.sh
-source ~/Documents/scripts/source-me/common-functions.sh
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 source ~/Documents/scripts/source-me/darwin/posix-compliant-shells.sh
 source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
@@ -142,6 +142,7 @@ echo -e '\n--------\napm\n'
 apm upgrade -c false
 
 echo -e '\n--------\nbrew\n'
+# shellcheck disable=SC2154
 echo -en "  $PURPLE"; echo -e "[>] pulling updates$NC"
 brew update
 

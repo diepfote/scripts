@@ -43,8 +43,6 @@ if [ $# -eq 0 ]; then
   exit
 fi
 
-# Parse arguments
-positional_args=()
 command=('lessc')
 while [ $# -gt 0 ]; do
 key="$1"
@@ -69,17 +67,18 @@ key="$1"
     exit 0
     ;;
 
-    *) # unknown option
-    positional_args+=("$1") # save in an array for later
+    --)
     shift
+    break
+    ;;
+
+    *)
+    break
     ;;
   esac
 done
-set -- "${positional_args[@]}"
 
 
-# shellcheck disable=SC1090
-source ~/Documents/scripts/source-me/common-functions.sh
 # shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 

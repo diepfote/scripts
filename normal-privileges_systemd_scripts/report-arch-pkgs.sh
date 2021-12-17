@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -7,7 +8,6 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/common-functions.sh
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 

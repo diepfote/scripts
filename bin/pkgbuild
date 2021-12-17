@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -6,7 +7,6 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-source ~/Documents/scripts/source-me/common-functions.sh
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 _help() {
@@ -76,8 +76,6 @@ if [ "$#" -eq 0 ]; then
 fi
 
 
-# Parse arguments
-positional_args=()
 USE_VIM=''
 NO_PAGER=''
 OPEN_BROWSER=''
@@ -119,7 +117,8 @@ done
 
 _set_urls "$@"
 
-echo -en "$GREEN" 1>&2; echo -e "browser_url:$NC $browser_url" 1>&2
+# shellcheck disable=SC2154
+echo -e "${GREEN}browser_url:$NC $browser_url" 1>&2
 if [ -n "$OPEN_BROWSER" ]; then
   call_browser "$browser_url"
 fi
