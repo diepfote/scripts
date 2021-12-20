@@ -123,6 +123,104 @@ alias map="xargs -n1"
 # common functions START
 #
 
+ffmpeg-save-screenshot () {
+  local TIMESTAMP=''
+  local IMAGE_TYPE=''
+  local NAME_SCREENSHOT=''
+
+  local timestamp_opt='-t'
+  local name_screenshot_opt='--name-screenshot'
+  local image_type_jpg_opt='--jpg'
+  local image_type_png_opt='--png'
+
+  while [ $# -gt 0 ]; do
+  key="$1"
+    case "$key" in
+      "$name_screenshot_opt")
+      NAME_SCREENSHOT="$2"
+      shift 2
+      ;;
+
+      "$timestamp_opt")
+      TIMESTAMP="$2"
+      shift 2
+      ;;
+
+      "$image_type_jpg_opt")
+      IMAGE_TYPE=jpg
+      shift
+      ;;
+
+      "$image_type_png_opt")
+      IMAGE_TYPE=png
+      shift
+      ;;
+
+      --)
+      shift
+      break
+      ;;
+
+      *)
+      break
+      ;;
+
+    esac
+  done
+
+  echo "$@"
+  if [ $# -lt 1 ]; then
+    # shellcheck disable=SC2154
+    echo -e "${YELLOW}[.] No file provided.$NC"
+    return
+  fi
+  if [ -z "$IMAGE_TYPE" ]; then
+    echo -e "[.] No image type supplied. Use ${YELLOW}"'`'"$image_type_jpg_opt"'`'"$NC or ${YELLOW}"'`'"$image_type_png_opt"'`'"$NC".
+    return
+  fi
+  if [ -z "$NAME_SCREENSHOT" ]; then
+    echo -e "[.] No name for screenshot. Use ${YELLOW}"'`'"$name_screenshot_opt"'`'"$NC."
+    return
+  fi
+  if [ -z "$TIMESTAMP" ]; then
+    echo -e "[.] No timestamp given. Use ${YELLOW}"'`'"$timestamp_opt"'`'"$NC."
+    return
+  fi
+
+  ffmpeg -ss "$TIMESTAMP" -i "$1" -vframes 1 ~/Pictures/"$NAME_SCREENSHOT"."$IMAGE_TYPE"
+
+}
+
+ffmpeg-normalize-audio-for-video-or-audio-file () {
+  local file filename filename_no_ext ext output_file decibel_to_normalized_to
+  file="$1"
+  filename="$(basename "$file")"
+  # shellcheck disable=SC2001
+  filename_no_ext="$(echo "$filename" | sed 's/\.[^.]*$//')"
+  # shellcheck disable=SC2001
+  ext="$(echo "$filename" | sed 's#.*[^.]\.##')"
+  output_file="$(dirname "$file")"/"$filename_no_ext".audio_normalized."$ext"
+
+
+  set -x
+  decibel_to_normalized_to="$(ffmpeg -i "$file" -af "volumedetect" -vn -sn -dn -f null /dev/null 2>&1 |\
+                                grep max_volume | sed -r 's#.*max_volume: ##g' | sed 's# ##g' | sed 's#-##g')"
+  set +x
+
+
+  if [ "$ext" = mp3 ]; then
+    echo '[>] mp3'
+    ffmpeg -i "$file" -af "volume=$decibel_to_normalized_to" -c:v copy -c:a libmp3lame -q:a 2 "$output_file"
+  elif [ "$ext" = m4a ] || [ "$ext" = mp4 ]; then
+    echo '[>] m4a'
+    ffmpeg -i "$file" -af "volume=$decibel_to_normalized_to" -c:v copy -c:a aac -b:a 128k "$output_file"
+  else
+    # shellcheck disable=SC2154
+    echo -e "${RED}[!] encountered unexpected extension '.$ext'$NC. No action was taken!"
+  fi
+}
+
+
 mpv () {
   (command mpv "$@" 1>/dev/null 2>/dev/null &)
 }
