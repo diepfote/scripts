@@ -324,7 +324,7 @@ _dl-youtube-filter()
   local url="$1"
   shift
 
-  cmd=('dl-youtube' "$quality" '--print-json' '-w' '--add-metadata' "$@" -- "$url")
+  cmd=('youtube-dl' --sleep-interval '5' --max-sleep-interval '20' '--print-json' '-w' '--add-metadata' "$@" -- "$url")
   set -x
   "${cmd[@]}" | jq ._filename
   set +x
