@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -7,7 +8,8 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/mounts.sh
+source ~/Documents/scripts/source-me/spinner.sh
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
 pass="$1"
@@ -15,7 +17,12 @@ device_partition="$2"
 mount_point="$3"
 mapper_name="$(get_random_alphanumeric 32)"
 
-trap "sudo umount "$mount_point"; sudo rm -r "$mount_point"; sudo cryptsetup close "$mapper_name"" EXIT
+cleanup () {
+  sudo umount "$mount_point"
+  sudo rm -r "$mount_point"
+  sudo cryptsetup close "$mapper_name" EXIT
+}
+trap cleanup EXIT
 
 sudo -v
 echo "$pass" | sudo cryptsetup open "$device_partition" "$mapper_name"

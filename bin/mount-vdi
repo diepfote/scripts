@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -7,7 +8,8 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/mounts.sh
+source ~/Documents/scripts/source-me/spinner.sh
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
 vdi_file="$1"
@@ -16,7 +18,12 @@ mount_partition="$2"
 
 temp="$(mktemp -d)"
 
-trap "sudo umount '$temp'; rm -rf '$temp'; sudo qemu-nbd -d /dev/nbd0" EXIT
+cleanup () {
+  sudo umount "$temp"
+  rm -rf "$temp"
+  sudo qemu-nbd -d /dev/nbd0 EXIT
+}
+trap cleanup EXIT
 
 sudo modprobe -v nbd
 
@@ -24,8 +31,8 @@ set -x
 # mount as disk
 sudo qemu-nbd -c /dev/nbd0 "$vdi_file"
 
-# mount partition
-echo -en "$PURPLE"; echo -e "[?] attempting to mount partition 2 (might have to be changed).$NC"
+# shellcheck disable=SC2154
+echo -e "${PURPLE}[?] attempting to mount partition 2 (might have to be changed).$NC"
 sudo mount /dev/nbd0p"$mount_partition" "$temp"
 set +x
 

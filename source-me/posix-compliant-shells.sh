@@ -123,6 +123,15 @@ alias map="xargs -n1"
 # common functions START
 #
 
+
+n-for-dir-in-tmux-pane-below() {
+  local dir="$1"
+  tmux split-window -d -v
+  tmux send-keys -t .+ "n $dir" C-m
+  tmux selectp -t .+
+}
+
+
 ffmpeg-save-screenshot () {
   local TIMESTAMP=''
   local IMAGE_TYPE=''

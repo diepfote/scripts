@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -7,14 +8,20 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/mounts.sh
+source ~/Documents/scripts/source-me/spinner.sh
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 
 file="$1"
 temp="$(mktemp -d)"
 
 sudo mount -o loop  "$file" "$temp"
-trap "sudo umount "$temp"; rm -r "$temp"" EXIT
+
+cleanup () {
+  sudo umount "$temp"
+  rm -r "$temp"
+}
+trap cleanup EXIT
 
 n-for-dir-in-tmux-pane-below "$temp"
 spinner 'waiting to close iso file'
