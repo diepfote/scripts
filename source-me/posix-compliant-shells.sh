@@ -316,7 +316,7 @@ neomutt () {
 
 dl-youtube () {
   set -x
-  youtube-dl -f "$@"
+  youtube-dl --add-metadata -f "$@"
   set +x
 }
 
@@ -325,7 +325,7 @@ dl-youtube-part-of-m4a () {
   local duration="$2"
   local url="$3"
 
-  youtube-dl -f 140 --postprocessor-args "-ss $start -t $duration" "$url"
+  youtube-dl --add-metadata -f 140 --postprocessor-args "-ss $start -t $duration" "$url"
 }
 
 _dl-youtube-filter()
@@ -344,7 +344,7 @@ dl-playlist () {
   shift
 
   set -x
-  youtube-dl -f "$first_arg" "$@" \
+  youtube-dl --add-metadata -f "$first_arg" "$@" \
     -o '%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s'
   set +x
 }
