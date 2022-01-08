@@ -396,10 +396,6 @@ list-zombies-and-parents () {
   }
 
 
-***REMOVED***_***REMOVED***_***REMOVED***UndTina_download () {
-  ~/Documents/scripts/normal-privileges_systemd_scripts/***REMOVED***--***REMOVED***_***REMOVED***UN***REMOVED***.sh
-}
-
 
 edit-bash-history () {
   # :$ to start at the end of the file
