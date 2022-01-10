@@ -698,6 +698,9 @@ diff-script () {
 diff-vim () {
   _diff-wrapper ~/.vim "$@"
 }
+diff-cheat () {
+  _diff-wrapper ~/Documents/cheatsheets "$@"
+}
 
 _log-wrapper () {
   local dir="$1"
@@ -791,6 +794,9 @@ status-script () {
 }
 status-vim () {
   _status-wrapper ~/.vim "$@"
+}
+status-cheat () {
+  _status-wrapper ~/Documents/cheatsheets "$@"
 }
 
 
