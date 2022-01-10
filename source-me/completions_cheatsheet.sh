@@ -10,4 +10,7 @@ _cheats_complete ()
 }
 
 complete -o filenames -F _cheats_complete cheat
+complete -o filenames -F _cheats_complete cp-cheat
+complete -o filenames -F _cheats_complete mv-cheat
+complete -o filenames -F _cheats_complete rm-cheat
 

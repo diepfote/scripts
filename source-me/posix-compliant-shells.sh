@@ -414,6 +414,7 @@ new-mutt () {
 _mvcopy-wrapper () {
 
   DIR=''
+  ADDITIONAL_FLAGS=''
   while [ $# -gt 0 ]; do
   key="$1"
     case "$key" in
@@ -424,6 +425,9 @@ _mvcopy-wrapper () {
 
       --op)
       OP="$2"
+      if [ "$OP" = cp ]; then
+        ADDITIONAL_FLAGS=('-r')
+      fi
       shift 2
       ;;
 
@@ -449,7 +453,8 @@ _mvcopy-wrapper () {
     return
   fi
 
-  "$OP" "$DIR"/"$1" "$DIR"/"$2"
+
+  "$OP" "${ADDITIONAL_FLAGS[@]}" "$DIR"/"$1" "$DIR"/"$2"
 }
 
 mv-docker () {
@@ -467,6 +472,9 @@ mv-script () {
 mv-vim () {
   _mvcopy-wrapper --op mv --dir ~/.vim "$@"
 }
+mv-cheat () {
+  _mvcopy-wrapper --op mv --dir ~/Documents/cheatsheets "$@"
+}
 
 cp-docker () {
   _mvcopy-wrapper --op cp --dir ~/Documents/dockerfiles "$@"
@@ -483,6 +491,9 @@ cp-script () {
 cp-vim () {
   _mvcopy-wrapper --op cp --dir ~/.vim "$@"
 }
+cp-cheat () {
+  _mvcopy-wrapper --op cp --dir ~/Documents/cheatsheets "$@"
+}
 
 rm-docker () {
   _mvcopy-wrapper --op rm --dir ~/Documents/dockerfiles "$@"
@@ -498,6 +509,9 @@ rm-script () {
 }
 rm-vim () {
   _mvcopy-wrapper --op rm --dir ~/.vim "$@"
+}
+rm-cheat () {
+  _mvcopy-wrapper --op rm --dir ~/Documents/cheatsheets "$@"
 }
 
 edit-docker () {
