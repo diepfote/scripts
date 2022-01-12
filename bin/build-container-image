@@ -7,7 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 cleanup () {
-  rm .bashrc
+  rm -r .bashrc .gdbinit .gef-startup yay-config
   popd
 }
 trap cleanup EXIT
@@ -22,6 +22,11 @@ if [ "$1" = "$image_name" ]; then
   set -x
 
   cp ~/.bashrc .bashrc
+  # gdb configs
+  cp ~/.gdbinit .gdbinit
+  cp ~/.gef-startup .gef-startup
+  cp -r ~/.config/yay yay-config
+
 
   tar_image="$image_name".tar
   cache_status=cached
@@ -38,7 +43,9 @@ if [ "$1" = "$image_name" ]; then
   ./arch-package-template.py "$image_name" "$cache_status"
 
   # build_opts+=('-v' '/var/cache/pkgfile:/var/cache/host-pkgfile:ro' '-v' '/var/cache/pacman:/var/cache/host-pacman:ro' '--no-cache')
-  build_opts+=('-v' '/var/cache/pkgfile:/var/cache/pkgfile' '-v' '/var/cache/pacman:/var/cache/pacman' '--no-cache')
+  build_opts+=('-v' '/var/cache/pkgfile:/var/cache/pkgfile' \
+    '-v' '/var/cache/pacman:/var/cache/pacman' \
+    '--no-cache')
   set +x
 fi
 set +x
