@@ -18,10 +18,10 @@ done
 
 _help() {
 cat <<EOF
-USAGE: cheat [--edit|--find|--grep] [FILENAME]
+USAGE: cheat [--edit|--find|--grep] [-d] [FILENAME]
 
 Displays files in less, image viewer, pdf viewer or browser by default.
-If \`edit\` is specified, the file will be openend for editing in vim (if not one of $(for key in "${!map[@]}"; do echo -n "$key, "; done)html.
+If \`edit\` is specified, the file will be openend for editing in vim (if not one of $(for key in "${!map[@]}"; do echo -n "$key, "; done)html).
 If \`find\` is specified, find will be run in the cheatsheets dir.
 If \`grep\` is specified, grep will be run in the cheatsheets dir.
 
@@ -34,6 +34,8 @@ COMMANDS:
   grep OPTIONS  GREP_STRING   Run grep in cheatsheets DIR
     $ cheat grep -n ' find '
     + grep -n ' find ' --color=always -r $find_path
+    $ cheat grep -d darwin -n 'tmutil'
+    + grep -n 'tmutil' --color=always -r $find_path/darwin
 
 EOF
 }
@@ -44,6 +46,7 @@ if [ $# -eq 0 ]; then
 fi
 
 command=('lessc')
+subdir=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
@@ -62,10 +65,16 @@ key="$1"
     shift
     ;;
 
+    -d)
+    subdir="$2"
+    shift 2
+    ;;
+
     -h|--help)
     _help
     exit 0
     ;;
+
 
     --)
     shift
@@ -99,7 +108,7 @@ if [ "${command[0]}" = 'find' ]; then
   exit
 elif [ "${command[0]}" = 'grep' ]; then
   set -x
-  "${command[@]}" "$@" --color=always -r "$find_path"
+  "${command[@]}" "$@" --color=always -r "$find_path/$subdir"
   set +x
   exit
 fi
