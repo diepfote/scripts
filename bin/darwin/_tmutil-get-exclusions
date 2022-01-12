@@ -6,8 +6,6 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-sudo -v
-
 all_dirs=()
 all_dirs+=(/Applications)
 all_dirs+=(/Library)
@@ -67,6 +65,11 @@ all_dirs+=(~/Library/Application\ Support/{Atom,CrashReporter,discord,'Docker De
 all_dirs+=(~/Library/Group\ Containers/*{Office,ms,OneDrive}*)
 all_dirs+=(~/Library/{Caches,Containers,Logs,Python})
 
+
+mapfile -d $'\0' tmp_dirs < <(find ~/ -maxdepth 3 -type d -name '.pulumi' -print0)
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
 mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 6 -type d -name '*CacheStorage*' -print0)
 all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
 unset tmp_dirs
@@ -100,6 +103,9 @@ for dir in "${all_dirs[@]}"; do
   echo "$dir"
 done
 
+sudo -v
+
 # DO NOT RUN THIS MORE THAN ONCE IN A ROW
 # sudo tmutil addexclusion -p "${all_dirs[@]}"
 # sudo tmutil removeexclusion -p "${all_dirs[@]}"
+
