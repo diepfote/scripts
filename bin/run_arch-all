@@ -16,6 +16,7 @@ set -x
 docker run \
   -u build-user \
   --network=host \
+  -v /var/cache/pkgfile:/var/cache/pkgfile \
   -v ~/.cache/yay:/build/.cache/yay \
   -v ~/.gnupg:/build/.gnupg \
   -v ~/.container:/build/.container \
