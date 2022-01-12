@@ -175,6 +175,10 @@ edit_radare2_history () {
 }
 
 
+# ---------------------------
+# git helpers START
+#
+
 edit-firejail () {
   _edit-wrapper --dir ~/.config/firejail --overwrite-firejail "$1"
 }
@@ -206,6 +210,9 @@ reset-firejail () {
   _reset-wrapper ~/.config/firejail
 }
 
+#
+# git helpers END
+# ---------------------------
 
 
 allow_all_outbound_traffic () {
@@ -282,3 +289,4 @@ gdb-p () {
     sed -r 's#.*= #\tresult: #g'
 }
 alias gdb-peda='gdb -q -ex peda'
+
