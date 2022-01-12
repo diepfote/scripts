@@ -275,3 +275,10 @@ xinput-reset-mouse-buttons () {
 
 alias xclip='command xclip -selection clipboard'
 
+alias gdb-gef='gdb -q gef -x ~/.gef-startup'
+gdb-p () {
+  echo "$*" |\
+    gdb -q  |\
+    sed -r 's#.*= #\tresult: #g'
+}
+alias gdb-peda='gdb -q -ex peda'
