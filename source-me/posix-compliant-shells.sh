@@ -454,7 +454,12 @@ _mvcopy-wrapper () {
   fi
 
 
-  "$OP" "${ADDITIONAL_FLAGS[@]}" "$DIR"/"$1" "$DIR"/"$2"
+  if ! "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1" "$DIR"/"$2"; then
+    set -x
+    ADDITIONAL_FLAGS=('-T')  # treat as normal file
+    "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1" "$DIR"/"$2"
+    set +x
+  fi
 }
 
 mv-docker () {
@@ -612,7 +617,7 @@ _checkout-wrapper () {
   local dir="$1"
   shift
 
-  work_repo_template -d "$dir" git checkout -- "$@"
+  _work_repo_template -d "$dir" git checkout -- "$@"
 }
 
 checkout-dot-files () {
@@ -671,7 +676,7 @@ _diff-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  work_repo_template -d "$dir" git diff "$@"
+  _work_repo_template -d "$dir" git diff "$@"
 }
 
 diff-dot-files () {
@@ -706,7 +711,7 @@ _log-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  work_repo_template -d "$dir" git l "$@"
+  _work_repo_template -d "$dir" git l "$@"
 }
 
 log-dot-files () {
@@ -735,8 +740,8 @@ log-vim () {
 }
 
 _reset-wrapper () {
-  work_repo_template -d "$1" git reset --hard
-  work_repo_template -d "$1" git clean -df
+  _work_repo_template -d "$1" git reset --hard
+  _work_repo_template -d "$1" git clean -df
 }
 
 reset-dot-files () {
@@ -768,7 +773,7 @@ _status-wrapper () {
   local dir="$1"
   shift
 
-  work_repo_template -d "$dir" git status -sb "$@"
+  _work_repo_template -d "$dir" git status -sb "$@"
 }
 
 status-dot-files () {
@@ -818,7 +823,7 @@ _work-wrapper () {
       fi
     fi
 
-    work_repo_template -d "$repo_dir" "${command[@]}"
+    _work_repo_template -d "$repo_dir" "${command[@]}"
   done <"$conf_file"
   set +x
 }
