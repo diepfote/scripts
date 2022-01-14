@@ -2,7 +2,7 @@
 # shellcheck disable=SC1090
 
 
-sorted_find () {
+find-sorted () {
   dir="$1"
   shift
 
