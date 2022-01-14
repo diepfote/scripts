@@ -6,10 +6,10 @@ find-sorted () {
   dir="$1"
   shift
 
-  # shellcheck disable=SC2227
+  # shellcheck disable=SC2016
   find "$dir" -mindepth 1 "$@" -printf "%T@ %p\n" 2>&1 \
     | sort -n -r \
-    | awk '{ print $2 }'
+    | stdbuf -o0 awk '{ print $2 }'
 }
 
 
