@@ -4,16 +4,18 @@ set -o pipefail
 set -u
 set -e
 
-user_dir="$HOME"
 
-bash_backup_dir="$user_dir/.bash_backup"
-[[ -d "$bash_backup_dir" ]] || mkdir "$bash_backup_dir"
+backup_dir="$HOME/.bash_backup"
+[[ -d "$backup_dir" ]] || mkdir "$backup_dir"
 
-# Remove 30th file
-trap "rm -f $bash_backup_dir/$(ls -t $bash_backup_dir | sed -n 30p) 2>/dev/null" EXIT
+cleanup () {
+  file_30="$(find-sorted "$backup_dir" | sed -n 30p)"
+  rm -f "$file_30" 2>/dev/null
+}
+trap "cleanup" EXIT
 
 # Get parent directory
 f_date=$(date +%FT%T%Z | sed 's/:/_/g')
 
-cp "$user_dir/.bash_history" "$bash_backup_dir/bash_history$f_date"
+cp "$HOME/.bash_history" "$backup_dir/bash_history$f_date"
 

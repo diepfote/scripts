@@ -4,15 +4,17 @@ set -u
 set -e
 set -o pipefail
 
-fish_backup_dir=~/.local/share/fish/fish_backup
-[[ ! -d "$fish_backup_dir" ]] && mkdir "$fish_backup_dir"
+backup_dir="$HOME/.bash_backup"
+[[ -d "$backup_dir" ]] || mkdir "$backup_dir"
 
-# Remove 30th file
-trap "rm -f $fish_backup_dir/$(ls -t $fish_backup_dir | sed -n 30p) 2>/dev/null" EXIT
+cleanup () {
+  file_30="$(find-sorted "$backup_dir" | sed -n 30p)"
+  rm -f "$file_30" 2>/dev/null
+}
 
 # Get parent directory
-fish_dir="$(dirname "$fish_backup_dir")"
+fish_dir="$(dirname "$backup_dir")"
 f_date=$(date +%FT%T%Z | sed 's/:/_/g')
 
-cp "$fish_dir/fish_history" "$fish_backup_dir/fish_history$f_date"
+cp "$fish_dir/fish_history" "$backup_dir/fish_history$f_date"
 
