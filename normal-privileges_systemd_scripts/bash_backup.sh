@@ -4,6 +4,8 @@ set -o pipefail
 set -u
 set -e
 
+source ~/Documents/scripts/source-me/common-functions.sh
+
 
 backup_dir="$HOME/.bash_backup"
 [[ -d "$backup_dir" ]] || mkdir "$backup_dir"
