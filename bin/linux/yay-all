@@ -27,10 +27,13 @@ _yay-update-firejail () {
     yay --noconfirm -Sa firejail-git
     set +x
   else
+    set +x
     # shellcheck disable=SC1090
     source ~/Documents/scripts/source-me/colors.sh
+    # shellcheck disable=SC2154
     echo -en "$RED"
     echo     "[!] checksums do not match."
+    # shellcheck disable=SC2154
     echo -e "     Not updating automatically!$NC"
     exit 1
   fi
