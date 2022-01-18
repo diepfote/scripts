@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-command vscodium "$@"
+cmd=(vscodium)
+if ! command -v "${cmd[@]}" 1>/dev/null; then
+  cmd=(codium)
+fi
+export cmd
+
+command "${cmd[@]}" &
