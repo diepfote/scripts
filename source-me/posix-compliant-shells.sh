@@ -351,7 +351,7 @@ dl-playlist () {
 
 
 ccat () {
-  pygmentize -g "$@"
+  pygmentize -g "$@" || cat -
 }
 # shellcheck disable=SC2120
 lessc () {
