@@ -6,4 +6,4 @@ if ! command -v "${cmd[@]}" 1>/dev/null; then
 fi
 export cmd
 
-command "${cmd[@]}" &
+command "${cmd[@]}"  "$@" &
