@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+brew formulae-require | grep --color=always " $1"
