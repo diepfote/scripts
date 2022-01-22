@@ -63,7 +63,7 @@ while [ $# -gt 0 ]; do
       # aws binary has to be present for generated kubeconfigs
 
       # shellcheck disable=SC1090
-      pushd ~/Documents/deploy-jira  || exit 1
+      pushd ~/Documents/deploy-roadmap  || exit 1
     fi
     shift 2
     ;;
