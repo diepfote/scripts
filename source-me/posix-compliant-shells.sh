@@ -60,6 +60,8 @@ _add_to_PATH "$HOME/Documents/scripts/private/bin"  || true
 # common aliases START
 #
 
+alias ag='ag --color-path "$PURPLE" --color-match "$RED"'
+
 alias objdump='objdump -M intel'
 alias ropper='ropper --no-color'
 
