@@ -20,6 +20,4 @@ _ffmpeg-normalize-audio-for-video-or-audio_completions()
 
 }
 
-complete -F _w-pkg-update_completions 'w-pkg-update'
-
 complete -F _ffmpeg-normalize-audio-for-video-or-audio_completions ffmpeg-normalize-audio-for-video-or-audio-file

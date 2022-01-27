@@ -7,9 +7,9 @@ find-sorted () {
   shift
 
   # shellcheck disable=SC2016
-  find "$dir" -mindepth 1 "$@" -printf "%T@ %p\n" 2>&1 \
+  find "$dir" -mindepth 1 "$@" -printf "%T@\t%p\n" 2>&1 \
     | sort -n -r \
-    | stdbuf -o0 awk '{ print $2 }'
+    | stdbuf -o0 awk -F '\t' '{ print $2 }'
 }
 
 
