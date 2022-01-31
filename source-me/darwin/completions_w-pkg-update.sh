@@ -9,7 +9,7 @@ _w-pkg-update_completions()
 
   case "${prev_word}" in
     *)
-      COMPREPLY=($(compgen -W "$(echo -e '-g\n-r\n--disable-remote-login\n-h')" -- "$cur_word"))
+      COMPREPLY=($(compgen -W "$(echo -e '-g\n-r\n--disable-remote-login\n--no-lima\n-h')" -- "$cur_word"))
       ;;
   esac
 

@@ -13,8 +13,9 @@ cat <<EOF
 USAGE: w-pkg-update [-g] [-r] [--disable-remote-login false]
 
 FLAGS:
--g    greedy option for brew
--r    re-install xcode commandline tools
+-g         greedy option for brew
+-r         re-install xcode commandline tools
+--no-lima  do not start lima vm
 
 OPTIONS:
 --disable-remote-login false (default=true)
@@ -24,6 +25,7 @@ EOF
 
 # Parse arguments
 GREEDY=''
+DO_NOT_START_LIMA=''
 DISABLE_REMOTE_LOGIN=true
 REINSTALL_XCODE=''
 while [ $# -gt 0 ]; do
@@ -31,6 +33,11 @@ while [ $# -gt 0 ]; do
   case "$key" in
     -g|--greedy)
     GREEDY=true
+    shift
+    ;;
+
+    --no-lima)
+    DO_NOT_START_LIMA=true
     shift
     ;;
 
@@ -111,6 +118,11 @@ sed -i -r 's#("https://mirror.pkgbuild.com/images).*(")'"#\1/$latest_image_locat
 image_sha256="$(curl -sL "$base_url/$latest_image_location${image_links[1]}" | awk '{ print $1 }')"
 sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
 
+if [ -z "$DO_NOT_START_LIMA" ]; then
+  limactl start default  >/dev/null 2>&1  &
+  disown "$(jobs -p | tail -n +2 | head -n1)"
+  sleep 1
+fi
 
 echo -e '\n--------\npip\n'
 #
@@ -146,7 +158,6 @@ echo -e '\n--------\nbrew\n'
 echo -en "  $PURPLE"; echo -e "[>] pulling updates$NC"
 brew update
 
-kill "$spinner_pid"
 
 echo -en "  $PURPLE"; echo -e "[>] starting upgrades$NC"
 brew upgrade || true
