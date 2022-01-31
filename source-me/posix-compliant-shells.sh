@@ -73,6 +73,7 @@ alias grep='grep --exclude-dir=.git \
                  --exclude-dir=.helm \
                  --exclude-dir=.tox \
                  --exclude-dir=.pulumi \
+                 --exclude-dir=.cache \
                  --exclude-dir=.mypy_cache \
                  --exclude-dir=.eggs \
                  --exclude-dir=*.egg-info \
