@@ -79,14 +79,13 @@ source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
 
 set +u
 spinner
-spinner_pid="$!"
+SPINNER_PID="$!"
 set -u
 
 cleanup () {
   set +x
 
-  local spinner_pid="$1"
-  kill "$spinner_pid"
+  kill "$SPINNER_PID"
 }
 
 if [ "$DISABLE_REMOTE_LOGIN" = true ]; then
@@ -97,7 +96,7 @@ if [ "$DISABLE_REMOTE_LOGIN" = true ]; then
 fi
 
 # shellcheck disable=SC2064
-trap 'cleanup "$spinner_pid"' EXIT  # stop spinner
+trap 'cleanup' EXIT  # stop spinner
 
 echo -e '\n--------\nlima archlinux disk images\n'
 
@@ -120,7 +119,7 @@ sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
 
 if [ -z "$DO_NOT_START_LIMA" ]; then
   limactl start default  >/dev/null 2>&1  &
-  disown "$(jobs -p | tail -n +2 | head -n1)"
+  disown "$!"
   sleep 1
 fi
 
@@ -169,10 +168,6 @@ if [ -n "$GREEDY" ]; then
   brew upgrade --cask --greedy
 fi
 
-set +u
-spinner
-spinner_pid="$!"
-set -u
 
 echo -e '\n\n--------\n\nListing Darwin updates'
 pkg_info=()
