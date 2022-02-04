@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"  || true
 _add_to_MANPATH "/usr/local/opt/coreutils/libexec/gnuman"  || true
 
@@ -98,7 +100,7 @@ unmute-active-microphone () {
 open_mac-os_app () {
   local app="$1"
   shift
-  open /Applications/"$app" -n --args "$1" "$2"
+  open /Applications/"$app" -n --args "$@"
 }
 
 
