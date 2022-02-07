@@ -19,9 +19,7 @@ fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/mac-os'
 if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; then
 
   set -x
-  #brew info --installed --json | jq .[].name | sed 's#"##g' > ~/Documents/misc/mac-os/brew-pkgs.txt
-  brew list --formula > "$dir"/brew-pkgs.txt
-  brew list --cask > "$dir"/brew-cask-pkgs.txt
+  (cd "$dir" && brew bundle dump)
   kubectl krew list > "$dir"/krew-pkgs.txt
 
   defaults read -g NSUserKeyEquivalents > "$dir"/nsuserkeyequivalents.txt
