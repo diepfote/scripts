@@ -9,6 +9,10 @@ _add_to_MANPATH "/usr/local/opt/findutils/libexec/gnuman"  || true
 _add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"  || true
 _add_to_MANPATH "/usr/local/opt/gnu-sed/libexec/gnuman"  || true
 
+_add_to_PATH "/usr/local/opt/gawk/libexec/gnubin"  || true
+_add_to_MANPATH "/usr/local/opt/gawk/libexec/gnuman"  || true
+
+
 _add_to_PATH "/usr/local/opt/grep/libexec/gnubin"  || true
 _add_to_MANPATH "/usr/local/opt/grep/libexec/gnuman"  || true
 
