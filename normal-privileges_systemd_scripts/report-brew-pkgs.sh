@@ -20,9 +20,14 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; the
 
   set -x
 
-  (cd "$dir" && brew bundle dump)  # generates Brewfile in "$dir"
+  # generates Brewfile in "$dir"
+  # and `-f` overwrites existing file
+  (cd "$dir" && brew bundle dump -f)
 
   cargo install --list > "$dir"/cargo-pkgs.txt
+
+  # pip freeze but only explicitly installed pkgs
+  (cd ~ && pip-chill > "$dir"/python-pkgs.txt)
 
   kubectl krew list > "$dir"/krew-pkgs.txt
 
