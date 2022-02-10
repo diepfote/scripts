@@ -279,6 +279,19 @@ xinput-reset-mouse-buttons () {
   xinput set-button-map "$1" 1 2 3
 }
 
+yay_cache=~/.cache/yay
+yay-generate-PKGBUILD-checksum () {
+  local pkg_name="$1"
+  output_file="$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum
+  if ! cd "$yay_cache"/"$pkg_name"; then
+    echo -e "${RED}[!] error on cd"
+    return
+  fi
+  yay -G "$pkg_name"
+
+  sed -r '/^pkg(ver|rel)=/d' PKGBUILD | sha256sum > "$output_file"
+  ls -alh "$output_file"
+}
 
 alias xclip='command xclip -selection clipboard'
 

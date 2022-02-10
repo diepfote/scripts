@@ -24,4 +24,5 @@ _pkgbuild_completions()
 }
 
 complete -F _pkgbuild_completions pkgbuild
+complete -F _pkgbuild_completions yay-generate-PKGBUILD-checksum
 
