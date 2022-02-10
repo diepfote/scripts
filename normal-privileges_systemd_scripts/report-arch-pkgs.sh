@@ -25,6 +25,10 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; the
     mkdir -p "$misc_arch_dir"
   fi
 
+  # backup pacman database
+  ## to restore move .tar.bz2 file to / and execute "tar -xjvf pacman_database.tar.bz2"
+  tar -cjf "$misc_arch_dir/pacman_database.tar.bz2" "/var/lib/pacman/local"
+
   pacman -Qqem > "$misc_arch_dir/packages_explicit_external"
   pacman -Qqen > "$misc_arch_dir/packages_explicit_internal"
   pacman -Qqm  > "$misc_arch_dir/packages_all_external"
