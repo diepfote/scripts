@@ -14,17 +14,20 @@ source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
 
 trap "set +x" EXIT
 
-_yay-update-firejail () {
-  if ! yay -Qu | grep firejail-git; then
+pkgs_with_saved_checksums=(libplist-git libimobiledevice-glue-git libimobiledevice-git firejail-git vscodium-bin yay)
+
+_yay-update-based-on-checksum () {
+  pkg_name="$1"
+  if ! yay -Qu | grep "$pkg_name"; then
     return
   fi
 
   local yay_cache=~/.cache/yay
-  (cd "$yay_cache" && yay -G firejail-git)
-  if  sed -r '/^pkg(ver|rel)=/d' "$yay_cache"/firejail-git/PKGBUILD | sha256sum | grep -f "$yay_cache"/firejail-git-PKGBUILD.sha256sum; then
+  (cd "$yay_cache" && yay -G "$pkg_name")
+  if  sed -r '/^pkg(ver|rel)=/d' "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
     echo
     set -x
-    yay --noconfirm -Sa firejail-git
+    yay --noconfirm -Sa "$pkg_name"
     set +x
   else
     set +x
@@ -39,8 +42,10 @@ _yay-update-firejail () {
   fi
 }
 
-_yay-update-anything-but-firejail () {
-  if yay -Qyyua | grep -vE '^$|firejail'; then
+_yay-update-anything-else () {
+  # e.g. ^$|pkg1|pkg2
+  grep_pattern="$(for elem in "${pkgs_with_saved_checksums[@]}"; do echo -n "$elem|"; done | sed 's#|$## ; s#^#\^\$|#')"
+  if yay -Qyyua | grep -vE "$grep_pattern"; then
     set -x
     # TODO list packages first
     local command
@@ -63,5 +68,8 @@ while ! "${pacman_cmd[@]}" "$@"; do
   sleep 1
 done
 
-_yay-update-firejail
-_yay-update-anything-but-firejail
+for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
+  _yay-update-based-on-checksum "$pkg_name"
+done
+_yay-update-anything-else
+
