@@ -88,6 +88,9 @@ cleanup () {
   kill "$SPINNER_PID"
 }
 
+echo =====================
+echo "Start: $(date)"
+
 if [ "$DISABLE_REMOTE_LOGIN" = true ]; then
   echo
   set -x
@@ -210,3 +213,5 @@ if [ -n "$REINSTALL_XCODE" ]; then
   set +x
 fi
 
+echo "End: $(date)"
+echo =====================
