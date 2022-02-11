@@ -35,6 +35,9 @@ _add_to_PATH "$python_39_path"  || true
 _add_to_PATH "$HOME/Library/Python/3.9/bin"  || true
 
 
+# steve losh t (a task manager)
+alias t='python ~/Documents/infosec_pkgs/t/t.py --task-dir ~/tasks --list tasks'
+
 # export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
 export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
 
