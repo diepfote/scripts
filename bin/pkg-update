@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+_os-independend-updates
+
+system="$(uname)"
+if [ "$system" = Linux ]; then
+  yay-all "$@"
+elif [ "$system" = Darwin ]; then
+  w-pkg-update "$@"
+fi
+

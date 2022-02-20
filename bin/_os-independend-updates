@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+cleanup () {
+  set +x
+}
+trap cleanup EXIT
+
+
+echo
+echo ------------------
+echo "[>] updating vim plugins and vim plug itself"
+set -x
+nvim -c 'PlugUpdate|:q!|:q!'
+nvim -c 'PlugUpgrade |:q!|:q!'
+set +x
+
+pushd ~/.vim/plugged/coc.nvim || exit 1
+yarn install
+popd
+
+echo ------------------
+
+
+echo
+echo ------------------
+echo "[>] updating tmux plugins"
+~/.tmux/plugins/tpm/bin/install_plugins
+~/.tmux/plugins/tpm/bin/update_plugins all
+echo ------------------
+echo
+
