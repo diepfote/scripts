@@ -137,12 +137,13 @@ fi
 
 IFUSE_MOUNTPOINT="$(mktemp -d)"
 IPHONE_DCIM_DIR="$IFUSE_MOUNTPOINT"/DCIM
-LOCAL_PICTURES_DIR=~/Documents/iphone_pictures
 
 
 set_backup_drive backup_drive
 # shellcheck disable=SC2154
 iphone_backup_loc="$backup_drive"/iPhone
+set_backup_drive big_drive
+LOCAL_PICTURES_DIR="$backup_drive"/#Photos
 
 
 do_image_copy
