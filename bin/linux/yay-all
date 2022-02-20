@@ -14,7 +14,15 @@ source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
 
 trap "set +x" EXIT
 
-pkgs_with_saved_checksums=(libplist-git libimobiledevice-glue-git libimobiledevice-git firejail-git vscodium-bin yay)
+pkgs_with_saved_checksums=()
+pkgs_with_saved_checksums+=(libplist-git)
+pkgs_with_saved_checksums+=(libimobiledevice-git )
+pkgs_with_saved_checksums+=(libimobiledevice-glue-git )
+pkgs_with_saved_checksums+=(firejail-git)
+pkgs_with_saved_checksums+=(vscodium-bin)
+pkgs_with_saved_checksums+=(yay)
+pkgs_with_saved_checksums+=(standardnotes-bin)
+
 _yay-update-based-on-checksum () {
   pkg_name="$1"
   if ! yay -Qu | grep "$pkg_name"; then
@@ -22,7 +30,7 @@ _yay-update-based-on-checksum () {
   fi
 
   (cd "$yay_cache" && yay -G "$pkg_name")
-  if  sed -r '/^pkg(ver|rel)=/d' "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
+  if  sed -r "$sed_command_yay_update_based_on_checksums" "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
     echo
     set -x
     yay --noconfirm -Sa "$pkg_name"

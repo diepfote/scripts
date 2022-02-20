@@ -280,6 +280,7 @@ xinput-reset-mouse-buttons () {
 }
 
 yay_cache=~/.cache/yay
+sed_command_yay_update_based_on_checksums='/^(pkg(ver|rel)=|sha256sum(_|=))/d'
 yay-generate-PKGBUILD-checksum () {
   local pkg_name="$1"
   output_file="$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum
@@ -287,11 +288,13 @@ yay-generate-PKGBUILD-checksum () {
     echo -e "${RED}[!] error on cd"
     return
   fi
-  yay -G "$pkg_name"
+  yay -G "$pkg_name" || return
 
-  sed -r '/^pkg(ver|rel)=/d' PKGBUILD | sha256sum > "$output_file"
+  sed -r "$sed_command_yay_update_based_on_checksums" PKGBUILD | sha256sum > "$output_file"
   ls -alh "$output_file"
 }
+
+
 
 alias xclip='command xclip -selection clipboard'
 
