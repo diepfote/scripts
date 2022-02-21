@@ -294,6 +294,9 @@ yay-generate-PKGBUILD-checksum () {
   ls -alh "$output_file"
 }
 
+# add yay completion to os independent update script
+source /usr/share/bash-completion/completions/yay
+complete -F _yay pkg-update
 
 
 alias xclip='command xclip -selection clipboard'

@@ -16,4 +16,5 @@ _w-pkg-update_completions()
 }
 
 complete -F _w-pkg-update_completions 'w-pkg-update'
+complete -F _w-pkg-update_completions 'pkg-update'
 
