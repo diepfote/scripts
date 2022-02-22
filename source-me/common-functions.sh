@@ -122,13 +122,13 @@ call_browser () {
 
   if [ "$(uname)" = Darwin ]; then
     set -x
-    chrome-cli open file://"$TMP_FILE" -i
+    chrome-cli open "$TMP_FILE" -i
     set +x
   else
     source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
     # -N ... allow network access
     set -x
-    firewardened-chromium -N file://"$TMP_FILE"  >/dev/null 2>&1  &
+    firewardened-chromium -N "$TMP_FILE"  >/dev/null 2>&1  &
     set +x
   fi
 

@@ -355,7 +355,12 @@ dl-playlist () {
 
 
 ccat () {
-  pygmentize -g "$@" 2>/dev/null || cat -- "$@"
+  if ! pygmentize -g "$@" 2>/dev/null; then
+    if [ $# -eq 1 ]; then
+      set -- -
+    fi
+    cat -- "$@"
+  fi
 }
 # shellcheck disable=SC2120
 lessc () {
