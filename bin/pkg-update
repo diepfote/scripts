@@ -1,11 +1,38 @@
 #!/usr/bin/env bash
 
+source ~/Documents/scripts/source-me/common-functions.sh
+
+trap cleanup EXIT
+cleanup () {
+  set +x
+}
+
 _os-independent-updates
 
 system="$(uname)"
 if [ "$system" = Linux ]; then
+
+  if [ $# -lt 1 ]; then
+    echo 'Do you want to run greedy updates?'
+    if yesno; then
+      set -- -w
+    fi
+  fi
+
+  set -x
   yay-all "$@"
+  set +x
+
 elif [ "$system" = Darwin ]; then
+  if [ $# -lt 1 ]; then
+    echo 'Do you want to do pkg downloads only?'
+    if yesno; then
+      set -- -g
+    fi
+  fi
+
+  set -x
   w-pkg-update "$@"
+  set +x
 fi
 
