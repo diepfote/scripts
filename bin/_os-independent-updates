@@ -17,8 +17,8 @@ echo
 echo ------------------
 echo "[>] updating vim plugins and vim plug itself"
 set -x
-nvim -c 'PlugUpdate|:q!|:q!'
-nvim -c 'PlugUpgrade |:q!|:q!'
+nvim -c 'PlugUpdate|:sleep 1|:q!|:q!'
+nvim -c 'PlugUpgrade|:sleep 1|:q!|:q!'
 set +x
 
 pushd ~/.vim/plugged/coc.nvim || exit 1

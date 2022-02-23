@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-_os-independend-updates
+_os-independent-updates
 
 system="$(uname)"
 if [ "$system" = Linux ]; then
