@@ -313,8 +313,8 @@ doi_view () {
 
 
 neomutt () {
-  # ensure saved attachments end up in Downloads
-  (cd ~/Downloads && command neomutt "$@")
+  # default attachment download/upload location set to:
+  (cd ~/Downloads/mutt && command neomutt "$@")
 }
 
 
