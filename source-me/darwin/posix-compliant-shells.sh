@@ -28,16 +28,15 @@ _add_to_PATH "$HOME/.pyenv/versions/3.6.13/bin"  || true
 _add_to_PATH "$HOME/.pyenv/versions/3.8.10/bin"  || true
 
 
-# python 3.9 = default
-python_39_path="/usr/local/opt/python@3.9/libexec/bin"
-ln -sf "$python_39_path"/python "$python_39_path"/python3
-_add_to_PATH "$python_39_path"  || true
-_add_to_PATH "$HOME/Library/Python/3.9/bin"  || true
+# python 3.10 = default
+python_310_path="/usr/local/opt/python@3.10/libexec/bin"
+ln -sf "$python_310_path"/python "$python_310_path"/python3
+_add_to_PATH "$python_310_path"  || true
+_add_to_PATH "$HOME/Library/Python/3.10/bin"  || true
+# export LDFLAGS="-L/usr/local/opt/python@3.10/lib:$LDFLAGS"
+# export PKG_CONFIG_PATH="/usr/local/opt/python@3.10/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 
-
-# export LDFLAGS="-L/usr/local/opt/python@3.9/lib:$LDFLAGS"
-export PKG_CONFIG_PATH="/usr/local/opt/python@3.9/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # ruby compiler settings
 _add_to_PATH "/usr/local/opt/ruby/bin"  || true
@@ -52,6 +51,7 @@ export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
 export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
 LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
 LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
+
 
 
 alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
