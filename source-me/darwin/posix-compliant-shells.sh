@@ -77,6 +77,39 @@ export _ngrep_interface=en0
 
 
 
+link-buku-db () {
+  if ! cd ~/.local/share/buku; then
+    return 1
+  fi
+
+  link_name=bookmarks.db
+  unlink "$link_name" || true
+  ln -s "$1" "$link_name"
+}
+
+bukuw () {
+  if ! link-buku-db work.db; then
+    return
+  fi
+
+  command buku "$@"
+}
+
+bukup () {
+  if ! link-buku-db private.db; then
+    return
+  fi
+
+  command buku "$@"
+}
+
+buku () {
+  # shellcheck disable=SC2016
+  echo 'use `bukuw` or `bukup`'
+}
+
+
+
 n_empty-trash () {
   local dir=~/.local/share/Trash
   if [ ! -e "$dir/files" ]; then
