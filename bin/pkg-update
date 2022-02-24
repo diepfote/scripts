@@ -11,9 +11,8 @@ _os-independent-updates
 
 system="$(uname)"
 if [ "$system" = Linux ]; then
-
   if [ $# -lt 1 ]; then
-    echo 'Do you want to run greedy updates?'
+    echo 'Do you want to do pkg downloads only?'
     if yesno; then
       set -- -w
     fi
@@ -25,7 +24,7 @@ if [ "$system" = Linux ]; then
 
 elif [ "$system" = Darwin ]; then
   if [ $# -lt 1 ]; then
-    echo 'Do you want to do pkg downloads only?'
+    echo 'Do you want to run greedy updates?'
     if yesno; then
       set -- -g
     fi
