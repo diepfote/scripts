@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1090
 
+pip-chill () {
+  head -n1 "$(which pip-chill)"
+  command pip-chill "$@"
+}
 
 find-sorted () {
   dir="$1"
