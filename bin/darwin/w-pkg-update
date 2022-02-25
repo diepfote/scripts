@@ -132,21 +132,46 @@ echo -e '\n--------\npip\n'
 #
 # $ python -E ...
 #
-for pkg in $(python3 -E -m pip list --user --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1); do
-  python3 -E -m pip install --upgrade --user "$pkg"  | grep -v 'already satisfied' || true
+python_outdated_cmd=(python3 -E -m pip list --user --outdated --format=freeze)
+python_install_cmd=(python3 -E -m pip install --upgrade)
+grep_outdated_cmd=(grep -v '^\-e')
+grep_install_cmd=(grep -v 'already satisfied')
+cut_cmd=(cut -d '=' -f 1)
+
+print_additional_arg_info () {
+  local additional_arg="$1"
+  if [[ "$additional_arg" =~ user ]]; then
+    echo "  [user]"
+  else
+    echo "  [global]"
+  fi
+}
+additional_args=('' '--user')  # global and user pkgs
+for additional_arg in "${additional_args[@]}"; do
+  print_additional_arg_info "$additional_arg"
+  while read -r pkg; do
+    "${python_install_cmd[@]}" "$additional_arg" "$pkg" | "${grep_install_cmd[@]}" || true
+  done < <("${python_outdated_cmd[@]}" "$additional_arg" | "${grep_outdated_cmd[@]}" | "${cut_cmd[@]}")
 done
 
-echo -e '\n--------\nruby\n'
-gem update --user  # requires gem install rubygems-update
+unset python_outdated_cmd python_install_cmd grep_outdated_cmd grep_install_cmd cut_cmd
 
+
+echo -e '\n--------\nruby\n'
+for additional_arg in "${additional_args[@]}"; do
+  print_additional_arg_info "$additional_arg"
+  gem update "$additional_arg"  # requires gem install rubygems-update
+done
+
+unset additional_args
 
 echo -e '\n--------\nnpm\n'
-for package in $(npm -g outdated --parseable --depth=0 | cut -d: -f2); do
+while read -r package; do
   # safe upgrade all https://gist.github.com/othiym23/4ac31155da23962afd0e
   set -x
   npm -g install "$package"
   set +x
-done
+done < <(npm -g outdated --parseable --depth=0 | cut -d: -f2)
 
 echo -e '\n--------\nkrew\n'
 oc krew update
