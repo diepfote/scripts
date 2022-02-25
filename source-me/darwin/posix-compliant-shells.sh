@@ -87,12 +87,13 @@ link-buku-db () {
   ln -s "$1" "$link_name"
 }
 
+buku_cmd=(command buku --color xlxxL)
 bukuw () {
   if ! link-buku-db work.db; then
     return
   fi
 
-  command buku "$@"
+  "${buku_cmd[@]}" "$@"
 }
 
 bukup () {
@@ -100,7 +101,7 @@ bukup () {
     return
   fi
 
-  command buku "$@"
+  "${buku_cmd[@]}" "$@"
 }
 
 buku () {
