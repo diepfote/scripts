@@ -132,7 +132,7 @@ echo -e '\n--------\npip\n'
 #
 # $ python -E ...
 #
-python_outdated_cmd=(python3 -E -m pip list --user --outdated --format=freeze)
+python_outdated_cmd=(python3 -E -m pip list --outdated --format=freeze)
 python_install_cmd=(python3 -E -m pip install --upgrade)
 grep_outdated_cmd=(grep -v '^\-e')
 grep_install_cmd=(grep -v 'already satisfied')
@@ -141,20 +141,41 @@ cut_cmd=(cut -d '=' -f 1)
 print_additional_arg_info () {
   local additional_arg="$1"
   if [[ "$additional_arg" =~ user ]]; then
-    echo "  [user]"
+    # shellcheck disable=SC2154
+    echo " ${PURPLE}[${NC}user${PURPLE}]$NC"
   else
-    echo "  [global]"
+    # shellcheck disable=SC2154
+    echo "  ${PURPLE}[${NC}global${PURPLE}]$NC"
+  fi
+}
+python_update_pkg () {
+  local pkg="$1"
+  local additional_arg="$2"
+
+  if [[ "$pkg" =~ typing-extensions|rich ]]; then
+    # shellcheck disable=SC2154
+    echo "  [.] Pinnend pkg: ${YELLOW}$pkg$NC. Skipping upgrade."
+    return
+  fi
+
+  if [ -n "$additional_arg" ]; then
+    "${python_install_cmd[@]}" "$additional_arg" "$pkg" | "${grep_install_cmd[@]}" || true
+  else
+    set -x
+    "${python_install_cmd[@]}" "$pkg" | "${grep_install_cmd[@]}" || true
+    set +x
   fi
 }
 additional_args=('' '--user')  # global and user pkgs
 for additional_arg in "${additional_args[@]}"; do
   print_additional_arg_info "$additional_arg"
   while read -r pkg; do
-    "${python_install_cmd[@]}" "$additional_arg" "$pkg" | "${grep_install_cmd[@]}" || true
+    python_update_pkg "$pkg" "$additional_arg"
   done < <("${python_outdated_cmd[@]}" "$additional_arg" | "${grep_outdated_cmd[@]}" | "${cut_cmd[@]}")
 done
 
 unset python_outdated_cmd python_install_cmd grep_outdated_cmd grep_install_cmd cut_cmd
+unset -f python_update_pkg
 
 
 echo -e '\n--------\nruby\n'
@@ -164,6 +185,7 @@ for additional_arg in "${additional_args[@]}"; do
 done
 
 unset additional_args
+unset -f print_additional_arg_info
 
 echo -e '\n--------\nnpm\n'
 while read -r package; do
