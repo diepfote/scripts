@@ -101,8 +101,11 @@ fi
 # shellcheck disable=SC2064
 trap 'cleanup' EXIT  # stop spinner
 
-echo -e '\n--------\nlima archlinux disk images\n'
 
+# -----------------------------------------------------
+# LIMA START
+
+echo -e '\n--------\nlima archlinux disk images\n'
 
 base_url='https://mirror.pkgbuild.com/images'
 sed_command=(sed 's#.*href="##;s#".*##')
@@ -125,6 +128,13 @@ if [ -z "$DO_NOT_START_LIMA" ]; then
   disown "$!"
   sleep 1
 fi
+
+# LIMA END
+# -----------------------------------------------------
+
+
+# -----------------------------------------------------
+# PYTHON START
 
 echo -e '\n--------\npip\n'
 #
@@ -177,6 +187,9 @@ done
 unset python_outdated_cmd python_install_cmd grep_outdated_cmd grep_install_cmd cut_cmd
 unset -f python_update_pkg
 
+#  PYTHON END
+# -----------------------------------------------------
+
 
 echo -e '\n--------\nruby\n'
 for additional_arg in "${additional_args[@]}"; do
@@ -187,6 +200,7 @@ done
 unset additional_args
 unset -f print_additional_arg_info
 
+
 echo -e '\n--------\nnpm\n'
 while read -r package; do
   # safe upgrade all https://gist.github.com/othiym23/4ac31155da23962afd0e
@@ -195,12 +209,24 @@ while read -r package; do
   set +x
 done < <(npm -g outdated --parseable --depth=0 | cut -d: -f2)
 
+
+echo -e '\n--------\nrust cargo\n'
+# cargo install cargo-update
+# https://crates.io/crates/cargo-update
+cargo install-update -a
+
+
 echo -e '\n--------\nkrew\n'
 oc krew update
 oc krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
 
+
 echo -e '\n--------\napm\n'
 apm upgrade -c false
+
+
+# ---------------------------------------------------
+# BREW START
 
 echo -e '\n--------\nbrew\n'
 # shellcheck disable=SC2154
@@ -211,13 +237,18 @@ brew update
 echo -en "  $PURPLE"; echo -e "[>] starting upgrades$NC"
 brew upgrade || true
 
-# ---------------------------------------------------
 
 if [ -n "$GREEDY" ]; then
   echo -en "  $PURPLE"; echo -e "[>] starting greedy cask upgrades$NC"
   brew upgrade --cask --greedy
 fi
 
+# BREW END
+# ---------------------------------------------------
+
+
+# ---------------------------------------------------
+# Darwin START
 
 echo -e '\n\n--------\n\nListing Darwin updates'
 pkg_info=()
@@ -259,6 +290,9 @@ if [ -n "$REINSTALL_XCODE" ]; then
   sudo -k
   set +x
 fi
+
+# Darwin END
+# ---------------------------------------------------
 
 echo "End: $(date)"
 echo =====================
