@@ -47,9 +47,9 @@ while read -r repo_dir; do
 
   if [ "$repo_dir" = "$HOME" ]; then
     # prevent line 9 from showing up
-    _work_repo_template -d "$repo_dir" "${command[@]}" | grep -v .gitconfig >> "$file"
+    _work_repo_template -d "$repo_dir" -- "${command[@]}" | grep -v .gitconfig >> "$file"
   else
-    _work_repo_template "$@" -d "$repo_dir" "${command[@]}" >> "$file"
+    _work_repo_template "$@" -d "$repo_dir" -- "${command[@]}" >> "$file"
   fi
 
 done <"$conf_file"

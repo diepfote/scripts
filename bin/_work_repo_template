@@ -8,7 +8,6 @@ shopt -s failglob  # error on unexpaned globs
 
 
 # Parse arguments
-positional_args=()
 USE_SUDO=''
 while [ $# -gt 0 ]; do
   key="$1"
@@ -30,13 +29,17 @@ while [ $# -gt 0 ]; do
     exit 0
     ;;
 
-    *) # unknown option
-    positional_args+=("$1") # save in an array for later
+    --)
     shift
+    break
+    ;;
+
+    *)
+    break
     ;;
   esac
 done
-set -- "${positional_args[@]}"
+
 
 if echo "$DIR" | grep -E '^\s*#|^\s*$' 1>/dev/null 2>&1; then
   # ignore commented lines

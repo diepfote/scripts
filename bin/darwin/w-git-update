@@ -7,10 +7,10 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 conf_file=~/Documents/config/work-repo.conf
-command='git update'
+command=(git update)
 
-for repo_dir in $(cat "$conf_file"); do
+while read -r repo_dir; do
   [ -z "$repo_dir" ] && continue
-  _work_repo_template -d "$repo_dir" $command
-done
+  _work_repo_template -d "$repo_dir" -- "${command[@]}"
+done < "$conf_file"
 

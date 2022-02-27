@@ -54,6 +54,6 @@ while IFS='' read -r repo_dir; do
     # skip comment line & empty lines
     continue
   fi
-  _work_repo_template -d "$repo_dir" "$@"
+  _work_repo_template -d "$repo_dir" -- "$@"
 done <"$CONFIG_FILE"
 
