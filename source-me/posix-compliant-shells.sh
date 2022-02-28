@@ -632,7 +632,7 @@ _checkout-wrapper () {
   local dir="$1"
   shift
 
-  _work_repo_template -d "$dir" git checkout -- "$@"
+  git_execute_on_repo -d "$dir" git checkout -- "$@"
 }
 
 checkout-dot-files () {
@@ -691,7 +691,7 @@ _diff-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  _work_repo_template -d "$dir" git diff "$@"
+  git_execute_on_repo -d "$dir" git diff "$@"
 }
 
 diff-dot-files () {
@@ -726,7 +726,7 @@ _log-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  _work_repo_template -d "$dir" git l "$@"
+  git_execute_on_repo -d "$dir" git l "$@"
 }
 
 log-dot-files () {
@@ -755,8 +755,8 @@ log-vim () {
 }
 
 _reset-wrapper () {
-  _work_repo_template -d "$1" git reset --hard
-  _work_repo_template -d "$1" git clean -df
+  git_execute_on_repo -d "$1" git reset --hard
+  git_execute_on_repo -d "$1" git clean -df
 }
 
 reset-dot-files () {
@@ -788,7 +788,7 @@ _status-wrapper () {
   local dir="$1"
   shift
 
-  _work_repo_template -d "$dir" git status -sb "$@"
+  git_execute_on_repo -d "$dir" git status -sb "$@"
 }
 
 status-dot-files () {
@@ -838,7 +838,7 @@ _work-wrapper () {
       fi
     fi
 
-    _work_repo_template -d "$repo_dir" "${command[@]}"
+    git_execute_on_repo -d "$repo_dir" "${command[@]}"
   done <"$conf_file"
   set +x
 }

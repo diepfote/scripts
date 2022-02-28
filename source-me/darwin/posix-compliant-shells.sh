@@ -157,12 +157,12 @@ w-checked-in () {
 
 
 w-git_execute_on_all_repos () {
-  git_execute_on_all_repos -c ~/Documents/config/work-repo.conf "$@"
+  git_execute_on_all_repos -c ~/Documents/config/work-repo.conf -- "$@"
 }
 
 w-git-cleanup () {
- w-git-update
- w-git-delete-gone-branches
+  # run `pull` and `delete-gone-branches`
+  w-git_execute_on_all_repos  update
 }
 
 

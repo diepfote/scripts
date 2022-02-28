@@ -26,7 +26,6 @@ fi
 
 # Parse arguments
 CONFIG_FILE=''
-positional_args=()
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
@@ -40,13 +39,16 @@ key="$1"
     exit 0
     ;;
 
-    *) # unknown option
-    positional_args+=("$1") # save in an array for later
+    --)
     shift
+    break
+    ;;
+
+    *)
+    break
     ;;
   esac
 done
-set -- "${positional_args[@]}"
 
 
 while IFS='' read -r repo_dir; do
@@ -54,6 +56,6 @@ while IFS='' read -r repo_dir; do
     # skip comment line & empty lines
     continue
   fi
-  _work_repo_template -d "$repo_dir" -- "$@"
+  git_execute_on_repo -d "$repo_dir" -- "$@"
 done <"$CONFIG_FILE"
 
