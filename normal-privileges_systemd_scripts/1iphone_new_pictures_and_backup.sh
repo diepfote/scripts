@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-
+#
 # shellcheck disable=SC1090
-
 
 source ~/Documents/scripts/source-me/common-functions.sh
 export user_dir="$HOME"
@@ -14,7 +13,10 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 exit_handler () {
-  fusermount -u "$IFUSE_MOUNTPOINT"
+  # do not fail if device has been unplugged
+  set -x
+  fusermount -u "$IFUSE_MOUNTPOINT"  || true
+  set +x
 }
 trap exit_handler EXIT
 
@@ -57,7 +59,9 @@ rm_old_tar_gzip_backup () {
 do_image_copy () {
   echo 'Start iPhone image copy and backup'
 
+  set -x
   ifuse "$IFUSE_MOUNTPOINT"
+  set +x
 
   sleep 1
   if ! pushd "$LOCAL_PICTURES_DIR"; then
