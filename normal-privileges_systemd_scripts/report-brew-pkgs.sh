@@ -23,6 +23,7 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; the
   # generates Brewfile in "$dir"
   # and `-f` overwrites existing file
   (cd "$dir" && brew bundle dump -f)
+  brew services > "$dir"/brew-services.txt
 
   cargo install --list > "$dir"/cargo-pkgs.txt
 
