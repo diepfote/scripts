@@ -36,7 +36,9 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; the
   defaults read com.google.Chrome NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
   defaults read com.toggl.toggldesktop.TogglDesktop NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
   defaults read com.apple.Safari  NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
+  defaults read com.apple.TextEdit  NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
   defaults read com.microsoft.edgemac NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
+  defaults read com.microsoft.word NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
   set +x
 
   _rclone_verbose_sync_operation --delete-excluded "$dir" "$fastmail_path"
