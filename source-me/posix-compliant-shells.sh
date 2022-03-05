@@ -72,21 +72,24 @@ alias cheat='~/Documents/scripts/cheat.sh ~/Documents/cheatsheets'
 
 alias ls='ls --color=auto'
 
-alias grep='grep --exclude-dir=.git \
-                 --exclude-dir=.helm \
-                 --exclude-dir=.tox \
-                 --exclude-dir=.pulumi \
-                 --exclude-dir=.cache \
-                 --exclude-dir=.mypy_cache \
-                 --exclude-dir=.eggs \
-                 --exclude-dir=*.egg-info \
-                 --exclude-dir=*venv* \
-                 --exclude-dir=_build \
-                 --exclude-dir=__pycache__ \
-                 --exclude-dir=.pytest_cache \
-                 --exclude-dir=htmlcov \
-                 --exclude=Session.vim \
-                 --color'
+# TODO do not forget update `akgprg`
+# in `.vimrc`
+alias grep='grep \
+              --exclude-dir=.git \
+              --exclude-dir=.helm \
+              --exclude-dir=.tox \
+              --exclude-dir=.pulumi \
+              --exclude-dir=.cache \
+              --exclude-dir=.mypy_cache \
+              --exclude-dir=.eggs \
+              --exclude-dir=*.egg-info \
+              --exclude-dir=*venv* \
+              --exclude-dir=_build \
+              --exclude-dir=__pycache__ \
+              --exclude-dir=.pytest_cache \
+              --exclude-dir=htmlcov \
+              --exclude=Session.vim \
+              --color'
 
 # shellcheck disable=SC2154
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
