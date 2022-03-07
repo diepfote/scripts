@@ -250,7 +250,7 @@ fi
 # ---------------------------------------------------
 # Darwin START
 
-echo -e '\n\n--------\n\nListing Darwin updates'
+echo -e '\n\n--------\n\nListing Mac OS updates'
 pkg_info=()
 
 while IFS='' read -r line; do
@@ -263,7 +263,7 @@ done
 
 if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
 
-  echo -e '\n\n--------\n\nInstalling Darwin updates that do not require a restart.'
+  echo -e '\n\n--------\n\nInstalling Mac OS updates that do not require a restart.'
 
   set -x
   softwareupdate -i --no-scan -a
@@ -272,7 +272,7 @@ if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
   echo 'Do you want to update & restart?'
   set +u
   if yesno; then
-    echo -e '\n\n--------\n\nInstalling Darwin updates that require a restart.'
+    echo -e '\n\n--------\n\nInstalling Mac OS updates that require a restart.'
     set -x
     sudo softwareupdate -i --no-scan -a -R
     set +x
