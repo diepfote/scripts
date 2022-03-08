@@ -88,16 +88,14 @@ key="$1"
 done
 
 
-# shellcheck disable=SC1090
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
-
 if [ "$(uname)" = Darwin ]; then
+  set -x
   base_temp_dir="$(mktemp -d)"
+  set +x
 else
+  set -x
   base_temp_dir=~/Downloads
-
-  # shellcheck disable=SC1090
-  source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
+  set +x
 fi
 
 
@@ -134,10 +132,10 @@ if [ -n "$use_system_open" ]; then
   fi
 
 elif [ "$extension" = html ] && [ "${command[0]}" != 'nvim' ] ; then
-  temp_file="$base_temp_dir"/"$filename"
+  temp_file="$base_temp_dir"/"$(basename "$filename")"
   cp "$file" "$temp_file"  # for firejail on Linux
 
-  call_browser "$temp_file"
+  call_browser "file://$temp_file"
 else
   if [ $# -eq 0 ]; then
     set -- "$find_path"

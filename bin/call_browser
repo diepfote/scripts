@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+TMP_FILE="$1"
+
+if [ "$(uname)" = Darwin ]; then
+  set -x
+  /usr/local/bin/chrome-cli open "$TMP_FILE" -i
+  set +x
+else
+  source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
+  # -N ... allow network access
+  set -x
+  firewardened-chromium -N "$TMP_FILE"  >/dev/null 2>&1  &
+  set +x
+fi
+
+# block so external scripts do not delete the file yet
+sleep 2
+

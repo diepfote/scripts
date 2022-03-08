@@ -121,23 +121,6 @@ _rclone_verbose_sync_operation () {
   "${command[@]}" "$@"
 }
 
-call_browser () {
-  local TMP_FILE="$1"
-
-  if [ "$(uname)" = Darwin ]; then
-    set -x
-    chrome-cli open "$TMP_FILE" -i
-    set +x
-  else
-    source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
-    # -N ... allow network access
-    set -x
-    firewardened-chromium -N "$TMP_FILE"  >/dev/null 2>&1  &
-    set +x
-  fi
-
-  sleep 2
-}
 
 _get_cmd_tmux_pane_id () {
 # BSD 2-Clause License
