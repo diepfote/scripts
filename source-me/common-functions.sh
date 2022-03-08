@@ -8,7 +8,7 @@ pip-chill () {
 
 find-sorted () {
   # e.g. call with exlusions in current dir
-  # $ find-sorted . -path "*/.git" -prune -o -path "*/.tox" -prune -o -path '*/tests' -prune -o
+  # $ find-sorted . -path "*/.git" -prune -o -path "*/.tox" -prune -o -path '*/tests' -prune -o -path '*/*venv' -prune -o -path '*/*eggs' -prune -o -path '*/*cache*' -prune -o
 
 
   dir="$1"
