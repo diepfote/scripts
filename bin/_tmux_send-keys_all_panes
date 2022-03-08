@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+_help() {
+cat <<EOF
+USAGE: $0 [--hit-enter] [--]  <command>
+
+OPTIONS:
+  --hit-enter  Send 'C-m' at the end of the command
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+# Parse arguments
+additional_args=()
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --hit-enter)
+    additional_args=('C-m')
+    shift
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+
+echo '----------'
+echo "command: $*"
+
+for pane_id in $(tmux list-panes -F '#{pane_id}'); do
+
+  echo "pane id: $pane_id"
+  tmux send-keys -t "${pane_id}" "$@" "${additional_args[@]}"
+done
+
+echo
+echo "----------"
+

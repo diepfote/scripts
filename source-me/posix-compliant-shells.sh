@@ -136,6 +136,13 @@ alias map="xargs -n1"
 # common functions START
 #
 
+tmux-send-command-all-panes () {
+  _tmux_send-keys_all_panes --hit-enter -- "$@"
+}
+
+tmux-join-pane () {
+  command tmux join-pane -t "$(tmux list-pane | grep active | cut -d ']' -f3 | cut -d ' ' -f2)" -s "$1"
+}
 
 n-for-dir-in-tmux-pane-below() {
   local dir="$1"
