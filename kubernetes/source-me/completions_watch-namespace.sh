@@ -27,10 +27,26 @@ _watch-namespace_completions()
   }
 
   COMPREPLY=()
-  local cur_word prev_word
-
+  local cur_word prev_word first_word
   cur_word="${COMP_WORDS["$COMP_CWORD"]}"
   prev_word="${COMP_WORDS["$COMP_CWORD"-1]}"
+  first_word="${COMP_WORDS[0]}"
+
+  case "${prev_word}" in
+    watch-namespace)
+      ;;
+    *)
+      executable="$first_word"
+      if [ "$executable" = oc ]; then
+        # execute base func from /usr/local/etc/bash_completion.d/oc
+        __start_oc
+      elif [ "$executable" = kubectl ]; then
+        # execute base func from /usr/local/etc/bash_completion.d/kubectl
+        __start_kubectl
+      fi
+      return
+      ;;
+  esac
 
   case "${prev_word}" in
     -n)
@@ -48,5 +64,7 @@ _watch-namespace_completions()
 
 }
 
-complete -F _watch-namespace_completions 'watch-namespace'
+complete -o default -o nospace -F _watch-namespace_completions oc
+complete -o default -o nospace -F _watch-namespace_completions kubectl
+complete -o default -o nospace -F _watch-namespace_completions watch-namespace
 
