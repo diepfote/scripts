@@ -1,0 +1,60 @@
+302,306c302
+<     local template oc_out
+<     template="{{ range .items  }}{{ .metadata.name }} {{ end }}"
+<     if oc_out=$(oc get -o template --template="${template}" namespace 2>/dev/null); then
+<         COMPREPLY=( $( compgen -W "${oc_out[*]}" -- "$cur" ) )
+<     fi
+---
+>   _watch-namespace_completions
+353c349
+<  
+---
+> 
+367c363
+<  
+---
+> 
+373c369
+<  
+---
+> 
+381c377
+<  
+---
+> 
+397c393
+<  
+---
+> 
+405c401
+<  
+---
+> 
+6403a6400,6421
+> _oc_watch-namespace()
+> {
+>     last_command="oc_watch_namespace"
+>     flags=()
+>     two_word_flags=()
+>     local_nonpersistent_flags=()
+>     flags_with_completion=()
+>     flags_completion=()
+> 
+>     flags+=("-h")
+>     # flags+=("-r")
+>     two_word_flags+=("-r")
+>     flags_with_completion+=("-r")
+>     flags_completion+=("_watch-namespace_completions")
+>     # flags_completion+=("__oc_region_complete")
+> 
+>     two_word_flags+=("-n")
+>     flags_with_completion+=("-n")
+>     flags_completion+=("_watch-namespace_completions")
+> 
+> }
+> 
+20483a20502,20505
+>     commands+=("delete-namespace-finalizer")
+>     commands+=("get-all-namespaced-resources")
+>     commands+=("velero-annotate-all-volumes-for-pod")
+>     commands+=("watch-namespace")

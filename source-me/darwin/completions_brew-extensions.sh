@@ -3,11 +3,10 @@
 _brew-extensions_completions()
 {
 
-  local index cur_word prev_index prev_word
   index=$COMP_CWORD
-  cur_word="${COMP_WORDS[$index]}"
+  local cur_word="${COMP_WORDS[$index]}"
   prev_index=$((index - 1))
-   prev_word="${COMP_WORDS[$prev_index]}"
+  local prev_word="${COMP_WORDS[$prev_index]}"
 
   _print () {
     for name in "$@"; do

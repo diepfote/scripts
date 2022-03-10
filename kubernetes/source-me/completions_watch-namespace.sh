@@ -27,46 +27,26 @@ _watch-namespace_completions()
   }
 
   COMPREPLY=()
-  local cur_word prev_word prev_prev_word first_word plugin_name
-  plugin_name=watch-namespace
+  local cur_word prev_word
+
   cur_word="${COMP_WORDS["$COMP_CWORD"]}"
   prev_word="${COMP_WORDS["$COMP_CWORD"-1]}"
-  prev_prev_word="${COMP_WORDS["$COMP_CWORD"-2]}"
-  first_word="${COMP_WORDS[0]}"
 
-  if [ "${prev_word}" =  "$plugin_name" ]; then
+  case "${prev_word}" in
+    -n)
+      _complete-namespaces
+      ;;
+    -r)
+      _set-kubecontext_complete "$cur_word"
+      ;;
+    *)
       read -r -d '' -a _tmp_general < <(compgen -W "$(echo -e '-h\n-n\n-r')" -- "$cur_word")
       export COMPREPLY=("${_tmp_general[@]}")
       unset _tmp_general
-
-      return
-  elif [ "${prev_prev_word}" =  "$plugin_name" ]; then
-    case "${prev_word}" in
-      -n)
-        _complete-namespaces
-        ;;
-      -r)
-        _set-kubecontext_complete "$cur_word"
-        ;;
-      *)
-        ;;
-    esac
-
-    return
-  fi
-
-  executable="$first_word"
-  if [ "$executable" = oc ]; then
-    # execute base func from /usr/local/etc/bash_completion.d/oc
-    __start_oc
-  elif [ "$executable" = kubectl ]; then
-    # execute base func from /usr/local/etc/bash_completion.d/kubectl
-    __start_kubectl
-  fi
-
+      ;;
+  esac
 
 }
 
-complete -o default -o nospace -F _watch-namespace_completions oc
-complete -o default -o nospace -F _watch-namespace_completions kubectl
+complete -F _watch-namespace_completions 'watch-namespace'
 
