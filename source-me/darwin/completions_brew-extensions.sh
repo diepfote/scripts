@@ -3,9 +3,9 @@
 _brew-extensions_completions()
 {
 
-  index=$COMP_CWORD
+  local index=$COMP_CWORD
   local cur_word="${COMP_WORDS[$index]}"
-  prev_index=$((index - 1))
+  local prev_index=$((index - 1))
   local prev_word="${COMP_WORDS[$prev_index]}"
 
   _print () {
