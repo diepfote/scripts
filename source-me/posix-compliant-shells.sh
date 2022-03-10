@@ -101,8 +101,6 @@ alias formats-youtube-dl='youtube-dl -F'
 type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
 # use unknown filetype -> disable any filetype specific things
 alias vimr="vim -c 'set ft=asdf'"
-# scratch space
-alias vimn="vim -c 'set buftype=nofile'"
 alias vimy="vimn -c ':set ft=yaml'"
 alias vimj="vimn -c ':set ft=json'"
 

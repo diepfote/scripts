@@ -280,8 +280,31 @@ xinput-reset-mouse-buttons () {
 }
 
 yay_cache=~/.cache/yay
-sed_command_yay_update_based_on_checksums='/^(pkg(ver|rel)=|sha256sum(_|=))/d'
+sed_command_yay_update_based_on_checksums='/^(pkg(ver|rel)=|sha256sums[^\s]*=)/d'
 yay-generate-PKGBUILD-checksum () {
+
+  local debug=''
+  while [ $# -gt 0 ]; do
+  key="$1"
+    case "$key" in
+      --debug)
+      debug=true
+      shift
+      ;;
+
+      --)
+      shift
+      break
+      ;;
+
+      *)
+      break
+      ;;
+
+    esac
+  done
+
+
   local pkg_name="$1"
   output_file="$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum
   if ! cd "$yay_cache"/"$pkg_name"; then
@@ -290,7 +313,11 @@ yay-generate-PKGBUILD-checksum () {
   fi
   yay -G "$pkg_name" || return
 
-  sed -r "$sed_command_yay_update_based_on_checksums" PKGBUILD | sha256sum > "$output_file"
+  if [ -n "$debug" ]; then
+    sed -r "$sed_command_yay_update_based_on_checksums" PKGBUILD | vimn -
+  else
+    sed -r "$sed_command_yay_update_based_on_checksums" PKGBUILD | sha256sum > "$output_file"
+  fi
   ls -alh "$output_file"
 }
 
@@ -300,6 +327,8 @@ complete -F _yay pkg-update
 
 
 alias xclip='command xclip -selection clipboard'
+alias xsel=xclip
+
 
 alias gdb-gef='gdb -q gef -x ~/.gef-startup'
 gdb-p () {
