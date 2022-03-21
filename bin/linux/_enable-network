@@ -30,14 +30,17 @@ sleep 3
 vpn_file="/tmp/tmp.ping-success"
 
 counter=0
-while ! ping -c 2 -W .5 archlinux.org  >/dev/null 2>&1 ; do
+timeout=2
+while ! ping -c 2 -W "$timeout" archlinux.org  >/dev/null 2>&1 ; do
   if [ "$counter" -gt 4 ]; then
-    return
+    exit
   fi
 
-  rm "$vpn_file"
-  sudo systemctl restart "$_vpn_systemd_unit"
-  sleep .5
+  rm -f "$vpn_file"
+  if [ "$_vpn_systemd_unit" != None ]; then
+    sudo systemctl restart "$_vpn_systemd_unit"
+    sleep .5
+  fi
 
   ((counter=counter+1))
 done
