@@ -76,7 +76,17 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 export _ngrep_interface=en0
 
 
-
+task () {
+  # append is a native command btw
+  if [ "$1" = prepend ]; then
+    local id description
+    id="$2"
+    description="$(command task _get "$id".description)"
+    command task modify "$id" "$3 $description"
+  else
+   command task "$@"
+  fi
+}
 
 n_empty-trash () {
   local dir=~/.local/share/Trash
