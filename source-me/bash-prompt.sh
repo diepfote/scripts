@@ -16,7 +16,7 @@ _ps1 () {
 
 
 unset PROMPT_COMMAND
-export PROMPT_COMMAND="_ps1; source ~/.sh_functions; history -a; history -n"
+export PROMPT_COMMAND="_ps1; history -a; history -n"
 
 ######## leave these ↓ here - might modify PROMPT_COMMAND
 #

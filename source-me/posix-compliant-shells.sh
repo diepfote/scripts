@@ -39,12 +39,6 @@ source ~/Documents/scripts/source-me/completions_*
 
 source ~/Documents/scripts/source-me/colors.sh
 
-# source fish functions
-# TODO remove
-sh_functions_file=~/.sh_functions
-source "$sh_functions_file" || fish -c generate_sh_functions_to_call_fish_shell_functions
-
-
 
 
 
@@ -133,6 +127,15 @@ alias map="xargs -n1"
 # ---------------------------
 # common functions START
 #
+
+hex-little-endian () {
+  if [ -z "$1" ]; then
+    vim -c ':%!xxd -e' -
+  else
+    vim -c ':%!xxd -e' "$1"
+  fi
+}
+
 
 tmux-send-command-all-panes () {
   _tmux_send-keys_all_panes --hit-enter -- "$@"

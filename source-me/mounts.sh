@@ -6,5 +6,3 @@ source ~/"$file" || source "$temp_mount$file"
 file=Documents/scripts/source-me/spinner.sh
 source ~/"$file" || source "$temp_mount$file"
 
-source ~/.sh_functions || /home/builder/.sh_functions
-

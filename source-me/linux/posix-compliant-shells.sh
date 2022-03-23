@@ -30,6 +30,14 @@ alias local-ip="ip addr show dev wlp4s0 | awk '/inet/ { sub(/inet6? (addr:)? ?/,
 alias ips="ip addr |  awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
 
 
+remove-gnome-history () {
+  file_dir=~/.local/share
+  set -x
+  find "$file_dir" -maxdepth 1 -type f -name 'recently-used.xbel*' -delete
+  set +x
+}
+
+
 chromium () {
   (command chromium --force-device-scale-factor=1.5 "$@" 1>/dev/null 2>/dev/null &)
 }
