@@ -7,6 +7,8 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
 find_path="$1"
 shift
 
