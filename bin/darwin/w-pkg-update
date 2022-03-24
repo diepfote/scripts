@@ -14,7 +14,7 @@ USAGE: w-pkg-update [-g] [-r] [--disable-remote-login false]
 
 FLAGS:
 -g         greedy option for brew
--r         re-install xcode commandline tools
+-r         (re-)install xcode commandline tools, then exit
 --no-lima  do not start lima vm
 
 OPTIONS:
@@ -27,7 +27,6 @@ EOF
 GREEDY=''
 DO_NOT_START_LIMA=''
 DISABLE_REMOTE_LOGIN=true
-REINSTALL_XCODE=''
 while [ $# -gt 0 ]; do
   key="$1"
   case "$key" in
@@ -44,6 +43,7 @@ while [ $# -gt 0 ]; do
     --disable-remote-login)
     DISABLE_REMOTE_LOGIN="$2"
     if [ "$2" != true ] && [ "$2" != false ]; then
+        # shellcheck disable=SC2154
       echo -e "${RED}Invalid option parameter:$NC '$2'!" >&2
       echo
       _help >&2
@@ -53,7 +53,16 @@ while [ $# -gt 0 ]; do
     ;;
 
     -r|--reinstall-xcode)
-    REINSTALL_XCODE=true
+    # shellcheck disable=SC2154
+    echo -e "${PURPLE}[>] reinstallig xcode commandline tools$NC"
+
+    set -x
+    sudo rm -rf /Library/Developer/CommandLineTools
+    sudo xcode-select --install
+    sudo -k
+    set +x
+    exit
+
     shift
     ;;
 
@@ -278,17 +287,6 @@ if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
     set +x
   fi
   set -u
-fi
-
-
-if [ -n "$REINSTALL_XCODE" ]; then
-  echo -en "  $PURPLE"; echo -e "[>] reinstallig xcode commandline tools$NC"
-
-  set -x
-  sudo rm -rf /Library/Developer/CommandLineTools
-  sudo xcode-select --install
-  sudo -k
-  set +x
 fi
 
 # Darwin END
