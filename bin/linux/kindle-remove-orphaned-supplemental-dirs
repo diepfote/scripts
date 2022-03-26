@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
 kindle_docs_dir=/run/media/"$USER"/Kindle/documents
 temp="$(mktemp -d)"
 
@@ -20,8 +27,8 @@ done < <(find "$kindle_docs_dir" -name '*.sdr')
 
 # clear orphaned sdr directories
 while read -r dir_to_delete; do
-  echo rm -r "$kindle_docs_dir"/"$dir_to_delete.sdr"
+  rm -r "$kindle_docs_dir"/"$dir_to_delete.sdr"
 done < <(git diff --no-index "$sdr_file_list" "$corresponding_files_list" | grep -E '^-' | grep -Ev '\---' | sed 's#^-##')
 
-echo rm -r "$temp"
+rm -r "$temp"
 
