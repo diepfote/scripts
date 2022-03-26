@@ -440,7 +440,7 @@ new-mutt () {
 _mvcopy-wrapper () {
 
   DIR=''
-  ADDITIONAL_FLAGS=''
+  ADDITIONAL_FLAGS=()
   while [ $# -gt 0 ]; do
   key="$1"
     case "$key" in
@@ -469,23 +469,26 @@ _mvcopy-wrapper () {
     esac
   done
 
-  if [ $# -lt 2 ]; then
+  if [ $# -lt 1 ]; then
     # shellcheck disable=SC2154
     echo -e "${YELLOW}[.] Nothing to $OP.$NC"
     return
+  elif [ $# -lt 2 ]; then
+    "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1"
+  else
+    # not remove operation
+    if ! "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1" "$DIR"/"$2"; then
+      set -x
+      ADDITIONAL_FLAGS=('-T')  # treat as normal file
+      "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1" "$DIR"/"$2"
+      set +x
+    fi
   fi
   if [ -z "$DIR" ]; then
     echo -e "${RED}[!] DIR param is empty.$NC"
     return
   fi
 
-
-  if ! "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1" "$DIR"/"$2"; then
-    set -x
-    ADDITIONAL_FLAGS=('-T')  # treat as normal file
-    "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1" "$DIR"/"$2"
-    set +x
-  fi
 }
 
 mv-docker () {

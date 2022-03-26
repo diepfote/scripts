@@ -30,6 +30,11 @@ alias local-ip="ip addr show dev wlp4s0 | awk '/inet/ { sub(/inet6? (addr:)? ?/,
 alias ips="ip addr |  awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
 
 
+pacman-last-actions () {
+  tail /var/log/pacman.log -n 20000 | grep -E 'installed|pacman(.*)\-U|upgraded|removed'
+}
+
+
 remove-gnome-history () {
   file_dir=~/.local/share
   set -x
