@@ -114,7 +114,7 @@ trap 'cleanup' EXIT  # stop spinner
 # -----------------------------------------------------
 # LIMA START
 
-echo -e '\n--------\nlima archlinux disk images\n'
+echo -e '\n--------\nlima archlinux disk images update & run\n'
 
 base_url='https://mirror.pkgbuild.com/images'
 sed_command=(sed 's#.*href="##;s#".*##')
@@ -133,7 +133,9 @@ image_sha256="$(curl -sL "$base_url/$latest_image_location${image_links[1]}" | a
 sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
 
 if [ -z "$DO_NOT_START_LIMA" ]; then
+  set -x
   limactl start default  >/dev/null 2>&1  &
+  set +x
   disown "$!"
   sleep 1
 fi
