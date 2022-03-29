@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
 
+if [ "$1" = compose ]; then
+  # support new docker command line calls
+  # `docker compose up` instead of `docker-compose up`
+  shift
+  docker-compose "$@"
+  exit
+fi
 limactl shell default podman "$@"
 
