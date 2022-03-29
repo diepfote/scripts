@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+limactl shell default podman-compose "$@"
+
