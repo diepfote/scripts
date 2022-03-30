@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+binary="$(basename "$0" | cut -d '-' -f1)"
+
+_help() {
+cat <<EOF
+USAGE: "$binary" get-all-resources [-n <NAMESPACE>] [--show-resource-types-only]
+
+
+OPTIONS:
+  -n|--namespace NAMESPACE     Show resources in this namespace.
+                               If you do not specify a namespace,
+                               cluster resources will be shown
+  --show-resource-types-only   Only show resource type names
+EOF
+}
+
+
+NAMESPACE=''
+SHOW_RESOURCE_TYPES_ONLY=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -n|--namespace)
+      NAMESPACE="$2"
+      shift 2
+      ;;
+
+    --show-resource-types-only)
+      SHOW_RESOURCE_TYPES_ONLY=true
+      shift
+      ;;
+
+    -h|--help)
+      _help
+      exit
+      ;;
+
+
+    --)
+      break
+      ;;
+
+    *)
+      break
+      ;;
+  esac
+done
+
+all_namespaced_resources=()
+while IFS='' read -r line; do
+  all_namespaced_resources+=("$line")
+done < <("$binary" api-resources --verbs=list --namespaced -o name)
+
+_print_array () {
+  for elem in "$@"; do
+    echo "$elem"
+  done
+}
+
+if [ -z "$NAMESPACE" ]; then
+  # cluster resources
+  #
+
+  # shellcheck disable=SC2311
+  filter="$(_print_array "${all_namespaced_resources[@]}" | tr '\n' '|' | sed 's#|$##')"
+  all_unnamespaced_resources=()
+
+  while IFS='' read -r line; do
+    all_unnamespaced_resources+=("$line")
+  done < <("$binary" api-resources --verbs=list -o name | grep -vE "$filter")
+
+  if [ -n "$SHOW_RESOURCE_TYPES_ONLY" ]; then
+    _print_array "${all_unnamespaced_resources[@]}"
+    exit
+  fi
+
+  for resource in "${all_unnamespaced_resources[@]}"; do
+    "$binary" get --show-kind --ignore-not-found  "$resource"
+  done
+
+else
+  # namespaced resources
+  #
+
+  if [ -n "$SHOW_RESOURCE_TYPES_ONLY" ]; then
+    _print_array "${all_unnamespaced_resources[@]}"
+    exit
+  fi
+
+  for resource in "${all_namespaced_resources[@]}"; do
+    if echo "$resource" | grep event; then
+      # continue if resource contains the word 'event'
+      continue
+    fi
+
+    "$binary" get -n "$NAMESPACE" --show-kind --ignore-not-found  "$resource"
+  done
+fi
+
