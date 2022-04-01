@@ -4,16 +4,18 @@ __cd_dir () {
   local git_top_level
   git_top_level="$(git rev-parse --show-toplevel 2>/dev/null)"
 
+  # shellcheck disable=SC2164
   if [ "$git_top_level" = "$HOME" ]; then
+    # shellcheck disable=SC2164
     cd "$PWD"
   else
+    # shellcheck disable=SC2164
     cd "$git_top_level"
   fi
 
-  # shellcheck disable=SC2164
 }
 
-trap bash EXIT
+trap 'exec bash' EXIT
 
 __cd_dir
 

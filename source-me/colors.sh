@@ -1,5 +1,5 @@
 set +u
-if [ ! -t 1 ] && [ -z "$SET_COLORS_ALWAYS" ]; then
+if [[ $- != *i* ]] && [ -z "$SET_COLORS_ALWAYS" ]; then
   return
 fi
 
