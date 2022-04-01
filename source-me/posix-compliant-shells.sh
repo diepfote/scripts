@@ -103,10 +103,17 @@ alias vimj="vimn -c ':set ft=json'"
 alias pipsh="pipenv shell"
 
 
-# snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L145
-# Reload the shell (i.e. invoke as a login shell)
-# shellcheck disable=SC2139
-alias reload="exec ${SHELL}"
+# stupid workaround for $SHELL set to whatever you did with `chsh -s`
+# on Mac OS
+if [ -n "$ZSH" ]; then
+  # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L145
+  # Reload the shell (i.e. invoke as a login shell)
+  alias reload='exec /bin/zsh'
+else
+  # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L145
+  # Reload the shell (i.e. invoke as a login shell)
+  alias reload="exec ${SHELL}"
+fi
 
 # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L148
 # Print each PATH entry on a separate line
