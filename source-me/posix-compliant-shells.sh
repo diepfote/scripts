@@ -1,6 +1,52 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1090
 
+
+if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
+   [ "$(hostname)" = docker-desktop ] || \
+   [[ "$(hostname)" =~ lima* ]]
+   [ "$(id -u --name 2>/dev/null)" = build-user ]; then
+  export IN_CONTAINER=true
+else
+  export IN_CONTAINER=''
+fi
+
+if [ -z "$IN_CONTAINER" ]; then
+
+  if [ "$(tty)" = /dev/tty1 ] && \
+     [ "$(uname)" = Linux ]; then
+    # startxfce4
+    startx  # i3 based on ~/.xinitrc
+    return
+  elif [[ -z "$TMUX" ]] && [ -z "$BASH_SOURCE_IT" ]; then
+    default_tmux_cmd=(tmux -2 -u)  # -u -> utf-8; -2 -> force 256 colors
+    default_session_to_attach_info="$(tmux ls -F '#S #{session_attached}' |\
+      grep -vE '\s+1$' |\
+      grep -E 'general|default|work|private|training' |\
+      sort -r |\
+      head -n1)"
+
+    if [ -n "$default_session_to_attach_info" ]; then
+      default_session_to_attach="$(echo "$default_session_to_attach_info" | awk '{ print $1 }')"
+      default_session_num_of_attached_clients="$(echo "$default_session_to_attach_info" | awk '{ print $2 }')"
+      if [ "$default_session_num_of_attached_clients" -lt 1 ]; then
+        default_tmux_cmd+=('attach' '-t' "$default_session_to_attach")
+      else
+        default_tmux_cmd+=('new')
+      fi
+    else
+      default_tmux_cmd+=('new')
+    fi
+    "${default_tmux_cmd[@]}"
+    HISTFILE=''
+    return  # do not source anything if outside tmux sessions
+  fi
+else
+  HISTFILE=~/.container/.bash_history
+  export USER=build-user
+fi
+
+
 export EDITOR=nvim
 export VISUAL=nvim
 
