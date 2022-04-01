@@ -8,17 +8,51 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+mac-os-updates () {
+  echo -e '\n\n--------\n\nListing Mac OS updates'
+  pkg_info=()
+
+  while IFS='' read -r line; do
+    pkg_info+=( "$line" )
+  done < <(softwareupdate --all -l --force)
+
+  for line in "${pkg_info[@]}"; do
+    echo "$line"
+  done
+
+  if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
+
+    echo -e '\n\n--------\n\nInstalling Mac OS updates that do not require a restart.'
+
+    set -x
+    softwareupdate -i --no-scan -a
+    set +x
+
+    echo 'Do you want to update & restart?'
+    set +u
+    if yesno; then
+      echo -e '\n\n--------\n\nInstalling Mac OS updates that require a restart.'
+      set -x
+      sudo softwareupdate -i --no-scan -a -R
+      set +x
+    fi
+    set -u
+  fi
+}
+
+
 _help() {
 cat <<EOF
-USAGE: w-pkg-update [-g] [-r] [--disable-remote-login false]
+USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--mac-os-updates-only]
 
 FLAGS:
--g         greedy option for brew
--r         (re-)install xcode commandline tools, then exit
---no-lima  do not start lima vm
+-g                          greedy option for brew
+-r                          (re-)install xcode commandline tools, then exit immediately
+--no-lima                   do not start lima vm
+--mac-os-updates-only       check for mac os udpates, start updates, then exit immediately
+--no-disable-remote-login   do not disable remote login in Mac OS settings
 
 OPTIONS:
---disable-remote-login false (default=true)
 
 EOF
 }
@@ -26,7 +60,7 @@ EOF
 # Parse arguments
 GREEDY=''
 DO_NOT_START_LIMA=''
-DISABLE_REMOTE_LOGIN=true
+DISABLE_REMOTE_LOGIN=''
 while [ $# -gt 0 ]; do
   key="$1"
   case "$key" in
@@ -40,16 +74,15 @@ while [ $# -gt 0 ]; do
     shift
     ;;
 
-    --disable-remote-login)
-    DISABLE_REMOTE_LOGIN="$2"
-    if [ "$2" != true ] && [ "$2" != false ]; then
-        # shellcheck disable=SC2154
-      echo -e "${RED}Invalid option parameter:$NC '$2'!" >&2
-      echo
-      _help >&2
-      exit 1
-    fi
-    shift 2
+    --no-disable-remote-login)
+    DISABLE_REMOTE_LOGIN=false
+    shift
+    ;;
+
+    --mac-os-updates-only)
+    mac-os-updates
+    shift
+    exit
     ;;
 
     -r|--reinstall-xcode)
@@ -100,7 +133,7 @@ cleanup () {
 echo =====================
 echo "Start: $(date)"
 
-if [ "$DISABLE_REMOTE_LOGIN" = true ]; then
+if [ -n "$DISABLE_REMOTE_LOGIN" ]; then
   echo
   set -x
   sudo systemsetup -f -setremotelogin off
@@ -259,39 +292,12 @@ fi
 
 
 # ---------------------------------------------------
-# Darwin START
+# Mac OS START
 
-echo -e '\n\n--------\n\nListing Mac OS updates'
-pkg_info=()
 
-while IFS='' read -r line; do
-  pkg_info+=( "$line" )
-done < <( softwareupdate --all -l --force )
+mac-os-updates
 
-for line in "${pkg_info[@]}"; do
-  echo "$line"
-done
-
-if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
-
-  echo -e '\n\n--------\n\nInstalling Mac OS updates that do not require a restart.'
-
-  set -x
-  softwareupdate -i --no-scan -a
-  set +x
-
-  echo 'Do you want to update & restart?'
-  set +u
-  if yesno; then
-    echo -e '\n\n--------\n\nInstalling Mac OS updates that require a restart.'
-    set -x
-    sudo softwareupdate -i --no-scan -a -R
-    set +x
-  fi
-  set -u
-fi
-
-# Darwin END
+# Mac OS END
 # ---------------------------------------------------
 
 echo "End: $(date)"
