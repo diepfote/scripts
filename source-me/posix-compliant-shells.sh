@@ -46,6 +46,15 @@ else
   export USER=build-user
 fi
 
+# --------------------------
+# prompt style start
+#
+
+source ~/Documents/scripts/source-me/prompt.sh
+#
+# prompt style end
+# --------------------------
+
 
 export EDITOR=nvim
 export VISUAL=nvim
