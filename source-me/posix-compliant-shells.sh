@@ -46,15 +46,6 @@ else
   export USER=build-user
 fi
 
-# --------------------------
-# prompt style start
-#
-
-source ~/Documents/scripts/source-me/prompt.sh
-#
-# prompt style end
-# --------------------------
-
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -92,8 +83,16 @@ source ~/Documents/scripts/source-me/common-functions.sh
 source ~/Documents/scripts/source-me/completions_*
 
 
-source ~/Documents/scripts/source-me/colors.sh
+# --------------------------
+# prompt style start
+#
 
+source ~/Documents/scripts/source-me/colors.sh
+source ~/Documents/scripts/source-me/prompt.sh
+
+#
+# prompt style end
+# --------------------------
 
 
 

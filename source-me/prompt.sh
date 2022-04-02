@@ -13,17 +13,18 @@ if [ -n "$IN_CONTAINER" ]; then
 fi
 
 
-if [ -n "$ZSH" ]; then
+_ps1 () {
   PS1="$(~/Documents/golang/tools/bash-helper/"$BASH_HELPER_FILENAME")"
-  export PS1
+}
+
+if [ -n "$ZSH" ]; then
+  precmd () {
+    _ps1
+  }
 
   eval "$(direnv hook zsh 2>/dev/null || true)"
   eval "$(gh completion -s zsh 2>/dev/null || true)"
 else
-  _ps1 () {
-    PS1="$(~/Documents/golang/tools/bash-helper/"$BASH_HELPER_FILENAME")"
-  }
-
   unset PROMPT_COMMAND
   export PROMPT_COMMAND="_ps1; history -a; history -n"
 
