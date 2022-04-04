@@ -9,9 +9,20 @@ shopt -s failglob  # error on unexpaned globs
 
 TMP_FILE="$1"
 
+additional_args=()
+
 if [ "$(uname)" = Darwin ]; then
+
+  if [ $# -lt 2 ]; then
+    # use incognito window flag for chrome-cli on Darwin
+    additional_args=(-i)
+  else
+    # open in new window by default
+    additional_args=(-n)
+  fi
+
   set -x
-  /usr/local/bin/chrome-cli open "$TMP_FILE" -i
+  /usr/local/bin/chrome-cli open "$TMP_FILE"  "${additional_args[@]}"
   set +x
 else
   source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
