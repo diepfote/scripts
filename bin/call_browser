@@ -22,7 +22,7 @@ if [ "$(uname)" = Darwin ]; then
   fi
 
   set -x
-  /usr/local/bin/chrome-cli open "$TMP_FILE"  "${additional_args[@]}"
+  /usr/local/bin/chrome-cli open "$TMP_FILE"  "${additional_args[@]}"  1>/dev/null 2>&1
   set +x
 else
   source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
