@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1090
 
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -8,20 +9,17 @@ shopt -s failglob  # error on unexpaned globs
 
 
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
-# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
+
+# TODO add items if you want to use this functionality!
+# I set this elsewhere
+#
+pkgs_with_saved_checksums=()
+source ~/Documents/scripts/private/source-me/linux/posix-compliant-shells.sh
 
 
 trap "set +x" EXIT
 
-pkgs_with_saved_checksums=()
-pkgs_with_saved_checksums+=(libplist-git)
-pkgs_with_saved_checksums+=(libimobiledevice-git )
-pkgs_with_saved_checksums+=(libimobiledevice-glue-git )
-pkgs_with_saved_checksums+=(firejail-git)
-pkgs_with_saved_checksums+=(vscodium-bin)
-pkgs_with_saved_checksums+=(yay)
-pkgs_with_saved_checksums+=(standardnotes-bin)
 
 _yay-update-based-on-checksum () {
   pkg_name="$1"
@@ -75,7 +73,7 @@ while ! "${pacman_cmd[@]}" "$@"; do
 done
 
 for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
-  _yay-update-based-on-checksum "$pkg_name"
+  _yay-update-based-on-checksum "$pkg_name"  || true
 done
 _yay-update-anything-else
 
