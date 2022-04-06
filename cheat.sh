@@ -90,17 +90,6 @@ key="$1"
 done
 
 
-if [ "$(uname)" = Darwin ]; then
-  set -x
-  base_temp_dir="$(mktemp -d)"
-  set +x
-else
-  set -x
-  base_temp_dir=~/Downloads
-  set +x
-fi
-
-
 if [ "${command[0]}" = 'find' ]; then
   set -x
   "${command[@]}" "$find_path" "$@"
@@ -134,6 +123,22 @@ if [ -n "$use_system_open" ]; then
   fi
 
 elif [ "$extension" = html ] && [ "${command[0]}" != 'nvim' ] ; then
+
+  if [ "$(uname)" = Darwin ]; then
+    set -x
+    base_temp_dir="$(mktemp -d)"
+
+    cleanup () {
+      rm -r "$base_temp_dir"
+    }
+    trap cleanup EXIT
+    set +x
+  else
+    set -x
+    base_temp_dir=~/Downloads
+    set +x
+  fi
+
   temp_file="$base_temp_dir"/"$(basename "$filename")"
   cp "$file" "$temp_file"  # for firejail on Linux
 

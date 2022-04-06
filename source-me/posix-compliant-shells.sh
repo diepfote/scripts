@@ -434,7 +434,7 @@ dl-playlist () {
 
 ccat () {
   if ! pygmentize -g "$@" 2>/dev/null; then
-    if [ $# -eq 1 ]; then
+    if [ $# -lt 1 ]; then
       set -- -
     fi
     cat -- "$@"
