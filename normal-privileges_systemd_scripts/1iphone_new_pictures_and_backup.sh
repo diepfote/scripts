@@ -71,11 +71,11 @@ do_image_copy () {
 
   local backup_dirs files_on_laptop
 
-  # all timestamped folders that contain image backups
+  # last timestamp folder that contains image backups (based on last modified)
   backup_dirs=()
   while IFS='' read -r line; do
     backup_dirs+=( "$line" )
-  done < <(find-sorted . -type d)
+  done < <(find-sorted . -type d -maxdepth 1 | head -n1)
   # echo DEBUG "${backup_dirs[0]}"
   # exit
 
