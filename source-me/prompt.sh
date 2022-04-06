@@ -25,6 +25,12 @@ if [ -n "$ZSH" ]; then
   eval "$(direnv hook zsh 2>/dev/null || true)"
   eval "$(gh completion -s zsh 2>/dev/null || true)"
 else
+  # Assume BASH
+
+  # looks like if we do not set this a 33k file expands to 433k!
+  #
+  shopt -s histappend
+
   unset PROMPT_COMMAND
   export PROMPT_COMMAND="_ps1; history -a; history -n"
 
