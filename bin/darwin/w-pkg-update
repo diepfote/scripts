@@ -231,6 +231,9 @@ done
 unset python_outdated_cmd python_install_cmd grep_outdated_cmd grep_install_cmd cut_cmd
 unset -f python_update_pkg
 
+
+cc-update-internal-pkgs
+
 #  PYTHON END
 # -----------------------------------------------------
 
