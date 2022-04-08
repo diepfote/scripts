@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-direnv_path=/usr/local/bin/direnv
-
-if [ "$1" = reload ]; then
-  ("$direnv_path" export bash) > /tmp/direnv-eval
-else
-  "$direnv_path" "$@"
-fi

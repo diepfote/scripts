@@ -31,41 +31,11 @@ else
   #
   shopt -s histappend
 
+  unset PROMPT_COMMAND
+  export PROMPT_COMMAND="_ps1; history -a; history -n"
+
   ######## leave these ↓ here - will modify PROMPT_COMMAND
   #
   eval "$(direnv hook bash 2>/dev/null || true)"
-  unset PROMPT_COMMAND
-  # clear _direnv_hook function call from PROMPT_COMMAND
-  export PROMPT_COMMAND="_custom_direnv_hook; _ps1; history -a; history -n"
-
-  _custom_direnv_hook () {
-    if [[ "$(basename "$PWD")" =~ deploy-* ]]; then
-      if [ "$DIRENV_PREVIOUS_LOCATION" = "$PWD" ]; then
-        return
-      fi
-      export DIRENV_PREVIOUS_LOCATION="$PWD"
-
-      echo 'Do you want to run direnv?'
-      if yesno; then
-        unset DIRENV_WATCHES
-        direnv reload
-      fi
-    else
-      export DIRENV_PREVIOUS_LOCATION=''
-    fi
-
-
-    # custom direnv reload generates this file
-    #
-    local file=/tmp/direnv-eval
-    if [ -f "$file" ]; then
-      source "$file"
-      rm "$file"
-    fi
-
-  }
-
-
   eval "$(gh completion -s bash 2>/dev/null || true)"
-  ########
 fi
