@@ -3,7 +3,7 @@
 direnv_path=/usr/local/bin/direnv
 
 if [ "$1" = reload ]; then
-  eval "$("$direnv_path" export bash)"
+  ("$direnv_path" export bash) > /tmp/direnv-eval
 else
   "$direnv_path" "$@"
 fi

@@ -47,10 +47,20 @@ else
 
       echo 'Do you want to run direnv?'
       if yesno; then
+        unset DIRENV_WATCHES
         direnv reload
       fi
     else
       export DIRENV_PREVIOUS_LOCATION=''
+    fi
+
+
+    # custom direnv reload generates this file
+    #
+    local file=/tmp/direnv-eval
+    if [ -f "$file" ]; then
+      source "$file"
+      rm "$file"
     fi
 
   }
