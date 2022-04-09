@@ -16,10 +16,12 @@ _w-pkg-update_completions()
   completions=()
   completions+=(-h)
   completions+=(-g)
-  completions+=(-n)
+  completions+=(-r)
   completions+=(--no-lima)
   completions+=(--no-disable-remote-login)
   completions+=(--mac-os-updates-only)
+  completions+=(--cc-internal-upgrade-only)
+
 
   case "${prev_word}" in
     *)

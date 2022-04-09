@@ -43,11 +43,12 @@ mac-os-updates () {
 
 _help() {
 cat <<EOF
-USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--mac-os-updates-only]
+USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--mac-os-updates-only|--cc-internal-upgrade-only]
 
 FLAGS:
 -g                          greedy option for brew
 -r                          (re-)install xcode commandline tools, then exit immediately
+--cc-internal-upgrade-only       upgrade cc internal pkgs, then exit
 --no-lima                   do not start lima vm
 --mac-os-updates-only       check for mac os udpates, start updates, then exit immediately
 --no-disable-remote-login   do not disable remote login in Mac OS settings
@@ -67,6 +68,12 @@ while [ $# -gt 0 ]; do
     -g|--greedy)
     GREEDY=true
     shift
+    ;;
+
+    --cc-internal-upgrade-only)
+    cc-update-internal-pkgs
+    shift
+    exit
     ;;
 
     --no-lima)
@@ -230,9 +237,6 @@ done
 
 unset python_outdated_cmd python_install_cmd grep_outdated_cmd grep_install_cmd cut_cmd
 unset -f python_update_pkg
-
-
-cc-update-internal-pkgs
 
 #  PYTHON END
 # -----------------------------------------------------
