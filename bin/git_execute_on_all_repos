@@ -52,10 +52,33 @@ done
 
 
 while IFS='' read -r repo_dir; do
+  # leave at the top
+  #
   if [ "$(expr substr "$repo_dir" 1 1)" = '#' ] || [ -z "$repo_dir" ]; then
     # skip comment line & empty lines
     continue
   fi
-  git_execute_on_repo -d "$repo_dir" -- "$@"
+
+  # leave at the top
+  #
+  # replace $HOME with $HOME value
+  repo_dir="$(echo "$repo_dir" | sed "s#\$HOME#$HOME#")"
+
+  # if there is a glob
+  if echo "$repo_dir" | grep -E '\*$' >/dev/null; then
+
+    echo "$repo_dir" | hexdump -C
+    # allow variable re-evaluation -> globbing
+    for _repo_dir in $repo_dir; do
+      git_execute_on_repo -d "$_repo_dir" -- "$@"
+    done
+
+    # do not execute on the glob
+    continue
+
+  else
+    git_execute_on_repo -d "$repo_dir" -- "$@"
+  fi
+
 done <"$CONFIG_FILE"
 

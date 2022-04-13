@@ -37,20 +37,50 @@ command=('git' 'status' '-sb')
 git config --global color.ui always  # like grep --color=always
 
 while read -r repo_dir; do
+  # leave at the top
+  #
+  if [ "$(expr substr "$repo_dir" 1 1)" = '#' ] || [ -z "$repo_dir" ]; then
+    # skip comment line & empty lines
+    continue
+  fi
+
+  # leave at the top
+  #
   # replace $HOME with $HOME value
   repo_dir="$(echo "$repo_dir" | sed "s#\$HOME#$HOME#")"
 
+  # leave at the top
+  #
   if [ "$repo_dir" = ~/.password-store-private ] || \
      [ "$repo_dir" = ~/.password-store-work ]; then
     _pre-pass-private "$repo_dir"
   fi
 
+  # -----------------
+
   if [ "$repo_dir" = "$HOME" ]; then
     # prevent line 9 from showing up
     git_execute_on_repo -d "$repo_dir" -- "${command[@]}" | grep -v .gitconfig >> "$file"
+
+    continue
+  fi
+
+  # if there is a glob
+  if echo "$repo_dir" | grep -E '\*$' >/dev/null; then
+
+    echo "$repo_dir" | hexdump -C
+    # allow variable re-evaluation -> globbing
+    for _repo_dir in $repo_dir; do
+      git_execute_on_repo "$@" -d "$_repo_dir" -- "${command[@]}" >> "$file"
+    done
+
+    # do not execute on the glob
+    continue
+
   else
     git_execute_on_repo "$@" -d "$repo_dir" -- "${command[@]}" >> "$file"
   fi
+
 
 done <"$conf_file"
 
