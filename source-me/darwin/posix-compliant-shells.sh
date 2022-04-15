@@ -140,6 +140,8 @@ w-git_execute_on_all_repos () {
 w-git-cleanup () {
   # run `pull` and `delete-gone-branches`
   w-git_execute_on_all_repos  git update
+
+  _clone-all-cc-deploy-repositories
 }
 
 
