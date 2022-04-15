@@ -6,29 +6,31 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-
-TMP_FILE="$1"
-
 additional_args=()
 
 if [ "$(uname)" = Darwin ]; then
 
   if [ $# -lt 2 ]; then
-    # use incognito window flag for chrome-cli on Darwin
-    additional_args=(-i)
+    # open in incognito window by default
+    url="$1"
+    set -- "$url" -i
   else
-    # open in new window by default
-    additional_args=(-n)
+    # last arg is assumed to be the url
+    url="${@:$#}"
+    set -- "$url" -n
   fi
 
   set -x
-  /usr/local/bin/chrome-cli open "$TMP_FILE"  "${additional_args[@]}"  1>/dev/null 2>&1
+  /usr/local/bin/chrome-cli open "$@"  1>/dev/null 2>&1
   set +x
 else
   source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
   # -N ... allow network access
+
+  url="$1"
+
   set -x
-  firewardened-chromium -N "$TMP_FILE"  >/dev/null 2>&1  &
+  firewardened-chromium -N "$url"  >/dev/null 2>&1  &
   set +x
 fi
 
