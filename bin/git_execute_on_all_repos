@@ -67,7 +67,6 @@ while IFS='' read -r repo_dir; do
   # if there is a glob
   if echo "$repo_dir" | grep -E '\*$' >/dev/null; then
 
-    echo "$repo_dir" | hexdump -C
     # allow variable re-evaluation -> globbing
     for _repo_dir in $repo_dir; do
       git_execute_on_repo -d "$_repo_dir" -- "$@"
