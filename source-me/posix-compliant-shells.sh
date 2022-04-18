@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1090
 
+# set xxx to empty string if unset
+echo ${TMUX:=''} >/dev/null
+echo ${BASH_SOURCE_IT:=''} >/dev/null
 
 if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
    [ "$(hostname)" = docker-desktop ] || \
