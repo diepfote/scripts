@@ -64,47 +64,37 @@ _snap () {
 }
 
 snap_all () {
-  local vol_group_mapper=/dev/mapper/VolGroup00
+  local d dir regex vol_group_mapper
 
-  local d
-  local dir
-  local LVs=()
+  vol_group_mapper=/dev/mapper/VolGroup00
+  regex="$1"
+  # workaround if no input -> set to bogus value to match all
+  echo "${regex:=ASDFASDF}"  >/dev/null
 
   d="$(date +%FT%T%Z)"
   d="${d//:/-}"
 
 
   while IFS='' read -r line; do
-    LVs+=("$line")
+    if [[ "$line" =~ $regex ]]; then
+      # do not create snapshots
+      #
+      continue
+    fi
+
+    echo _snap "$line" "$d"
   done < <(sudo lvs -o lv_name | tail -n +2 | awk '{ print $1 }' | sed -r '/[0-9]{4}/d')
 
-  for dir in "${LVs[@]}"; do
-    _snap "$dir" "$d"
-  done
 }
 
 snap_subset () {
-  local vol_group_mapper=/dev/mapper/VolGroup00
-
-  local d
-  local dir
-  local size
-
-  d="$(date +%FT%T%Z)"
-  d="${d//:/-}"
-
-  dir=home
-  size='10GB'
-  _snap "$dir" "$d" "$size"
-
-
-  local dir=root
-  local size='8GB'
-  _snap "$dir" "$d" "$size"
+  regex='VirtualBox|Videos|containers'
+  snap_all "$regex"
 }
 
 snap-renew () {
-  sudo lvremove -y /dev/VolGroup00/s_*; snap_subset
+  sudo lvremove -y /dev/VolGroup00/s_*
+  snap_subset
 }
 
 
