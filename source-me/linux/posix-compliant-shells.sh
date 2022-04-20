@@ -82,13 +82,13 @@ snap_all () {
       continue
     fi
 
-    echo _snap "$line" "$d"
+    _snap "$line" "$d"
   done < <(sudo lvs -o lv_name | tail -n +2 | awk '{ print $1 }' | sed -r '/[0-9]{4}/d')
 
 }
 
 snap_subset () {
-  regex='VirtualBox|Videos|containers'
+  regex='VirtualBox|Videos|containers|swap'
   snap_all "$regex"
 }
 
