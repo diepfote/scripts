@@ -28,9 +28,10 @@ cleanup () {
 trap 'cleanup "$spinner_pid"' EXIT  # stop spinner
 
 if [ $# -lt 2 ]; then
-  tmutil listbackups | sed 's#.*#"/Volumes/Time Machine Backups/Backups.backupdb/'"$(hostname)"'/&"#'
+  tmutil listbackups -m | sed "s#.*#'&'#"
   exit 0
 fi
+
 
 # $ tmutil listbackups
 set -x

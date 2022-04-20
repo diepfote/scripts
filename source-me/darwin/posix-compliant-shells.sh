@@ -121,10 +121,10 @@ open_mac-os_app () {
 
 
 tmutil-compare-last-2-backups () {
-  sudo tmutil listbackups |\
-    tail -2 |\
-    sed 's#.*#"/Volumes/Time Machine Backups/Backups.backupdb/'"$(hostname)"'/&"#' |\
-    xargs tmutil-compare-2-backups
+  tmutil listbackups -m |\
+  tail -2 |\
+  sed "s#.*#'&'#" |\
+  xargs tmutil-compare-2-backups
 }
 
 
