@@ -68,7 +68,10 @@ all_dirs+=(~/Walkme)
 all_dirs+=(~/go/)
 all_dirs+=(~/opt)
 
-all_dirs+=(/usr/local/{Caskroom,Cellar,Homebrew})
+all_dirs+=(/usr/local/{Caskroom,Cellar})
+# TODO add more specific exclusions `/usr/local/Homebrew/Taps`
+#      is a treasure
+# all_dirs+=(/usr/local/Homebrew)
 
 all_dirs+=(~/Library/Application\ Support/{Atom,CrashReporter,discord,'Docker Desktop',Keybase,Signal,'Signal Beta','Standard Notes',TeamViewer,'TeamViewer QuickSupport','Telegram Desktop',virtualenv,XQuartz,zoom.us})
 all_dirs+=(~/Library/Group\ Containers/*{Office,ms,OneDrive}*)
