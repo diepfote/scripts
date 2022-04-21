@@ -77,8 +77,8 @@ all_dirs+=(~/Library/Application\ Support/{Atom,CrashReporter,discord,'Docker De
 all_dirs+=(~/Library/Group\ Containers/*{Office,ms,OneDrive}*)
 all_dirs+=(~/Library/{Containers,Logs,Python})
 
-# exclude anything but `~/Library/Caches/Firefox`, `~/Library/Caches/Gooogle`
-mapfile -d $'\0' tmp_dirs < <(find ~/Library/Caches -maxdepth 1 -type d ! -name 'Firefox' ! -name Google -print0)
+# exclude anything but `~/Library/Caches/Firefox`
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/Caches -maxdepth 1 -type d ! -name 'Firefox' -print0)
 all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
 unset tmp_dirs
 
