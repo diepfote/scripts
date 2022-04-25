@@ -7,7 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Documents/scripts/source-me/{darwin/,}common-functions.sh
 
 
 dir=~/Documents/misc/mac-os
@@ -31,15 +31,22 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; the
   (cd ~ && pip-chill > "$dir"/python-pkgs.txt)
 
   kubectl krew list > "$dir"/krew-pkgs.txt
-
-  defaults read -g NSUserKeyEquivalents > "$dir"/nsuserkeyequivalents.txt
-  defaults read com.google.Chrome NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
-  defaults read com.toggl.toggldesktop.TogglDesktop NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
-  defaults read com.apple.Safari  NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
-  defaults read com.apple.TextEdit  NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
-  defaults read com.microsoft.edgemac NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
-  defaults read com.microsoft.word NSUserKeyEquivalents >> "$dir"/nsuserkeyequivalents.txt
   set +x
+
+  defaults_nsuserkeyequivalents_to_save=()
+  defaults_nsuserequivalents_to_save+=(-g)
+  defaults_nsuserequivalents_to_save+=(com.google.Chrome)
+  defaults_nsuserequivalents_to_save+=(com.toggl.toggldesktop.TogglDesktop)
+  defaults_nsuserequivalents_to_save+=(com.apple.Safari)
+  defaults_nsuserequivalents_to_save+=(com.apple.TextEdit)
+  defaults_nsuserequivalents_to_save+=(com.microsoft.edgemac)
+  defaults_nsuserequivalents_to_save+=(com.microsoft.word)
+
+  for nsuserkeyequivalent in "${defaults_nsuserkeyequivalents_to_save[@]}"; do
+    set -x
+    defaults-dave "$dir" "$nsuserkeyequivalent"
+    set +x
+  done
 
   _rclone_verbose_sync_operation --delete-excluded "$dir" "$fastmail_path"
 

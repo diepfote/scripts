@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ~/Documents/scripts/source-me/darwin/common-functions.sh
+
 _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"  || true
 _add_to_MANPATH "/usr/local/opt/coreutils/libexec/gnuman"  || true
 
