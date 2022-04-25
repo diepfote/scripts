@@ -41,10 +41,11 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; the
   defaults_nsuserequivalents_to_save+=(com.apple.TextEdit)
   defaults_nsuserequivalents_to_save+=(com.microsoft.edgemac)
   defaults_nsuserequivalents_to_save+=(com.microsoft.word)
+  defaults_nsuserequivalents_to_save+=(com.microsoft.excel)
 
   for nsuserkeyequivalent in "${defaults_nsuserkeyequivalents_to_save[@]}"; do
     set -x
-    defaults-dave "$dir" "$nsuserkeyequivalent"
+    defaults-dave "$dir" "$nsuserkeyequivalent"  || true
     set +x
   done
 
