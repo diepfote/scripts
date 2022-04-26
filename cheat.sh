@@ -97,7 +97,7 @@ if [ "${command[0]}" = 'find' ]; then
   exit
 elif [ "${command[0]}" = 'grep' ]; then
   set -x
-  "${command[@]}" "$@" --color=always -r "$find_path/$subdir"
+  "${command[@]}" --exclude-dir=.git "$@" --color=always -r "$find_path/$subdir"
   set +x
   exit
 fi
