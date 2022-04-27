@@ -39,14 +39,20 @@ _add_to_PATH "$HOME/Library/Python/3.10/bin"  || true
 # export PKG_CONFIG_PATH="/usr/local/opt/python@3.10/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 
-
+# --
 # ruby compiler settings
-_add_to_PATH "/usr/local/opt/ruby/bin"  || true
-_add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"  || true # user gem files
-# export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
-export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
-export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
+_add_to_PATH "/usr/local/opt/ruby-build/bin"
+_add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"
 
+export CPPFLAGS="-I/usr/local/opt/openssl@3/include:$CPPFLAGS"
+export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
+
+export LDFLAGS="-L/usr/local/opt/openssl@3/lib:$LDFLAGS"
+export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
+
+export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig:PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
+# --
 
 
 
