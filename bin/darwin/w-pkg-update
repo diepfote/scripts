@@ -279,8 +279,8 @@ cargo install-update -a
 
 
 echo -e '\n--------\nkrew\n'
-oc krew update
-oc krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
+kubectl krew update
+kubectl krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
 
 
 echo -e '\n--------\napm\n'
