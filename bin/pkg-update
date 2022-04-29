@@ -14,19 +14,28 @@ cleanup () {
 }
 
 
-# check arguments
-w-pkg-update --dry-run "$@"
-
-_os-independent-updates
 
 system="$(uname)"
+
 if [ "$system" = Linux ]; then
   if [ $# -lt 1 ]; then
     echo 'Do you want to do pkg downloads only?'
+    set +u
     if yesno; then
       set -- -w
     fi
+    set -u
   fi
+
+  # check arguments
+  set +e
+  if yay-all --dry-run "$@" 2>&1 | head -n1 | grep -- 'invalid option' >/dev/null; then
+    echo -e "[!] ${RED}invalid flags $NC"'`'"$*"'`'
+    exit 1
+  fi
+  set -e
+
+  _os-independent-updates
 
   set -x
   yay-all "$@"
@@ -35,10 +44,16 @@ if [ "$system" = Linux ]; then
 elif [ "$system" = Darwin ]; then
   if [ $# -lt 1 ]; then
     echo 'Do you want to run greedy updates?'
+    set +u
     if yesno; then
       set -- -g
     fi
+    set -u
   fi
+  # check arguments
+  w-pkg-update --dry-run "$@"
+
+  _os-independent-updates
 
   set -x
   w-pkg-update "$@"

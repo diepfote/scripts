@@ -61,11 +61,16 @@ _yay-update-anything-else () {
   fi
 }
 
-pacman_cmd=('sudo' 'pacman' '-Syu')
 
-# TODO check if this works as intended
-# verify arguments are valid (no better option than, `download only`)
-"${pacman_cmd[@]}"  -w "$@"
+if [ $# -gt 0 ] && [ "$1" = --dry-run ]; then
+  shift
+  pacman_cmd=('pacman' '-Syu')
+  "${pacman_cmd[@]}" "$@" || true
+  exit
+else
+  pacman_cmd=('sudo' 'pacman' '-Syu')
+fi
+
 
 # update package info for listing
 echo n | "${pacman_cmd[@]}" || :
