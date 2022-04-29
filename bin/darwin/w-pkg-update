@@ -62,9 +62,15 @@ EOF
 GREEDY=''
 DO_NOT_START_LIMA=''
 DISABLE_REMOTE_LOGIN=''
+DRY_RUN=''
 while [ $# -gt 0 ]; do
   key="$1"
   case "$key" in
+    --dry-run)
+    DRY_RUN=true
+    shift
+    ;;
+
     -g|--greedy)
     GREEDY=true
     shift
@@ -119,6 +125,11 @@ while [ $# -gt 0 ]; do
     ;;
   esac
 done
+
+
+if [ -n "$DRY_RUN" ]; then
+  exit
+fi
 
 
 source ~/Documents/scripts/source-me/spinner.sh

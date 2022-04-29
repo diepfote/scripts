@@ -63,6 +63,10 @@ _yay-update-anything-else () {
 
 pacman_cmd=('sudo' 'pacman' '-Syu')
 
+# TODO check if this works as intended
+# verify arguments are valid (no better option than, `download only`)
+"${pacman_cmd[@]}"  -w "$@"
+
 # update package info for listing
 echo n | "${pacman_cmd[@]}" || :
 pacman-get-required-by-for-upgradeable
