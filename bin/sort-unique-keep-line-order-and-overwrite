@@ -28,13 +28,16 @@ trap "cleanup" EXIT
 # This solution has the flaw that it is undefined which representative of a class of equal lines will make it in the output and therefore its position in the final output is undefined. However, if the latest representative should be chosen you can sort the input by a second key:
 #
 nl "$1" |\
+  stdbuf -o0 sed -r 's#\s+$##' |\
   stdbuf -o0 sort -k2 -k 1,1nr |\
   stdbuf -o0 uniq -f1|\
   stdbuf -o0 sort -n |\
   stdbuf -o0 cut -f2 > "$temp_file"
 
-ls -al "$1" "$temp_file"
-
 cat "$temp_file"
+echo 'EOF -----------------'
+echo
+
+ls -al "$1" "$temp_file"
 mv "$temp_file" "$1"
 
