@@ -70,7 +70,7 @@ alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus
 
 # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L92
 # Flush Directory Service cache
-alias flush-dns="dscacheutil -flushcache && killall -HUP mDNSResponder"
+alias flush-dns="dscacheutil -flushcache && sudo pkill -HUP mDNSResponder"
 
 
 # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L58
