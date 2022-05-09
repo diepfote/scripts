@@ -244,10 +244,12 @@ __stop_related_units_if_active ()
   done
 }
 
-__restart_unit_if_inactive () {
+__restart_unit_if () {
+  local check="$1"  # e.g. 'is-active'
+  local unit="$2"  # e.g. 'dhcpcd@wlp4s0.service'
+
   set +x
-  local unit="$1"
-  if [ ! "$(systemctl is-active "$unit")" = active ]; then
+  if [ ! "$(systemctl "$check" "$unit")" = active ]; then
      sudo systemctl restart "$unit"
   fi
 }

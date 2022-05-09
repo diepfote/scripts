@@ -14,16 +14,21 @@ cleanup () {
 }
 
 set -x
-__restart_unit_if_inactive 'wpa_supplicant@wlp4s0.service'
+__restart_unit_if is-active 'wpa_supplicant@wlp4s0.service'
 set -x
-__restart_unit_if_inactive 'dhcpcd@wlp4s0.service'
+__restart_unit_if is-active 'dhcpcd@wlp4s0.service'
+set -x
+__restart_unit_if is-failed 'dhcpcd@wlp4s0.service'
 set -x
 
-  if [ "$_vpn_systemd_unit" != None ]; then
-    __stop_related_units_if_active "$_vpn_systemd_unit"
-    __restart_unit_if_inactive "$_vpn_systemd_unit"
-  fi
+
+# shellcheck disable=SC2154
+if [ "$_vpn_systemd_unit" != None ]; then
+  __stop_related_units_if_active "$_vpn_systemd_unit"
+__restart_unit_if_inactive "$_vpn_systemd_unit"
+fi
 set -x
+
 
 sleep 3
 
