@@ -11,7 +11,8 @@ source ~/Documents/scripts/source-me/common-functions.sh
 
 tmp_dir="$(mktemp -d)"
 tmp_bash_history_file="$tmp_dir/.bash_history"
-bash_history_file=~/.bash_history
+[ -f "$HOME/.bash_history_x" ] && HISTFILE="$HOME/.bash_history_x" || HISTFILE="$HOME/.bash_history"
+bash_history_file="$HISTFILE"
 ls -lh "$bash_history_file"
 
 cleanup () {

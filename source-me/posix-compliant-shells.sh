@@ -489,8 +489,8 @@ list-zombies-and-parents () {
 
 edit-bash-history () {
   # :$ to start at the end of the file
-  vim -c ':$' ~/.bash_history
-  (sleep 300 && rm ~/.local/share/nvim/undo/%home%flo%.bash_history 1>/dev/null 2>&1  &)
+  vim -c ':$' "$HISTFILE"
+  (sleep 300 && rm ~/.local/share/nvim/undo/*bash_history* 1>/dev/null 2>&1  &)
 }
 
 

@@ -8,7 +8,7 @@ shopt -s failglob  # error on unexpaned globs
 
 
 filename="$1"
-hist_file=~/.bash_history
+[ -f "$HOME/.bash_history_x" ] && HISTFILE="$HOME/.bash_history_x" || HISTFILE="$HOME/.bash_history"
 
 if [ "$(uname)" = Darwin ]; then
   word=Movies
@@ -20,5 +20,5 @@ path_to_search="$HOME/$word"
 ~/Documents/golang/tools/video-syncer/video-syncer "$path_to_search" 'report-files'  > "$filename"
 
 echo >> "$filename"
-grep -E "^mpv " "$hist_file" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"
+grep -E "^mpv " "$HISTFILE" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"
 

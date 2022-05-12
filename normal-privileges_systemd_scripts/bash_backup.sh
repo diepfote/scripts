@@ -19,5 +19,6 @@ trap "cleanup" EXIT
 # Get parent directory
 f_date=$(date +%FT%T%Z | sed 's/:/_/g')
 
-cp "$HOME/.bash_history" "$backup_dir/bash_history$f_date"
+[ -f "$HOME/.bash_history_x" ] && HISTFILE="$HOME/.bash_history_x" || HISTFILE="$HOME/.bash_history"
+cp "$HISTFILE" "$backup_dir/bash_history$f_date"
 
