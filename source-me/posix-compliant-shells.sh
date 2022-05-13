@@ -53,17 +53,14 @@ fi
 export EDITOR=nvim
 export VISUAL=nvim
 
+# this breaks no-standard lesskey locations (`-k`)
+#
+export LESSSECURE=1
+readonly LESSSECURE
 
 export MANPAGER=less
-# colorize man pages with 'bat'
-# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 
-# cannot use this any longer
-# this breaks custom lesskey files
-#
-# export LESSSECURE=1
-# readonly LESSSECURE
 
 # TODO remove?
 export GO111MODULE=off

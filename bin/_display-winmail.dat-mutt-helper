@@ -8,5 +8,5 @@ mkdir -p "$dir"
 tnef --overwrite  -C "$dir" "$1"
 
 find-sorted "$dir" \|
-  xargs -n 1 -d '\n' bat -A
+  xargs -n 1 -d '\n' LESSSECURE=1 less
 
