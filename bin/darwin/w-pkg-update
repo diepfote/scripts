@@ -46,12 +46,12 @@ cat <<EOF
 USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--mac-os-updates-only|--cc-internal-upgrade-only]
 
 FLAGS:
--g                          greedy option for brew
--r                          (re-)install xcode commandline tools, then exit immediately
---cc-internal-upgrade-only       upgrade cc internal pkgs, then exit
---no-lima                   do not start lima vm
---mac-os-updates-only       check for mac os udpates, start updates, then exit immediately
---no-disable-remote-login   do not disable remote login in Mac OS settings
+-g                           greedy option for brew
+-r                           (re-)install xcode commandline tools, then exit immediately
+--cc-internal-upgrade-only   upgrade cc internal pkgs, then exit
+--no-lima                    do not start lima vm
+--mac-os-updates-only        check for mac os udpates, start updates, then exit immediately
+--no-disable-remote-login    do not disable remote login in Mac OS settings
 
 OPTIONS:
 
