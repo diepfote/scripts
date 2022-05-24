@@ -44,5 +44,6 @@ else
   cp "$tmp_bash_history_file" "$bash_history_file"
 fi
 
+chmod 600 "$bash_history_file"
 ls -lh "$bash_history_file"
 
