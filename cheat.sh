@@ -63,7 +63,7 @@ key="$1"
     ;;
 
     grep)
-    command=('grep')
+    command=('grep' --exclude='*.html')
     shift
     ;;
 
