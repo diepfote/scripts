@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+cleanup () {
+  set +x
+}
+trap cleanup EXIT
+
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    start)
+
+    # render default lima.yaml
+    (cd ~/.lima/default && python3 template.py)
+    set -x
+    /usr/local/bin/limactl "$@"
+    set +x
+
+    shift 2
+    break
+    ;;
+
+
+    --|*)
+    set -x
+    /usr/local/bin/limactl "$@"
+    set +x
+
+    break
+    ;;
+
+  esac
+done
+
