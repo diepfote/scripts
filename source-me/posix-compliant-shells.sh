@@ -712,7 +712,7 @@ _checkout-wrapper () {
 }
 
 checkout-dot-files () {
-  _checkout-wrapper ~/ "$@"
+  _checkout-wrapper ~/Documents/dot-files "$@"
 }
 checkout-function () {
   _checkout-wrapper ~/.config/fish/functions "$@"
@@ -738,7 +738,7 @@ checkout-vim () {
 
 
 commit-dot-files () {
-  commit-in-dir ~ "$@"
+  commit-in-dir ~/Documents/dot-files "$@"
 }
 commit-function () {
   commit-in-dir ~/.config/fish/functions "$@"
@@ -771,7 +771,7 @@ _diff-wrapper () {
 }
 
 diff-dot-files () {
-  _diff-wrapper ~ "$@"
+  _diff-wrapper ~/Documents/dot-files "$@"
 }
 diff-function () {
   _diff-wrapper ~/.config/fish/functions "$@"
@@ -806,7 +806,7 @@ _log-wrapper () {
 }
 
 log-dot-files () {
-  _log-wrapper ~/ "$@"
+  _log-wrapper ~/Documents/dot-files "$@"
 }
 log-function () {
   _log-wrapper ~/.config/fish/functions "$@"
@@ -836,7 +836,7 @@ _reset-wrapper () {
 }
 
 reset-dot-files () {
-  _reset-wrapper ~/
+  _reset-wrapper ~/Documents/dot-files
 }
 reset-function () {
   _reset-wrapper ~/.config/fish/functions
@@ -868,7 +868,7 @@ _status-wrapper () {
 }
 
 status-dot-files () {
-  _status-wrapper ~ "$@"
+  _status-wrapper ~/Documents/dot-files "$@"
 }
 status-function () {
   _status-wrapper ~/.config/fish/functions "$@"

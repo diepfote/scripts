@@ -58,7 +58,7 @@ while read -r repo_dir; do
 
   # -----------------
 
-  if [ "$repo_dir" = "$HOME" ]; then
+  if [ "$repo_dir" = "$HOME/Documents/dot-files" ]; then
     # prevent line 9 from showing up
     git_execute_on_repo -d "$repo_dir" -- "${command[@]}" | grep -v .gitconfig >> "$file"
 
