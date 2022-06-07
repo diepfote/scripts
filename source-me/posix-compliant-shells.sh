@@ -610,6 +610,9 @@ rm-cheat () {
   _mvcopy-wrapper --op rm --dir ~/Documents/cheatsheets "$@"
 }
 
+edit-dot-files () {
+  pushd ~/Documents/dot-files >/dev/null
+}
 edit-docker () {
   _edit-wrapper --dir ~/Documents/dockerfiles "$1"
 }
