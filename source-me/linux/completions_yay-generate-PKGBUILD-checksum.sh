@@ -3,7 +3,7 @@
 # https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial
 
 
-_pkgbuild_completions()
+_yay-generate-PKGBUILD-checksum_completions()
 {
   _print () {
     for name in "$@"; do
@@ -19,9 +19,9 @@ _pkgbuild_completions()
   export _foreign_pkgs
 
 
-    COMPREPLY=($(compgen -W "$(_print '-c' '-v' "${_foreign_pkgs[@]}")" -- "$cur_word"))
+    COMPREPLY=($(compgen -W "$(_print '--debug' '--no-fetch' "${_foreign_pkgs[@]}")" -- "$cur_word"))
 
 }
 
-complete -F _pkgbuild_completions pkgbuild
+complete -F _yay-generate-PKGBUILD-checksum_completions yay-generate-PKGBUILD-checksum
 
