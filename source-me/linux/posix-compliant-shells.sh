@@ -289,11 +289,17 @@ sed_command_yay_update_based_on_checksums='/^(pkg(ver|rel)=|sha256sums[^\s]*=)/d
 yay-generate-PKGBUILD-checksum () {
 
   local debug=''
+  local no_fetch=''
   while [ $# -gt 0 ]; do
   key="$1"
     case "$key" in
       --debug)
       debug=true
+      shift
+      ;;
+
+      --no-fetch)
+      no_fetch=true
       shift
       ;;
 
@@ -316,7 +322,12 @@ yay-generate-PKGBUILD-checksum () {
     echo -e "${RED}[!] error on cd"
     return
   fi
-  yay -G "$pkg_name" || return
+
+  if [ -z "$no_fetch" ]; then
+    set -x
+    yay -G "$pkg_name" || return
+    set +x
+  fi
 
   if [ -n "$debug" ]; then
     sed -r "$sed_command_yay_update_based_on_checksums" PKGBUILD | vimn -
