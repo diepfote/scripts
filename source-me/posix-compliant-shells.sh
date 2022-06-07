@@ -7,7 +7,7 @@ echo ${BASH_SOURCE_IT:=''} >/dev/null
 
 if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
    [ "$(hostname)" = docker-desktop ] || \
-   [[ "$(hostname)" =~ lima* ]]
+   [[ "$(hostname)" =~ lima* ]] || \
    [ "$(id -u --name 2>/dev/null)" = build-user ]; then
   export IN_CONTAINER=true
 else
