@@ -285,7 +285,7 @@ xinput-reset-mouse-buttons () {
 }
 
 yay_cache=~/.cache/yay
-sed_command_yay_update_based_on_checksums='/^(pkg(ver|rel)=|sha256sums[^\s]*=)/d'
+sed_command_yay_update_based_on_checksums='/^(pkg(ver|rel)=|(sha256|md5)sums[^\s]*=)/d'
 yay-generate-PKGBUILD-checksum () {
 
   local debug=''
