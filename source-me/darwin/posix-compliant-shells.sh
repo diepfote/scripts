@@ -62,6 +62,15 @@ LC_NUMERIC=en_US.UTF-8 LC_TIME=en_US.UTF-8 LC_COLLATE=en_US.UTF-8 \
 LC_MONETARY=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8
 
 
+# snatched from https://github.com/itspriddle/dotfiles/blob/master/profile.d/env.sh
+# Disable emoji when installing packages with Homebrew
+export HOMEBREW_NO_EMOJI=1
+# Opt-out of Analytics
+export HOMEBREW_NO_ANALYTICS=1
+# Disable homebrew autoupdate
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+
 
 alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
 alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
