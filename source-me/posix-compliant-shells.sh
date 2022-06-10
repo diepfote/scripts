@@ -146,7 +146,6 @@ alias git_goto_toplevel='cd "$(git rev-parse --show-toplevel)"'
 
 alias formats-youtube-dl='youtube-dl -F'
 
-type nvim 1>/dev/null 2>/dev/null  && alias vim=nvim
 # use unknown filetype -> disable any filetype specific things
 alias vimr="vim -c 'set ft=asdf'"
 alias vimy="vimn -c ':set ft=yaml'"

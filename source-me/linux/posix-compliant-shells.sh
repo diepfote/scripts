@@ -346,7 +346,13 @@ alias xclip='command xclip -selection clipboard'
 alias xsel=xclip
 
 
-alias gdb-gef='gdb -q gef -x ~/.gef-startup'
+gdb-gef () {
+if [ -z "$IN_CONTAINER" ]; then
+  gdb -q gef -x ~/.gef-startup
+else
+  gdb -q -ex gef
+fi
+}
 gdb-p () {
   echo "$*" |\
     gdb -q  |\
