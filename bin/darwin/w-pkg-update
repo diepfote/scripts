@@ -284,7 +284,7 @@ kubectl krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading 
 
 
 echo -e '\n--------\napm\n'
-apm upgrade -c false
+apm upgrade -c false || true
 
 
 # ---------------------------------------------------
