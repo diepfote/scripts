@@ -136,6 +136,7 @@ alias grep='grep \
               --exclude-dir=__pycache__ \
               --exclude-dir=.pytest_cache \
               --exclude-dir=htmlcov \
+              --exclude="*.html" \
               --exclude=Session.vim \
               --color'
 
