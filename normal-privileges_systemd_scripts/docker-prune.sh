@@ -16,7 +16,6 @@ if [ "$(uname)" = Darwin ]; then
 fi
 
 docker container prune -f --filter "until=48h"
-docker image prune -f
-# much force | very prune | no reset for the wicked (
+# much force | very prune | no rest for the wicked
 docker images --filter "until=48h" -q | xargs -n 1 docker rmi -f
 
