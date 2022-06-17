@@ -22,12 +22,11 @@ _add_to_PATH "/usr/local/opt/gnu-getopt/bin"  || true
 _add_to_MANPATH "/usr/local/opt/gnu-getopt/share/man"  || true
 
 # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
-# otherwise 3.6 will end up being resolved first
+# otherwise these python versions will be resolved before latest
 #
-# python 3.6
-_add_to_PATH "$HOME/.pyenv/versions/3.6.13/bin"  || true
 # python 3.8
-_add_to_PATH "$HOME/.pyenv/versions/3.8.10/bin"  || true
+python_38_path="/usr/local/opt/python@3.8/libexec/bin"
+_add_to_PATH "$python_38_path"  || true
 
 
 # python 3.10 = default
