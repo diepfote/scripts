@@ -12,7 +12,7 @@ export SYSTEMD_COLORS=0
 # used in sniff & httpdump
 export _ngrep_interface=wlp4s0
 
-if [ -z "$IN_CONTAINER" ]; then
+if [ -z "$NOT_HOST_ENV" ]; then
   _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
   export _vpn_systemd_unit
 fi
@@ -347,7 +347,7 @@ alias xsel=xclip
 
 
 gdb-gef () {
-if [ -z "$IN_CONTAINER" ]; then
+if [ -z "$NOT_HOST_ENV" ]; then
   gdb -q gef -x ~/.gef-startup
 else
   gdb -q -ex gef

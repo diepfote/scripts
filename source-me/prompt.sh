@@ -8,7 +8,7 @@ unset PS1
 
 BASH_HELPER_FILENAME="bash-helper"
 
-if [ -n "$IN_CONTAINER" ]; then
+if [ -n "$NOT_HOST_ENV" ]; then
   BASH_HELPER_FILENAME="bash-helper-linux"
 fi
 

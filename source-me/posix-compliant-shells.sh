@@ -9,12 +9,12 @@ if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
    [ "$(hostname)" = docker-desktop ] || \
    [[ "$(hostname)" =~ lima* ]] || \
    [ "$(id -u --name 2>/dev/null)" = build-user ]; then
-  export IN_CONTAINER=true
+  export NOT_HOST_ENV=true
 else
-  export IN_CONTAINER=''
+  export NOT_HOST_ENV=''
 fi
 
-if [ -z "$IN_CONTAINER" ]; then
+if [ -z "$NOT_HOST_ENV" ]; then
 
   if [ "$(tty)" = /dev/tty1 ] && \
      [ "$(uname)" = Linux ]; then
