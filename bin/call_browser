@@ -21,7 +21,11 @@ if [ "$(uname)" = Darwin ]; then
   fi
 
   set -x
-  /usr/local/bin/chrome-cli open "$@"  1>/dev/null 2>&1
+  if ! /usr/local/bin/chrome-cli open "$@"  1>/dev/null 2>&1; then
+    # remove last argument
+    set -- "${@:1:$(($#-1))}"
+    open -a 'Google Chrome' "$@"
+  fi
   set +x
 else
   source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
