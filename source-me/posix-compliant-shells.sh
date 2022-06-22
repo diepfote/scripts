@@ -137,6 +137,7 @@ alias grep='grep \
               --exclude-dir=.pytest_cache \
               --exclude-dir=htmlcov \
               --exclude="*.html" \
+              --exclude=build.*trace \
               --exclude=Session.vim \
               --color'
 
