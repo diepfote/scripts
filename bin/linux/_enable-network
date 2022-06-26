@@ -1,31 +1,45 @@
 #!/usr/bin/env bash
 
-set -o pipefail  # propagate errors
 set -u  # exit on undefined
-set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+set +u
+source ~/Documents/scripts/source-me/common-functions.sh
 source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
+set -u
 
 cleanup () {
   set +x
 }
 
 set -x
-__restart_unit_if is-active 'wpa_supplicant@wlp4s0.service'
-set -x
-__restart_unit_if is-active 'dhcpcd@wlp4s0.service'
-set -x
-__restart_unit_if is-failed 'dhcpcd@wlp4s0.service'
-set -x
+
+unit='wpa_supplicant@wlp4s0.service'
+if [ "$(systemctl is-active "$unit")" != active ]; then
+   sudo systemctl restart "$unit"
+fi
+unset unit
+
+unit='dhcpcd@wlp4s0.service'
+if [ "$(systemctl is-active "$unit")" != active ]; then
+   sudo systemctl restart "$unit"
+fi
+if [ "$(systemctl is-failed "$unit")" != active ]; then
+   sudo systemctl restart "$unit"
+fi
+unset unit
 
 
 # shellcheck disable=SC2154
+__stop_related_units_if_active "$_vpn_systemd_unit"
 if [ "$_vpn_systemd_unit" != None ]; then
-  __stop_related_units_if_active "$_vpn_systemd_unit"
-__restart_unit_if_inactive "$_vpn_systemd_unit"
+  unit="$_vpn_systemd_unit"
+  if [ "$(systemctl is-active "$unit")" != active ]; then
+     sudo systemctl restart "$unit"
+  fi
+  unset unit
+
 fi
 set -x
 

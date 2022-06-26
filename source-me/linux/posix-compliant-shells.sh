@@ -237,19 +237,24 @@ __stop_related_units_if_active ()
 {
   local unit="$1"
 
-  for unit_to_stop in $(systemctl list-units | command grep -E '^\s*openvpn-client' | command grep -v "$unit" | awk '{ print $1 }'); do
+  while IFS='' read -r unit_to_stop; do
     set -x
     sudo systemctl stop "$unit_to_stop"
     set +x
-  done
+  done < <(systemctl list-units | command grep -E '^\s*openvpn-client' | command grep -v "$unit" | awk '{ print $1 }')
 }
 
 __restart_unit_if () {
   local check="$1"  # e.g. 'is-active'
   local unit="$2"  # e.g. 'dhcpcd@wlp4s0.service'
+  result=''
+  result="$3"
 
-  set +x
-  if [ ! "$(systemctl "$check" "$unit")" = active ]; then
+  if [ -z "$result" ]; then
+    result=inactive
+  fi
+
+  if [ "$(systemctl "$check" "$unit")" != "$result" ]; then
      sudo systemctl restart "$unit"
   fi
 }
