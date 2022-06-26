@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+xset -b  # disable bell
+setxkbmap -option "ctrl:nocaps"  # change caps-lock to ctrl
+
 GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
 GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
 export GIT GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL
