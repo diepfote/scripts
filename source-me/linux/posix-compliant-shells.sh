@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
-xset -b  # disable bell
-setxkbmap -option "ctrl:nocaps"  # change caps-lock to ctrl
+if [ -z "$NOT_HOST_ENV" ]; then
+  # used in sniff & httpdump
+  export _ngrep_interface=wlp4s0
+
+  xset -b  # disable bell
+  setxkbmap -option "ctrl:nocaps"  # change caps-lock to ctrl
+
+  _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
+  export _vpn_systemd_unit
+fi
+
 
 GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
 GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
@@ -11,15 +20,6 @@ export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
 
 export SYSTEMD_COLORS=0
-
-# used in sniff & httpdump
-export _ngrep_interface=wlp4s0
-
-if [ -z "$NOT_HOST_ENV" ]; then
-  _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
-  export _vpn_systemd_unit
-fi
-
 
 _add_to_PATH "$HOME/Documents/scripts/bin/linux"  || true
 
