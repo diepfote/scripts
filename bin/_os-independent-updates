@@ -36,7 +36,7 @@ echo
 echo ------------------
 echo "[>] updating tmux plugins"
 
-git_execute_on_all_repos -c <(find ~/.tmux/plugins/  -maxdepth 1 -mindepth 1 -type d ! -name 'tpm') -- git pull
+git_execute_on_all_repos -c <(find ~/.tmux/plugins/  -maxdepth 1 -mindepth 1 -type d) -- git pull
 tmux source ~/.tmux.conf
 
 echo ------------------
