@@ -7,6 +7,9 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+source ~/Documents/scripts/source-me/common-functions.sh
+
+
 dvd_title="$(dvdbackup -i /dev/sr0 -I | grep 'DVD-Video information of the DVD with title' | sed 's#DVD-Video information of the DVD with title ##;s#^"##;s#"$##')"
 
 temp_dir="$(mktemp -d)"
@@ -14,9 +17,15 @@ cleanup () {
   set +x
   rm -r "$temp_dir"
 }
-set -x
+trap cleanup EXIT
 
+location_to_write_to="$(read_toml_setting ~/Documents/config/sync.conf movies)"
+if [ ! -d "$location_to_write_to" ]; then
+  location_to_write_to=~/Videos/movies_and_series
+fi
+
+set -x
 time dvdbackup -i /dev/sr0 -o "$temp_dir" -M
-time mkisofs -dvd-video -udf -o ~/Videos/movies_and_series/"$dvd_title".iso  "$temp_dir/$dvd_title"
+time mkisofs -dvd-video -udf -o "$location_to_write_to"/"$dvd_title".iso  "$temp_dir/$dvd_title"
 
 
