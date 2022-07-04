@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+dvd_title="$(dvdbackup -i /dev/sr0 -I | grep 'DVD-Video information of the DVD with title' | sed 's#DVD-Video information of the DVD with title ##;s#^"##;s#"$##')"
+
+temp_dir="$(mktemp -d)"
+cleanup () {
+  set +x
+  rm -r "$temp_dir"
+}
+set -x
+
+time dvdbackup -i /dev/sr0 -o "$temp_dir" -M
+time mkisofs -dvd-video -udf -o ~/Videos/movies_and_series/"$dvd_title".iso  "$temp_dir/$dvd_title"
+
+
