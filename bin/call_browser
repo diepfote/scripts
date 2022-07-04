@@ -6,7 +6,6 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-additional_args=()
 
 if [ "$(uname)" = Darwin ]; then
 
@@ -21,11 +20,20 @@ if [ "$(uname)" = Darwin ]; then
   fi
 
   set -x
-  if ! /usr/local/bin/chrome-cli open "$@"  1>/dev/null 2>&1; then
+
+  set +u
+  if [ -n "$FIREFOX" ]; then
+    # remove last argument
+    set -- "${@:1:$(($#-1))}"
+    /Applications/Firefox.app/Contents/MacOS/firefox --private-window "$@"
+  elif ! /usr/local/bin/chrome-cli open "$@"  1>/dev/null 2>&1; then
+    set -u
     # remove last argument
     set -- "${@:1:$(($#-1))}"
     open -a 'Google Chrome' "$@"
   fi
+  set -u
+
   set +x
 else
   source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
