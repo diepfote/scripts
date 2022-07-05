@@ -151,7 +151,7 @@ cleanup () {
 echo =====================
 echo "Start: $(date)"
 
-if [ -n "$DISABLE_REMOTE_LOGIN" ]; then
+if [ -z "$DISABLE_REMOTE_LOGIN" ]; then
   echo
   set -x
   sudo systemsetup -f -setremotelogin off
