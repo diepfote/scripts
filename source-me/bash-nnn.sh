@@ -54,10 +54,6 @@ n ()
             rm -f "$NNN_TMPFILE" > /dev/null
     fi
 
-    if [ "$(uname)" = Darwin ]; then
-      source ~/Documents/scripts/source-me/common-functions.sh
-      n_empty-trash
-
-    fi
+    n_empty-trash
 }
 

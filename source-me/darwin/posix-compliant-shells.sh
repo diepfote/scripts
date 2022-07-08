@@ -105,22 +105,6 @@ task () {
   fi
 }
 
-n_empty-trash () {
-  local dir=~/.local/share/Trash
-  if [ ! -e "$dir/files" ]; then
-    return
-  fi
-
-  ls -alh "$dir"/files
-
-  echo 'Do you want to empty the trash?'
-  if yesno; then
-    set -u
-    rm -rf "${dir:?}"/*
-    set +u
-  fi
-}
-
 
 mute-active-microphone () {
   osascript -e "set volume input volume 0"
