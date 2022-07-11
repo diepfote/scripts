@@ -79,6 +79,9 @@ pacman-get-required-by-for-upgradeable
 set -x
 while ! "${pacman_cmd[@]}" "$@"; do
   sleep 1
+
+  # do not fetch updates -> we do not review them in vim in this loop
+  pacman_cmd=('sudo' 'pacman' '-Su')
 done
 
 for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
