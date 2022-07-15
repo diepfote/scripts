@@ -20,7 +20,7 @@ _w-pkg-update_completions()
   completions+=(--no-lima)
   completions+=(--no-disable-remote-login)
   completions+=(--mac-os-updates-only)
-  completions+=(--cc-internal-upgrade-only)
+  completions+=(--cc-internal-pkg-update)
 
 
   case "${prev_word}" in

@@ -43,12 +43,12 @@ mac-os-updates () {
 
 _help() {
 cat <<EOF
-USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--mac-os-updates-only|--cc-internal-upgrade-only]
+USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--mac-os-updates-only|--cc-internal-pkg-update]
 
 FLAGS:
 -g                           greedy option for brew
 -r                           (re-)install xcode commandline tools, then exit immediately
---cc-internal-upgrade-only   upgrade cc internal pkgs, then exit
+--cc-internal-pkg-update     update cc internal pkgs, then exit
 --no-lima                    do not start lima vm
 --mac-os-updates-only        check for mac os udpates, start updates, then exit immediately
 --no-disable-remote-login    do not disable remote login in Mac OS settings
@@ -76,7 +76,7 @@ while [ $# -gt 0 ]; do
     shift
     ;;
 
-    --cc-internal-upgrade-only)
+    --cc-internal-pkg-update)
     cc-update-internal-pkgs
     shift
     exit
