@@ -16,7 +16,10 @@ fi
 
 if [ -z "$NOT_HOST_ENV" ]; then
 
-  if [ "$(tty)" = /dev/tty1 ] && \
+  if [[ $- != *i* ]]; then
+    # non-interactive, do not start tmux or i3-gaps
+    :
+  elif [ "$(tty)" = /dev/tty1 ] && \
      [ "$(uname)" = Linux ]; then
     # startxfce4
     startx  # i3 based on ~/.xinitrc
@@ -416,9 +419,9 @@ _dl-youtube-filter()
   local url="$1"
   shift
 
-  cmd=('youtube-dl' --sleep-interval '5' --max-sleep-interval '20' '--print-json' '-w' '--add-metadata' "$@" -- "$url")
+  cmd=('youtube-dl' --sleep-interval '5' --max-sleep-interval '20' '-w' '--add-metadata' "$@" -- "$url")
   set -x
-  "${cmd[@]}" | jq ._filename
+  "${cmd[@]}"
   set +x
 }
 
