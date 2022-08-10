@@ -142,6 +142,7 @@ w-git-cleanup () {
   # run `pull` and `delete-gone-branches`
   w-git_execute_on_all_repos  git update
 
+  source ~/Documents/scripts/cc/source-me/posix-compliant-shells.sh
   cc-clone-all-cc-deploy-repositories
 }
 
