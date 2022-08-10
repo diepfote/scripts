@@ -315,8 +315,10 @@ fi
 mac-os-updates
 
 echo -e '\n--------\nw-git-cleanup\n'
+set +e
 w-git-cleanup
+set -e
 
-
+echo
 echo "End: $(date)"
 echo =====================

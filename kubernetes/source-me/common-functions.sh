@@ -85,8 +85,14 @@ ocy () {
 
 
 set-kubecontext () {
-  export KUBECONFIG=~/.kube/"$1"
   unset _all_namespaces  # reset custom namespace array for completions
+
+  if [ -z "$1" ]; then
+    unset KUBECONFIG
+    return
+  fi
+
+  export KUBECONFIG=~/.kube/"$1"
 }
 
 set-openstack-cloud () {
