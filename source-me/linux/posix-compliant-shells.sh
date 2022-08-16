@@ -293,7 +293,6 @@ xinput-reset-mouse-buttons () {
 }
 
 yay_cache=~/.cache/yay
-sed_command_yay_update_based_on_checksums='/^(pkg(ver|rel)=|(sha256|md5)sums[^\s]*=)/d'
 yay-generate-PKGBUILD-checksum () {
 
   local debug=''
@@ -338,9 +337,10 @@ yay-generate-PKGBUILD-checksum () {
   fi
 
   if [ -n "$debug" ]; then
-    sed -r "$sed_command_yay_update_based_on_checksums" PKGBUILD | vimn -
+    ~/Documents/python/tools/archlinux-yay-remove-package-info.py PKGBUILD | vimn -
   else
-    sed -r "$sed_command_yay_update_based_on_checksums" PKGBUILD | sha256sum > "$output_file"
+    ~/Documents/python/tools/archlinux-yay-remove-package-info.py PKGBUILD | sha256sum > "$output_file"
+
   fi
   ls -alh "$output_file"
 }

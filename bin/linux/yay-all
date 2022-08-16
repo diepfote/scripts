@@ -28,7 +28,7 @@ _yay-update-based-on-checksum () {
   fi
 
   (cd "$yay_cache" && yay -G "$pkg_name")
-  if  sed -r "$sed_command_yay_update_based_on_checksums" "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
+  if ~/Documents/python/tools/archlinux-yay-remove-package-info.py "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
     echo
     set -x
     yay --noconfirm -Sa "$pkg_name"
