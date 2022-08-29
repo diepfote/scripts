@@ -92,7 +92,7 @@ done
 
 if [ "${command[0]}" = 'find' ]; then
   set -x
-  "${command[@]}" "$find_path" "$@"
+  "${command[@]}" "$find_path" -path "*/.git" -prune -o "$@"
   set +x
   exit
 elif [ "${command[0]}" = 'grep' ]; then
