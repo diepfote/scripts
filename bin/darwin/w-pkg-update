@@ -315,9 +315,14 @@ fi
 mac-os-updates
 
 echo -e '\n--------\nw-git-cleanup\n'
+
 set +e
-w-git-cleanup
+filename=/tmp/_w-pkg-status
+echo "[.] follow along via \`tail -F $filename\`."
+# TODO color output -> `less -R "$filename"`
+w-git-cleanup > "$filename" 2>&1
 set -e
+
 
 echo
 echo "End: $(date)"
