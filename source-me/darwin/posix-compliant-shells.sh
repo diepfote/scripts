@@ -114,6 +114,13 @@ unmute-active-microphone () {
   osascript -e "set volume input volume 100"
 }
 
+# fix pulumi pop-ups
+firewall-restart () {
+  sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate off
+  sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+}
+
+
 open_mac-os_app () {
   local app="$1"
   shift
