@@ -879,6 +879,7 @@ _reset-wrapper () {
 
 reset-dot-files () {
   _reset-wrapper ~/Documents/dot-files
+  (cd ~/Documents/dot-files && make)
 }
 reset-function () {
   _reset-wrapper ~/.config/fish/functions
