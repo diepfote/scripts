@@ -206,7 +206,7 @@ echo -e '\n--------\npip\n'
 #
 python_outdated_cmd=(python3 -E -m pip list --outdated --format=freeze)
 python_install_cmd=(python3 -E -m pip install --upgrade)
-grep_outdated_cmd=(grep -v '^\-e')
+grep_outdated_cmd=(grep -v '^\\-e')
 grep_install_cmd=(grep -v 'already satisfied')
 cut_cmd=(cut -d '=' -f 1)
 
