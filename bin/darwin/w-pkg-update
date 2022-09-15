@@ -254,6 +254,7 @@ unset -f python_update_pkg
 
 
 echo -e '\n--------\nruby\n'
+additional_args=('')  # global only
 for additional_arg in "${additional_args[@]}"; do
   print_additional_arg_info "$additional_arg"
   gem update "$additional_arg"  # requires gem install rubygems-update

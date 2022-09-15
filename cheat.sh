@@ -144,6 +144,7 @@ elif [ "$extension" = html ] && [ "${command[0]}" != 'nvim' ] ; then
 
   call_browser "file://$temp_file"
 else
+  # not html and either `lessc` or `nvim`
   if [ $# -eq 0 ]; then
     set -- "$find_path"
   else
