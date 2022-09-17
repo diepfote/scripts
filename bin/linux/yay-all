@@ -8,8 +8,10 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+source ~/Documents/scripts/source-me/spinner.sh
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
+
 
 # TODO add items if you want to use this functionality!
 # I set this elsewhere
@@ -18,14 +20,26 @@ pkgs_with_saved_checksums=()
 source ~/Documents/scripts/private/source-me/linux/posix-compliant-shells.sh
 
 
-trap "set +x" EXIT
+cleanup() {
+  set +x
 
+  if [ -n "$SPINNER_PID" ]; then
+    kill "$SPINNER_PID" >/dev/null 2>&1
+  fi
+}
+trap cleanup EXIT
+
+
+_yay-update-pkgbuild () {
+  pkg_name="$1"
+  if ! yay -Qu | grep "$pkg_name"; then
+    echo "  [.] PKGBUILD for \`$pkg_name\` updated."
+    return
+  fi
+}
 
 _yay-update-based-on-checksum () {
   pkg_name="$1"
-  if ! yay -Qu | grep "$pkg_name"; then
-    return
-  fi
 
   (cd "$yay_cache" && yay -G "$pkg_name")
   if ~/Documents/python/tools/archlinux-yay-remove-package-info.py "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
@@ -39,7 +53,7 @@ _yay-update-based-on-checksum () {
     source ~/Documents/scripts/source-me/colors.sh
     # shellcheck disable=SC2154
     echo -en "$RED"
-    echo     "[!] checksums do not match."
+    echo     "[!] checksums do not match for \`$pkg_name\`."
     # shellcheck disable=SC2154
     echo -e "     Not updating automatically!$NC"
     exit 1
@@ -62,13 +76,18 @@ _yay-update-anything-else () {
 }
 
 
-if [ $# -gt 0 ] && [ "$1" = --dry-run ]; then
+# default
+pacman_cmd=('sudo' 'pacman' '-Syu')
+if [ "$1" = --dry-run ]; then
+  # used to check if pacman arguments are valid
   shift
   pacman_cmd=('pacman' '-Syu')
   "${pacman_cmd[@]}" "$@" || true
   exit
-else
-  pacman_cmd=('sudo' 'pacman' '-Syu')
+elif [ "$1" = --repeat ]; then
+  shift
+  # do not update database -> just did that presumably
+  pacman_cmd=('sudo' 'pacman' '-Su')
 fi
 
 
@@ -83,9 +102,22 @@ while ! "${pacman_cmd[@]}" "$@"; do
   # do not fetch updates -> we do not review them in vim in this loop
   pacman_cmd=('sudo' 'pacman' '-Su')
 done
+set +x
 
+
+set +u
+spinner
+SPINNER_PID="$!"
+set -u
+echo '[.] updating pkgbuilds for AUR packages.'
+for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
+  _yay-update-pkgbuild "$pkg_name"  || true
+done
+echo '[.] attempting to upgrade AUR packages.'
 for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
   _yay-update-based-on-checksum "$pkg_name"  || true
 done
+set -x
 _yay-update-anything-else
+set +x
 

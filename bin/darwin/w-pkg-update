@@ -145,7 +145,7 @@ set -u
 cleanup () {
   set +x
 
-  kill "$SPINNER_PID"
+  kill "$SPINNER_PID" >/dev/null 2>&1
 }
 
 echo =====================
