@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
+grep_command=(grep -v Running)
+
+if [ "$1" = -r ]; then
+  shift
+  grep_command=(grep -vE 'Running\s*0*\s*[0-9a-z]+$')
+fi
 
 command=(kubectl get pod "$@")
-echo "${command[@]}" | grep -v Running
-"${command[@]}" | grep -v Running
+echo "${command[*]} | ${grep_command[*]}"
+"${command[@]}" 2>/dev/null | "${grep_command[@]}"
