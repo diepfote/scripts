@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+
+command=(kubectl get pod "$@")
+echo "${command[@]}" | grep -v Running
+"${command[@]}" | grep -v Running
