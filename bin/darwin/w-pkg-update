@@ -318,7 +318,7 @@ mac-os-updates
 echo -e '\n--------\nw-git-cleanup\n'
 
 set +e
-filename=/tmp/_w-pkg-status
+filename=/tmp/_w-git-cleanup.log
 echo "[.] follow along via \`tail -F $filename\`."
 # TODO color output -> `less -R "$filename"`
 w-git-cleanup > "$filename" 2>&1
