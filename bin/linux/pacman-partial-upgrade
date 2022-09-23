@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+
+# Partial upgrades are not recommended. Be cautious.
+# Why did I write it?
+# USB, audio and video drivers and container runtimes require
+# a restart after kernel module updates.
+
+# $ grep -riE 'linuz|kernel|init' /usr/share/libalpm/hooks/ | grep 'Target = '
+# /usr/share/libalpm/hooks/60-mkinitcpio-remove.hook:Target = usr/lib/modules/*/vmlinuz
+# /usr/share/libalpm/hooks/60-mkinitcpio-remove.hook:Target = mkinitcpio
+# /usr/share/libalpm/hooks/60-mkinitcpio-remove.hook:Target = mkinitcpio-git
+# /usr/share/libalpm/hooks/90-mkinitcpio-install.hook:Target = usr/lib/modules/*/vmlinuz
+# /usr/share/libalpm/hooks/90-mkinitcpio-install.hook:Target = usr/lib/initcpio/*
+#
+# TODO
+# `TERRIBLE PERFORMANCE` ... convert to Go binary -> run `pkgfile -l <pkg>` concurrently
+
+
+cleanup() {
+  set +x
+}
+trap cleanup EXIT
+
+
+_print_pkgs() {
+  set +x
+
+  for pkg in "$@"; do
+    echo -n "$pkg",
+  done
+}
+
+pkgs_to_ignore=()
+while read -r pkg; do
+  # echo "$pkg"
+  if pkgfile -l "$pkg" | grep -qE 'usr/lib/(modules|initcpio)'; then
+    echo [.] Ignoring due to pkgfile match. \`"$pkg"\`
+    pkgs_to_ignore+=("$pkg")
+  elif echo "$pkg" | grep -qE '^linux-|^mkinitcpio-|^initramfs'; then
+    echo [.] Ignoring due to pkg name match. \`"$pkg"\`
+    pkgs_to_ignore+=("$pkg")
+  fi
+done < <(pacman -Sup --print-format '%n')
+
+set -x
+sudo pacman -Su --ignore "$(_print_pkgs "${pkgs_to_ignore[@]}")"
+
