@@ -32,16 +32,14 @@ trap cleanup EXIT
 
 _yay-update-pkgbuild () {
   pkg_name="$1"
-  if ! yay -Qu | grep "$pkg_name"; then
-    echo "  [.] PKGBUILD for \`$pkg_name\` updated."
-    return
-  fi
+
+  (cd "$yay_cache" && yay -G "$pkg_name")
+  echo "  [.] PKGBUILD for \`$pkg_name\` updated."
 }
 
 _yay-update-based-on-checksum () {
   pkg_name="$1"
 
-  (cd "$yay_cache" && yay -G "$pkg_name")
   if ~/Documents/python/tools/archlinux-yay-remove-package-info.py "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
     echo
     set -x
@@ -63,7 +61,7 @@ _yay-update-based-on-checksum () {
 _yay-update-anything-else () {
   # e.g. ^$|pkg1|pkg2
   grep_pattern="$(for elem in "${pkgs_with_saved_checksums[@]}"; do echo -n "$elem|"; done | sed 's#|$## ; s#^#\^\$|#')"
-  if yay -Qyyua | grep -vE "$grep_pattern"; then
+  if echo "${upgradeable_AURs[*]}" | grep -vE "$grep_pattern"; then
     set -x
     # TODO list packages first
     local command
@@ -75,6 +73,14 @@ _yay-update-anything-else () {
   fi
 }
 
+_yay_set_upgradeable_AURs () {
+  upgradeable_AURs=()
+
+  while read -r line; do
+    upgradeable_AURs+=("$line")
+  done < <(yay -Qua)
+
+}
 
 # default
 pacman_cmd=('sudo' 'pacman' '-Syu')
@@ -109,12 +115,22 @@ set +u
 spinner
 SPINNER_PID="$!"
 set -u
+
+_yay_set_upgradeable_AURs
 echo '[.] updating pkgbuilds for AUR packages.'
 for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
-  _yay-update-pkgbuild "$pkg_name"  || true
+  if ! echo "${upgradeable_AURs[*]}" | grep "$pkg_name"; then
+    # not upgradable. skipping
+    continue
+  fi
+  _yay-update-pkgbuild "$pkg_name"
 done
 echo '[.] attempting to upgrade AUR packages.'
 for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
+  if ! echo "${upgradeable_AURs[*]}" | grep "$pkg_name"; then
+    # not upgradable. skipping
+    continue
+  fi
   _yay-update-based-on-checksum "$pkg_name"  || true
 done
 set -x
