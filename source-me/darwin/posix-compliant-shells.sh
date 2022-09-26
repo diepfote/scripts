@@ -50,10 +50,34 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
 export LDFLAGS="-L/usr/local/opt/openssl@3/lib:$LDFLAGS"
 export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
 
-export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig:PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --
 
+
+# --
+# readline shared object was missing. so I added all exports recommended by the packages
+
+# $ pass asdf/blub -c
+# dyld[54483]: Library not loaded: '/usr/local/opt/readline/lib/libreadline.8.dylib'
+#   Referenced from: '/usr/local/Cellar/gnupg/2.3.7_1/bin/gpg'
+#   Reason: tried: '/usr/local/opt/readline/lib/libreadline.8.dylib' (no such file), '/usr/local/lib/libreadline.8.dylib' (no such file), '/usr/lib/libreadline.8.dylib' (no such file)
+
+
+  # readline is keg-only, which means it was not symlinked into /usr/local,
+  # because macOS provides BSD libedit.
+
+  # For compilers to find readline you may need to set:
+  #   export LDFLAGS="-L/usr/local/opt/readline/lib"
+  #   export CPPFLAGS="-I/usr/local/opt/readline/include"
+
+  # For pkg-config to find readline you may need to set:
+  #   export PKG_CONFIG_PATH="/usr/local/opt/readline/lib/pkgconfig"
+
+export LDFLAGS="-L/usr/local/opt/readline/lib:$LDFLAGS"
+export CPPFLAGS="-I/usr/local/opt/readline/include:CPPFLAGS"
+export PKG_CONFIG_PATH="/usr/local/opt/readline/lib/pkgconfig:$PKG_CONFIG_PATH"
+# --
 
 
 export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
