@@ -193,6 +193,10 @@ alias map="xargs -n1"
 # common functions START
 #
 
+date-from-epoch () {
+  date --iso-8601=seconds -d@"$(expr substr "$1" 1 10)"
+}
+
 hex-little-endian () {
   if [ -z "$1" ]; then
     vim -c ':%!xxd -e' -
