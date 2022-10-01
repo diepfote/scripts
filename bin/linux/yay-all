@@ -6,6 +6,7 @@ set -u  # exit on undefined
 set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 
 source ~/Documents/scripts/source-me/spinner.sh
@@ -33,7 +34,7 @@ trap cleanup EXIT
 _yay-update-pkgbuild () {
   pkg_name="$1"
 
-  (cd "$yay_cache" && yay -G "$pkg_name")
+  (set -x; cd "$yay_cache" && yay -G "$pkg_name")
   echo "  [.] PKGBUILD for \`$pkg_name\` updated."
 }
 
@@ -62,10 +63,10 @@ _yay-update-anything-else () {
   # e.g. ^$|pkg1|pkg2
   grep_pattern="$(for elem in "${pkgs_with_saved_checksums[@]}"; do echo -n "$elem|"; done | sed 's#|$## ; s#^#\^\$|#')"
   if echo "${upgradeable_AURs[*]}" | grep -vE "$grep_pattern"; then
-    set -x
     # TODO list packages first
     local command
     command=(yay -Syua)
+    set -x
     while ! "${command[@]}"; do
       :
     done
@@ -133,7 +134,6 @@ for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
   fi
   _yay-update-based-on-checksum "$pkg_name"  || true
 done
-set -x
 _yay-update-anything-else
 set +x
 
