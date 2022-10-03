@@ -86,6 +86,10 @@ mapfile -d $'\0' tmp_dirs < <(find ~/ -maxdepth 3 -type d -name '.pulumi' -print
 all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
 unset tmp_dirs
 
+mapfile -d $'\0' tmp_dirs < <(find ~/ -maxdepth 3 -type d -name '.venv' -print0)
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
 mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 6 -type d -name '*CacheStorage*' -print0)
 all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
 unset tmp_dirs
