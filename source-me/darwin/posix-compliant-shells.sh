@@ -2,42 +2,42 @@
 
 source ~/Documents/scripts/source-me/darwin/common-functions.sh
 
-_add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"  || true
-_add_to_MANPATH "/usr/local/opt/coreutils/libexec/gnuman"  || true
+_add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"
+_add_to_MANPATH "/usr/local/opt/coreutils/libexec/gnuman"
 
-_add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"  || true
-_add_to_MANPATH "/usr/local/opt/findutils/libexec/gnuman"  || true
+_add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"
+_add_to_MANPATH "/usr/local/opt/findutils/libexec/gnuman"
 
-_add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"  || true
-_add_to_MANPATH "/usr/local/opt/gnu-sed/libexec/gnuman"  || true
+_add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"
+_add_to_MANPATH "/usr/local/opt/gnu-sed/libexec/gnuman"
 
-_add_to_PATH "/usr/local/opt/gawk/libexec/gnubin"  || true
-_add_to_MANPATH "/usr/local/opt/gawk/libexec/gnuman"  || true
+_add_to_PATH "/usr/local/opt/gawk/libexec/gnubin"
+_add_to_MANPATH "/usr/local/opt/gawk/libexec/gnuman"
 
 
-_add_to_PATH "/usr/local/opt/grep/libexec/gnubin"  || true
-_add_to_MANPATH "/usr/local/opt/grep/libexec/gnuman"  || true
+_add_to_PATH "/usr/local/opt/grep/libexec/gnubin"
+_add_to_MANPATH "/usr/local/opt/grep/libexec/gnuman"
 
-_add_to_PATH "/usr/local/opt/gnu-getopt/bin"  || true
-_add_to_MANPATH "/usr/local/opt/gnu-getopt/share/man"  || true
+_add_to_PATH "/usr/local/opt/gnu-getopt/bin"
+_add_to_MANPATH "/usr/local/opt/gnu-getopt/share/man"
 
 # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
 # otherwise these python versions will be resolved before latest
 #
 # python 3.8
 python_38_path="/usr/local/opt/python@3.8/libexec/bin"
-_add_to_PATH "$python_38_path"  || true
+_add_to_PATH "$python_38_path"
 
 
 # python 3.10 = default
 python_310_path="/usr/local/opt/python@3.10/libexec/bin"
 ln -sf "$python_310_path"/python "$python_310_path"/python3
-_add_to_PATH "$python_310_path"  || true
-_add_to_PATH "$HOME/Library/Python/3.10/bin"  || true
+_add_to_PATH "$python_310_path"
+_add_to_PATH "$HOME/Library/Python/3.10/bin"
 # export LDFLAGS="-L/usr/local/opt/python@3.10/lib:$LDFLAGS"
 # export PKG_CONFIG_PATH="/usr/local/opt/python@3.10/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-_add_to_PATH "$HOME/Documents/custom-ansible-version/.venv/bin/"  resolve-last || true
+_add_to_PATH "$HOME/Documents/custom-ansible-version/.venv/bin/"  resolve-last
 
 # --
 # ruby compiler settings
@@ -178,9 +178,9 @@ w-git-cleanup () {
 }
 
 
-_add_to_PATH "$HOME/Documents/scripts/bin/darwin"  || true
-_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"  || true
-_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"  || true
+_add_to_PATH "$HOME/Documents/scripts/bin/darwin"
+_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
+_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
 
 
 export PASSWORD_STORE_DIR=~/.password-store-work
