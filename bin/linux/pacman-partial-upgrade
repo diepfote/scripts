@@ -5,7 +5,8 @@ set -o pipefail  # propagate errors
 set -u  # exit on undefined
 set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
-shopt -s failglob  # error on unexpaned globs
+# Disable as this broke if greps did not return results
+# shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 
@@ -22,8 +23,6 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 # /usr/share/libalpm/hooks/90-mkinitcpio-install.hook:Target = usr/lib/modules/*/vmlinuz
 # /usr/share/libalpm/hooks/90-mkinitcpio-install.hook:Target = usr/lib/initcpio/*
 #
-# TODO
-# `TERRIBLE PERFORMANCE` ... convert to Go binary -> run `pkgfile -l <pkg>` concurrently
 
 
 cleanup() {
