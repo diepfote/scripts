@@ -9,6 +9,60 @@ shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 
+
+_help() {
+cat <<EOF
+USAGE: yay-all [FLAGS]
+
+FLAGS:
+  --dry-run              used in \`pkg-update\`
+  --repeat               run \`pacman -Su\` instead of \`pacman -Syu\`
+  --yay-all-no-confirm   add  \`--noconfirm\` flag to pacman runs
+EOF
+}
+
+
+# Parse arguments
+DRY_RUN=''
+YAY_ALL_NO_CONFIRM=''
+REPEAT=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -h|--help)
+    _help
+    exit 0
+
+    ;;
+    --dry-run)
+    DRY_RUN=true
+    shift
+    ;;
+
+    --yay-all-no-confirm)
+    YAY_ALL_NO_CONFIRM=true
+    shift
+    ;;
+
+    --repeat)
+    REPEAT=true
+    shift
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+
+
 source ~/Documents/scripts/source-me/spinner.sh
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
@@ -85,14 +139,12 @@ _yay_set_upgradeable_AURs () {
 
 # default
 pacman_cmd=('sudo' 'pacman' '-Syu')
-if [ "$1" = --dry-run ]; then
+if [ -n "$DRY_RUN" ]; then
   # used to check if pacman arguments are valid
-  shift
   pacman_cmd=('pacman' '-Syu')
   "${pacman_cmd[@]}" "$@" || true
   exit
-elif [ "$1" = --repeat ]; then
-  shift
+elif [ -n "$REPEAT" ]; then
   # do not update database -> just did that presumably
   pacman_cmd=('sudo' 'pacman' '-Su')
 fi
@@ -100,14 +152,20 @@ fi
 
 # update package info for listing
 echo n | "${pacman_cmd[@]}" || :
-pacman-get-required-by-for-upgradeable
+
+if [ -z "$YAY_ALL_NO_CONFIRM" ]; then
+  pacman-get-required-by-for-upgradeable
+else
+  additional_arguments=('--noconfirm')
+  pacman_cmd+=("${additional_arguments[@]}")
+fi
 
 set -x
 while ! "${pacman_cmd[@]}" "$@"; do
   sleep 1
 
   # do not fetch updates -> we do not review them in vim in this loop
-  pacman_cmd=('sudo' 'pacman' '-Su')
+  pacman_cmd=('sudo' 'pacman' '-Su' "${additional_arguments[@]}")
 done
 set +x
 
