@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# Usage:
+# $ find  -type f -print0 | xargs -0 -n 1 ffmpeg-normalize-audio
+# $ ffmpeg-normalize-audio <filepath>
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+cleanup () {
+  set +x
+}
+
+file="$1"
+filename="$(basename "$file")"
+filename_no_ext="${filename%.*}"
+ext="${filename##*.}"
+output_file="$(dirname "$file")"/"$filename_no_ext".audio_normalized."$ext"
+
+
+decibel_to_normalized_to="$(ffmpeg -i "$file" -af "volumedetect" -vn -sn -dn -f null /dev/null 2>&1 |\
+    grep max_volume |\
+    sed -r 's#.*max_volume: ##g' |\
+    sed 's# ##g' | sed 's#-##g')"
+  set +x
+
+
+case "$ext" in
+  mp3)
+  echo '[>] codec limp3lame'
+  set -x
+  ffmpeg -i "$file" -af "volume=$decibel_to_normalized_to" -c:v copy -c:a libmp3lame -q:a 2 "$output_file"
+  set +x
+  ;;
+
+  m4a|mp4)
+  echo '[>] codec aac'
+  set -x
+  if ffmpeg -i "$file" -af "volume=$decibel_to_normalized_to" -c:v copy -c:a aac -b:a 128k "$output_file"; then
+
+    mv "$output_file" "$file"
+  fi
+
+  set +x
+  ;;
+
+  *)
+  # shellcheck disable=SC2154
+  echo -e "${RED}[!] error. extension \`$ext\` for \`$file\`$NC."
+  ;;
+
+esac
+

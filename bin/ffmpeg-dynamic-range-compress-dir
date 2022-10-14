@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+dir="$1"
+tmpdir="$(mktemp -d)"
+
+cleanup () {
+  set +x
+  rm -r "$tmpdir"
+}
+
+set -x
+# shellcheck disable=SC2016
+#
+# -cmin -300 ... no older than 5 hours
+if find "$dir" ! -name '*dynamic-range-compressed*' \
+       -name '*.m4a' \
+       -cmin -300 \
+       -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; ffmpeg -i "$0" -filter_complex "compand=attacks=0:points=-45/-900|-40/-5|-5/-5|0/-5:gain=3" "$new"' {} \; ; then
+       # -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; echo "$new"' {} \;
+
+  mv "$tmpdir"/*.m4a "$dir"
+fi

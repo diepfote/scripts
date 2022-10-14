@@ -290,35 +290,6 @@ ffmpeg-save-screenshot () {
 
 }
 
-ffmpeg-normalize-audio-for-video-or-audio-file () {
-  local file filename filename_no_ext ext output_file decibel_to_normalized_to
-  file="$1"
-  filename="$(basename "$file")"
-  # shellcheck disable=SC2001
-  filename_no_ext="$(echo "$filename" | sed 's/\.[^.]*$//')"
-  # shellcheck disable=SC2001
-  ext="$(echo "$filename" | sed 's#.*[^.]\.##')"
-  output_file="$(dirname "$file")"/"$filename_no_ext".audio_normalized."$ext"
-
-
-  set -x
-  decibel_to_normalized_to="$(ffmpeg -i "$file" -af "volumedetect" -vn -sn -dn -f null /dev/null 2>&1 |\
-                                grep max_volume | sed -r 's#.*max_volume: ##g' | sed 's# ##g' | sed 's#-##g')"
-  set +x
-
-
-  if [ "$ext" = mp3 ]; then
-    echo '[>] mp3'
-    ffmpeg -i "$file" -af "volume=$decibel_to_normalized_to" -c:v copy -c:a libmp3lame -q:a 2 "$output_file"
-  elif [ "$ext" = m4a ] || [ "$ext" = mp4 ]; then
-    echo '[>] m4a'
-    ffmpeg -i "$file" -af "volume=$decibel_to_normalized_to" -c:v copy -c:a aac -b:a 128k "$output_file"
-  else
-    # shellcheck disable=SC2154
-    echo -e "${RED}[!] encountered unexpected extension '.$ext'$NC. No action was taken!"
-  fi
-}
-
 
 mpv () {
   (command mpv "$@" 1>/dev/null 2>/dev/null &)
