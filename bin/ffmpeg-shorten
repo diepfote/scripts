@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+# Usage:
+# $ find  -type f -print0 | xargs -0 -n 1 ffmpeg-shorten <start> <end>
+# $ ffmpeg-shorten <start> <end> <filepath>
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+cleanup () {
+  set +x
+}
+
+_help() {
+cat <<EOF
+USAGE: ffmpeg-shorten [--overwrite] START END FILENAME
+EOF
+}
+
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+
+# Parse arguments
+OVERWRITE=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --overwrite)
+    OVERWRITE=true
+    shift
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+start="$1"
+end="$2"
+file="$3"
+
+filename="$(basename "$file")"
+filename_no_ext="${filename%.*}"
+ext="${filename##*.}"
+output_file="$(dirname "$file")"/"$filename_no_ext".shortened."$ext"
+
+set -x
+if ffmpeg -i "$file" -ss "$start" -to "$end" "$output_file"; then
+
+  if [ -n "$OVERWRITE" ]; then
+    mv "$output_file" "$file"
+  fi
+fi
+set +x
