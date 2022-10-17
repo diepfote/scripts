@@ -356,9 +356,9 @@ alias xsel=xclip
 
 gdb-gef () {
 if [ -z "$NOT_HOST_ENV" ]; then
-  gdb -q gef -x ~/.gef-startup
+  gdb -q gef -x ~/.gef-startup "$@"
 else
-  gdb -q -ex gef
+  gdb -q -ex gef "$@"
 fi
 }
 gdb-p () {
