@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+grep_command=(grep -v Ready)
+
+if [ "$1" = -r ]; then
+  shift
+  grep_command=(grep -vE 'Ready\s+[A-z,-]+\s+[0-9]+d')
+fi
+
+command=(kubectl get node "$@")
+echo "${command[*]} | ${grep_command[*]}"
+"${command[@]}" 2>/dev/null | "${grep_command[@]}"
