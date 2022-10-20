@@ -204,11 +204,8 @@ echo -e '\n--------\npip\n'
 #
 # $ python -E ...
 #
-python_outdated_cmd=(python3 -E -m pip list --outdated --format=freeze)
 python_install_cmd=(python3 -E -m pip install --upgrade)
-grep_outdated_cmd=(grep -v '^\\-e')
 grep_install_cmd=(grep -v 'already satisfied')
-cut_cmd=(cut -d '=' -f 1)
 
 print_additional_arg_info () {
   local additional_arg="$1"
@@ -243,10 +240,10 @@ for additional_arg in "${additional_args[@]}"; do
   print_additional_arg_info "$additional_arg"
   while read -r pkg; do
     python_update_pkg "$pkg" "$additional_arg"
-  done < <("${python_outdated_cmd[@]}" "$additional_arg" | "${grep_outdated_cmd[@]}" | "${cut_cmd[@]}")
+  done < <(python3 -E -m pip list --outdated --format=json "$additional_arg" | jq --raw-output '.[].name')
 done
 
-unset python_outdated_cmd python_install_cmd grep_outdated_cmd grep_install_cmd cut_cmd
+unset python_install_cmd grep_install_cmd additional_args
 unset -f python_update_pkg
 
 #  PYTHON END
