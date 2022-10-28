@@ -55,12 +55,12 @@ _set_urls () {
   case "$repo_type" in
     'extra/' | 'core/')
       url="$(echo "$core_base_url" | sed "s#$PACKAGE_PLACEHOLDER#$pkgname#")"
-      browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")$pkgname)"
+      browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")$pkgname"
       ;;
 
     'multilib/' | 'community/')
       url="$(echo "$community_base_url" | sed "s#$PACKAGE_PLACEHOLDER#$pkgname#")"
-      browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")$pkgname)"
+      browser_url="$(echo "$browser_main_base_url" | sed "s#$REPOTYPE_PLACEHOLDER#$repo_type#")$pkgname"
       ;;
 
     'aur/' | '' | '*')

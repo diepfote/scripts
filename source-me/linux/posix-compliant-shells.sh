@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
 if [ -z "$NOT_HOST_ENV" ]; then
   # used in sniff & httpdump
   export _ngrep_interface=wlp4s0
