@@ -10,6 +10,7 @@ set -e  # exit on non-zero return value
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 
+sudo pacman -Sy
 
 # Partial upgrades are not recommended. Be cautious.
 # Why did I write it?

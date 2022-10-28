@@ -56,10 +56,10 @@ fi
 export EDITOR=nvim
 export VISUAL=nvim
 
-# this breaks no-standard lesskey locations (`-k`)
+# this breaks non-standard lesskey locations (`-k`)
 #
-export LESSSECURE=1
-readonly LESSSECURE
+# export LESSSECURE=1
+# readonly LESSSECURE
 
 export MANPAGER=less
 
