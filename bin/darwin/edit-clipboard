@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# snatched from https://github.com/ttaylorr/dotfiles/blob/work-gh/bin/edit-clipboard
+
+main() {
+  if [ ! -x "$(which pbpaste)" ]; then
+    echo "fatal: could not access clipboard, aborting..." >&2
+    exit 1
+  fi
+
+  if [ -z "$EDITOR" ]; then
+    echo "fatal: \$EDITOR is unset, aborting..." >&2
+    exit 1
+  fi
+
+  tmp="$(mktemp)"
+  pbpaste > "$tmp"
+
+  $EDITOR "$tmp"
+
+  if [ "0" -ne "$?" ]; then
+    echo "fatal: $EDITOR exited in a dirty state, aborting..." >&2
+    exit 1
+  fi
+
+  pbcopy < "$tmp"
+  rm "$tmp"
+}
+
+main;
+
