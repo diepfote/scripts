@@ -120,8 +120,8 @@ _rclone_verbose_sync_operation () {
   local command
   command=(rclone sync --exclude '.DS_Store' --exclude '.*.un~' --exclude '.~lock*' -L -v)
   echo -n "${command[*]} "
-  # display src dst without fqdn
-  echo "$*" | sed -r 's#[^/]+?(/.*)(\s+)[^/]+?(/.*)#\1\2\3#g'
+  # display src dst without fastmail fqdn
+  echo "$*" | sed -r 's#[a-z0-9]+.fastmail.com(/files)#placeholder\1#g'
   "${command[@]}" "$@"
 }
 
