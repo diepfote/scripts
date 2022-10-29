@@ -84,6 +84,10 @@ ocy () {
 }
 
 
+# shellcheck disable=SC2119
+unset-kubecontext () { set-kubecontext; }
+
+# shellcheck disable=SC2120
 set-kubecontext () {
   unset _all_namespaces  # reset custom namespace array for completions
 
