@@ -119,7 +119,7 @@ if [ -n "$use_system_open" ]; then
   if [ "$(uname)" = Darwin ]; then
     open "$file"
   else
-    xdg-open "$file"
+    xdg-open "$file" &
   fi
 
 elif [ "$extension" = html ] && [ "${command[0]}" != 'nvim' ] ; then
