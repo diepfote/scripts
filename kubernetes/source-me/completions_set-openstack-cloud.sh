@@ -10,7 +10,7 @@ _openstack_cloud_completions()
   local cur_word="${COMP_WORDS["$COMP_CWORD"]}"
 
   if [ -z "$_clouds" ]; then
-    read -r -d '' -a _clouds < <(grep -E '^  [A-Za-z0-9]+' ~/.config/openstack/clouds.yaml | sed -r 's#:##;s#\s*##g' | grep -v expiration)
+    read -r -d '' -a _clouds < <(grep -E '^  [A-Za-z0-9]+' clouds.yaml | sed -r 's#:##;s#\s*##g' | grep -v expiration)
     export _clouds
   fi
 
