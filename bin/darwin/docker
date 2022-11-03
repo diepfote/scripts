@@ -1,11 +1,100 @@
 #!/usr/bin/env bash
 
-if [ "$1" = compose ]; then
-  # support new docker command line calls
-  # `docker compose up` instead of `docker-compose up`
-  shift
-  docker-compose "$@"
-  exit
-fi
+set_docker_rm_args () {
+  local FORCE=''
+  while [ $# -gt 0 ]; do
+  # check if forced `rm`
+  key="$1"
+    case "$key" in
+      -f)
+      shift
+      FORCE=true
+      ;;
+
+      --)
+      shift
+      break
+      ;;
+
+      *)
+      # keep
+      save_args+=("$1")
+      shift
+      ;;
+    esac
+  done
+
+  if [ -n "$FORCE" ]; then
+    set -- "${save_args[@]}"
+    save_args=()
+
+    # check if user provided `-t n` option for forceful `rm`
+    TIMEOUT_SET_BY_USER=''
+    while [ $# -gt 0 ]; do
+      key="$1"
+        case "$key" in
+          --)
+          shift
+          break
+          ;;
+
+          -t)
+          TIMEOUT_SET_BY_USER=true
+          save_args+=("$1")
+          save_args+=("$2")
+          shift 2
+          # keep
+          ;;
+
+          *)
+          # keep
+          save_args+=("$1")
+          shift
+          ;;
+      esac
+    done
+
+    if [ -z "$TIMEOUT_SET_BY_USER" ]; then
+      # set timeout to 0 if the user did not provide a custom timeout (overrides default of `-t 10`)
+      save_args+=(-f -t 0)
+    fi
+  fi
+}
+
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    compose)
+    shift
+    docker-compose "$@"
+    exit
+    ;;
+
+    rm)
+    shift
+    save_args+=(rm)
+    set_docker_rm_args "$@"
+    set -- "${save_args[@]}"
+    break
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+
 limactl shell default podman "$@"
 
