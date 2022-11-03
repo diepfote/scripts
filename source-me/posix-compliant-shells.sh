@@ -48,7 +48,7 @@ if [ -z "$NOT_HOST_ENV" ]; then
     return  # do not source anything if outside tmux sessions
   fi
 else
-  HISTFILE=~/.container/.bash_history
+  HISTFILE=~/.not_host_env/.bash_history_x
   export USER=build-user
 fi
 
