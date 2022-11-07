@@ -164,6 +164,12 @@ defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
 ###############################################################################
+# XQuartz                                                                     #
+###############################################################################
+
+defaults write org.macosforge.xquartz.X11 app_to_run /usr/bin/true
+
+###############################################################################
 # Dock, Dashboard, and hot corners                                            #
 ###############################################################################
 

@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
 set_docker_rm_args () {
   local FORCE=''
   while [ $# -gt 0 ]; do
@@ -64,12 +72,6 @@ set_docker_rm_args () {
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
-    compose)
-    shift
-    docker-compose "$@"
-    exit
-    ;;
-
     rm)
     shift
     save_args+=(rm)
@@ -96,5 +98,5 @@ key="$1"
 done
 
 
-limactl shell default podman "$@"
+limactl shell default docker "$@"
 
