@@ -69,9 +69,16 @@ set_docker_rm_args () {
   fi
 }
 
+command=(docker)
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
+    compose)
+      shift
+      command=(docker-compose)
+      break
+      ;;
+
     rm)
     shift
     save_args+=(rm)
@@ -98,5 +105,5 @@ key="$1"
 done
 
 
-limactl shell default docker "$@"
+limactl shell colima -- sudo "${command[@]}" "$@"
 

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-limactl shell default docker compose "$@"
+docker "$@"
 
