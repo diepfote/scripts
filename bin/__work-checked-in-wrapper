@@ -10,7 +10,7 @@ shopt -s failglob  # error on unexpaned globs
 temp="$(mktemp -d)"
 
 _cleanup () {
-  git config --global color.ui auto
+  git config --global color.status auto
   rm -rf "$temp"
 
   _post-pass-private
@@ -34,7 +34,7 @@ conf_file="$1"
 shift
 command=('git' 'status' '-sb')
 
-git config --global color.ui always  # like grep --color=always
+git config --global color.status always  # like grep --color=always
 
 while read -r repo_dir; do
   # leave at the top
