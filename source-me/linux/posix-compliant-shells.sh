@@ -180,7 +180,9 @@ edit_iptables_rules () {
 
 edit_radare2_history () {
   vim -c ':$' ~/.cache/radare2/history
-
+}
+edit_rizin_history () {
+  vim -c ':$' ~/.cache/rizin/history
 }
 
 
