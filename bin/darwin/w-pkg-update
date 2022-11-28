@@ -189,6 +189,12 @@ if [ -z "$DO_NOT_START_LIMA" ]; then
   set +x
   disown "$!"
   sleep 1
+
+  set -x
+  limactl start default  >/dev/null 2>&1  &
+  set +x
+  disown "$!"
+  sleep 1
 fi
 
 # LIMA END
