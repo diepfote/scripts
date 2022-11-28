@@ -15,8 +15,8 @@ if [ "$(uname)" = Darwin ]; then
     set -- "$url" -i
   else
     # last arg is assumed to be the url
-    url="${@:$#}"
-    set -- "$url" -n
+    url=("${@:$#}")
+    set -- "${url[@]}" -n
   fi
 
   set -x
@@ -30,19 +30,20 @@ if [ "$(uname)" = Darwin ]; then
     set -u
     # remove last argument
     set -- "${@:1:$(($#-1))}"
-    open -a 'Google Chrome' "$@"
+    google-chrome "$@"
   fi
   set -u
 
   set +x
 else
+  # shellcheck disable=SC1090
   source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
   # -N ... allow network access
 
-  url="$1"
+  url=("$1")
 
   set -x
-  firewardened-chromium -N "$url"  >/dev/null 2>&1  &
+  firewardened-chromium -N "${url[@]}"  >/dev/null 2>&1  &
   set +x
 fi
 
