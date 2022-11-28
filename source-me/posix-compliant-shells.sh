@@ -466,7 +466,11 @@ list-zombies-and-parents () {
 edit-bash-history () {
   # :$ to start at the end of the file
   vim -c ':$' "$HISTFILE"
-  (sleep 300 && rm ~/.local/share/nvim/undo/*bash_history* 1>/dev/null 2>&1  &)
+
+  # snatched from https://superuser.com/a/1692033
+  neovim_undo_dir="$(nvim -e +"redir>>/dev/stdout | echo &undodir | redir END" -scq | tail -n +2)"
+
+  (sleep 300 && rm "$neovim_undo_dir"/*bash_history* 1>/dev/null 2>&1  &)
 }
 
 _ask-to-empty-trash () {
