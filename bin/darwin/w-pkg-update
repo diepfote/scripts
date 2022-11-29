@@ -276,12 +276,6 @@ while read -r package; do
 done < <(npm -g outdated --parseable --depth=0 | cut -d: -f2)
 
 
-echo -e '\n--------\nrust cargo\n'
-# cargo install cargo-update
-# https://crates.io/crates/cargo-update
-cargo install-update -a
-
-
 echo -e '\n--------\nkrew\n'
 kubectl krew update
 kubectl krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
