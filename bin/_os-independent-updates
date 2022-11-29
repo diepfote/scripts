@@ -12,11 +12,6 @@ cleanup () {
 }
 trap cleanup EXIT
 
-echo -e '\n--------\nrust cargo\n'
-# cargo install cargo-update
-# https://crates.io/crates/cargo-update
-cargo install-update -a
-
 
 echo
 echo ------------------
@@ -30,12 +25,10 @@ nvim -c 'execute ":GoUpdateBinaries" | :qa!'
 
 set +x
 
+echo
 pushd ~/.vim/plugged/coc.nvim || exit 1
 yarn install
 popd
-
-echo ------------------
-
 
 echo
 echo ------------------
@@ -44,6 +37,9 @@ echo "[>] updating tmux plugins"
 git_execute_on_all_repos -c <(find ~/.tmux/plugins/  -maxdepth 1 -mindepth 1 -type d) -- git pull
 tmux source ~/.tmux.conf
 
-echo ------------------
+echo -e '\n--------\nrust cargo\n'
+# cargo install cargo-update
+# https://crates.io/crates/cargo-update
+cargo install-update -a
 echo
 
