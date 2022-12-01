@@ -835,6 +835,9 @@ log-function () {
 log-docker () {
   _log-wrapper ~/Documents/dockerfiles "$@"
 }
+log-cheat () {
+  _log-wrapper ~/Documents/cheatsheets "$@"
+}
 log-mutt () {
   _log-wrapper ~/.mutt "$@"
 }

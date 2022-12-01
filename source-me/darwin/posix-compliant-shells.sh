@@ -175,6 +175,7 @@ w-git-cleanup () {
 
   source ~/Documents/scripts/cc/source-me/posix-compliant-shells.sh
   cc-clone-all-cc-deploy-repositories
+  cc-clone-all-project-repositories
 }
 
 
