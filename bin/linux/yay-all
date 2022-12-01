@@ -195,3 +195,4 @@ done
 _yay-update-anything-else
 set +x
 
+sudo -k
