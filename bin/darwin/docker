@@ -76,7 +76,7 @@ if [ "$DOCKER_BACKING_INSTANCE" = default ]; then
   compose_command=podman-compose
 elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
   command=(sudo docker)
-  compose_command=docker-compose
+  compose_command=(sudo docker-compose)
 else
   command=("echo 'invalid $DOCKER_BACKING_INSTANCE'")
 fi
@@ -86,7 +86,7 @@ key="$1"
   case "$key" in
     compose)
       shift
-      command=("$compose_command")
+      command=("${compose_command[@]}")
       break
       ;;
 
