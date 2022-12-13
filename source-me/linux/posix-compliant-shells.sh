@@ -136,34 +136,6 @@ firewardened-chromium () {
 }
 
 
-pacman-get-required-by-for-upgradeable () {
-  _pacman-get-required-by-for-upgradeable () {
-    pkgs=()
-
-    while IFS='' read -r line; do
-      pkgs+=( "$line" )
-    done < <(pacman -Sup --print-format '%n')
-
-    # no upgradable packages?
-    if [ ${#pkgs[@]} -gt 0 ]; then
-      echo "${pkgs[@]}" | xargs pacman -Qii 2>&1 | \
-        grep -E '^\s*$|^Description|^Name|^Required By|^Optional For'
-    fi
-  }
-
-  pkg_info=()
-
-  while IFS='' read -r line; do
-    pkg_info+=( "$line" )
-  done < <(_pacman-get-required-by-for-upgradeable)
-
-  if [ "${#pkg_info[@]}" -gt 1 ]; then
-    # snatched from https://stackoverflow.com/a/15692004
-    printf '%s\n' "${pkg_info[@]}" | vim -c 'set buftype=nofile' -
-  fi
-}
-
-
 export PASSWORD_STORE_DIR=~/.password-store-private
 
 
