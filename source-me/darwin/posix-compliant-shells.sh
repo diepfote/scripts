@@ -29,13 +29,13 @@ python_38_path="/usr/local/opt/python@3.8/libexec/bin"
 _add_to_PATH "$python_38_path"
 
 
-# python 3.10 = default
-python_310_path="/usr/local/opt/python@3.10/libexec/bin"
-ln -sf "$python_310_path"/python "$python_310_path"/python3
-_add_to_PATH "$python_310_path"
-_add_to_PATH "$HOME/Library/Python/3.10/bin"
-# export LDFLAGS="-L/usr/local/opt/python@3.10/lib:$LDFLAGS"
-# export PKG_CONFIG_PATH="/usr/local/opt/python@3.10/lib/pkgconfig:$PKG_CONFIG_PATH"
+# python 3.11 = default
+python_311_path="/usr/local/opt/python@3.11/libexec/bin"
+ln -sf "$python_311_path"/python "$python_311_path"/python3
+_add_to_PATH "$python_311_path"
+_add_to_PATH "$HOME/Library/Python/3.11/bin"
+export LDFLAGS="-L/usr/local/opt/python@3.11/lib:$LDFLAGS"
+export PKG_CONFIG_PATH="/usr/local/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 _add_to_PATH "$HOME/Documents/custom-ansible-version/.venv/bin/"  resolve-last
 
