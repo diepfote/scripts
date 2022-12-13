@@ -161,6 +161,19 @@ tmutil-compare-last-2-backups () {
 }
 
 
+python-clear-deploy-cache () {
+  if [ $# -lt 1 ]; then
+    set -- .
+  fi
+  set -x
+  poetry cache clear --all --no-interaction -vv "$1"
+  rm -rf ~/Library/Caches/pypoetry/{cache,artifacts}
+  rm -rf ~/.pulumi
+  rm -rf "$1"/.{venv,pulumi}
+  set +x
+}
+
+
 w-checked-in () {
   __work-checked-in-wrapper ~/Documents/config/work-repo.conf
 }
