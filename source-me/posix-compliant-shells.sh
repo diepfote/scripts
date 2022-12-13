@@ -425,6 +425,18 @@ lessc () {
 }
 
 
+python-poetry-clear-cache () {
+  if [ $# -lt 1 ]; then
+    set -- .
+  fi
+  set -x
+  poetry cache clear --all --no-interaction -vv "$1"
+  rm -rf ~/Library/Caches/pypoetry/{cache,artifacts}
+  rm -rf "$1"/.{venv,pulumi}
+  set +x
+}
+
+
 pdf-extract-pages () {
   gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
      -dFirstPage="$3" -dLastPage="$4" \
@@ -836,7 +848,7 @@ log-docker () {
   _log-wrapper ~/Documents/dockerfiles "$@"
 }
 log-cheat () {
-  _log-wrapper ~/Documents/cheatsheets "$@"
+  _log-wrapper ~/Documents/dockerfiles "$@"
 }
 log-mutt () {
   _log-wrapper ~/.mutt "$@"
