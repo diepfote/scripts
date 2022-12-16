@@ -20,6 +20,8 @@ _w-pkg-update_completions()
   completions+=(--no-lima)
   completions+=(--no-disable-remote-login)
   completions+=(--mac-os-updates-only)
+  completions+=(--reinstall-xcode)
+  completions+=(--no-mac-os-updates)
   completions+=(--cc-internal-pkg-update)
 
 
