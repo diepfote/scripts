@@ -19,7 +19,7 @@ set -x
 #
 # -cmin -300 ... no older than 5 hours
 if find "$dir" ! -name '*dynamic-range-compressed*' \
-       -name '*.m4a' \
+       -regex '.*\.\(m4a\|mp4\|mov\)' \
        -cmin -300 \
        -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; ffmpeg -i "$0" -filter_complex "compand=attacks=0:points=-45/-900|-40/-5|-5/-5|0/-5:gain=3" "$new"' {} \; ; then
        # -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; echo "$new"' {} \;
