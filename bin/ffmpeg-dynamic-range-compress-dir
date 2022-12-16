@@ -6,6 +6,10 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+# set to val of second arg or `45`
+min_db_level="${2:-45}"
+export min_db_level
+
 dir="$1"
 tmpdir="$(mktemp -d)"
 
@@ -21,7 +25,7 @@ set -x
 if find "$dir" ! -name '*dynamic-range-compressed*' \
        -regex '.*\.\(m4a\|mp4\|mov\)' \
        -cmin -300 \
-       -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; ffmpeg -i "$0" -filter_complex "compand=attacks=0:points=-45/-900|-40/-5|-5/-5|0/-5:gain=3" "$new"' {} \; ; then
+       -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; ffmpeg -i "$0" -filter_complex "compand=attacks=0:points=-"$min_db_level"/-900|-"$((( $min_db_level - 5 )))"/-5|-5/-5|0/-5:gain=3" "$new"' {} \; ; then
        # -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; echo "$new"' {} \;
 
   mv "$tmpdir"/*.m4a "$dir"
