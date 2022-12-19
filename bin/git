@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -x
+if [ "$1" = push ]; then
+  if git-remote-gcrypt --check "$(grep url .git/config  | awk '{ print $3 }')" >/dev/null 2>&1; then
+    git pull
+  fi
+fi
+set +x
+
+if [ "$(uname)" = Darwin ]; then
+  command=(/usr/local/bin/git)
+elif [ "$(uname)" = Linux ]; then
+  command=(/usr/bin/git)
+else
+  command=(echo Unsupported OS)
+fi
+
+"${command[@]}" "$@"
