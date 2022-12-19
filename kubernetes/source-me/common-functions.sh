@@ -99,7 +99,16 @@ set-kubecontext () {
   export KUBECONFIG=~/.kube/"$1"
 }
 
+# shellcheck disable=SC2119
+unset-openstack-cloud () { set-openstack-cloud; }
+
+# shellcheck disable=SC2120
 set-openstack-cloud () {
+  if [ -z "$1" ]; then
+    unset OS_CLOUD
+    return
+  fi
+
   export OS_CLOUD="$1"
 }
 
