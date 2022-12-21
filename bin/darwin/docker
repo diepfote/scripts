@@ -115,5 +115,15 @@ key="$1"
   esac
 done
 
-limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"
+if ! limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"; then
+
+  if [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
+    # if docker was manually provisioned it is set up per user
+    unset "command[0]"
+    if ! limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"; then
+      echo "[.] ${YELLOW}Manually provision via:$NC" >&2
+      echo "    ${GREEN}\$${NC} colima exec -- sudo apk update && colima exec -- sudo apk add docker docker-compose && colima exec -- sudo rc-update add docker && colima exec -- sudo service docker start" >&2
+    fi
+  fi
+fi
 
