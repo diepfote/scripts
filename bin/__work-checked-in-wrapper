@@ -10,7 +10,6 @@ shopt -s failglob  # error on unexpaned globs
 temp="$(mktemp -d)"
 
 _cleanup () {
-  git config --global color.status auto
   rm -rf "$temp"
 
   _post-pass-private
@@ -29,12 +28,11 @@ _post-pass-private () {
 trap _cleanup EXIT
 
 file="$temp"/work-checked-in
+GIT_COLOR_OPT=(-c color.status=always)
 
 conf_file="$1"
 shift
-command=('git' 'status' '-sb')
-
-git config --global color.status always  # like grep --color=always
+command=('git' "${GIT_COLOR_OPT[@]}" 'status' '-sb')
 
 while read -r repo_dir; do
   # leave at the top
@@ -57,13 +55,6 @@ while read -r repo_dir; do
   fi
 
   # -----------------
-
-  if [ "$repo_dir" = "$HOME/Documents/dot-files" ]; then
-    # prevent line 9 from showing up
-    git_execute_on_repo -d "$repo_dir" -- "${command[@]}" | grep -v .gitconfig >> "$file"
-
-    continue
-  fi
 
   # if there is a glob
   if echo "$repo_dir" | grep -E '\*$' >/dev/null; then
