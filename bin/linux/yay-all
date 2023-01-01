@@ -158,10 +158,11 @@ _yay-update-anything-else () {
 _yay_set_upgradeable_AURs () {
   upgradeable_AURs=()
 
+  set -x
   while read -r line; do
     upgradeable_AURs+=("$line")
   done < <(yay -Qua)
-
+  set +x
 }
 
 # default
