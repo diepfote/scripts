@@ -61,7 +61,7 @@ export VISUAL=nvim
 # export LESSSECURE=1
 # readonly LESSSECURE
 
-export MANPAGER=less
+export MANPAGER='nvim +Man!'
 
 
 
