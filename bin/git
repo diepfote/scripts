@@ -10,10 +10,14 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 
 if [ "$1" = push ]; then
-  if git-remote-gcrypt --check "$(grep url .git/config  | awk '{ print $3 }')" >/dev/null 2>&1; then
+  if git-remote-gcrypt --check "$(grep url .git/config |\
+       awk '{ print $3 }' |\
+       head -n1 |\
+       sed 's#^.*gcrypt::## ; s/#.*"$//')" >/dev/null 2>&1; then
     # shellcheck disable=SC2016
-    echo '[.] running pull for `git-remote-gcrypt` repo' >&2
+    echo '[.] running pull for `git-remote-gcrypt` repo before push' >&2
     git pull
+    echo '[.] --' >&2
   fi
 fi
 
