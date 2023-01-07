@@ -140,13 +140,12 @@ export PASSWORD_STORE_DIR=~/.password-store-private
 
 
 edit_pacman_conf () {
-  sudo nvim /etc/pacman.conf
+  vim /etc/pacman.conf
 }
 
 
 edit_iptables_rules () {
-  sudo nvim /etc/iptables/iptables.rules
-
+  vim /etc/iptables/iptables.rules
   sudo systemctl restart iptables.service
 }
 
