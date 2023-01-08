@@ -18,10 +18,26 @@ echo ------------------
 echo "[>] updating vim plugins and vim plug itself"
 set -x
 
-nvim -c 'PlugUpdate|:sleep 1|:q!|:q!'
-nvim -c 'PlugUpgrade|:sleep 1|:q!|:q!'
-nvim -c 'CocUpdateSync|:redraw|:sleep 1|:q!'
-nvim -c 'execute ":GoUpdateBinaries" | :qa!'
+plugin_update_log=/tmp/nvim-plugin-update.log
+
+echo > "$plugin_update_log"
+echo '[.] PlugUpdate' >> "$plugin_update_log"
+nvim -c "Bufferize PlugUpdate | :w >> $plugin_update_log | qa"
+
+echo '--' >> "$plugin_update_log"
+echo '[.] PlugUpgrade' >> "$plugin_update_log"
+nvim -c "Bufferize PlugUpgrade | :w >> $plugin_update_log | qa"
+
+echo '--' >> "$plugin_update_log"
+echo '[.] CocUpdateSync' >> "$plugin_update_log"
+nvim -c "Bufferize CocUpdateSync | :w >> $plugin_update_log | qa"
+
+echo '--' >> "$plugin_update_log"
+echo '[.] GoUpdateBinaries' >> "$plugin_update_log"
+nvim -c "redir >>$plugin_update_log | execute ':GoUpdateBinaries' | qa"
+
+cat "$plugin_update_log"
+echo
 
 set +x
 
