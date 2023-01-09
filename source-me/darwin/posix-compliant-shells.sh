@@ -94,7 +94,10 @@ export HOMEBREW_NO_ANALYTICS=1
 # Disable homebrew autoupdate
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-
+# fix gpg error: `gpg: public key decryption failed: Inappropriate ioctl for device`
+# snatched from https://stackoverflow.com/a/57591830
+GPG_TTY="$(tty)"
+export GPG_TTY
 
 alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
 alias yabai-enable-mouse-focus="sed -i -r 's/^# (yabai.*(autofocus|follows_focus on))/\1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
