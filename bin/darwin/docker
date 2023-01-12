@@ -122,7 +122,7 @@ if ! limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"; then
     unset "command[0]"
     if ! limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"; then
       echo "[.] ${YELLOW}Manually provision via:$NC" >&2
-      echo "    ${GREEN}\$${NC} colima exec -- sudo apk update && colima exec -- sudo apk add docker docker-compose && colima exec -- sudo rc-update add docker && colima exec -- sudo service docker start" >&2
+      echo "    ${GREEN}\$${NC} colima exec -- sudo apk update && colima exec -- sudo apk add docker docker-compose && colima exec -- sudo rc-update add docker && colima ssh -- sed -i -r 's#(.*buildkit.*: )true#\1false#' /etc/docker/daemon.json && colima exec -- sudo service docker start" >&2
     fi
   fi
 fi
