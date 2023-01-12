@@ -99,8 +99,7 @@ key="$1"
     ;;
 
     -h|--help)
-    _help
-    exit 0
+    break
     ;;
 
     --)
