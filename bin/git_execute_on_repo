@@ -97,5 +97,4 @@ fi
 if ! _run_command_in_dir "$@"; then
   echo -en "$YELLOW"; echo -e "No .git/ in $DIR$NC"
 fi
-echo
 

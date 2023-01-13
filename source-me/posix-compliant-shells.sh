@@ -934,12 +934,20 @@ _work-wrapper () {
       if [ "${command[1]}" = pull ] || \
          [ "${command[1]}" = fetch ]; then
         source ~/Documents/scripts/source-me/colors.sh
-        echo -e "${RED}Only running fetch!$NC"
+        echo ---- >&2
+        echo -e "${RED}Only running fetch!$NC" >&2
         command[1]=fetch
+        git_execute_on_repo -d "$repo_dir" "${command[@]}"
+        echo -e "${RED}Only running status!$NC" >&2
+        command[1]=status
+        command[2]=-sb
+        git_execute_on_repo -d "$repo_dir" "${command[@]}"
+        echo ---- >&2
       fi
+    else
+      git_execute_on_repo -d "$repo_dir" "${command[@]}"
     fi
 
-    git_execute_on_repo -d "$repo_dir" "${command[@]}"
   done <"$conf_file"
   set +x
 }
@@ -967,7 +975,8 @@ work-sync () {
 
   _work-wrapper "$conf_file" "${command[@]}"
 
-  echo 'Do you want to run video-syncer?'
+  echo >&2
+  echo 'Do you want to run video-syncer?' >&2
   if yesno; then
     video-sync
   fi

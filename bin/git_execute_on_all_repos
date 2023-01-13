@@ -70,6 +70,7 @@ while IFS='' read -r repo_dir; do
     # allow variable re-evaluation -> globbing
     for _repo_dir in $repo_dir; do
       git_execute_on_repo -d "$_repo_dir" -- "$@"
+      echo
     done
 
     # do not execute on the glob
@@ -77,6 +78,7 @@ while IFS='' read -r repo_dir; do
 
   else
     git_execute_on_repo -d "$repo_dir" -- "$@"
+    echo
   fi
 
 done <"$CONFIG_FILE"
