@@ -865,32 +865,32 @@ _reset-wrapper () {
 }
 
 reset-dot-files () {
-  _reset-wrapper ~/Documents/dot-files
+  _reset-wrapper ~/Documents/dot-files "$@"
   (cd ~/Documents/dot-files && make)
 }
 reset-function () {
-  _reset-wrapper ~/.config/fish/functions
+  _reset-wrapper ~/.config/fish/functions "$@"
 }
 reset-cheat () {
-  _reset-wrapper ~/Documents/cheatsheets
+  _reset-wrapper ~/Documents/cheatsheets "$@"
 }
 reset-docker () {
-  _reset-wrapper ~/Documents/dockerfiles
+  _reset-wrapper ~/Documents/dockerfiles "$@"
 }
 reset-mutt () {
-  _reset-wrapper ~/.mutt
+  _reset-wrapper ~/.mutt "$@"
 }
 reset-go () {
-  _reset-wrapper ~/Documents/golang/tools
+  _reset-wrapper ~/Documents/golang/tools "$@"
 }
 reset-python () {
-  _reset-wrapper ~/Documents/python/tools
+  _reset-wrapper ~/Documents/python/tools "$@"
 }
 reset-script () {
-  _reset-wrapper ~/Documents/scripts
+  _reset-wrapper ~/Documents/scripts "$@"
 }
 reset-vim () {
-  _reset-wrapper ~/.vim
+  _reset-wrapper ~/.vim "$@"
 }
 
 _status-wrapper () {

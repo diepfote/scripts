@@ -189,7 +189,7 @@ status-pacman-hooks () {
 }
 
 reset-firejail () {
-  _reset-wrapper ~/.config/firejail
+  _reset-wrapper ~/.config/firejail "$@"
 }
 
 #
