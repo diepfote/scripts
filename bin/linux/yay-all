@@ -50,6 +50,7 @@ EOF
 
 
 # Parse arguments
+PACMAN_DOWNLOAD_PACKAGES_ONLY=''
 DRY_RUN=''
 YAY_ALL_NO_CONFIRM=''
 REPEAT=''
@@ -178,15 +179,22 @@ elif [ -n "$REPEAT" ]; then
   pacman_cmd=('sudo' 'pacman' '-Su')
 fi
 
+if [ -n "$YAY_ALL_NO_CONFIRM" ]; then
+  additional_arguments=('--noconfirm')
+  pacman_cmd+=("${additional_arguments[@]}")
+fi
 
 # update package info for listing
 echo n | "${pacman_cmd[@]}" || :
 
-if [ -z "$YAY_ALL_NO_CONFIRM" ]; then
+if [ $# -gt 0 ]; then
+  if [ "$1" = -w ]; then
+    PACMAN_DOWNLOAD_PACKAGES_ONLY=true
+  fi
+fi
+
+if [ -z "$YAY_ALL_NO_CONFIRM" ] || [ -n "$REPEAT" ] || [ -z "$PACMAN_DOWNLOAD_PACKAGES_ONLY" ]; then
   pacman-get-required-by-for-upgradeable
-else
-  additional_arguments=('--noconfirm')
-  pacman_cmd+=("${additional_arguments[@]}")
 fi
 
 set -x
