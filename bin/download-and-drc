@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
+# Parse arguments
+LINK=''
+BATCH_FILE=''
+FOLDER_NAME=''
+DATE_STAMP=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --link)
+    LINK="$2"
+    shift 2
+    ;;
+
+    --batch-file)
+    BATCH_FILE="$2"
+    shift 2
+    ;;
+
+    --folder-name)
+    FOLDER_NAME="$2"
+    shift 2
+    ;;
+
+    --date-stamp)
+    DATE_STAMP="$2"
+    shift 2
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+
+system="$(uname)"
+if [ "$system" = Linux ]; then
+  set -x
+  dir=~/Videos/audio-only/"$FOLDER_NAME"
+  set +x
+elif [ "$system" = Darwin ]; then
+  set -x
+  dir=~/Movies/audio-only/"$FOLDER_NAME"
+  set +x
+fi
+
+cleanup () {
+  set +x
+  popd
+}
+trap cleanup EXIT
+
+set -x
+pushd "$dir"
+
+
+if [ -n "$LINK" ] && [ -n "$DATE_STAMP" ]; then
+  upload_filter="upload_date>=$(date '+%Y%m%d' --date="$DATE_STAMP")"
+  dl-youtube 140 "$LINK"  -i --match-filter "$upload_filter"
+elif [ -n "$BATCH_FILE" ]; then
+  dl-youtube 140 -a "$BATCH_FILE"
+else
+  echo 'No BATCH_FILE or DATE_STAMP + LINK'
+  exit 1
+fi
+
+
+ffmpeg-dynamic-range-compress-dir "$dir"
