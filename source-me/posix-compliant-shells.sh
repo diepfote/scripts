@@ -855,8 +855,13 @@ log-vim () {
 }
 
 _reset-wrapper () {
-  git_execute_on_repo -d "$1" git reset --hard
-  git_execute_on_repo -d "$1" git clean -df
+  dir="$1"
+  shift
+
+  if [ "$1" = --hard ]; then
+    git_execute_on_repo -d "$dir" git clean -df
+  fi
+  git_execute_on_repo -d "$dir" git reset "$@"
 }
 
 reset-dot-files () {
@@ -865,6 +870,9 @@ reset-dot-files () {
 }
 reset-function () {
   _reset-wrapper ~/.config/fish/functions
+}
+reset-cheat () {
+  _reset-wrapper ~/Documents/cheatsheets
 }
 reset-docker () {
   _reset-wrapper ~/Documents/dockerfiles
