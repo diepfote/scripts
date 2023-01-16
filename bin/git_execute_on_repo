@@ -59,14 +59,7 @@ fi
 
 
 _run_command_in_dir () {
-  if [ -z "$TRY_SUDO" ]; then
-    (cd "$DIR" && "$@")
-    return 0
-  elif [ -n "$USE_SUDO" ] && [ -n "$TRY_SUDO" ]; then
-    set -x
-    sudo chown "$USER" "$DIR"
-    set +x
-
+  if [ -n "$USE_SUDO" ] && [ -n "$TRY_SUDO" ]; then
     unset_chown () {
       set -x
       sudo chown root "$DIR"
@@ -75,15 +68,17 @@ _run_command_in_dir () {
     }
     trap unset_chown EXIT
 
-    if [ -d "$DIR/.git" ]; then
-      (cd "$DIR" && "$@")
-      return 0
-    else
-      return 1
-    fi
-  else
-    return 1
+    set -x
+    sudo chown "$USER" "$DIR"
+    set +x
   fi
+
+  if [ -d "$DIR/.git" ]; then
+    (cd "$DIR" && "$@")
+    return 0
+  fi
+
+  return 1
 }
 
 
