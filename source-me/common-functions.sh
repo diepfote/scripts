@@ -21,23 +21,6 @@ find-sorted () {
 }
 
 
-read_toml_setting () {
-  _help() {
-cat <<EOF
-
-USAGE: ${PURPLE}read_toml_setting$NC <CONF_FILE> <ITEM>
-
-EOF
-  }
-
-  # config_file = $1
-  # setting     = $2
-  if ! ~/Documents/python/tools/read_toml_setting.py "$@"; then
-    _help
-  fi
-
-}
-
 _add_to_MANPATH () {
   local path_to_add="$1"
 
