@@ -185,7 +185,7 @@ if [ -n "$YAY_ALL_NO_CONFIRM" ]; then
 fi
 
 # update package info for listing
-echo n | "${pacman_cmd[@]}" || :
+echo n | sudo pacman -Sy || true
 
 if [ $# -gt 0 ]; then
   if [ "$1" = -w ]; then
