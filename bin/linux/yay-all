@@ -193,7 +193,7 @@ if [ $# -gt 0 ]; then
   fi
 fi
 
-if [ -z "$YAY_ALL_NO_CONFIRM" ] || [ -n "$REPEAT" ] || [ -z "$PACMAN_DOWNLOAD_PACKAGES_ONLY" ]; then
+if [ -z "$YAY_ALL_NO_CONFIRM" ] || [ -z "$REPEAT" ] || [ -z "$PACMAN_DOWNLOAD_PACKAGES_ONLY" ]; then
   pacman-get-required-by-for-upgradeable
 fi
 
