@@ -43,7 +43,7 @@ if [ -z "$NOT_HOST_ENV" ]; then
     else
       default_tmux_cmd+=('new')
     fi
-    "${default_tmux_cmd[@]}"
+    exec "${default_tmux_cmd[@]}"
     HISTFILE=''
     return  # do not source anything if outside tmux sessions
   fi
