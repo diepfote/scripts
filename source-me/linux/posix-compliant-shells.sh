@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 if [ -z "$NOT_HOST_ENV" ]; then

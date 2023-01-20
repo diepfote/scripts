@@ -77,14 +77,26 @@ export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.git
 
 export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 
-
 export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
-
 source ~/Documents/scripts/source-me/common-functions.sh
-
 source ~/Documents/scripts/source-me/completions_*
 
+# -----------------------
+# extend PATH start
+#
+
+_add_to_PATH "$HOME/.bin"
+_add_to_PATH "$HOME/go/bin"
+_add_to_PATH "$HOME/.cargo/bin"
+_add_to_PATH "$HOME/Documents/scripts/bin"
+_add_to_PATH "$HOME/Documents/python/tools/bin"
+_add_to_PATH "$HOME/Documents/scripts/private/bin"
+_add_to_PATH "$HOME/Documents/dockerfiles/bin"
+
+#
+# extend PATH end
+# -----------------------
 
 # --------------------------
 # prompt style start
@@ -96,16 +108,6 @@ source ~/Documents/scripts/source-me/prompt.sh
 #
 # prompt style end
 # --------------------------
-
-
-
-_add_to_PATH "$HOME/.bin"  || true
-_add_to_PATH "$HOME/go/bin"  || true
-_add_to_PATH "$HOME/.cargo/bin"  || true
-_add_to_PATH "$HOME/Documents/scripts/bin"  || true
-_add_to_PATH "$HOME/Documents/python/tools/bin"  || true
-_add_to_PATH "$HOME/Documents/scripts/private/bin"  || true
-_add_to_PATH "$HOME/Documents/dockerfiles/bin"  || true
 
 
 
