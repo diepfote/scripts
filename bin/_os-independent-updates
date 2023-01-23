@@ -6,16 +6,37 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-
 cleanup () {
   set +x
 }
 trap cleanup EXIT
 
+# Parse arguments
+SKIP_RUST_CARGO=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --skip-rust-cargo)
+    SKIP_RUST_CARGO=true
+    shift
+    ;;
 
-echo
-echo ------------------
-echo "[>] updating vim plugins and vim plug itself"
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+
+echo >&2
+echo ------------------ >&2
+echo "[>] updating vim plugins and vim plug itself" >&2
 set -x
 
 plugin_update_log=/tmp/nvim-plugin-update.log
@@ -36,26 +57,29 @@ echo '--' >> "$plugin_update_log"
 echo '[.] GoUpdateBinaries' >> "$plugin_update_log"
 nvim -c "redir >>$plugin_update_log | execute ':GoUpdateBinaries' | qa"
 
-cat "$plugin_update_log"
-echo
+cat "$plugin_update_log" >&2
+echo >&2
 
 set +x
 
-echo
+echo >&2
 pushd ~/.vim/plugged/coc.nvim || exit 1
 yarn install
 popd
 
-echo
-echo ------------------
-echo "[>] updating tmux plugins"
+echo >&2
+echo ------------------ >&2
+echo "[>] updating tmux plugins" >&2
 
 git_execute_on_all_repos -c <(find ~/.tmux/plugins/  -maxdepth 1 -mindepth 1 -type d) -- git pull
 tmux source ~/.tmux.conf
 
-echo -e '\n--------\nrust cargo\n'
-# cargo install cargo-update
-# https://crates.io/crates/cargo-update
-cargo install-update -a
-echo
-
+if [ -z "$SKIP_RUST_CARGO" ]; then
+  echo -e '\n--------\n[>] rust cargo\n' >&2
+  # cargo install cargo-update
+  # https://crates.io/crates/cargo-update
+  cargo install-update -a
+  echo >&2
+else
+  echo -e '\n--------\n[...] skipping rust cargo\n' >&2
+fi
