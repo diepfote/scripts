@@ -16,6 +16,7 @@ _yay-all_completions()
   completions=()
   completions+=(-h)
   completions+=(--repeat)
+  completions+=(--list-only)
   completions+=(--yay-all-no-confirm)
   completions+=(--dry-run)
 

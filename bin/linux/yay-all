@@ -45,6 +45,7 @@ FLAGS:
   --dry-run              used in \`pkg-update\`
   --repeat               run \`pacman -Su\` instead of \`pacman -Syu\`
   --yay-all-no-confirm   add  \`--noconfirm\` flag to pacman runs
+  --list-only            list upgradable packages, then quit
 EOF
 }
 
@@ -54,6 +55,7 @@ PACMAN_DOWNLOAD_PACKAGES_ONLY=''
 DRY_RUN=''
 YAY_ALL_NO_CONFIRM=''
 REPEAT=''
+LIST_ONLY=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
@@ -74,6 +76,11 @@ key="$1"
 
     --repeat)
     REPEAT=true
+    shift
+    ;;
+
+    --list-only)
+    LIST_ONLY=true
     shift
     ;;
 
@@ -195,6 +202,9 @@ fi
 
 if [ -n "$YAY_ALL_NO_CONFIRM"  ] || [ -n "$REPEAT" ] || [ -n "$PACMAN_DOWNLOAD_PACKAGES_ONLY" ]; then
   :
+elif [ -n "$LIST_ONLY" ]; then
+  pacman-get-required-by-for-upgradeable
+  exit
 else
   pacman-get-required-by-for-upgradeable
 fi
