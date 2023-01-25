@@ -51,6 +51,7 @@ all_dirs+=(~/Documents/dockerfiles/arch-all)  # arch-all.tar file
 all_dirs+=(~/ISOs/)
 
 all_dirs+=(~/Desktop/no-backup)
+all_dirs+=(~/Desktop/training-vid)
 all_dirs+=(~/Downloads/no-backup)
 all_dirs+=(~/Downloads/tmp)
 

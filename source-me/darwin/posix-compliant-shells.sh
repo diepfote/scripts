@@ -187,16 +187,6 @@ w-git_execute_on_all_repos () {
   git_execute_on_all_repos -c ~/Documents/config/work-repo.conf -- "$@"
 }
 
-w-git-cleanup () {
-  # run `pull` and `delete-gone-branches`
-  w-git_execute_on_all_repos  git update
-
-  source ~/Documents/scripts/cc/source-me/posix-compliant-shells.sh
-  cc-clone-all-cc-deploy-repositories
-  cc-clone-all-project-repositories
-}
-
-
 _add_to_PATH "$HOME/Documents/scripts/bin/darwin"
 _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
 _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"

@@ -142,6 +142,7 @@ fi
 source ~/Documents/scripts/source-me/spinner.sh
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 source ~/Documents/scripts/source-me/darwin/posix-compliant-shells.sh
+source ~/Documents/scripts/cc/source-me/posix-compliant-shells.sh
 source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
 
 set +u
