@@ -83,6 +83,9 @@ _run_command_in_dir () {
           fi
 
           set -x
+          if [ ! -f pyproject.toml ]; then
+            return
+          fi
 
           if ! networksetup -getinfo Wi-Fi | grep -q Router; then
             # do not run cleanup logic if there is no network connection
