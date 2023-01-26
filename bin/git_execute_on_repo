@@ -82,7 +82,6 @@ _run_command_in_dir () {
             return
           fi
 
-          set -x
           if [ ! -f pyproject.toml ]; then
             return
           fi
@@ -94,6 +93,7 @@ _run_command_in_dir () {
 
           # if we ran `poetry install` retry after flushing the cache
           if echo "$*" | grep -q -E 'poetry\s*install'; then
+            set -x
             rm -r .venv
             rm -r ~/Library/Caches/pypoetry/{cache,artifacts}
             poetry cache clear . --all
