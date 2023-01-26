@@ -74,7 +74,32 @@ _run_command_in_dir () {
   fi
 
   if [ -d "$DIR/.git" ]; then
-    (cd "$DIR" && "$@")
+    (
+      if cd "$DIR"; then
+        if ! "$@"; then
+          if [ "$(uname)" != Darwin ]; then
+            # anything underneath this is Mac OS only
+            return
+          fi
+
+          set -x
+
+          if ! networksetup -getinfo Wi-Fi | grep -q Router; then
+            # do not run cleanup logic if there is no network connection
+            return
+          fi
+
+          # if we ran `poetry install` retry after flushing the cache
+          if echo "$*" | grep -q -E 'poetry\s*install'; then
+            rm -r .venv
+            rm -r ~/Library/Caches/pypoetry/{cache,artifacts}
+            poetry cache clear . --all
+            "$@"
+          fi
+
+        fi
+      fi
+    )
     return 0
   fi
 
