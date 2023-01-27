@@ -78,7 +78,9 @@ if [ -z "$SKIP_RUST_CARGO" ]; then
   echo -e '\n--------\n[>] rust cargo\n' >&2
   # cargo install cargo-update
   # https://crates.io/crates/cargo-update
+  set +e
   cargo install-update -a
+  set -e
   echo >&2
 else
   echo -e '\n--------\n[...] skipping rust cargo\n' >&2
