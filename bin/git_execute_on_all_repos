@@ -69,7 +69,7 @@ while IFS='' read -r repo_dir; do
 
     # allow variable re-evaluation -> globbing
     for _repo_dir in $repo_dir; do
-      git_execute_on_repo -d "$_repo_dir" -- "$@"
+      BASEDIR="$repo_dir" git_execute_on_repo -d "$_repo_dir" -- "$@"
       echo
     done
 
@@ -77,7 +77,7 @@ while IFS='' read -r repo_dir; do
     continue
 
   else
-    git_execute_on_repo -d "$repo_dir" -- "$@"
+    BASEDIR="$repo_dir" git_execute_on_repo -d "$repo_dir" -- "$@"
     echo
   fi
 
