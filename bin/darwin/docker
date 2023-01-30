@@ -8,6 +8,11 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
+
+cleanup () { set -x; }
+trap cleanup EXIT
+
+
 set_docker_rm_args () {
   local FORCE=''
   while [ $# -gt 0 ]; do
@@ -69,24 +74,13 @@ set_docker_rm_args () {
   fi
 }
 
-: "${DOCKER_BACKING_INSTANCE:=colima}"
-# shellcheck disable=2154
-if [ "$DOCKER_BACKING_INSTANCE" = default ]; then
-  command=(podman)
-  compose_command=podman-compose
-elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
-  command=(sudo docker)
-  compose_command=(sudo docker-compose)
-else
-  command=("echo 'invalid $DOCKER_BACKING_INSTANCE'")
-fi
-
+COMPOSE=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
     compose)
+      COMPOSE=-compose
       shift
-      command=("${compose_command[@]}")
       break
       ;;
 
@@ -114,15 +108,28 @@ key="$1"
   esac
 done
 
-if ! limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"; then
+: "${DOCKER_BACKING_INSTANCE:=colima}"
+# shellcheck disable=2154
+if [ "$DOCKER_BACKING_INSTANCE" = default ]; then
+  command=(podman"${COMPOSE-:''}")
+  limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"
+elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
+  (
+    # TODO dirty hack for ansible playbook phase `Gathering facts`
+    : "${HOME:=/Users/florian.begusch}"
 
-  if [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
-    # if docker was manually provisioned it is set up per user
-    unset "command[0]"
-    if ! limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"; then
-      echo "[.] ${YELLOW}Manually provision via:$NC" >&2
-      echo "    ${GREEN}\$${NC} colima exec -- sudo apk update && colima exec -- sudo apk add docker docker-compose && colima exec -- sudo rc-update add docker && colima ssh -- sed -i -r 's#(.*buildkit.*: )true#\1false#' /etc/docker/daemon.json && colima exec -- sudo service docker start" >&2
-    fi
-  fi
+    set -x
+    export DOCKER_HOST="unix://$HOME/.${DOCKER_BACKING_INSTANCE}/docker.sock"
+    export DOCKER_HOST
+    /usr/local/bin/docker"${COMPOSE-:''}" "$@"
+  )
+else
+  echo "${RED}invalid$NC $DOCKER_BACKING_INSTANCE" >&2
+  exit
 fi
 
+
+if [ $? -ne 0 ]; then
+  echo "[.] ${YELLOW}Manually provision via:$NC" >&2
+  echo "    ${GREEN}\$${NC} colima exec -- sudo apk update && colima exec -- sudo apk add docker docker-compose && colima exec -- sudo rc-update add docker && colima ssh -- sed -i -r 's#(.*buildkit.*: )true#\1false#' /etc/docker/daemon.json && colima exec -- sudo service docker start" >&2
+fi
