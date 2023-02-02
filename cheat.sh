@@ -48,7 +48,7 @@ if [ $# -eq 0 ]; then
 fi
 
 command=('lessc')
-subdir=''
+subdir='.'
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
@@ -97,7 +97,10 @@ if [ "${command[0]}" = 'find' ]; then
   exit
 elif [ "${command[0]}" = 'grep' ]; then
   set -x
-  "${command[@]}" --exclude-dir=.git "$@" --color=always -r "$find_path/$subdir"
+  (
+    cd "$find_path" && \
+    "${command[@]}" --exclude-dir=.git "$@" --color=always -r "$subdir"
+  )
   set +x
   exit
 fi
