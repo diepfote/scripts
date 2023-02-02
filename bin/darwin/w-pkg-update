@@ -260,6 +260,10 @@ done
 unset python_install_cmd grep_install_cmd additional_args
 unset -f python_update_pkg
 
+
+echo -e '\n--------\npipx\n'
+pipx upgrade-all --include-injected
+
 #  PYTHON END
 # -----------------------------------------------------
 

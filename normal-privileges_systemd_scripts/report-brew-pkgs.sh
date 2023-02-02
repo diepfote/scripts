@@ -31,6 +31,8 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$dir"; the
   # pip freeze but only explicitly installed pkgs
   (cd ~ && pip-chill > "$dir"/python-pkgs.txt)
 
+  pipx list --include-injected > "$dir"/pipx-list.txt
+
   kubectl krew list > "$dir"/krew-pkgs.txt
   set +x
 
