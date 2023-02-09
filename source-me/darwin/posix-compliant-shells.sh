@@ -101,8 +101,8 @@ export GPG_TTY
 
 
 alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
-alias yabai-stack="yabai -m space --layout stack"
-alias yabai-bsp="yabai -m space --layout bsp"
+alias yabai-layout-stack="yabai -m space --layout stack"
+alias yabai-layout-bsp="yabai -m space --layout bsp"
 
 
 # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L92
