@@ -121,7 +121,14 @@ elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
     set -x
     export DOCKER_HOST="unix://$HOME/.${DOCKER_BACKING_INSTANCE}/docker.sock"
     export DOCKER_HOST
-    /usr/local/bin/docker"${COMPOSE-:''}" "$@"
+
+    if [ -n "$COMPOSE" ]; then
+      command=(/usr/local/opt/docker-compose/bin/docker-compose)
+    else
+      command=(/usr/local/bin/docker)
+    fi
+
+    "${command[@]}" "$@"
   )
 else
   echo "${RED}invalid$NC $DOCKER_BACKING_INSTANCE" >&2
