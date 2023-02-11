@@ -10,4 +10,8 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 filename="$1"
 
+if [[ "$filename" =~ .*\.pacnew$ ]]; then
+  filename="$(echo -n "$filename" | sed -r 's#\.pacnew$##')"
+fi
+
 git diff --no-index /etc/"$filename" /etc/"$filename".pacnew
