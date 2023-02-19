@@ -318,6 +318,7 @@ yay-generate-PKGBUILD-checksum () {
 
   fi
   ls -alh "$output_file"
+  cd -  >/dev/null 2>&1
 }
 
 # add yay completion to os independent update script
