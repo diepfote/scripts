@@ -321,10 +321,31 @@ yay-generate-PKGBUILD-checksum () {
   cd -  >/dev/null 2>&1
 }
 
+_yay-update-based-on-checksum () {
+  pkg_name="$1"
+
+  if ~/Documents/python/tools/archlinux-yay-remove-package-info.py "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
+    echo >&2
+    set -x
+    yay --noconfirm -Sa "$pkg_name"
+    set +x
+  else
+    set +x
+    # shellcheck disable=SC1090
+    source ~/Documents/scripts/source-me/colors.sh
+    # shellcheck disable=SC2154
+    echo -en "$RED" >&2
+    echo     "[!] checksums do not match for \`$pkg_name\`." >&2
+    # shellcheck disable=SC2154
+    echo -e "     Not updating automatically!$NC" >&2
+    exit 1
+  fi
+}
+complete -F _yay-generate-PKGBUILD-checksum_completions _yay-update-based-on-checksum
+
 # add yay completion to os independent update script
 source /usr/share/bash-completion/completions/yay
 complete -F _yay pkg-update
-
 
 alias xclip='command xclip -selection clipboard'
 alias xsel=xclip
