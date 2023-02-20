@@ -37,8 +37,6 @@ _add_to_PATH "$HOME/Library/Python/3.11/bin"
 export LDFLAGS="-L/usr/local/opt/python@3.11/lib:$LDFLAGS"
 export PKG_CONFIG_PATH="/usr/local/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-_add_to_PATH "$HOME/Documents/custom-poetry-version/.venv/bin/"  resolve
-_add_to_PATH "$HOME/Documents/custom-ansible-version/.venv/bin/"  resolve-last
 
 # --
 # ruby compiler settings

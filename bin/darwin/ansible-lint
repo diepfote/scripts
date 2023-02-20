@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-~/Documents/custom-ansible-lint-version/.venv/bin/ansible-lint -c ~/.ansible-lint "$@"

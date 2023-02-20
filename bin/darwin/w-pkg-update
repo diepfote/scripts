@@ -263,6 +263,7 @@ unset -f python_update_pkg
 
 echo -e '\n--------\npipx\n'
 pipx upgrade-all --include-injected
+ln -f --relative -s ~/.local/pipx/venvs/virtualenv/bin/virtualenv-make-relocatable ~/.local/bin/virtualenv-make-relocatable
 
 #  PYTHON END
 # -----------------------------------------------------
