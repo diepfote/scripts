@@ -78,12 +78,6 @@ while [ $# -gt 0 ]; do
     shift
     ;;
 
-    --cc-internal-pkg-update)
-    cc-update-internal-pkgs
-    shift
-    exit
-    ;;
-
     --no-lima)
     DO_NOT_START_LIMA=true
     shift

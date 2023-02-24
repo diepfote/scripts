@@ -38,6 +38,10 @@ export LDFLAGS="-L/usr/local/opt/python@3.11/lib:$LDFLAGS"
 export PKG_CONFIG_PATH="/usr/local/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 
+# pipx installed binaries
+_add_to_PATH "$HOME/.local/bin"
+
+
 # --
 # ruby compiler settings
 _add_to_PATH "/usr/local/opt/ruby-build/bin"
