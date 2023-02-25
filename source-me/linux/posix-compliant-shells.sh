@@ -115,6 +115,7 @@ xdg-open () {
 }
 
 
+
 _firewardened-app () {
   set -x
   (firewarden "$@" 1>/dev/null 2>&1 & echo "$?")
@@ -349,6 +350,8 @@ complete -F _yay pkg-update
 
 alias xclip='command xclip -selection clipboard'
 alias xsel=xclip
+
+alias open=xdg-open
 
 
 gdb-gef () {
