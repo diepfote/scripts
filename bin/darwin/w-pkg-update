@@ -219,10 +219,10 @@ print_additional_arg_info () {
   local additional_arg="$1"
   if [[ "$additional_arg" =~ user ]]; then
     # shellcheck disable=SC2154
-    echo " ${PURPLE}[${NC}user${PURPLE}]$NC"
+    echo "${PURPLE}[${NC}.${PURPLE}]$NC user"
   else
     # shellcheck disable=SC2154
-    echo "  ${PURPLE}[${NC}global${PURPLE}]$NC"
+    echo "${PURPLE}[${NC}.${PURPLE}]$NC global"
   fi
 }
 python_update_pkg () {
@@ -301,16 +301,16 @@ fi
 
 echo -e '\n--------\nbrew\n'
 # shellcheck disable=SC2154
-echo -en "  $PURPLE"; echo -e "[>] pulling updates$NC"
+echo -e "${PURPLE}[>] ...$NC pulling updates"
 brew update
 
 
-echo -en "  $PURPLE"; echo -e "[>] starting upgrades$NC"
+echo -e "${PURPLE}[>] ...$NC starting upgrades"
 brew upgrade || true
 
 
 if [ -n "$GREEDY" ]; then
-  echo -en "  $PURPLE"; echo -e "[>] starting greedy cask upgrades$NC"
+  echo -e "${PURPLE}[>] ...$NC starting greedy cask upgrades"
   brew upgrade --cask --greedy
 fi
 

@@ -8,9 +8,18 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
+if [ "$(uname)" = Darwin ]; then
+  command=(/usr/local/bin/git)
+elif [ "$(uname)" = Linux ]; then
+  command=(/usr/bin/git)
+else
+  command=(echo Unsupported OS)
+fi
+
+BASE="$("${command[@]}" rev-parse --show-toplevel)"
 
 if [ "$1" = push ]; then
-  if git-remote-gcrypt --check "$(grep url .git/config |\
+  if git-remote-gcrypt --check "$(grep url "$BASE"/.git/config |\
        awk '{ print $3 }' |\
        head -n1 |\
        sed 's#^.*gcrypt::## ; s/#.*"$//')" >/dev/null 2>&1; then
@@ -19,14 +28,6 @@ if [ "$1" = push ]; then
     git pull
     echo '[.] --' >&2
   fi
-fi
-
-if [ "$(uname)" = Darwin ]; then
-  command=(/usr/local/bin/git)
-elif [ "$(uname)" = Linux ]; then
-  command=(/usr/bin/git)
-else
-  command=(echo Unsupported OS)
 fi
 
 "${command[@]}" "$@"
