@@ -2,6 +2,8 @@
 
 source ~/Documents/scripts/source-me/darwin/common-functions.sh
 
+_add_to_PATH /usr/local/Cellar/git/2.39.2/*/git-core/contrib/git-jump/
+
 _add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"
 _add_to_MANPATH "/usr/local/opt/coreutils/libexec/gnuman"
 
