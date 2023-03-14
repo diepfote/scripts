@@ -314,6 +314,8 @@ if [ -n "$GREEDY" ]; then
   brew upgrade --cask --greedy
 fi
 
+git break-osx-credential-helper
+
 # BREW END
 # ---------------------------------------------------
 
