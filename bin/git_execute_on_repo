@@ -91,7 +91,7 @@ _run_command_in_dir () {
             return
           fi
 
-          # if we ran `poetry install` retry after flushing the cache
+          # if we ran `poetry install`, retry after flushing the cache
           if echo "$*" | grep -q -E 'poetry\s*install'; then
             set -x
             rm -r .venv
