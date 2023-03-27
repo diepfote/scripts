@@ -465,6 +465,26 @@ list-zombies-and-parents () {
   }
 
 
+_pkg-update_completions-return () {
+  _print() {
+    for elem in "$@"; do
+      echo "$elem"
+    done
+  }
+
+  COMPREPLY=()
+  index=$COMP_CWORD
+  local cur_word="${COMP_WORDS[$index]}"
+  prev_index=$((index - 1))
+  local prev_word="${COMP_WORDS[$prev_index]}"
+
+  case "${prev_word}" in
+    *)
+      COMPREPLY=($(compgen -W  "$(_print "${completions[@]}")" -- "$cur_word"))
+      ;;
+  esac
+}
+
 
 edit-bash-history () {
   # :$ to start at the end of the file

@@ -346,11 +346,7 @@ _yay-update-based-on-checksum () {
     exit 1
   fi
 }
-complete -F _yay-generate-PKGBUILD-checksum_completions _yay-update-based-on-checksum
 
-# add yay completion to os independent update script
-source /usr/share/bash-completion/completions/yay
-complete -F _yay pkg-update
 
 alias xclip='command xclip -selection clipboard'
 alias xsel=xclip
