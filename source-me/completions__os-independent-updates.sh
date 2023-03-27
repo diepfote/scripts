@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+_OS_INDEPENDENT_UPATES_COMPLETIONS=()
+_OS_INDEPENDENT_UPATES_COMPLETIONS+=(--skip-rust-cargo)
