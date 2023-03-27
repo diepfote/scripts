@@ -17,13 +17,12 @@ _w-pkg-update_completions()
   completions+=(-h)
   completions+=(-g)
   completions+=(-r)
+  completions+=(--reinstall-xcode)
   completions+=(--no-lima)
   completions+=(--no-disable-remote-login)
-  completions+=(--mac-os-updates-only)
-  completions+=(--reinstall-xcode)
   completions+=(--no-mac-os-updates)
-  completions+=(--cc-internal-pkg-update)
-
+  completions+=(--no-update-repos)
+  completions+=(--mac-os-updates-only)
 
   case "${prev_word}" in
     *)

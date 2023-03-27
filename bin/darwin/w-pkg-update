@@ -43,16 +43,16 @@ mac-os-updates () {
 
 _help() {
 cat <<EOF
-USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--no-mac-os-updates] [--mac-os-updates-only|--cc-internal-pkg-update|--reinstall-xcode]
+USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--no-mac-os-updates] [--mac-os-updates-only|--no-update-repos|--reinstall-xcode]
 
 FLAGS:
 -g                           greedy option for brew
--r                           (re-)install xcode commandline tools, then exit immediately
---cc-internal-pkg-update     update cc internal pkgs, then exit
+--reinstall-xcode            (re-)install xcode commandline tools, then exit immediately
+--no-update-repos            do not fetch updates to git repositories
 --no-lima                    do not start lima vm
---mac-os-updates-only        check for mac os udpates, start updates, then exit immediately
 --no-mac-os-updates          skip mac os updates
 --no-disable-remote-login    do not disable remote login in Mac OS settings
+--mac-os-updates-only        check for mac os udpates, start updates, then exit immediately
 
 OPTIONS:
 
@@ -63,6 +63,7 @@ EOF
 GREEDY=''
 DO_NOT_START_LIMA=''
 NO_MACOS_UPDATES=''
+DISABLE_GIT_REPO_UPDATES=''
 DISABLE_REMOTE_LOGIN=''
 DRY_RUN=''
 while [ $# -gt 0 ]; do
@@ -93,13 +94,18 @@ while [ $# -gt 0 ]; do
     shift
     ;;
 
+    --no-update-repos)
+    DISABLE_GIT_REPO_UPDATES=true
+    shift
+    ;;
+
     --mac-os-updates-only)
     mac-os-updates
     shift
     exit
     ;;
 
-    -r|--reinstall-xcode)
+    --reinstall-xcode)
     # shellcheck disable=SC2154
     echo -e "${PURPLE}[>] reinstallig xcode commandline tools$NC"
 
@@ -324,14 +330,17 @@ if [ -z "$NO_MACOS_UPDATES" ]; then
   mac-os-updates
 fi
 
-echo -e '\n--------\nw-git-cleanup\n'
 
-set +e
-filename=/tmp/_w-git-cleanup.log
-echo "[.] follow along via \`tail -F $filename\`."
-# TODO color output -> `less -R "$filename"`
-w-git-cleanup > "$filename" 2>&1
-set -e
+if [ -z "$DISABLE_GIT_REPO_UPDATES" ]; then
+  echo -e '\n--------\nw-git-cleanup\n'
+
+  set +e
+  filename=/tmp/_w-git-cleanup.log
+  echo "[.] follow along via \`tail -F $filename\`."
+  # TODO color output -> `less -R "$filename"`
+  w-git-cleanup > "$filename" 2>&1
+  set -e
+fi
 
 
 echo
