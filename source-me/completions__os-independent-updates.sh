@@ -2,6 +2,12 @@
 
 __os-independent-updates_completions ()
 {
+  if [ "$1" = --non-interactive-use ]; then
+    shift
+  else
+    unset completions
+  fi
+
   COMPREPLY=()
   index=$COMP_CWORD
   local cur_word="${COMP_WORDS[$index]}"

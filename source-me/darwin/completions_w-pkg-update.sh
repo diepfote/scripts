@@ -3,7 +3,7 @@
 _pkg-update_completions() {
   _w-pkg-update_completions "$@"
 
-  __os-independent-updates_completions "$@"
+  __os-independent-updates_completions --non-interactive-use "$@"
 
   _pkg-update_completions-return "$@"
 }
