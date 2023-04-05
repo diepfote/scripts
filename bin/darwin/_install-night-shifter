@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+out=/tmp/NightShifter.0.2.1.zip
+outdir=/tmp/nightshifter
+
+cleanup () {
+  rm -r "$out" "$outdir"
+}
+trap cleanup EXIT
+
+curl -L https://github.com/elanini/NightShifter/releases/download/v0.2.1/NightShifter.0.2.1.zip -o "$out"
+unzip "$out" -d "$outdir"
+tree "$outdir"
+
+binary="$outdir"/shifter
+if sha256sum "$binary" | grep 5bff13cc071e561ae1d0c257a9a2e5234e33028d8cdb7d1ecac699e61d267445; then
+  mkdir -p ~/.bin
+  mv "$binary" ~/.bin
+  echo "moved $binary to ~/.bin"
+else
+  echo "[!] checksum mismatch for $binary" >&2
+fi
