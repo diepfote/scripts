@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+cleanup () {
+  set +x
+  popd
+}
+
+_help() {
+cat <<EOF
+USAGE: $(basename $0) -d <dir-to-extract-to> [--no-reencode]
+
+FLAGS:
+  --no-reencode    do not convert wave files to aac
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+DIR=''
+NOREENCODE=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --no-reencode)
+    NOREENCODE=true
+    shift
+    ;;
+
+    -d|--dir)
+    DIR="$2"
+    shift 2
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+if [ -z "$DIR" ]; then
+  echo '[!] DIR not specified' >&2
+  exit 1
+fi
+
+pushd "$DIR"
+trap cleanup EXIT
+
+set -x
+cdda2wav -vall cddb=-1 speed=4 -paranoia paraopts=proof -B -D /dev/sr0
+for f in *.wav; do
+  base_="$(basename "$f" | sed -r 's#(.*)\.[^\.]+$#\1#')"
+  inf_file="$base_".inf
+  sed -i '1s;^;[default]\n;'  "$inf_file"
+  title="$(read_toml_setting "$inf_file" Tracktitle | sed -r "s#^'(.*)'\$#\1#")"
+  ffmpeg -i "$f"  -c:a aac -b:a 128k "$title.m4a"
+done
