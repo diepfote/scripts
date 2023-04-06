@@ -197,8 +197,6 @@ _complete_files_and_dirs_helper () {
 	local i=0
 
 	for item in ${items[@]}; do
-		[[ $item =~ /\.[^/]*$ ]] && continue
-
 		# if there is a unique match, and it is a directory with one entry
 		# autocomplete the subentry as well (recursively)
 		if [[ ${#items[@]} -eq 1 && $autoexpand -eq 1 ]]; then
