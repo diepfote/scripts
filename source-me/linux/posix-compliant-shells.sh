@@ -348,6 +348,15 @@ _yay-update-based-on-checksum () {
 }
 
 
+night-shifter () {
+  if [ "$1" = on ]; then
+    redshift -P -O 2900
+  elif [ "$1" = off ]; then
+    redshift -x
+  fi
+}
+
+
 alias xclip='command xclip -selection clipboard'
 alias xsel=xclip
 
