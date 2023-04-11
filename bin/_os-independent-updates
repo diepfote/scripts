@@ -6,18 +6,28 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+log () {
+  echo "$@" >&2
+}
+
 cleanup () {
   set +x
 }
 trap cleanup EXIT
 
-# Parse arguments
+
+SKIP_VIM_UPDATES=''
 SKIP_RUST_CARGO=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
     --skip-rust-cargo)
     SKIP_RUST_CARGO=true
+    shift
+    ;;
+
+    --skip-vim-updates)
+    SKIP_VIM_UPDATES=true
     shift
     ;;
 
@@ -34,54 +44,58 @@ key="$1"
 done
 
 
-echo >&2
-echo ------------------ >&2
-echo "[>] updating vim plugins and vim plug itself" >&2
-set -x
+if [ -z "$SKIP_VIM_UPDATES" ]; then
+  log
+  log ------------------
+  log "[>] updating vim plugins and vim plug itself"
+  set -x
 
-plugin_update_log=/tmp/nvim-plugin-update.log
+  plugin_update_log=/tmp/nvim-plugin-update.log
 
-echo > "$plugin_update_log"
-echo '[.] PlugUpdate' >> "$plugin_update_log"
-nvim -c "Bufferize PlugUpdate | :w >> $plugin_update_log | qa"
+  echo > "$plugin_update_log"
+  echo '[.] PlugUpdate' >> "$plugin_update_log"
+  nvim -c "Bufferize PlugUpdate | :w >> $plugin_update_log | qa"
 
-echo '--' >> "$plugin_update_log"
-echo '[.] PlugUpgrade' >> "$plugin_update_log"
-nvim -c "Bufferize PlugUpgrade | :w >> $plugin_update_log | qa"
+  echo '--' >> "$plugin_update_log"
+  echo '[.] PlugUpgrade' >> "$plugin_update_log"
+  nvim -c "Bufferize PlugUpgrade | :w >> $plugin_update_log | qa"
 
-echo '--' >> "$plugin_update_log"
-echo '[.] CocUpdateSync' >> "$plugin_update_log"
-nvim -c "Bufferize CocUpdateSync | :w >> $plugin_update_log | qa"
+  echo '--' >> "$plugin_update_log"
+  echo '[.] CocUpdateSync' >> "$plugin_update_log"
+  nvim -c "Bufferize CocUpdateSync | :w >> $plugin_update_log | qa"
 
-echo '--' >> "$plugin_update_log"
-echo '[.] GoUpdateBinaries' >> "$plugin_update_log"
-nvim -c "redir >>$plugin_update_log | execute ':GoUpdateBinaries' | qa"
+  echo '--' >> "$plugin_update_log"
+  echo '[.] GoUpdateBinaries' >> "$plugin_update_log"
+  nvim -c "redir >>$plugin_update_log | execute ':GoUpdateBinaries' | qa"
 
-cat "$plugin_update_log" >&2
-echo >&2
+  cat "$plugin_update_log" >&2
+  log
 
-set +x
+  set +x
 
-echo >&2
-pushd ~/.vim/plugged/coc.nvim || exit 1
-yarn install
-popd
+  log
+  pushd ~/.vim/plugged/coc.nvim || exit 1
+  yarn install
+  popd
+else
+  log -e '\n--------\n[...] skipping vim updates\n'
+fi
 
-echo >&2
-echo ------------------ >&2
-echo "[>] updating tmux plugins" >&2
+log
+log ------------------
+log "[>] updating tmux plugins"
 
 git_execute_on_all_repos -c <(find ~/.tmux/plugins/  -maxdepth 1 -mindepth 1 -type d) -- git pull
 tmux source ~/.tmux.conf
 
 if [ -z "$SKIP_RUST_CARGO" ]; then
-  echo -e '\n--------\n[>] rust cargo\n' >&2
+  log -e '\n--------\n[>] rust cargo\n'
   # cargo install cargo-update
   # https://crates.io/crates/cargo-update
   set +e
   cargo install-update -a
   set -e
-  echo >&2
+  log
 else
-  echo -e '\n--------\n[...] skipping rust cargo\n' >&2
+  log -e '\n--------\n[...] skipping rust cargo\n'
 fi

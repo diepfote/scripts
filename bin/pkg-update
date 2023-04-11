@@ -24,6 +24,11 @@ key="$1"
     shift
     ;;
 
+    --skip-vim-updates)
+    PASS_TO_OS_INDEPENDENT+=("$key")
+    shift
+    ;;
+
     --)
     shift
     break

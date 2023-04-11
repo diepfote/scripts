@@ -22,6 +22,7 @@ __os-independent-updates_completions ()
   completions=("${completions[@]}")
 
   completions+=(--skip-rust-cargo)
+  completions+=(--skip-vim-updates)
 
   case "${prev_word}" in
     *)
