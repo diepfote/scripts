@@ -149,7 +149,7 @@ edit_pacman_conf () {
 
 
 edit_iptables_rules () {
-  vim /etc/iptables/iptables.rules
+  sudo vim /etc/iptables/iptables.rules
   sudo systemctl restart iptables.service
 }
 
