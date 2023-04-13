@@ -1004,13 +1004,40 @@ work-sync () {
   local conf_file=~/Documents/config/repo.conf
   local command=('git' 'pull')
 
+  # TODO improve func name
   _work-wrapper "$conf_file" "${command[@]}"
+
+  echo
+  set -x
+  work_recompile_go_tools_conditionally
 
   echo >&2
   echo 'Do you want to run video-syncer?' >&2
   if yesno; then
     video-sync
   fi
+}
+
+work_recompile_go_tools_conditionally () {
+  set +x
+
+  # re-compile go tools if binaries are older than go files
+  while read -r line; do
+    if [[ "$line" =~ .git ]]; then
+      # skip git directory
+      continue
+    fi
+
+    (
+      if cd "$line"; then
+        binary="$(basename "$line")"
+        if [ "$(date -r main.go '+%s')" -gt "$(date -r "$binary" '+%s')" ]; then
+          echo "[.] recompiling '$binary'"
+          go build
+        fi
+      fi
+    )
+  done < <(find ~/Documents/golang/tools/ -maxdepth 1 -mindepth 1 -type d)
 }
 
 work_push () {
