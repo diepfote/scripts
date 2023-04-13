@@ -47,6 +47,7 @@
 
 source ~/Documents/scripts/source-me/common-functions.sh
 _add_to_PATH ~/Documents/scripts/bin
+_add_to_PATH ~/Documents/python/tools/bin
 
 token="$(read_toml_setting ~/Documents/config/github.conf gist_backup_token)"
 url=${GIST_URL:-https://api.github.com/gists}
