@@ -9,13 +9,12 @@ shopt -s failglob  # error on unexpaned globs
 files=()
 while read -r line; do
   files+=("$line")
-done < <(find ~/.tmux/resurrect -type f -mtime 14)
+done < <(find ~/.tmux/resurrect -type f -mtime +14)
 
 if [ "${#files[@]}" -lt 1 ]; then
   exit
 fi
 
-echo "Clearing the following files:"
-for file in "${files[@]}"; do
-  echo "$file"
-done
+set -x
+rm "${files[@]}"
+set +x

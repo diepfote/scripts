@@ -8,7 +8,7 @@ shopt -s failglob  # error on unexpaned globs
 
 
 source ~/Documents/scripts/source-me/common-functions.sh
-
+_add_to_PATH ~/Documents/python/tools/bin
 
 dir=~/Documents/misc/videos
 [ ! -d "$dir" ] && mkdir "$dir"
