@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# reset exports
+unset LDFLAGS CPPFLAGS PKG_CONFIG_PATH
+
 source ~/Documents/scripts/source-me/darwin/common-functions.sh
 
 _add_to_PATH "$(gfind /usr/local/Cellar/git/ -type d -name git-jump | head -n1)"
@@ -51,36 +54,27 @@ _add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"
 
 export CPPFLAGS="-I/usr/local/opt/openssl@3/include:$CPPFLAGS"
 export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
-
 export LDFLAGS="-L/usr/local/opt/openssl@3/lib:$LDFLAGS"
-export LDFLAGS="-L/usr/local/opt/ruby/lib:$LDFLAGS"
-
 export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --
 
+# -- node 18 as node 20 does not work with `yarn` - 2023-04-21
+_add_to_PATH /usr/local/opt/node@18/bin
+export LDFLAGS="-L/usr/local/opt/node@18/lib:$LDFLAGS"
+export CPPFLAGS="-I/usr/local/opt/node@18/include:$CPPFLAGS"
+# --
 
 # --
-# readline shared object was missing. so I added all exports recommended by the packages
+# readline shared object was missing. so I added all exports recommended by the brew pkg
 
 # $ pass asdf/blub -c
 # dyld[54483]: Library not loaded: '/usr/local/opt/readline/lib/libreadline.8.dylib'
 #   Referenced from: '/usr/local/Cellar/gnupg/2.3.7_1/bin/gpg'
 #   Reason: tried: '/usr/local/opt/readline/lib/libreadline.8.dylib' (no such file), '/usr/local/lib/libreadline.8.dylib' (no such file), '/usr/lib/libreadline.8.dylib' (no such file)
 
-
-  # readline is keg-only, which means it was not symlinked into /usr/local,
-  # because macOS provides BSD libedit.
-
-  # For compilers to find readline you may need to set:
-  #   export LDFLAGS="-L/usr/local/opt/readline/lib"
-  #   export CPPFLAGS="-I/usr/local/opt/readline/include"
-
-  # For pkg-config to find readline you may need to set:
-  #   export PKG_CONFIG_PATH="/usr/local/opt/readline/lib/pkgconfig"
-
 export LDFLAGS="-L/usr/local/opt/readline/lib:$LDFLAGS"
-export CPPFLAGS="-I/usr/local/opt/readline/include:CPPFLAGS"
+export CPPFLAGS="-I/usr/local/opt/readline/include:$CPPFLAGS"
 export PKG_CONFIG_PATH="/usr/local/opt/readline/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --
 
