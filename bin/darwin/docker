@@ -12,6 +12,68 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 cleanup () { set -x; }
 trap cleanup EXIT
 
+: "${DOCKER_BACKING_INSTANCE:=colima}"
+
+set_docker_stop_args () {
+  local FORCE=''
+  while [ $# -gt 0 ]; do
+  # check if forced `rm`
+  key="$1"
+    case "$key" in
+      -f)
+      shift
+      FORCE=true
+      ;;
+
+      --)
+      shift
+      break
+      ;;
+
+      *)
+      # keep
+      save_args+=("$1")
+      shift
+      ;;
+    esac
+  done
+
+  if [ -n "$FORCE" ]; then
+    set -- "${save_args[@]}"
+    save_args=()
+
+    # check if user provided `-t n` option for forceful `rm`
+    TIMEOUT_SET_BY_USER=''
+    while [ $# -gt 0 ]; do
+      key="$1"
+        case "$key" in
+          --)
+          shift
+          break
+          ;;
+
+          -t)
+          TIMEOUT_SET_BY_USER=true
+          save_args+=("$1")
+          save_args+=("$2")
+          shift 2
+          # keep
+          ;;
+
+          *)
+          # keep
+          save_args+=("$1")
+          shift
+          ;;
+      esac
+    done
+
+    if [ -z "$TIMEOUT_SET_BY_USER" ]; then
+      # set timeout to 0 if the user did not provide a custom timeout (overrides default of `-t 10`)
+      save_args+=(-t 0)
+    fi
+  fi
+}
 
 set_docker_rm_args () {
   local FORCE=''
@@ -85,9 +147,23 @@ key="$1"
       ;;
 
     rm)
+    if [ "$DOCKER_BACKING_INSTANCE" = default ]; then
+    # if [[ "$command" =~ podman.* ]]; then
+      :
+    else
+      break
+    fi
     shift
     save_args+=(rm)
     set_docker_rm_args "$@"
+    set -- "${save_args[@]}"
+    break
+    ;;
+
+    stop)
+    shift
+    save_args+=(stop)
+    set_docker_stop_args "$@"
     set -- "${save_args[@]}"
     break
     ;;
@@ -108,7 +184,6 @@ key="$1"
   esac
 done
 
-: "${DOCKER_BACKING_INSTANCE:=colima}"
 # shellcheck disable=2154
 if [ "$DOCKER_BACKING_INSTANCE" = default ]; then
   command=(podman"${COMPOSE-:''}")
