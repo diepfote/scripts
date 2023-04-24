@@ -224,7 +224,7 @@ __stop_related_units_if_active ()
     set -x
     sudo systemctl stop "$unit_to_stop"
     set +x
-  done < <(systemctl list-units | command grep -E '^\s*openvpn-client' | command grep -v "$unit" | awk '{ print $1 }')
+  done < <(systemctl list-units | command grep -E '^\s*wg-' | command grep -v "$unit" | awk '{ print $1 }')
 }
 
 __restart_unit_if () {
@@ -244,6 +244,7 @@ __restart_unit_if () {
 
 refresh-i3status () {
   killall -SIGUSR1 i3status
+  ps -ef | grep -v grep | grep -E 'bash.*i3cat.*vpn.*helper.sh' | awk '{ print $2 }' | xargs kill -SIGUSR1
 }
 
 _disable-network () {
