@@ -37,7 +37,7 @@ run () {
   sleep infinity &
   # DO NOT PUT ANYTHING INBETWEEN THESE LINES.
   # NOT EVEN SAVING PID AND RUNNING ANOTHER PROCESS
-  # like echo to prin the PID.
+  # like echo to print the PID.
   #
   # OTHERWISE YOU WILL BREAK THIS SCRIPTS SIGNAL
   # HANDLING CAPABILITIES.
