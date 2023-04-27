@@ -732,7 +732,7 @@ _edit-wrapper () {
 cheatsheets_pull () {
   (
   if cd ~/Documents/cheatsheets; then
-    git pull
+    git pull origin master
   fi
   )
 }
@@ -1002,7 +1002,7 @@ work-sync () {
 
 
   local conf_file=~/Documents/config/repo.conf
-  local command=('git' 'pull')
+  local command=('git' 'pull' 'origin' 'master')
 
   # TODO improve func name
   _work-wrapper "$conf_file" "${command[@]}"
