@@ -18,6 +18,7 @@ spinner_pid="$!"
 set -u
 
 cleanup () {
+  popd || true
   set +x
 
   local spinner_pid="$1"
@@ -28,14 +29,18 @@ cleanup () {
 trap 'cleanup "$spinner_pid"' EXIT  # stop spinner
 
 if [ $# -lt 2 ]; then
-  tmutil listbackups -m | sed "s#.*#'&'#"
+  tmutil listbackups -m
   exit 0
 fi
 
+disk_backup_loc="$(~/Documents/python/tools/split_timemachine_path.py "$1" 0)"
+pushd "$disk_backup_loc"
+path1="$(~/Documents/python/tools/split_timemachine_path.py "$1" 1)"
+path2="$(~/Documents/python/tools/split_timemachine_path.py "$2" 1)"
 
 # $ tmutil listbackups
 set -x
-sudo tmutil compare "$1" "$2" |\
+sudo tmutil compare "$path1" "$path2" |\
 stdbuf -o0 tr '\t' ' ' |\
 stdbuf -o0 tr -s ' ' |\
 sort -k2 -h
