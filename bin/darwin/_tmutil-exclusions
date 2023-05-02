@@ -9,7 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 all_dirs=()
 
 all_dirs+=(~/.offlineimap)
-all_dirs+=(~/.mail/.notmuch)
+all_dirs+=(~/.mail/)
 
 all_dirs+=(~/'Standard Notes Backups')
 all_dirs+=(~/.Trash/)
