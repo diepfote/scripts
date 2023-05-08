@@ -54,6 +54,20 @@ key="$1"
   esac
 done
 
+cleanup () {
+  set +x
+  popd
+}
+trap cleanup EXIT
+
+set -x
+pushd "$dir"
+set +x
+
+if [ -z "$FOLDER_NAME" ]; then
+  echo 'No FOLDER_NAME'
+  exit 1
+fi
 
 system="$(uname)"
 if [ "$system" = Linux ]; then
@@ -66,25 +80,20 @@ elif [ "$system" = Darwin ]; then
   set +x
 fi
 
-cleanup () {
+if [ -n "$BATCH_FILE" ]; then
+  set -x
+  dl-youtube 140 -a "$BATCH_FILE"
   set +x
-  popd
-}
-trap cleanup EXIT
-
-set -x
-pushd "$dir"
-
-
-if [ -n "$LINK" ] && [ -n "$DATE_STAMP" ]; then
+elif [ -n "$LINK" ] && [ -n "$DATE_STAMP" ]; then
+  set -x
   upload_filter="upload_date>=$(date '+%Y%m%d' --date="$DATE_STAMP")"
   dl-youtube 140 "$LINK"  -i --match-filter "$upload_filter"
-elif [ -n "$BATCH_FILE" ]; then
-  dl-youtube 140 -a "$BATCH_FILE"
+  set +x
 else
   echo 'No BATCH_FILE or DATE_STAMP + LINK'
   exit 1
 fi
 
-
+set -x
 ffmpeg-dynamic-range-compress-dir "$dir"
+set +x
