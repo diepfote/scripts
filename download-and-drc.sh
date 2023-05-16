@@ -60,15 +60,6 @@ cleanup () {
 }
 trap cleanup EXIT
 
-set -x
-pushd "$dir"
-set +x
-
-if [ -z "$FOLDER_NAME" ]; then
-  echo 'No FOLDER_NAME'
-  exit 1
-fi
-
 system="$(uname)"
 if [ "$system" = Linux ]; then
   set -x
@@ -78,6 +69,15 @@ elif [ "$system" = Darwin ]; then
   set -x
   dir=~/Movies/audio-only/"$FOLDER_NAME"
   set +x
+fi
+
+set -x
+pushd "$dir"
+set +x
+
+if [ -z "$FOLDER_NAME" ]; then
+  echo 'No FOLDER_NAME'
+  exit 1
 fi
 
 if [ -n "$BATCH_FILE" ]; then
