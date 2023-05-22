@@ -188,6 +188,9 @@ alias path='echo -e ${PATH//:/\\n}'
 alias map="xargs -n1"
 
 
+alias keepassxc-allow-screencapture='/Applications/KeePassXC.app/Contents/MacOS/KeePassXC --allow-screencapture >/dev/null 2>&1 &'
+
+
 # common aliases END
 # -------------------------
 
