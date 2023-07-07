@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1090
-source ~/Documents/scripts/source-me/common-functions.sh
-
 alias kctx="kubectx"
 alias kx="kubectx"
 alias ktx="kubectx"
@@ -15,8 +12,6 @@ alias kn=kubens
 
 _set-kubecontext_complete ()
 {
-  source ~/Documents/scripts/source-me/common-functions.sh
-
   export DIR_TO_COMPLETE="$HOME/.kube"
   _complete_files_and_dirs
 }

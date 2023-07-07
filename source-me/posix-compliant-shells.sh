@@ -2,8 +2,8 @@
 # shellcheck disable=SC1090
 
 # set xxx to empty string if unset
-echo "${TMUX:=''}" >/dev/null
-echo "${BASH_SOURCE_IT:=''}" >/dev/null
+echo ${TMUX:=''} >/dev/null
+echo ${BASH_SOURCE_IT:=''} >/dev/null
 
 if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
    [ "$(hostname)" = docker-desktop ] || \
@@ -80,7 +80,11 @@ export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
 export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 source ~/Documents/scripts/source-me/common-functions.sh
-source ~/Documents/scripts/source-me/completions_*
+for name in ~/Documents/scripts/source-me/completions_*; do
+  source "$name"
+done
+
+
 
 # -----------------------
 # extend PATH start

@@ -15,7 +15,11 @@ __cd_dir () {
 
 }
 
-trap 'exec bash' EXIT
+executable=bash
+if [ Darwin = "$(uname)" ]; then
+  executable=/opt/homebrew/bin/bash
+fi
+trap "exec $executable" EXIT
 
 __cd_dir
 
