@@ -9,7 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 if [ "$(uname)" = Darwin ]; then
-  command=(/usr/local/bin/git)
+  command=(/opt/homebrew/bin/git)
 elif [ "$(uname)" = Linux ]; then
   command=(/usr/bin/git)
 else

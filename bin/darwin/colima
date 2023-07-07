@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-/usr/local/bin/colima "$@"
+/opt/homebrew/bin/colima "$@"
 
 if [ "$1" = start ]; then
   set -x

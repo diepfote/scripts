@@ -27,7 +27,7 @@ _brew-extensions_completions()
       done  < <(compgen -W "$(_print "${formulae[@]}")" -- "$cur_word")
       ;;
     *)
-      # call function provided in /usr/local/etc/bash_completion.d/brew
+      # call function provided in /opt/homebrew/etc/bash_completion.d/brew
       # default completions
       _brew
     ;;

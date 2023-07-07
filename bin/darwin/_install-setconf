@@ -8,6 +8,6 @@
 # -> brew package!
 
 curl -s https://setconf.roboticoverlords.org/setconf-0.7.7.tar.xz | tar JxC /tmp
-install -Dm755 /tmp/setconf-0.7.7/setconf.py /usr/local/bin/setconf
-install -Dm644 /tmp/setconf-0.7.7/setconf.1.gz /usr/local/share/man/man1/setconf.1.gz
+install -Dm755 /tmp/setconf-0.7.7/setconf.py /opt/homebrew/bin/setconf
+install -Dm644 /tmp/setconf-0.7.7/setconf.1.gz /opt/homebrew/share/man/man1/setconf.1.gz
 

@@ -26,7 +26,7 @@ if [ "$(uname)" = Darwin ]; then
     # remove last argument
     set -- "${@:1:$(($#-1))}"
     /Applications/Firefox.app/Contents/MacOS/firefox --private-window "$@"
-  elif ! /usr/local/bin/chrome-cli open "$@"  1>/dev/null 2>&1; then
+  elif ! /opt/homebrew/bin/chrome-cli open "$@"  1>/dev/null 2>&1; then
     set -u
     # remove last argument
     set -- "${@:1:$(($#-1))}"

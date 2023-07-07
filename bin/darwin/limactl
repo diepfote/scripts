@@ -19,7 +19,7 @@ key="$1"
     # render default lima.yaml
     (cd ~/.lima/default && python3 template.py)
     set -x
-    /usr/local/bin/limactl "$@"
+    /opt/homebrew/bin/limactl "$@"
     set +x
 
     shift 2
@@ -29,7 +29,7 @@ key="$1"
 
     --|*)
     set -x
-    /usr/local/bin/limactl "$@"
+    /opt/homebrew/bin/limactl "$@"
     set +x
 
     break

@@ -9,7 +9,7 @@ cleanup () {
 
 export EDITOR=("$EDITOR" -c 'set noundofile')
 
-PASS=/usr/local/bin/pass
+PASS=/opt/homebrew/bin/pass
 if ! command -v "$PASS" >/dev/null; then
   PASS=/usr/bin/pass
 fi

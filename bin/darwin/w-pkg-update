@@ -193,7 +193,7 @@ sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
 
 if [ -z "$DO_NOT_START_LIMA" ]; then
   set -x
-  colima start --memory 4  >/dev/null 2>&1  &
+  colima start --memory 3  >/dev/null 2>&1  &
   set +x
   disown "$!"
   sleep 1

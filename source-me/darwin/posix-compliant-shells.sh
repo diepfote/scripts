@@ -5,42 +5,43 @@ unset LDFLAGS CPPFLAGS PKG_CONFIG_PATH
 
 source ~/Documents/scripts/source-me/darwin/common-functions.sh
 
-_add_to_PATH "$(gfind /usr/local/Cellar/git/ -type d -name git-jump | head -n1)"
+_add_to_PATH "$(gfind /opt/homebrew/Cellar/git/ -type d -name git-jump | head -n1)"
 
-_add_to_PATH "/usr/local/opt/coreutils/libexec/gnubin"
-_add_to_MANPATH "/usr/local/opt/coreutils/libexec/gnuman"
+_add_to_PATH /opt/homebrew/bin/
 
-_add_to_PATH "/usr/local/opt/findutils/libexec/gnubin"
-_add_to_MANPATH "/usr/local/opt/findutils/libexec/gnuman"
+_add_to_PATH "/opt/homebrew/opt/coreutils/libexec/gnubin"
+_add_to_MANPATH "/opt/homebrew/opt/coreutils/libexec/gnuman"
 
-_add_to_PATH "/usr/local/opt/gnu-sed/libexec/gnubin"
-_add_to_MANPATH "/usr/local/opt/gnu-sed/libexec/gnuman"
+_add_to_PATH "/opt/homebrew/opt/findutils/libexec/gnubin"
+_add_to_MANPATH "/opt/homebrew/opt/findutils/libexec/gnuman"
 
-_add_to_PATH "/usr/local/opt/gawk/libexec/gnubin"
-_add_to_MANPATH "/usr/local/opt/gawk/libexec/gnuman"
+_add_to_PATH "/opt/homebrew/opt/gnu-sed/libexec/gnubin"
+_add_to_MANPATH "/opt/homebrew/opt/gnu-sed/libexec/gnuman"
 
+_add_to_PATH "/opt/homebrew/opt/gawk/libexec/gnubin"
+_add_to_MANPATH "/opt/homebrew/opt/gawk/libexec/gnuman"
 
-_add_to_PATH "/usr/local/opt/grep/libexec/gnubin"
-_add_to_MANPATH "/usr/local/opt/grep/libexec/gnuman"
+_add_to_PATH "/opt/homebrew/opt/grep/libexec/gnubin"
+_add_to_MANPATH "/opt/homebrew/opt/grep/libexec/gnuman"
 
-_add_to_PATH "/usr/local/opt/gnu-getopt/bin"
-_add_to_MANPATH "/usr/local/opt/gnu-getopt/share/man"
+_add_to_PATH "/opt/homebrew/opt/gnu-getopt/bin"
+_add_to_MANPATH "/opt/homebrew/opt/gnu-getopt/share/man"
 
 # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
 # otherwise these python versions will be resolved before latest
 #
 # python 3.8
-python_38_path="/usr/local/opt/python@3.8/libexec/bin"
+python_38_path="/opt/homebrew/opt/python@3.8/libexec/bin"
 _add_to_PATH "$python_38_path"
 
 
 # python 3.11 = default
-python_311_path="/usr/local/opt/python@3.11/libexec/bin"
+python_311_path="/opt/homebrew/opt/python@3.11/libexec/bin"
 ln -sf "$python_311_path"/python "$python_311_path"/python3
 _add_to_PATH "$python_311_path"
 _add_to_PATH "$HOME/Library/Python/3.11/bin"
-export LDFLAGS="-L/usr/local/opt/python@3.11/lib:$LDFLAGS"
-export PKG_CONFIG_PATH="/usr/local/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
+export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib:$LDFLAGS"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 
 # pipx installed binaries
@@ -49,33 +50,33 @@ _add_to_PATH "$HOME/.local/bin"
 
 # --
 # ruby compiler settings
-_add_to_PATH "/usr/local/opt/ruby-build/bin"
+_add_to_PATH "/opt/homebrew/opt/ruby-build/bin"
 _add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"
 
-export CPPFLAGS="-I/usr/local/opt/openssl@3/include:$CPPFLAGS"
-export CPPFLAGS="-I/usr/local/opt/ruby/include:$CPPFLAGS"
-export LDFLAGS="-L/usr/local/opt/openssl@3/lib:$LDFLAGS"
-export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig:$PKG_CONFIG_PATH"
-export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+# TODO maybe add ruby CPP Flag & PKG_CONFIG_PATH
+export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include:$CPPFLAGS"
+export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib:$LDFLAGS"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@3/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --
 
 # -- node 18 as node 20 does not work with `yarn` - 2023-04-21
-_add_to_PATH /usr/local/opt/node@18/bin
-export LDFLAGS="-L/usr/local/opt/node@18/lib:$LDFLAGS"
-export CPPFLAGS="-I/usr/local/opt/node@18/include:$CPPFLAGS"
+_add_to_PATH /opt/homebrew/opt/node@18/bin
+export LDFLAGS="-L/opt/homebrew/opt/node@18/lib:$LDFLAGS"
+export CPPFLAGS="-I/opt/homebrew/opt/node@18/include:$CPPFLAGS"
 # --
 
 # --
 # readline shared object was missing. so I added all exports recommended by the brew pkg
 
 # $ pass asdf/blub -c
-# dyld[54483]: Library not loaded: '/usr/local/opt/readline/lib/libreadline.8.dylib'
-#   Referenced from: '/usr/local/Cellar/gnupg/2.3.7_1/bin/gpg'
-#   Reason: tried: '/usr/local/opt/readline/lib/libreadline.8.dylib' (no such file), '/usr/local/lib/libreadline.8.dylib' (no such file), '/usr/lib/libreadline.8.dylib' (no such file)
+# dyld[54483]: Library not loaded: '/opt/homebrew/opt/readline/lib/libreadline.8.dylib'
+#   Referenced from: '/opt/homebrew/Cellar/gnupg/2.3.7_1/bin/gpg'
+#   Reason: tried: '/opt/homebrew/opt/readline/lib/libreadline.8.dylib' (no such file), '/opt/homebrew/lib/libreadline.8.dylib' (no such file), '/usr/lib/libreadline.8.dylib' (no such file)
 
-export LDFLAGS="-L/usr/local/opt/readline/lib:$LDFLAGS"
-export CPPFLAGS="-I/usr/local/opt/readline/include:$CPPFLAGS"
-export PKG_CONFIG_PATH="/usr/local/opt/readline/lib/pkgconfig:$PKG_CONFIG_PATH"
+export LDFLAGS="-L/opt/homebrew/opt/readline/lib:$LDFLAGS"
+export CPPFLAGS="-I/opt/homebrew/opt/readline/include:$CPPFLAGS"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/readline/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --
 
 

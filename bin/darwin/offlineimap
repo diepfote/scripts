@@ -15,6 +15,6 @@ trap 'set +x; export PATH="$_old_path"' EXIT
 export PATH="$(echo "$PATH" | python -c 'paths = input().split(":"); paths_new = []; [ paths_new.append(path) for path in paths if not ("python" in path.lower() or ".pyenv" in path) ]; print(":".join(paths_new))')"
 
 set -x
-/usr/local/bin/offlineimap "$@"
+/opt/homebrew/bin/offlineimap "$@"
 set +x
 

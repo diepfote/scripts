@@ -198,9 +198,9 @@ elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
     export DOCKER_HOST
 
     if [ -n "$COMPOSE" ]; then
-      command=(/usr/local/opt/docker-compose/bin/docker-compose)
+      command=(/opt/homebrew/opt/docker-compose/bin/docker-compose)
     else
-      command=(/usr/local/bin/docker)
+      command=(/opt/homebrew/bin/docker)
     fi
 
     "${command[@]}" "$@"
