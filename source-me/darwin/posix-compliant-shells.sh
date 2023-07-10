@@ -5,7 +5,7 @@ unset LDFLAGS CPPFLAGS PKG_CONFIG_PATH
 
 source ~/Documents/scripts/source-me/darwin/common-functions.sh
 
-_add_to_PATH "$(gfind /opt/homebrew/Cellar/git/ -type d -name git-jump | head -n1)"
+_add_to_PATH "$(/opt/homebrew/opt/findutils/libexec/gnubin/find /opt/homebrew/Cellar/git/ -type d -name git-jump | head -n1)"
 
 _add_to_PATH /opt/homebrew/bin/
 
