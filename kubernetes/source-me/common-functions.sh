@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+
+source ~/Documents/scripts/source-me/common-functions.sh
+
 alias kctx="kubectx"
 alias kx="kubectx"
 alias ktx="kubectx"
