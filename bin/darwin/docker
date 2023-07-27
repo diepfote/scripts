@@ -194,7 +194,7 @@ elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
     : "${HOME:=/Users/florian.begusch}"
 
     set -x
-    export DOCKER_HOST="unix://$HOME/.${DOCKER_BACKING_INSTANCE}/docker.sock"
+    DOCKER_HOST="unix://$HOME/.${DOCKER_BACKING_INSTANCE}/docker.sock"
     export DOCKER_HOST
 
     if [ -n "$COMPOSE" ]; then
