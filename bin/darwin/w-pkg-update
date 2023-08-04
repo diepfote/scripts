@@ -175,7 +175,7 @@ trap 'cleanup' EXIT  # stop spinner
 
 echo -e '\n--------\nlima archlinux disk images update & run\n'
 
-base_url='https://mirror.pkgbuild.com/images'
+base_url='https://geo.mirror.pkgbuild.com/images'
 sed_command=(sed 's#.*href="##;s#".*##')
 
 latest_image_location="$(curl -s "$base_url/" | tr -s ' ' | grep -E '(href="v|latest)' | tail -n 1 | "${sed_command[@]}")"
@@ -186,7 +186,7 @@ done < <(curl -sL "$base_url/$latest_image_location" | grep cloud | "${sed_comma
 
 lima_config_file=~/Documents/dot-files/.lima/default/lima.yaml.j2
 # set image location
-sed -i -r 's#("https://mirror.pkgbuild.com/images).*(")'"#\1/$latest_image_location${image_links[0]}\2#"  "$lima_config_file"
+sed -i -r 's#("https://geo.mirror.pkgbuild.com/images).*(")'"#\1/$latest_image_location${image_links[0]}\2#"  "$lima_config_file"
 # set image sha256
 image_sha256="$(curl -sL "$base_url/$latest_image_location${image_links[1]}" | awk '{ print $1 }')"
 sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
