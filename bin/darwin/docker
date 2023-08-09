@@ -203,6 +203,10 @@ elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
       command=(/opt/homebrew/bin/docker)
     fi
 
+    if [[ "$1" =~ build* ]]; then
+      command+=(--progress plain)
+    fi
+
     "${command[@]}" "$@"
   )
 else
