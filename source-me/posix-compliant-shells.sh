@@ -322,6 +322,10 @@ video-sync () {
   ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
 }
 
+sync-video-syncer-mpv-watch-later-files () {
+  set +x
+  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files | grep -v INFO
+}
 
 get-yt-links-for-downloads () {
   find "$1" -mindepth 1 | sed -r 's|(.*)([A-z0-9-]{11})\.[A-z0-9]{2,6}|\2 #  \1|
@@ -1017,6 +1021,10 @@ work-sync () {
   echo
   set -x
   work_recompile_go_tools_conditionally
+
+  echo
+  set -x
+  sync-video-syncer-mpv-watch-later-files
 
   echo >&2
   echo 'Do you want to run video-syncer?' >&2
