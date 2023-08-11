@@ -322,7 +322,7 @@ video-sync () {
   ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
 }
 
-sync-video-syncer-mpv-watch-later-files () {
+video-sync-mpv-watch-later-files () {
   set +x
   ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files | grep -v INFO
 }
@@ -1024,7 +1024,7 @@ work-sync () {
 
   echo
   set -x
-  sync-video-syncer-mpv-watch-later-files
+  video-sync-mpv-watch-later-files
 
   echo >&2
   echo 'Do you want to run video-syncer?' >&2
