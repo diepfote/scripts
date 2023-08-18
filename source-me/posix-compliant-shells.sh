@@ -994,7 +994,8 @@ _work-wrapper () {
   set +x
 }
 
-work-sync () {
+
+_sync-os-configs () {
   set +x
   local username
   username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
@@ -1010,21 +1011,25 @@ work-sync () {
 
   [ ! -d "$dir" ] && mkdir -p "$dir"
   _rclone_verbose_sync_operation "$fastmail_path" "$dir"
+}
 
+work-sync () {
+ set -x
+  _sync-os-configs
+
+  echo
+  set -x
+  video-sync-mpv-watch-later-files
+  echo
 
   local conf_file=~/Documents/config/repo.conf
   local command=('git' 'pull' 'origin' 'master')
-
   # TODO improve func name
   _work-wrapper "$conf_file" "${command[@]}"
 
   echo
   set -x
   work_recompile_go_tools_conditionally
-
-  echo
-  set -x
-  video-sync-mpv-watch-later-files
 
   echo >&2
   echo 'Do you want to run video-syncer?' >&2
