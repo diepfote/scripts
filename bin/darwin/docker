@@ -8,8 +8,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
-
-cleanup () { set -x; }
+cleanup () { set +x; }
 trap cleanup EXIT
 
 : "${DOCKER_BACKING_INSTANCE:=colima}"
@@ -191,9 +190,8 @@ if [ "$DOCKER_BACKING_INSTANCE" = default ]; then
 elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
   (
     # TODO dirty hack for ansible playbook phase `Gathering facts`
-    : "${HOME:=/Users/florian.begusch}"
+    : "${HOME:=/Users/florian.sorko}"
 
-    set -x
     DOCKER_HOST="unix://$HOME/.${DOCKER_BACKING_INSTANCE}/docker.sock"
     export DOCKER_HOST
 
@@ -203,11 +201,37 @@ elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
       command=(/opt/homebrew/bin/docker)
     fi
 
+    set -x
+    is_build_command=''
     if [[ "$1" =~ build* ]]; then
-      command+=(--progress plain)
+      is_build_command=true
     fi
+    temp_args=() inserted_progress_args=''
+    # insert progress arguments right after build commands (`build` or `buildx build`)
+    for item in "$@"; do
+      if [[ "$item" =~ build* ]]; then
+        # save `build` or `buildx build` command
+        temp_args+=("$item")
+      else
+        if [ -n "$is_build_command" ]; then
+          if [ -z "$inserted_progress_args" ]; then
+            # in case this is a build command add progress args once, after the build command(s)
+            temp_args+=(--progress plain)
+            inserted_progress_args=true
+          fi
+        fi
 
+        # always save previous args
+        temp_args+=("$item")
+      fi
+
+    done
+    set -- "${temp_args[@]}"
+    unset is_build_command inserted_progress_args temp_args
+
+    set -x
     "${command[@]}" "$@"
+    set +x
   )
 else
   echo "${RED}invalid$NC $DOCKER_BACKING_INSTANCE" >&2
