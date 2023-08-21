@@ -888,7 +888,7 @@ log-vim () {
   _log-wrapper ~/.vim "$@"
 }
 
-_reset-wrapper () {
+_reset_wrapper () {
   dir="$1"
   shift
 
@@ -899,32 +899,32 @@ _reset-wrapper () {
 }
 
 reset-dot-files () {
-  _reset-wrapper ~/Documents/dot-files "$@"
+  _reset_wrapper ~/Documents/dot-files "$@"
   (cd ~/Documents/dot-files && make)
 }
 reset-function () {
-  _reset-wrapper ~/.config/fish/functions "$@"
+  _reset_wrapper ~/.config/fish/functions "$@"
 }
 reset-cheat () {
-  _reset-wrapper ~/Documents/cheatsheets "$@"
+  _reset_wrapper ~/Documents/cheatsheets "$@"
 }
 reset-docker () {
-  _reset-wrapper ~/Documents/dockerfiles "$@"
+  _reset_wrapper ~/Documents/dockerfiles "$@"
 }
 reset-mutt () {
-  _reset-wrapper ~/.mutt "$@"
+  _reset_wrapper ~/.mutt "$@"
 }
 reset-go () {
-  _reset-wrapper ~/Documents/golang/tools "$@"
+  _reset_wrapper ~/Documents/golang/tools "$@"
 }
 reset-python () {
-  _reset-wrapper ~/Documents/python/tools "$@"
+  _reset_wrapper ~/Documents/python/tools "$@"
 }
 reset-script () {
-  _reset-wrapper ~/Documents/scripts "$@"
+  _reset_wrapper ~/Documents/scripts "$@"
 }
 reset-vim () {
-  _reset-wrapper ~/.vim "$@"
+  _reset_wrapper ~/.vim "$@"
 }
 
 _status-wrapper () {
