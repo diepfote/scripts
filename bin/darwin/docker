@@ -201,7 +201,6 @@ elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
       command=(/opt/homebrew/bin/docker)
     fi
 
-    set -x
     is_build_command=''
     if [[ "$1" =~ build* ]]; then
       is_build_command=true
