@@ -33,6 +33,47 @@ _add_to_MANPATH () {
  fi
 }
 
+
+_display-PATH () {
+  if [ "$1" ]; then
+    echo ---
+    echo "$1"
+  fi
+
+  echo "$PATH" | tr ':' '\n'
+}
+
+_reset-PATH () {
+  _remove_from_PATH homebrew
+  _remove_from_PATH "$USER"
+  set -x
+  reload
+}
+
+_remove_from_PATH () {
+  local temp_path_list='' first=true
+
+  _display-PATH "before removal of '$1'"
+
+
+  while read -r path; do
+    if [[ "$path" =~ "$1" ]]; then
+      continue
+    fi
+
+    if [ -n "$first" ]; then
+      first=''
+      temp_path_list="$path"
+    else
+      temp_path_list="$temp_path_list:$path"
+    fi
+
+  done < <(echo "$PATH" | sed -r 's#:#\n#g')
+
+  export PATH="$temp_path_list"
+  _display-PATH "after removal of '$1'"
+}
+
 _add_to_PATH () {
   local path_to_add reverse_order
   reverse_order=''
