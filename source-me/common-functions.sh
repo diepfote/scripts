@@ -35,29 +35,51 @@ _add_to_MANPATH () {
 
 
 _display-PATH () {
-  if [ "$1" ]; then
+  if [ -n "$1" ]; then
     echo ---
     echo "$1"
   fi
 
+  set -x
   echo "$PATH" | tr ':' '\n'
+  set +x
 }
 
-_reset-PATH () {
-  _remove_from_PATH homebrew
-  _remove_from_PATH "$USER"
+reload () {
   set -x
-  reload
+  _remove_from_PATH homebrew
+  set -x
+  _remove_from_PATH "$USER"
+
+  # stupid workaround for $SHELL set to whatever you did with `chsh -s`
+  # on Mac OS
+  if [ -n "$ZSH" ]; then
+    # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L145
+    # Reload the shell (i.e. invoke as a login shell)
+    set -x
+    exec /bin/zsh
+  else
+    # snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L145
+    # Reload the shell (i.e. invoke as a login shell)
+    set -x
+    exec "${SHELL}"
+  fi
 }
 
 _remove_from_PATH () {
-  local temp_path_list='' first=true
+  set +x
+  local temp_path_list='' first=true debug=''
 
-  _display-PATH "before removal of '$1'"
+  if [ "$2" = debug ]; then
+    debug=true
+  fi
 
+  if [ -n "$debug" ]; then
+    _display-PATH "before removal of '$1'"
+  fi
 
   while read -r path; do
-    if [[ "$path" =~ "$1" ]]; then
+    if [[ "$path" =~ $1 ]]; then
       continue
     fi
 
@@ -71,7 +93,9 @@ _remove_from_PATH () {
   done < <(echo "$PATH" | sed -r 's#:#\n#g')
 
   export PATH="$temp_path_list"
-  _display-PATH "after removal of '$1'"
+  if [ -n "$debug" ]; then
+    _display-PATH "after removal of '$1'"
+  fi
 }
 
 _add_to_PATH () {
