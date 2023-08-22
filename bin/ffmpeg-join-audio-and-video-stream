@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+cleanup () {
+  set +x
+}
+trap cleanup EXIT
+
+_help() {
+cat <<EOF
+USAGE: $(basename $0) <REQUIRED_OPTIONS> <OPTIONAL_OPTIONS>
+
+REQUIRED OPTIONS:
+  --audio  AUDIO_FILE The audio file
+  --video  VIDEO_FILE The video file
+OPTIONAL OPTIONS:
+  --out    OUT_FILE  The filename for the new file with joined streams [Default: <basename_no_ext>.joined.<ext>]
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+# Parse arguments
+AUDIO_FILE=''
+VIDEO_FILE=''
+OUT=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --audio)
+    AUDIO_FILE="$2"
+    shift 2
+    ;;
+
+    --video)
+    VIDEO_FILE="$2"
+    shift 2
+    ;;
+
+
+    --out)
+    OUT="$2"
+    shift 2
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+if [ -z "$OUT" ]; then
+  basename_no_ext="$(basename "$VIDEO_FILE" | sed -r 's#(.*)\.[^.]+#\1#')"
+  ext="$(basename "$VIDEO_FILE" | sed -r 's#.*\.([^.]+)#\1#')"
+  OUT="$basename_no_ext.joined.$ext"
+fi
+
+
+# if there is no audio in the video file yet
+# ffmpeg -i video.mp4 -i audio.wav -c:v copy -c:a aac output.mp4
+
+# Nicked from https://superuser.com/a/277667
+# The -map option makes ffmpeg only use the first video stream from the first input and the first audio stream from the second input for the output file.
+set -x
+ffmpeg -i "$VIDEO_FILE" -i "$AUDIO_FILE" -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 "$OUT"
+
+# copy without re-encode
+# ffmpeg -i video.mp4 -i audio.wav -c copy output.mkv
