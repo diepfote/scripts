@@ -16,7 +16,7 @@ mkdir -p "$local_video_syncer_storage"
 username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
 fastmail_path='fastmail:'"$username"'.fastmail.com/files/videos'
 
-if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$local_video_syncer_storage"; then
+if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$local_video_syncer_storage"; then
 
   video_syncer_file=videos-home.txt
   system=arch
@@ -30,10 +30,10 @@ if _rclone_verbose_sync_operation --delete-excluded "$fastmail_path" "$local_vid
   ~/Documents/scripts/bin/_prepare-file-to-report-videos "$local_video_syncer_storage/$video_syncer_file"
 
   # sync video-syncer file
-  _rclone_verbose_sync_operation --delete-excluded "$local_video_syncer_storage" "$fastmail_path"
+  _rclone_verbose_sync_operation --update --delete-excluded "$local_video_syncer_storage" "$fastmail_path"
 
   # sync mpv watch_later files
   find "$mpv_dir" ! -mtime -180 -delete  # delete files older than 180 days
-  _rclone_verbose_sync_operation --delete-excluded "$mpv_dir" "$fastmail_path/$system-mpv-watch_later/"
+  _rclone_verbose_sync_operation --update --delete-excluded "$mpv_dir" "$fastmail_path/$system-mpv-watch_later/"
 fi
 
