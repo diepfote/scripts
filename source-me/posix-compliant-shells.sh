@@ -294,6 +294,10 @@ mpv () {
 }
 
 
+_report-videos () {
+  ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
+}
+
 video-sync () {
   local dir
   dir=~/Movies
@@ -301,17 +305,18 @@ video-sync () {
     dir=~/Videos
   fi
 
-  ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
+  _report-videos
 
   echo
   ~/Documents/golang/tools/video-syncer/video-syncer "$dir"
   echo
 
-  ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
+  _report-videos
 }
 
 video-sync-mpv-watch-later-files () {
   set +x
+  _report-videos
   ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files | grep -v INFO
 }
 
