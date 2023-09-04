@@ -93,7 +93,9 @@ if [ -z "$SKIP_RUST_CARGO" ]; then
   # cargo install cargo-update
   # https://crates.io/crates/cargo-update
   set +e
+  set -x
   cargo install-update -a
+  set +x
   set -e
   log
 else
