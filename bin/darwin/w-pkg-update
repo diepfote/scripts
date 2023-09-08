@@ -24,16 +24,16 @@ mac-os-updates () {
 
     echo -e '\n\n--------\n\nInstalling Mac OS updates that do not require a restart.'
 
-    set -x
-    softwareupdate -i --no-scan -a
-    set +x
-
     echo 'Do you want to update & restart?'
     set +u
     if yesno; then
       echo -e '\n\n--------\n\nInstalling Mac OS updates that require a restart.'
       set -x
       sudo softwareupdate -i --no-scan -a -R
+      set +x
+    else
+      set -x
+      softwareupdate -i --no-scan -a &
       set +x
     fi
     set -u
@@ -192,17 +192,21 @@ image_sha256="$(curl -sL "$base_url/$latest_image_location${image_links[1]}" | a
 sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
 
 if [ -z "$DO_NOT_START_LIMA" ]; then
-  set -x
-  colima start --memory 2  >/dev/null 2>&1  &
-  set +x
-  disown "$!"
-  sleep 1
+  if ! limactl list | tr -s ' ' ' ' | grep -q 'colima Running' 2>/dev/null; then
+    set -x
+    colima start --memory 2  >/dev/null 2>&1  &
+    set +x
+    disown "$!"
+    sleep 1
+  fi
 
-  set -x
-  limactl start default  >/dev/null 2>&1  &
-  set +x
-  disown "$!"
-  sleep 1
+  if ! limactl list | tr -s ' ' ' ' | grep -q 'default Running' 2>/dev/null; then
+    set -x
+    limactl restart default  >/dev/null 2>&1  &
+    set +x
+    disown "$!"
+    sleep 1
+  fi
 fi
 
 # LIMA END
