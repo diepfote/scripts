@@ -34,7 +34,7 @@ nl "$1" |\
   stdbuf -o0 sort -n |\
   stdbuf -o0 cut -f2 > "$temp_file"
 
-cat "$temp_file"
+tail "$temp_file"
 echo 'EOF -----------------'
 echo
 
