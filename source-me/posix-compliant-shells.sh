@@ -151,6 +151,8 @@ alias grep='grep \
               --exclude=Session.vim \
               --color'
 
+alias jq='jq --monochrome-output --raw-output'
+
 # shellcheck disable=SC2154
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
 
