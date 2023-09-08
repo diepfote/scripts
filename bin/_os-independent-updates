@@ -68,7 +68,7 @@ if [ -z "$SKIP_VIM_UPDATES" ]; then
   echo '[.] GoUpdateBinaries' >> "$plugin_update_log"
   nvim -c "redir >>$plugin_update_log | execute ':GoUpdateBinaries' | qa"
 
-  cat "$plugin_update_log" >&2
+  grep -vE 'Reinstalling|Already up to date' "$plugin_update_log" >&2
   log
 
   set +x
