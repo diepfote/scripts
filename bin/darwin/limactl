@@ -26,6 +26,15 @@ key="$1"
     break
     ;;
 
+    restart)
+      if [ default = "$2" ]; then
+        /opt/homebrew/bin/limactl stop default  || true  # ignore failure -> instance might be stopped already
+        /opt/homebrew/bin/limactl start default
+      fi
+      shift 2
+
+      break
+      ;;
 
     --|*)
     set -x
