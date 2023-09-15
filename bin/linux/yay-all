@@ -154,7 +154,7 @@ _yay_set_upgradeable_AURs () {
 }
 
 # default
-pacman_cmd=('sudo' 'pacman' '-Syu')
+pacman_cmd=('pacman' --sudo '-Syu')
 if [ -n "$DRY_RUN" ]; then
   # used to check if pacman arguments are valid
   pacman_cmd=('pacman' '-Syu')
@@ -162,7 +162,7 @@ if [ -n "$DRY_RUN" ]; then
   exit
 elif [ -n "$REPEAT" ]; then
   # do not update database -> just did that presumably
-  pacman_cmd=('sudo' 'pacman' '-Su')
+  pacman_cmd=('pacman' --sudo '-Su')
 fi
 
 if [ -n "$YAY_ALL_NO_CONFIRM" ]; then
@@ -171,7 +171,7 @@ if [ -n "$YAY_ALL_NO_CONFIRM" ]; then
 fi
 
 # update package info for listing
-echo n | sudo pacman -Sy || true
+echo n | pacman --sudo -Sy || true
 
 if [ $# -gt 0 ]; then
   if [ "$1" = -w ]; then
@@ -193,7 +193,7 @@ while ! "${pacman_cmd[@]}" "$@"; do
   sleep 1
 
   # do not fetch updates -> we do not review them in vim in this loop
-  pacman_cmd=('sudo' 'pacman' '-Su' "${additional_arguments[@]}")
+  pacman_cmd=('pacman' --sudo '-Su' "${additional_arguments[@]}")
 done
 set +x
 

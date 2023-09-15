@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+cleanup () {
+  set +x
+}
+trap cleanup EXIT
+
+
+# Parse arguments
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --do-not-throttle-bandwidth)
+    THROTTLE_BANDWIDTH=''
+    shift
+    ;;
+
+    --throttle-bandwidth)
+    THROTTLE_BANDWIDTH="${2:-500}"
+    shift 2
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+cmd=()
+if [ -n "$THROTTLE_BANDWIDTH" ]; then
+  cmd+=(trickle -d "$THROTTLE_BANDWIDTH")
+fi
+cmd+=(/usr/bin/yay)
+set -x
+"${cmd[@]}" "$@"
+set +x
