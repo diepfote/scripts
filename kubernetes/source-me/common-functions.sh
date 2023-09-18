@@ -13,12 +13,44 @@ _add_to_PATH "$HOME/.krew/bin"
 alias kn=kubens
 
 
+_print () {
+  for name in "$@"; do
+    echo "$name"
+  done
+}
+
+_set_namespaces () {
+  read -r -d '' -a _all_namespaces < <(kubectl get namespace -o json | jq '.items[].metadata.name' | sed 's#^"##;s#"$##')
+  export _all_namespaces
+}
+
+_complete-namespaces() {
+  local cur_word="$1"
+
+  if [ -z "$_all_namespaces" ]; then
+    _set_namespaces
+  fi
+
+# _all_namespaces=('test-something-blub' 'test-something-minus')
+
+  read -r -d '' -a _tmp_general < <(compgen -W "$(_print "${_all_namespaces[@]}")" -- "$cur_word")
+  export COMPREPLY=("${_tmp_general[@]}")
+  unset _tmp_general
+}
+
 _set-kubecontext_complete ()
 {
+  local cur_word="$1"
   export DIR_TO_COMPLETE="$HOME/.kube"
   _complete_files_and_dirs
 }
 
+_autocomplete_cluster_suffix () {
+  local cur_word="$1"
+  read -r -d '' -a _tmp_general < <(compgen -W "$(ls ~/.kube/generated | sed 's#.*-##' | sort | uniq)" -- "$cur_word")
+  export COMPREPLY=("${_tmp_general[@]}")
+  unset _tmp_general
+}
 
 oc-get-pod () {
   local partial_pod_name="$1"
