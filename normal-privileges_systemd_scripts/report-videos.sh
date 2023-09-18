@@ -6,9 +6,46 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-
 source ~/Documents/scripts/source-me/common-functions.sh
 _add_to_PATH ~/Documents/python/tools/bin
+
+
+
+LOCK_FILE=/tmp/report-videos-lock-file
+
+pid="$$"
+ppid="$(ps -o ppid= "$pid" | sed -r 's#\s*##')"
+
+d="$(date)"
+# report that we ran from lua in mpv
+echo "start $ppid:$pid:$d" >> /tmp/running-report-videos
+
+
+# redirect stdout and stderr to launchd agent output files
+#
+# > we cannot check `ppid != 1` <
+# to avoid remapping stdout/stderr#   if we run from launchd, mpv lua starts appear to have
+# `ppid == 1` as well
+#
+set +u
+test -z "$REXECED" && { REXECED=1 exec "$0" "$@" >> /tmp/launchagent-report-work-videos.stdout 2>>/tmp/launchagent-report-work-videos.stderr; exit; }
+set -u
+
+
+if [ -f "$LOCK_FILE" ]; then
+  echo "${RED}[!]$NC an instance is already running. $ppid:$pid exiting." >&2
+  echo "[.] lock file: $LOCK_FILE" >&2
+  echo --- >&2
+  echo "[.] grep report-videos" >&2
+  ps -ef | grep -v grep | grep report-videos >2&
+  echo --- >&2
+  echo "[.] grep ppid" >&2
+  ps -ef | grep -v grep | grep "$ppid" >2&
+  exit 1
+fi
+touch "$LOCK_FILE"
+
+
 
 local_video_syncer_storage=~/Documents/misc/videos
 mkdir -p "$local_video_syncer_storage"
@@ -37,3 +74,6 @@ if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$
   _rclone_verbose_sync_operation --update --delete-excluded "$mpv_dir" "$fastmail_path/$system-mpv-watch_later/"
 fi
 
+d="$(date)"
+echo "end $ppid:$pid:$d" >> /tmp/running-report-videos
+rm "$LOCK_FILE"
