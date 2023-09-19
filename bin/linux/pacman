@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "+ "'`'"pacman $*"'`' >&2
+
 # all of these stem from https://www.shellcheck.net/wiki/
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -49,7 +51,25 @@ cmd=()
 if [ -n "$SUDO" ]; then
   cmd+=(sudo)
 fi
-if [ -n "$THROTTLE_BANDWIDTH" ]; then
+
+# TODO hack that might break
+# otherwise yay installs fail -> var unset
+#
+# ==> WARNING: Using existing $srcdir/ tree
+# ==> Starting pkgver()...
+# ==> Sources are ready.
+# -U --noconfirm --config /etc/pacman.conf -- /home/flo/.cache/yay/usbmuxd-git/usbmuxd-git-1:1.1.1.r54.gc7a0dd9-1-x86_64.pkg.tar.zst
+# /home/flo/Documents/scripts/bin/linux/pacman: line 54: THROTTLE_BANDWIDTH: unbound variable
+#  -> error installing: [/home/flo/.cache/yay/usbmuxd-git/usbmuxd-git-1:1.1.1.r54.gc7a0dd9-1-x86_64.pkg.tar.zst] - exit status 1
+#
+#
+#
+pacman_bandwidth_limit_file=/tmp/pacman-bandwidth-limit
+set +u
+THROTTLE_BANDWIDTH="$(head -n 1 "$pacman_bandwidth_limit_file")"
+
+
+if [ -n "$THROTTLE_BANDWIDTH" ] && [ "$THROTTLE_BANDWIDTH" -gt 0 ]; then
   cmd+=(trickle -d "$THROTTLE_BANDWIDTH")
 fi
 cmd+=(/usr/bin/pacman)

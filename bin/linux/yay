@@ -42,6 +42,14 @@ key="$1"
 done
 
 cmd=()
+
+# check `./pacman` to see why this is neccessary
+#
+pacman_bandwidth_limit_file=/tmp/pacman-bandwidth-limit
+set +u
+THROTTLE_BANDWIDTH="$(head -n 1 "$pacman_bandwidth_limit_file")"
+
+
 if [ -n "$THROTTLE_BANDWIDTH" ]; then
   cmd+=(trickle -d "$THROTTLE_BANDWIDTH")
 fi
