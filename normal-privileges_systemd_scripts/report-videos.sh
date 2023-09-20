@@ -10,21 +10,29 @@ source ~/Documents/scripts/source-me/common-functions.sh
 _add_to_PATH ~/Documents/python/tools/bin
 
 
+end () {
+  echo "[.] END   ppid:$ppid pid:$pid $(date)" >&2
+}
+trap end EXIT
+
 
 LOCK_FILE=/tmp/report-videos-lock-file
 
 pid="$$"
 ppid="$(ps -o ppid= "$pid" | sed -r 's#\s*##')"
 
+_date="$(date)"
+echo "[.] START ppid:$ppid pid:$pid $(date)" >&2
+
 if [ -f "$LOCK_FILE" ]; then
   echo "${RED}[!]$NC an instance is already running. $ppid:$pid exiting." >&2
   echo "[.] lock file: $LOCK_FILE" >&2
   echo --- >&2
   echo "[.] grep report-videos" >&2
-  ps -ef | grep -v grep | grep report-videos >2&
+  ps -ef | grep -v grep | grep report-videos >&2
   echo --- >&2
   echo "[.] grep ppid" >&2
-  ps -ef | grep -v grep | grep "$ppid" >2&
+  ps -ef | grep -v grep | grep "$ppid" >&2
   exit 1
 fi
 touch "$LOCK_FILE"
@@ -57,5 +65,6 @@ if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$
   find "$mpv_dir" ! -mtime -180 -delete  # delete files older than 180 days
   _rclone_verbose_sync_operation --update --delete-excluded "$mpv_dir" "$fastmail_path/$system-mpv-watch_later/"
 fi
+
 
 rm "$LOCK_FILE"
