@@ -18,23 +18,32 @@ trap end EXIT
 
 LOCK_FILE=/tmp/report-videos-lock-file
 
+abort () {
+  source ~/Documents/scripts/source-me/colors.sh
+  echo "${RED}[!]$NC an instance is already running. $ppid:$pid exiting." >&2
+  echo "[.] lock file: $LOCK_FILE" >&2
+  echo --- >&2
+  echo "[.] grep report-videos" >&2
+  ps -ef | grep -v grep | grep report-videos >&2
+
+  exit 1
+}
+
+
 pid="$$"
 ppid="$(ps -o ppid= "$pid" | sed -r 's#\s*##')"
 
 _date="$(date)"
 echo "[.] START ppid:$ppid pid:$pid $(date)" >&2
 
+
+# !!!
+# if the lockfile is older than 5 min just delete it an move on
+find /tmp/report-videos-lock-file -mmin +5 -delete  >/dev/null 2>&1  || true  # ignore error for: no file
 if [ -f "$LOCK_FILE" ]; then
-  echo "${RED}[!]$NC an instance is already running. $ppid:$pid exiting." >&2
-  echo "[.] lock file: $LOCK_FILE" >&2
-  echo --- >&2
-  echo "[.] grep report-videos" >&2
-  ps -ef | grep -v grep | grep report-videos >&2
-  echo --- >&2
-  echo "[.] grep ppid" >&2
-  ps -ef | grep -v grep | grep "$ppid" >&2
-  exit 1
+  abort
 fi
+# !!!
 touch "$LOCK_FILE"
 
 
