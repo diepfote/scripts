@@ -1,12 +1,87 @@
 #!/usr/bin/env bash
 
+_help() {
+cat <<EOF
+USAGE: $(basename $0) [-r]
+
+Prints non-running pods
+
+FLAGS:
+-r   Show running pods with restarts & non-ready pods/containers
+
+
+Example output:
+
+\$ kubectl non-running-pods -r
+------------------------
+Mon Sep 25 06:55:07 UTC 2023
+[.] non-running pods/containers (excluding completed):
+---
+json.items[3].status.containerStatuses[12].name = "something";
+json.items[3].metadata.name = "something-1";
+
+[.] not running or running with restarts:
+kubectl get pod | grep -vE Running\s*0*\s*[0-9a-z]+\$
+
+
+
+This is the result of the following state:
+
+$ kubectl get pod -n something
+NAME                                                           READY   STATUS      RESTARTS   AGE
+something-1                                                    18/19   Running     0          80s
+EOF
+}
+
+echo ------------------------ >&2
+date >&2
+
+if [ "$1" = -h ] || [ "$1" = --help ]; then
+  _help >&2
+  exit
+fi
+
+
 grep_command=(grep -v Running)
 
 if [ "$1" = -r ]; then
   shift
+
   grep_command=(grep -vE 'Running\s*0*\s*[0-9a-z]+$')
+
+  KUBECTL_NON_RUNNING_PODS_FAILURES=/tmp/kubectl-non-running-pods-failures.txt
+  KUBECTL_NON_RUNNING_PODS_GRON_OUTPUT=/tmp/kubectl-non-running-pods-gronned-output.txt
+
+  cleanup () {
+    rm "$KUBECTL_NON_RUNNING_PODS_GRON_OUTPUT" "$KUBECTL_NON_RUNNING_PODS_FAILURES"
+    unset KUBECTL_NON_RUNNING_PODS_GRON_OUTPUT KUBECTL_NON_RUNNING_PODS_FAILURES
+  }
+  trap cleanup EXIT
+
+  kubectl get pod -n jira-common -o json | gron > "$KUBECTL_NON_RUNNING_PODS_GRON_OUTPUT"
+  grep -F 'ready = false' "$KUBECTL_NON_RUNNING_PODS_GRON_OUTPUT" > "$KUBECTL_NON_RUNNING_PODS_FAILURES"
+
+  echo '[.] non-running pods/containers (excluding completed):'  >&2
+  while read -r line; do
+    container_path="$(echo "$line" | sed 's#.ready.*##')"
+    if grep -F "$container_path" /tmp/kubectl-gronned-output.txt  | grep -qF Completed; then
+      continue
+    fi
+
+    echo --- >&2
+
+    pod_name_path="$(echo "$line" | sed 's#.status.*##')"
+    grep -F  "$container_path".name  /tmp/kubectl-non-running-pods-gronned-output.txt
+    grep -F  "$pod_name_path.metadata.name ="  /tmp/kubectl-non-running-pods-gronned-output.txt
+  done < /tmp/kubectl-non-running-pods-failures.txt
+
 fi
+
+echo >&2
+echo '[.] not running or running with restarts:'  >&2
 
 command=(kubectl get pod "$@")
 echo "${command[*]} | ${grep_command[*]}"
 "${command[@]}" 2>/dev/null | "${grep_command[@]}"
+
+echo >&2
