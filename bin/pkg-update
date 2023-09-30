@@ -6,7 +6,9 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+# shellcheck disable=SC1090
 source ~/Documents/scripts/source-me/common-functions.sh
+
 
 trap cleanup EXIT
 cleanup () {
@@ -57,10 +59,17 @@ if [ "$system" = Linux ]; then
   # check arguments
   set +e
   if yay-all --dry-run "$@" 2>&1 | head -n1 | grep -- 'invalid option' >/dev/null; then
+    # shellcheck disable=SC2154
     echo -e "[!] ${RED}invalid flags $NC"'`'"$*"'`'
     exit 1
   fi
   set -e
+
+  # TODO maybe we want this on Mac OS as well
+  #
+  # On Arch we use `Rustup` instead of `Native Installation`
+  # https://wiki.archlinux.org/title/Rust#Installation
+  rustup update stable
 
   _os-independent-updates "${PASS_TO_OS_INDEPENDENT[@]}"
 
