@@ -301,16 +301,10 @@ _report-videos () {
 }
 
 video-sync () {
-  local dir
-  dir=~/Movies
-  if [ "$(uname)" != Darwin ]; then
-    dir=~/Videos
-  fi
-
   _report-videos
 
   echo
-  ~/Documents/golang/tools/video-syncer/video-syncer "$dir"
+  ~/Documents/golang/tools/video-syncer/video-syncer
   echo
 
   _report-videos

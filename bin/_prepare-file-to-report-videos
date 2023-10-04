@@ -6,19 +6,10 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-
 filename="$1"
 [ -f "$HOME/.bash_history_x" ] && HISTFILE="$HOME/.bash_history_x" || HISTFILE="$HOME/.bash_history"
 
-if [ "$(uname)" = Darwin ]; then
-  word=Movies
-else
-  word=Videos
-fi
-path_to_search="$HOME/$word"
-
-~/Documents/golang/tools/video-syncer/video-syncer "$path_to_search" 'report-files'  > "$filename"
+~/Documents/golang/tools/video-syncer/video-syncer 'report-files'  > "$filename"
 
 echo >> "$filename"
 grep -E "^mpv " "$HISTFILE" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"
-

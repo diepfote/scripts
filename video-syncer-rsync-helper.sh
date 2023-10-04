@@ -12,7 +12,7 @@ ssh_key="$1"
 remote="$2"
 local="$3"
 
-echo "[ssh key] $ssh_key"
-echo "[remote] $remote"
-echo "[local] $local"
+echo "[ssh key] $ssh_key" >&2
+echo "[remote] $remote" >&2
+echo "[local] $local" >&2
 rsync --progress -av --exclude .DS_Store --exclude .localized --exclude no-sync/ -e "ssh -i $ssh_key" "$local" "$remote"
