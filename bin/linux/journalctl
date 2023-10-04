@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+/usr/bin/journalctl --no-pager --full "$@" | less -R
+

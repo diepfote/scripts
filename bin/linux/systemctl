@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+systemctl_exe=/usr/bin/systemctl
+
+if [ "$1" = status ] || [[ "$1" =~ ^list.* ]] ; then
+   "$systemctl_exe" --no-pager --full "$@" | less -R
+else
+  "$systemctl_exe"  "$@"
+fi
+
