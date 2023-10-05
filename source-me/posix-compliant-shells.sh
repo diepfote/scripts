@@ -1043,7 +1043,8 @@ work_recompile_go_tools_conditionally () {
     (
       if cd "$line"; then
         binary="$(basename "$line")"
-        if [ "$(date -r main.go '+%s')" -gt "$(date -r "$binary" '+%s')" ]; then
+        binary_date="$(date -r "$binary" '+%s'  2>/dev/null || echo -n '1')"
+        if [ "$(date -r main.go '+%s')" -gt "$binary_date" ]; then
           echo "[.] recompiling '$binary'"
           go build
         fi
