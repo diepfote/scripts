@@ -21,6 +21,12 @@ export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
 export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
 
+# make sure SUDO keeps SYSTEMD environment variables, otherwise this will
+# not change anything
+#
+# $ grep SYSTEMD_ /etc/sudoers
+# Defaults env_keep += "SYSTEMD_COLORS SYSTEMD_PAGER SYSTEMD_LESS"
+#
 export SYSTEMD_COLORS=0
 
 
