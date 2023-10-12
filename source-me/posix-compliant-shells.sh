@@ -411,8 +411,8 @@ dl-playlist () {
   shift
 
   set -x
-  youtube-dl --add-metadata -f "$first_arg" "$@" \
-    -o '%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s'
+  youtube-dl --continue --add-metadata -f "$first_arg" "$@" \
+    -o "$PWD"/'%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s'
   set +x
 }
 
