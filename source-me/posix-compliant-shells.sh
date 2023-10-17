@@ -313,7 +313,8 @@ video-sync () {
 video-sync-mpv-watch-later-files () {
   set +x
   _report-videos
-  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files | grep -v INFO
+  echo
+  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files
 }
 
 get-yt-links-for-downloads () {
