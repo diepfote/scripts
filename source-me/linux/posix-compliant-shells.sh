@@ -8,9 +8,6 @@ if [ -z "$NOT_HOST_ENV" ]; then
 
   xset -b  # disable bell
   setxkbmap -option "ctrl:nocaps"  # change caps-lock to ctrl
-
-  _vpn_systemd_unit="$(read_toml_setting ~/Documents/config/vpn.conf vpn_systemd_unit)"
-  export _vpn_systemd_unit
 fi
 
 
@@ -222,48 +219,6 @@ deny_all_outbound_traffic () {
 }
 
 
-__stop_related_units_if_active ()
-{
-  local unit="$1"
-
-  while IFS='' read -r unit_to_stop; do
-    set -x
-    sudo systemctl stop "$unit_to_stop"
-    set +x
-  done < <(systemctl list-units | command grep -E '^\s*wg-' | command grep -v "$unit" | awk '{ print $1 }')
-}
-
-__restart_unit_if () {
-  local check="$1"  # e.g. 'is-active'
-  local unit="$2"  # e.g. 'dhcpcd@wlp4s0.service'
-  result=''
-  result="$3"
-
-  if [ -z "$result" ]; then
-    result=inactive
-  fi
-
-  if [ "$(systemctl "$check" "$unit")" != "$result" ]; then
-     sudo systemctl restart "$unit"
-  fi
-}
-
-refresh-i3status () {
-  killall -SIGUSR1 i3status
-  ps -ef | grep -v grep | grep -E 'bash.*i3cat.*vpn.*helper.sh' | awk '{ print $2 }' | xargs kill -SIGUSR1
-}
-
-_disable-network () {
-  set -x
-  if [ "$_vpn_systemd_unit" != None ]; then
-    sudo systemctl stop "$_vpn_systemd_unit"
-  fi
-  sudo systemctl stop dhcpcd@wlp4s0.service
-  sudo systemctl stop wpa_supplicant@wlp4s0.service
-
-  refresh-i3status
-  set +x
-}
 
 
 xinput-reverse-mouse-buttons () {
