@@ -339,3 +339,17 @@ gdb-p () {
 }
 alias gdb-peda='gdb -q -ex peda'
 
+redshift-on () {
+  rm /tmp/redshift-off 2>/dev/null
+  touch /tmp/redshift-on
+  systemctl --user restart redshift.service
+}
+redshift-off () {
+  rm /tmp/redshift-on 2>/dev/null
+  touch /tmp/redshift-off
+  systemctl --user restart redshift.service
+}
+redshift-reset () {
+  rm /tmp/redshift-{off,on} 2>/dev/null
+  systemctl --user restart redshift.service
+}

@@ -21,11 +21,20 @@ end="$(read_toml_setting ~/Documents/config/redshift.conf end)"
 
 current_h="$(date +%H)"
 
+ENABLED=''
 if [ "$current_h" -ge "$start" ] || [ "$current_h" -le "$end" ]; then
-  set -x
+  ENABLED=1
+fi
+
+if [ -f /tmp/redshift-on ]; then
+  ENABLED=1
+elif [ -f /tmp/redshift-off ]; then
+  ENABLED=''
+fi
+
+if [ -n "$ENABLED" ]; then
   redshift -P -O 4000
 else
-  set -x
   redshift -x
 fi
 
