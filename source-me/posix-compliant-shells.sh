@@ -214,6 +214,11 @@ tmux-join-pane () {
   command tmux join-pane -t "$(tmux list-pane | grep active | cut -d ']' -f3 | cut -d ' ' -f2)" -s "$1"
 }
 
+tmux-set-pane-title () {
+  tmux select-pane -T "$*"
+}
+
+
 n-for-dir-in-tmux-pane-below() {
   local dir="$1"
   tmux split-window -d -v
