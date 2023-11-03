@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-yt-dlp --no-colors "$@"
+default_opts=(--limit-rate 0.5M)
+
+if [ -n "$DISABLE_RATE_LIMIT" ]; then
+  default_opts=()
+fi
+yt-dlp "${default_opts[@]}" --no-colors "$@"
