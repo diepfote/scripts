@@ -13,11 +13,20 @@ export min_db_level
 dir="$1"
 tmpdir="$(mktemp -d)"
 
+echo "$YELLOW[.]$NC changed files will end up in $NC$tmpdir$NC."
+echo '    only if `find` and its `ffmpeg` subprocess executions succeed'
+echo '    will these files replace the originals in the source folder'
+
 cleanup () {
   set +x
   rm -r "$tmpdir"
 }
 
+# Sidenote:
+# I tried `-hwaccel auto`, I saw no effect so I did not add it to the
+# command
+#
+#
 # shellcheck disable=SC2016
 #
 # -cmin -300 ... no older than 5 hours
