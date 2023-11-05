@@ -13,7 +13,7 @@ temp="$(mktemp -d)"
 sdr_file_list="$temp/sdr_files.txt"
 corresponding_files_list="$temp/corresponding_files.txt"
 
-sed_cmd=(sed -r 's#\..[a-zA-z0-9]{0,4}$##')
+sed_cmd=(sed -r 's#\..[a-zA-Z0-9]{0,4}$##')
 
 # build lists to compare
 while read -r dir; do
