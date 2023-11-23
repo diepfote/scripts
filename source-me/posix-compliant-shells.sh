@@ -1052,7 +1052,7 @@ work_recompile_go_tools_conditionally () {
         binary_date="$(date -r "$binary" '+%s'  2>/dev/null || echo -n '1')"
         if [ "$(date -r main.go '+%s')" -gt "$binary_date" ]; then
           echo "[.] recompiling '$binary'"
-          go build
+          make no_debug
         fi
       fi
     )
