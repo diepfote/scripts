@@ -61,7 +61,7 @@ ext="${filename##*.}"
 output_file="$(dirname "$file")"/"$filename_no_ext".shortened."$ext"
 
 set -x
-if ffmpeg -i "$file" -ss "$start" -to "$end" "$output_file"; then
+if ffmpeg -i "$file" -ss "$start" -to "$end" -c:v copy -c:a copy "$output_file"; then
 
   if [ -n "$OVERWRITE" ]; then
     mv "$output_file" "$file"

@@ -319,7 +319,7 @@ video-sync-mpv-watch-later-files () {
   set +x
   _report-videos
   echo
-  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files
+  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files 2>&1 | grep -vE 'file error|no reader'
 }
 
 get-yt-links-for-downloads () {
