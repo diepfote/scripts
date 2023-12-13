@@ -222,7 +222,7 @@ echo -e '\n--------\npip\n'
 #
 # $ python -E ...
 #
-python_install_cmd=(python3 -E -m pip install --upgrade)
+python_install_cmd=(python3 -E -m pip install --break-system-packages --upgrade)
 grep_install_cmd=(grep -v 'already satisfied')
 
 print_additional_arg_info () {

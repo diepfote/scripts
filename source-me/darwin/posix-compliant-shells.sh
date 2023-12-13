@@ -33,13 +33,13 @@ python_38_path="/opt/homebrew/opt/python@3.8/libexec/bin"
 _add_to_PATH "$python_38_path"
 
 
-# python 3.11 = default
-python_311_path="/opt/homebrew/opt/python@3.11/libexec/bin"
-ln -sf "$python_311_path"/python "$python_311_path"/python3
-_add_to_PATH "$python_311_path"
-_add_to_PATH "$HOME/Library/Python/3.11/bin"
-export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib:$LDFLAGS"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
+# python 3.12 = default
+python_312_path="/opt/homebrew/opt/python@3.12/libexec/bin"
+ln -sf "$python_312_path"/python "$python_312_path"/python3
+_add_to_PATH "$python_312_path"
+_add_to_PATH "$HOME/Library/Python/3.12/bin"
+export LDFLAGS="-L/opt/homebrew/opt/python@3.12/lib:$LDFLAGS"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.12/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 
 # pipx installed binaries
