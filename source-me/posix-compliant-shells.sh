@@ -609,6 +609,9 @@ mv-docker () {
 mv-go () {
   _mvcopy-wrapper --op mv --dir ~/Documents/golang/tools "$@"
 }
+mv-zig () {
+  _mvcopy-wrapper --op mv --dir ~/Documents/zig/tools "$@"
+}
 mv-python () {
   _mvcopy-wrapper --op mv --dir ~/Documents/python/tools "$@"
 }
@@ -628,6 +631,10 @@ cp-docker () {
 cp-go () {
   _mvcopy-wrapper --op cp --dir ~/Documents/golang/tools "$@"
 }
+cp-zig () {
+  _mvcopy-wrapper --op cp --dir ~/Documents/zig/tools "$@"
+}
+
 cp-python () {
   _mvcopy-wrapper --op cp --dir ~/Documents/python/tools "$@"
 }
@@ -646,6 +653,9 @@ rm-docker () {
 }
 rm-go () {
   _mvcopy-wrapper --op rm --dir ~/Documents/golang/tools "$@"
+}
+rm-zig () {
+  _mvcopy-wrapper --op rm --dir ~/Documents/zig/tools "$@"
 }
 rm-python () {
   _mvcopy-wrapper --op rm --dir ~/Documents/python/tools "$@"
@@ -671,6 +681,9 @@ edit-mutt () {
 }
 edit-go () {
   _edit-wrapper --dir ~/Documents/golang/tools "$1"
+}
+edit-zig () {
+  _edit-wrapper --dir ~/Documents/zig/tools "$1"
 }
 edit-python () {
   _edit-wrapper --dir ~/Documents/python/tools "$1"
@@ -779,6 +792,9 @@ checkout-mutt () {
 checkout-go () {
   _checkout-wrapper ~/Documents/golang/tools "$@"
 }
+checkout-go () {
+  _checkout-wrapper ~/Documents/zig/tools "$@"
+}
 checkout-python () {
   _checkout-wrapper ~/Documents/python/tools "$@"
 }
@@ -804,6 +820,9 @@ commit-mutt () {
 }
 commit-go () {
   commit-in-dir ~/Documents/golang/tools "$@"
+}
+commit-zig () {
+  commit-in-dir ~/Documents/zig/tools "$@"
 }
 commit-python () {
   commit-in-dir ~/Documents/python/tools "$@"
@@ -837,6 +856,9 @@ diff-mutt () {
 }
 diff-go () {
   _diff-wrapper ~/Documents/golang/tools "$@"
+}
+diff-zig () {
+  _diff-wrapper ~/Documents/zig/tools "$@"
 }
 diff-python () {
   _diff-wrapper ~/Documents/python/tools "$@"
@@ -875,6 +897,9 @@ log-mutt () {
 }
 log-go () {
   _log-wrapper ~/Documents/golang/tools "$@"
+}
+log-zig () {
+  _log-wrapper ~/Documents/zig/tools "$@"
 }
 log-python () {
   _log-wrapper ~/Documents/python/tools "$@"
@@ -915,6 +940,9 @@ reset-mutt () {
 reset-go () {
   _reset_wrapper ~/Documents/golang/tools "$@"
 }
+reset-zig () {
+  _reset_wrapper ~/Documents/zig/tools "$@"
+}
 reset-python () {
   _reset_wrapper ~/Documents/python/tools "$@"
 }
@@ -946,6 +974,9 @@ status-mutt () {
 }
 status-go () {
   _status-wrapper ~/Documents/golang/tools "$@"
+}
+status-zig () {
+  _status-wrapper ~/Documents/zig/tools "$@"
 }
 status-python () {
   _status-wrapper ~/Documents/python/tools "$@"
