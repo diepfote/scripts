@@ -9,6 +9,8 @@ shopt -s failglob  # error on unexpaned globs
 
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
+temp_dir="$(mktemp -d)"
+
 # Parse arguments
 LINK=''
 BATCH_FILE=''
@@ -57,6 +59,7 @@ done
 cleanup () {
   set +x
   popd
+  rm -r "$temp_dir"
 }
 trap cleanup EXIT
 
@@ -72,7 +75,7 @@ elif [ "$system" = Darwin ]; then
 fi
 
 set -x
-pushd "$dir"
+pushd "$temp_dir"
 set +x
 
 if [ -z "$FOLDER_NAME" ]; then
@@ -95,5 +98,9 @@ else
 fi
 
 set -x
-ffmpeg-dynamic-range-compress-dir "$dir"
+ffmpeg-dynamic-range-compress-dir "$temp_dir"
+set +x
+
+set -x
+mv "$temp_dir"/* "$dir"
 set +x
