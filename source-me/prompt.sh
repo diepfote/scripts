@@ -6,15 +6,15 @@ unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
 # export PS1="[ $GREEN\w$NC ]\n$ "
 
-BASH_HELPER_FILENAME="bash-helper"
+BASH_HELPER_FILENAME="main"
 
 if [ -n "$NOT_HOST_ENV" ]; then
-  BASH_HELPER_FILENAME="bash-helper-linux"
+  BASH_HELPER_FILENAME="main-linux"
 fi
 
 
 _ps1 () {
-  PS1="$(~/Documents/golang/tools/bash-helper/"$BASH_HELPER_FILENAME")"
+  PS1="$(~/Documents/zig/tools/bash-helper/"$BASH_HELPER_FILENAME")"
 }
 
 if [ -n "$ZSH" ]; then
