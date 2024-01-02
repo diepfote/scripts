@@ -6,8 +6,8 @@ if [ -z "$NOT_HOST_ENV" ]; then
   # used in sniff & httpdump
   export _ngrep_interface=wlp4s0
 
-  xset -b  # disable bell
-  setxkbmap -option "ctrl:nocaps"  # change caps-lock to ctrl
+  xset -b || true  # disable bell
+  setxkbmap -option "ctrl:nocaps" || true  # change caps-lock to ctrl
 fi
 
 
