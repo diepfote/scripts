@@ -30,12 +30,8 @@ tar_gzip_backup () {
   # cd dir above UUID dir
   pushd "$(dirname "$full_path_to_dir_to_compress")" || exit 1
 
-  number_of_cores="$(nproc)"
-  number_of_cores_to_use=$((number_of_cores - 4))
-
   set -x
-  tar cf - "$dir_to_compress" |\
-    pigz -p "$number_of_cores_to_use" -c > "$dir_to_compress-$date_for_file.tgz"
+  tar cf "$dir_to_compress-$date_for_file.tar" "$dir_to_compress"
   set +x
 
   popd || exit 1
@@ -47,7 +43,7 @@ rm_old_tar_gzip_backup () {
 
   while IFS='' read -r line; do
     dirs+=( "$line" )
-  done < <(find-sorted "$1" -name '*.tgz' | tail -n +7)  # leave 6 backups in place
+  done < <(find-sorted "$1" -name '*.tgz' -print -o -name '*.tar' -print | tail -n +7)  # leave 6 backups in place
 
   for dir in "${dirs[@]}"; do
     set -x
