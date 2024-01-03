@@ -26,12 +26,6 @@ pacman --sudo -Sy
 #
 
 
-cleanup() {
-  set +x
-}
-trap cleanup EXIT
-
-
 _print_pkgs() {
   set +x
 
@@ -46,12 +40,11 @@ while read -r pkg; do
   if pkgfile -l "$pkg" | grep -qE 'usr/lib/(modules|initcpio)'; then
     echo [.] Ignoring due to pkgfile match. \`"$pkg"\`
     pkgs_to_ignore+=("$pkg")
-  elif echo "$pkg" | grep -qE '^linux-|^mkinitcpio-|^initramfs'; then
+  elif echo "$pkg" | grep -qE '^linux$|^linux-|^mkinitcpio-|^initramfs'; then
     echo [.] Ignoring due to pkg name match. \`"$pkg"\`
     pkgs_to_ignore+=("$pkg")
   fi
 done < <(pacman -Sup --print-format '%n')
 
-set -x
 pacman --sudo -Su --ignore "$(_print_pkgs "${pkgs_to_ignore[@]}")"
 
