@@ -139,7 +139,12 @@ firewardened-firefox () {
 }
 
 firewardened-chromium () {
-  _firewardened-app /usr/bin/chromium --force-device-scale-factor=1.5 --js-flags=--noexpose_wasm "$@"
+  flags=()
+  if [ "$1" = '-N' ]; then
+    flags+=('-N')
+    shift
+  fi
+  _firewardened-app "${flags[@]}" /usr/bin/chromium --force-device-scale-factor=1.5 --js-flags=--noexpose_wasm "$@"
 }
 
 
