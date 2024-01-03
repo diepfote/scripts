@@ -1,8 +1,20 @@
 #!/usr/bin/env bash
 # snatched from https://github.com/ttaylorr/dotfiles/blob/work-gh/bin/edit-clipboard
 
+
+cleanup () { rm "$tmp"; }
+
+trap cleanup EXIT
+
 main() {
-  if [ ! -x "$(which pbpaste)" ]; then
+  local paste_exe tmp
+  if [ -x "$(which pbpaste  2>/dev/null)" ]; then
+    paste_exe=(pbpaste)
+    copy_exe=(pbcopy)
+  elif [ -x "$(which xclip  2>/dev/null)" ]; then
+    paste_exe=(xclip -o)
+    copy_exe=(xclip)
+  else
     echo "fatal: could not access clipboard, aborting..." >&2
     exit 1
   fi
@@ -13,17 +25,14 @@ main() {
   fi
 
   tmp="$(mktemp)"
-  pbpaste > "$tmp"
+  "${paste_exe[@]}" > "$tmp"
 
-  $EDITOR "$tmp"
-
-  if [ "0" -ne "$?" ]; then
+  if "$EDITOR" "$tmp"; then
     echo "fatal: $EDITOR exited in a dirty state, aborting..." >&2
     exit 1
   fi
 
-  pbcopy < "$tmp"
-  rm "$tmp"
+  "${copy_exe[@]}" < "$tmp"
 }
 
 main;
