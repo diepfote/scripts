@@ -37,14 +37,22 @@ _print_pkgs() {
 pkgs_to_ignore=()
 while read -r pkg; do
   # echo "$pkg"
+
+  # skip anything that updates the inital ramfs
   if pkgfile -l "$pkg" | grep -qE 'usr/lib/(modules|initcpio)'; then
     echo [.] Ignoring due to pkgfile match. \`"$pkg"\`
     pkgs_to_ignore+=("$pkg")
-  elif echo "$pkg" | grep -qE '^linux$|^linux-|^mkinitcpio-|^initramfs'; then
+  # skip any and all non lts changes + anything that affects lts
+  elif echo "$pkg" | grep -qE '^linux-firmware$|^linux-lts|^mkinitcpio-|^initramfs'; then
     echo [.] Ignoring due to pkg name match. \`"$pkg"\`
     pkgs_to_ignore+=("$pkg")
   fi
 done < <(pacman -Sup --print-format '%n')
 
-pacman --sudo -Su --ignore "$(_print_pkgs "${pkgs_to_ignore[@]}")"
+if [ ${#pkgs_to_ignore[@]} -lt 1 ]; then
+  pacman --sudo -Su
+else
+  pacman --sudo -Su --ignore "$(_print_pkgs "${pkgs_to_ignore[@]}")"
+fi
+
 
