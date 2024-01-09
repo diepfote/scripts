@@ -315,14 +315,6 @@ _yay-update-based-on-checksum () {
 }
 
 
-night-shifter () {
-  if [ "$1" = on ]; then
-    redshift -P -O 2900
-  elif [ "$1" = off ]; then
-    redshift -x
-  fi
-}
-
 
 alias xclip='command xclip -selection clipboard'
 alias xsel=xclip
@@ -344,17 +336,69 @@ gdb-p () {
 }
 alias gdb-peda='gdb -q -ex peda'
 
-redshift-on () {
-  rm /tmp/redshift-off 2>/dev/null
-  touch /tmp/redshift-on
-  systemctl --user restart redshift.service
+
+redshift () {
+
+  _help() {
+cat <<EOF
+USAGE: redshift COMMAND
+
+COMMAND:
+  on    ... enable redshift
+  off   ... disable redshift
+  reset ... enable based on current time
+EOF
+  }
+
+  if [ $# -eq 0 ]; then
+    _help
+    return 1
+  fi
+
+
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    off)
+    rm /tmp/redshift-on 2>/dev/null
+    touch /tmp/redshift-off
+    systemctl --user restart redshift.service
+
+    return
+    ;;
+
+    on)
+    rm /tmp/redshift-off 2>/dev/null
+    touch /tmp/redshift-on
+    systemctl --user restart redshift.service
+
+    return
+    ;;
+
+    reset)
+    rm /tmp/redshift-{off,on} 2>/dev/null
+    systemctl --user restart redshift.service
+
+    return
+    ;;
+
+    -h|--help)
+    _help
+
+    return
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
 }
-redshift-off () {
-  rm /tmp/redshift-on 2>/dev/null
-  touch /tmp/redshift-off
-  systemctl --user restart redshift.service
-}
-redshift-reset () {
-  rm /tmp/redshift-{off,on} 2>/dev/null
-  systemctl --user restart redshift.service
-}
+
