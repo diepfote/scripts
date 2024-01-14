@@ -39,14 +39,16 @@ pacman-get-required-by-for-upgradeable () {
 
 _help() {
 cat <<EOF
-USAGE: yay-all [FLAGS] [--] [ARGS/OPTS for pacman]
+USAGE: yay-all [FLAGS] [--] [ARGS/FLAGS/OPTS for pacman]
 
 FLAGS:
   --dry-run              used in \`pkg-update\`
   --no-fetch             run \`pacman -Su\` instead of \`pacman -Syu\`
   --repeat               same as \`--no-fetch\` + do not open dialog
-  --yay-all-no-confirm   add  \`--noconfirm\` flag to pacman runs
   --list-only            list upgradable packages, then quit
+
+FLAGS for pacman e.g.:
+  --noconfirm            passed to pacman as is
 EOF
 }
 
@@ -54,7 +56,6 @@ EOF
 # Parse arguments
 PACMAN_DOWNLOAD_PACKAGES_ONLY=''
 DRY_RUN=''
-YAY_ALL_NO_CONFIRM=''
 NO_FETCH=''
 REPEAT=''
 LIST_ONLY=''
@@ -71,10 +72,6 @@ key="$1"
     shift
     ;;
 
-    --yay-all-no-confirm)
-    YAY_ALL_NO_CONFIRM=true
-    shift
-    ;;
 
     --no-fetch)
     NO_FETCH=true
@@ -173,11 +170,6 @@ elif [ -n "$NO_FETCH" ]; then
   pacman_cmd=('pacman' --sudo '-Su')
 fi
 
-if [ -n "$YAY_ALL_NO_CONFIRM" ]; then
-  additional_arguments=('--noconfirm')
-  pacman_cmd+=("${additional_arguments[@]}")
-fi
-
 # update package info for listing
 echo n | pacman --sudo -Sy || true
 
@@ -187,7 +179,7 @@ if [ $# -gt 0 ]; then
   fi
 fi
 
-if [ -n "$YAY_ALL_NO_CONFIRM"  ] || [ -n "$REPEAT" ] || [ -n "$PACMAN_DOWNLOAD_PACKAGES_ONLY" ]; then
+if [ -n "$REPEAT" ] || [ -n "$PACMAN_DOWNLOAD_PACKAGES_ONLY" ]; then
   :
 elif [ -n "$LIST_ONLY" ]; then
   pacman-get-required-by-for-upgradeable
@@ -201,7 +193,7 @@ while ! "${pacman_cmd[@]}" "$@"; do
   sleep 1
 
   # do not fetch updates -> we do not review them in vim in this loop
-  pacman_cmd=('pacman' --sudo '-Su' "${additional_arguments[@]}")
+  pacman_cmd=('pacman' --sudo '-Su')
 done
 set +x
 
