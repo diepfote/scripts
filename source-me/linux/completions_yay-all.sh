@@ -20,6 +20,7 @@ _yay-all_completions()
   done
 
   completions+=(-h)
+  completions+=(--no-fetch)
   completions+=(--repeat)
   completions+=(--list-only)
   completions+=(--yay-all-no-confirm)

@@ -43,7 +43,8 @@ USAGE: yay-all [FLAGS] [--] [ARGS/OPTS for pacman]
 
 FLAGS:
   --dry-run              used in \`pkg-update\`
-  --repeat               run \`pacman -Su\` instead of \`pacman -Syu\`
+  --no-fetch             run \`pacman -Su\` instead of \`pacman -Syu\`
+  --repeat               same as \`--no-fetch\` + do not open dialog
   --yay-all-no-confirm   add  \`--noconfirm\` flag to pacman runs
   --list-only            list upgradable packages, then quit
 EOF
@@ -54,6 +55,7 @@ EOF
 PACMAN_DOWNLOAD_PACKAGES_ONLY=''
 DRY_RUN=''
 YAY_ALL_NO_CONFIRM=''
+NO_FETCH=''
 REPEAT=''
 LIST_ONLY=''
 while [ $# -gt 0 ]; do
@@ -74,7 +76,13 @@ key="$1"
     shift
     ;;
 
+    --no-fetch)
+    NO_FETCH=true
+    shift
+    ;;
+
     --repeat)
+    NO_FETCH=true
     REPEAT=true
     shift
     ;;
@@ -160,7 +168,7 @@ if [ -n "$DRY_RUN" ]; then
   pacman_cmd=('pacman' '-Syu')
   "${pacman_cmd[@]}" "$@" || true
   exit
-elif [ -n "$REPEAT" ]; then
+elif [ -n "$NO_FETCH" ]; then
   # do not update database -> just did that presumably
   pacman_cmd=('pacman' --sudo '-Su')
 fi
