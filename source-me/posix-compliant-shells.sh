@@ -306,19 +306,25 @@ _report-videos () {
 }
 
 video-sync () {
-  _report-videos
+  if [ "$1" != --no-fetch ]; then
+    _report-videos
+    echo
+  fi
 
-  echo
   ~/Documents/golang/tools/video-syncer/video-syncer
-  echo
 
-  _report-videos
+  if [ "$1" != --no-fetch ]; then
+    echo
+    _report-videos
+  fi
 }
 
 video-sync-mpv-watch-later-files () {
   set +x
-  _report-videos
-  echo
+  if [ "$1" != --no-fetch ]; then
+    _report-videos
+    echo
+  fi
   ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files 2>&1 | grep -vE 'file error|no reader'
 }
 
