@@ -160,6 +160,7 @@ _yay_set_upgradeable_AURs () {
 
 # default
 pacman_cmd=('pacman' --sudo '-Syu')
+add_args=()
 if [ -n "$DRY_RUN" ]; then
   # used to check if pacman arguments are valid
   pacman_cmd=('pacman' '-Syu')
@@ -176,6 +177,7 @@ echo n | pacman --sudo -Sy || true
 if [ $# -gt 0 ]; then
   if [ "$1" = -w ]; then
     PACMAN_DOWNLOAD_PACKAGES_ONLY=true
+    add_args+=(--noconfirm)
   fi
 fi
 
@@ -189,7 +191,7 @@ else
 fi
 
 set -x
-while ! "${pacman_cmd[@]}" "$@"; do
+while ! "${pacman_cmd[@]}" "$@" "${add_args[@]}"; do
   sleep 1
 
   # do not fetch updates -> we do not review them in vim in this loop
