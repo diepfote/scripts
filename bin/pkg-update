@@ -60,7 +60,7 @@ if [ "$system" = Linux ]; then
   set +e
   if yay-all --dry-run "$@" 2>&1 | head -n1 | grep -- 'invalid option' >/dev/null; then
     # shellcheck disable=SC2154
-    echo -e "[!] ${RED}invalid flags $NC"'`'"$*"'`'
+    echo -e "[!] ${RED}invalid flags $NC"'`'"$*"'`' >&2
     exit 1
   fi
   set -e
@@ -69,7 +69,10 @@ if [ "$system" = Linux ]; then
   #
   # On Arch we use `Rustup` instead of `Native Installation`
   # https://wiki.archlinux.org/title/Rust#Installation
+  echo ------------------ >&2
+  echo "[>] updating rust" >&2
   rustup update stable
+  echo ------------------ >&2
 
   _os-independent-updates "${PASS_TO_OS_INDEPENDENT[@]}"
 
