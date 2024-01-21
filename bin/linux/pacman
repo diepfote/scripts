@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-if [ "$1" != -Qmq ]; then
-  # otherwise `yay-generate-PKGBUILD-checksum` pkg auto-completion breaks
-  echo "+ "'`'"pacman $*"'`' >&2
-fi
-
 # all of these stem from https://www.shellcheck.net/wiki/
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -12,7 +7,6 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
-
 
 SUDO=''
 while [ $# -gt 0 ]; do
@@ -71,5 +65,6 @@ if [ -n "$THROTTLE_BANDWIDTH" ] && [ "$THROTTLE_BANDWIDTH" -gt 0 ]; then
   cmd+=(trickle -d "$THROTTLE_BANDWIDTH")
 fi
 cmd+=(/usr/bin/pacman)
+set -x
 "${cmd[@]}" "$@"
 set +x
