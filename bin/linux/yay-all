@@ -102,6 +102,9 @@ key="$1"
 done
 
 
+echo
+echo =====================
+echo "Start: $(date)"
 
 source ~/Documents/scripts/source-me/spinner.sh
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
@@ -157,6 +160,11 @@ _yay_set_upgradeable_AURs () {
   done < <(yay -Qua)
   set +x
 }
+
+
+# mimick `set -x` output
+echo "+ yay-all $*" >&2
+
 
 # default
 pacman_cmd=('pacman' --sudo '-Syu')
@@ -224,5 +232,8 @@ for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
 done
 _yay-update-anything-else
 set +x
-
 sudo -k
+
+echo
+echo "End: $(date)"
+echo =====================

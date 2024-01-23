@@ -76,9 +76,7 @@ if [ "$system" = Linux ]; then
 
   _os-independent-updates "${PASS_TO_OS_INDEPENDENT[@]}"
 
-  set -x
   yay-all "$@"
-  set +x
 
 elif [ "$system" = Darwin ]; then
   if [ $# -lt 1 ]; then
