@@ -757,6 +757,7 @@ _edit-wrapper () {
 # git helpers START
 #
 
+
 cheatsheets_pull () {
   (
   if cd ~/Documents/cheatsheets; then
@@ -1114,6 +1115,13 @@ work-checked-in () {
   __work-checked-in-wrapper ~/Documents/config/repo.conf "$@"
 }
 
+
+gitenabledelta () {
+  export GIT_PAGER='delta --syntax-theme MonokaiExtendedLight'
+}
+gitdisabledelta () {
+  unset GIT_PAGER
+}
 
 #
 # git helpers END
