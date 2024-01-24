@@ -884,7 +884,12 @@ _log-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  git_execute_on_repo -d "$dir" git l "$@"
+  command=(git l)
+  if [ -n "$GIT_PAGER" ]; then
+    command=(git log)
+  fi
+
+  git_execute_on_repo -d "$dir" "${command[@]}" "$@"
 }
 
 log-dot-files () {
