@@ -8,6 +8,63 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
+
+commit () {
+
+  if [[ "$(basename "$PWD")" =~ deploy-.* ]]; then
+    saved_opts=()
+    message=''
+    while [ $# -gt 0 ]; do
+    key="$1"
+      case "$key" in
+        -m)
+        message="$2"
+        shift 2
+        # nothing else needs to be modified
+        # leave the rest as it is
+        break
+        ;;
+
+        --)
+        shift
+        break
+        ;;
+
+        *)
+        # match only required if `-m` is not the first opt
+        saved_opts+=("$1")
+        shift
+        ;;
+
+      esac
+    done
+
+    prefix="[$(awk -F '/' '{ print $3 }' .git/HEAD)] "
+
+    "${command[@]}" commit -m "$prefix$message" "${saved_opts[@]}" "$@"
+  else
+
+    "${command[@]}" commit "$@"
+  fi
+}
+
+push () {
+  if git-remote-gcrypt --check "$(grep url "$BASE"/.git/config |\
+       awk '{ print $3 }' |\
+       head -n1 |\
+       sed 's#^.*gcrypt::## ; s/#.*"$//')" >/dev/null 2>&1; then
+    # shellcheck disable=SC2016
+    echo '[.] running pull for `git-remote-gcrypt` repo before push' >&2
+    "${command[@]}" pull "$@"
+    echo '[.] --' >&2
+  else
+
+    "${command[@]}" push "$@"
+  fi
+}
+
+
+
 if [ "$(uname)" = Darwin ]; then
   command=(/opt/homebrew/bin/git)
 elif [ "$(uname)" = Linux ]; then
@@ -18,16 +75,44 @@ fi
 
 BASE="$("${command[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
 
-if [ "$1" = push ]; then
-  if git-remote-gcrypt --check "$(grep url "$BASE"/.git/config |\
-       awk '{ print $3 }' |\
-       head -n1 |\
-       sed 's#^.*gcrypt::## ; s/#.*"$//')" >/dev/null 2>&1; then
-    # shellcheck disable=SC2016
-    echo '[.] running pull for `git-remote-gcrypt` repo before push' >&2
-    "${command[@]}" pull
-    echo '[.] --' >&2
-  fi
+
+COMMIT=''
+PUSH=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    commit)
+    COMMIT=true
+    shift
+    ;;
+
+    push)
+    PUSH=true
+    shift
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+
+if [ -n "$PUSH" ]; then
+  push "$@"
+
+elif [ -n "$COMMIT" ]; then
+
+  commit "$@"
+
+else
+
+  "${command[@]}" "$@"
 fi
 
-"${command[@]}" "$@"
