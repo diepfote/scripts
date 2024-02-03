@@ -65,6 +65,9 @@ if [ -n "$THROTTLE_BANDWIDTH" ] && [ "$THROTTLE_BANDWIDTH" -gt 0 ]; then
   cmd+=(trickle -d "$THROTTLE_BANDWIDTH")
 fi
 cmd+=(/usr/bin/pacman)
-set -x
+
+if [ "$*" != '-Qmq' ]; then
+  set -x
+fi
 "${cmd[@]}" "$@"
 set +x
