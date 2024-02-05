@@ -49,6 +49,7 @@ commit () {
 }
 
 push () {
+  # additional command to run
   if git-remote-gcrypt --check "$(grep url "$BASE"/.git/config |\
        awk '{ print $3 }' |\
        head -n1 |\
@@ -57,10 +58,9 @@ push () {
     echo '[.] running pull for `git-remote-gcrypt` repo before push' >&2
     "${command[@]}" pull "$@"
     echo '[.] --' >&2
-  else
-
-    "${command[@]}" push "$@"
   fi
+
+  "${command[@]}" push "$@"
 }
 
 
