@@ -30,7 +30,8 @@ key="$1"
       shift
       set -x
       /opt/homebrew/bin/limactl stop "$@"  || true  # ignore failure -> instance might be stopped already
-      /opt/homebrew/bin/limactl start "$@"
+      sleep 2
+      /opt/homebrew/bin/limactl start
       set +x
 
       exit
