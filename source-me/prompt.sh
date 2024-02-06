@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
 [[ $- != *i* ]] && return
+if [ -n "$TMUX_FAILURE" ]; then
+  # abort `tmux refresh-client`
+  # AND do not modify `PROMPT_COMMAND` or `PS1`
+  return
+fi
 
 unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!

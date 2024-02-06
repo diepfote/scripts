@@ -4,6 +4,7 @@
 # set xxx to empty string if unset
 echo ${TMUX:=''} >/dev/null
 echo ${BASH_SOURCE_IT:=''} >/dev/null
+echo ${TMUX_FAILURE:=''} >/dev/null
 
 if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
    [ "$(hostname)" = docker-desktop ] || \
@@ -19,13 +20,17 @@ if [ -z "$NOT_HOST_ENV" ]; then
   if [[ $- != *i* ]]; then
     # non-interactive, do not start tmux or i3-gaps
     :
+  elif [ -n "$TMUX_FAILURE" ]; then
+    # if tmux failed the last time through, do not
+    # try to start it again
+    :
   elif [ "$(tty)" = /dev/tty1 ] && \
      [ "$(uname)" = Linux ]; then
     # startxfce4
     startx  # i3 based on ~/.xinitrc
     return
   elif [[ -z "$TMUX" ]] && [ -z "$BASH_SOURCE_IT" ]; then
-    default_tmux_cmd=(tmux -2 -u)  # -u -> utf-8; -2 -> force 256 colors
+    tmux_cmd=(~/Documents/scripts/tmux.sh -2 -u)  # -u -> utf-8; -2 -> force 256 colors
     default_session_to_attach_info="$(tmux ls -F '#S #{session_attached}' |\
       grep -vE '\s+1$' |\
       grep -E 'general|default|work|private|training' |\
@@ -36,14 +41,14 @@ if [ -z "$NOT_HOST_ENV" ]; then
       default_session_to_attach="$(echo "$default_session_to_attach_info" | awk '{ print $1 }')"
       default_session_num_of_attached_clients="$(echo "$default_session_to_attach_info" | awk '{ print $2 }')"
       if [ "$default_session_num_of_attached_clients" -lt 1 ]; then
-        default_tmux_cmd+=('attach' '-t' "$default_session_to_attach")
+        tmux_cmd+=('attach' '-t' "$default_session_to_attach")
       else
-        default_tmux_cmd+=('new')
+        tmux_cmd+=('new')
       fi
     else
-      default_tmux_cmd+=('new')
+      tmux_cmd+=('new')
     fi
-    exec "${default_tmux_cmd[@]}"
+    exec "${tmux_cmd[@]}"
     HISTFILE=''
     return  # do not source anything if outside tmux sessions
   fi
