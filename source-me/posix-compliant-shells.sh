@@ -506,6 +506,10 @@ _pkg-update_completions-return () {
 }
 
 
+docker-exec-1st-ctr () {
+  docker exec -it "$(docker ps | tail -n +2 | head -n1 | awk '{ print $1 }')" "$@"
+}
+
 edit-bash-history () {
   # :$ to start at the end of the file
   vim -c ':$' "$HISTFILE"
