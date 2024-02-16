@@ -1130,10 +1130,10 @@ work-checked-in () {
 }
 
 
-gitenabledelta () {
+git-enable-delta () {
   export GIT_PAGER='delta --syntax-theme "Monokai Extended Light" '
 }
-gitdisabledelta () {
+git-disable-delta () {
   unset GIT_PAGER
 }
 

@@ -178,6 +178,13 @@ python-clear-deploy-cache () {
 }
 
 
+dock-hide () {
+  defaults write com.apple.dock autohide -bool true && killall Dock
+}
+dock-unhide () {
+  defaults write com.apple.dock autohide -bool false && killall Dock
+}
+
 w-checked-in () {
   __work-checked-in-wrapper ~/Documents/config/work-repo.conf
 }
