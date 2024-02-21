@@ -506,6 +506,10 @@ _pkg-update_completions-return () {
 }
 
 
+docker-rm-1st-ctr () {
+  docker rm -f "$(docker ps | tail -n +2 | head -n1 | awk '{ print $1 }')"
+}
+
 docker-exec-1st-ctr () {
   docker exec -it "$(docker ps | tail -n +2 | head -n1 | awk '{ print $1 }')" "$@"
 }
