@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-_editor="$EDITOR"
-
-trap cleanup EXIT
-cleanup () {
-  export EDITOR="$_editor"
-}
-
-export EDITOR=("$EDITOR" -c 'set noundofile')
 
 PASS=/opt/homebrew/bin/pass
 if ! command -v "$PASS" >/dev/null; then
