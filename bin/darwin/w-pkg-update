@@ -352,5 +352,7 @@ fi
 
 
 echo
+echo
+sudo systemsetup -getremotelogin  | grep -E 'On|Off'
 echo "End: $(date)"
 echo =====================
