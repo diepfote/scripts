@@ -28,6 +28,7 @@ all_dirs+=(~/.ipython/)
 all_dirs+=(~/.jfrog)
 all_dirs+=(~/.krew)
 all_dirs+=(~/.lima)
+all_dirs+=(~/.colima)
 all_dirs+=(~/.local/share/Trash/)
 all_dirs+=(~/.local/share/fish/generated_completions/)
 all_dirs+=(~/.local/share/nvim/undo)
@@ -95,6 +96,22 @@ all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
 unset tmp_dirs
 
 mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 6 -type d -name '*CacheStorage*' -print0)
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 6 -type d -name '*CachedExtension*' -print0)
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 6 -type d -name '*Cache_Data*' -print0)
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 6 -type d -name '*BrowserMetrics*' -print0)
+all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
+unset tmp_dirs
+
+mapfile -d $'\0' tmp_dirs < <(find ~/Library/ -maxdepth 6 -type d -name '*WebStorage*' -print0)
 all_dirs=("${all_dirs[@]}""${tmp_dirs[@]}")
 unset tmp_dirs
 
