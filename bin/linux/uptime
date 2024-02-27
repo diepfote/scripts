@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ $# -lt 1 ]; then
+  set -- -p
+fi
+
+/usr/bin/uptime "$@"
+
