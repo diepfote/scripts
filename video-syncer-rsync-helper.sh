@@ -9,10 +9,10 @@ shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 ssh_key="$1"
-local="$2"
-remote="$3"
+remote="$2"
+local="$3"
 
 cleanup () { set +x; }
 trap cleanup EXIT
 set -x
-rsync --progress -av --exclude .DS_Store --exclude .localized --exclude no-sync/ -e "ssh -i $ssh_key" "$local" "$remote"
+rsync --progress -av --exclude .DS_Store --exclude .localized --exclude no-sync/ -e "ssh -i $ssh_key" "$remote" "$local"
