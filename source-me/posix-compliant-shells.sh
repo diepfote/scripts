@@ -477,6 +477,43 @@ rclone_fastmail_sync_bewerbungen_cvs_arbeitszeugnisse () {
 }
 
 
+audacious-push-playlists () {
+  local username
+  local src
+  local dst
+
+  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+  src=~/.config/audacious/playlists
+  dst='fastmail:'"$username"'.fastmail.com/files/-configs/audacious/playlists'
+
+  _rclone_verbose_sync_operation "$@" "$src" "$dst"
+}
+
+
+audacious-fetch-playlists () {
+  local username
+  local src
+  local dst
+
+  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+  src='fastmail:'"$username"'.fastmail.com/files/-configs/audacious/playlists'
+  dst=~/.config/audacious/playlists
+
+  _rclone_verbose_sync_operation "$@" "$src" "$dst"
+
+  if [ "$(uname)" = Darwin ]; then
+    set -x
+    sed -ri 's#/home/flo#/Users/florian#' "$dst"/*.audpl
+    set +x
+  else
+    set -x
+    sed -ri 's#/Users/florian#/home/flo#' "$dst"/*.audpl
+    set +x
+  fi
+
+}
+
+
 # nicked from https://leahneukirchen.org/dotfiles/bin/zombies
 list-zombies-and-parents () {
   ps -eo state,pid,ppid,comm | awk '
@@ -812,7 +849,7 @@ checkout-mutt () {
 checkout-go () {
   _checkout-wrapper ~/Documents/golang/tools "$@"
 }
-checkout-go () {
+checkout-zig () {
   _checkout-wrapper ~/Documents/zig/tools "$@"
 }
 checkout-python () {
