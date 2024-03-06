@@ -503,11 +503,11 @@ audacious-fetch-playlists () {
 
   if [ "$(uname)" = Darwin ]; then
     set -x
-    sed -ri 's#/home/flo#/Users/florian#' "$dst"/*.audpl
+    sed -ri 's#/home/flo#/Users/florian.sorko#' "$dst"/*.audpl
     set +x
   else
     set -x
-    sed -ri 's#/Users/florian#/home/flo#' "$dst"/*.audpl
+    sed -ri 's#/Users/florian.sorko#/home/flo#' "$dst"/*.audpl
     set +x
   fi
 
