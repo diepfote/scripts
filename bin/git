@@ -11,7 +11,11 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 commit () {
 
-  if [[ "$(basename "$PWD")" =~ deploy-.* ]]; then
+  local toplevel
+
+  toplevel="$(git rev-parse --show-toplevel)"
+
+  if [[ "$toplevel" =~ deploy-.* ]]; then
     saved_opts=()
     message=''
     while [ $# -gt 0 ]; do
