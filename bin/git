@@ -9,13 +9,24 @@ shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 
+# set -x
+# cleanup () { set +x; }
+# trap cleanup EXIT
+
+
+if [ "$(uname)" = Darwin ]; then
+  COMMAND=(/opt/homebrew/bin/git)
+elif [ "$(uname)" = Linux ]; then
+  COMMAND=(/usr/bin/git)
+else
+  COMMAND=(echo Unsupported OS)
+fi
+
+BASE="$("${COMMAND[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
+
 commit () {
 
-  local toplevel
-
-  toplevel="$(git rev-parse --show-toplevel)"
-
-  if [[ "$toplevel" =~ deploy-.* ]]; then
+  if [[ "$BASE" =~ deploy-.* ]]; then
     saved_opts=()
     message=''
     while [ $# -gt 0 ]; do
@@ -43,12 +54,12 @@ commit () {
       esac
     done
 
-    prefix="[$(awk -F '/' '{ print $3 }' .git/HEAD)] "
+    prefix="[$(awk -F '/' '{ print $3 }' "$BASE"/.git/HEAD)] "
 
-    "${command[@]}" commit -m "$prefix$message" "${saved_opts[@]}" "$@"
+    "${COMMAND[@]}" commit -m "$prefix$message" "${saved_opts[@]}" "$@"
   else
 
-    "${command[@]}" commit "$@"
+    "${COMMAND[@]}" commit "$@"
   fi
 }
 
@@ -60,24 +71,13 @@ push () {
        sed 's#^.*gcrypt::## ; s/#.*"$//')" >/dev/null 2>&1; then
     # shellcheck disable=SC2016
     echo '[.] running pull for `git-remote-gcrypt` repo before push' >&2
-    "${command[@]}" pull "$@"
+    "${COMMAND[@]}" pull "$@"
     echo '[.] --' >&2
   fi
 
-  "${command[@]}" push "$@"
+  "${COMMAND[@]}" push "$@"
 }
 
-
-
-if [ "$(uname)" = Darwin ]; then
-  command=(/opt/homebrew/bin/git)
-elif [ "$(uname)" = Linux ]; then
-  command=(/usr/bin/git)
-else
-  command=(echo Unsupported OS)
-fi
-
-BASE="$("${command[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
 
 
 COMMIT=''
@@ -117,6 +117,6 @@ elif [ -n "$COMMIT" ]; then
 
 else
 
-  "${command[@]}" "$@"
+  "${COMMAND[@]}" "$@"
 fi
 
