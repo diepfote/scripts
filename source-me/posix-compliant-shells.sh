@@ -1141,7 +1141,7 @@ work-sync () {
   video-sync  --dry-run
 
   set -x
-  video-sync-mpv-watch-later-files  --dry-run  --no-fetch
+  video-sync-mpv-watch-later-files  --no-fetch --dry-run
   echo
 }
 
