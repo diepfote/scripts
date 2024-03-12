@@ -311,17 +311,35 @@ _report-videos () {
 }
 
 video-sync () {
-  if [ "$1" != --no-fetch ]; then
+  local fetch=true
+
+  while [ $# -gt 0 ]; do
+  key="$1"
+    case "$key" in
+      --no-fetch)
+      fetch=''
+      shift
+      ;;
+
+      --)
+      shift
+      break
+      ;;
+
+      *)
+      break
+      ;;
+
+    esac
+  done
+
+  if [ -n "$fetch" ]; then
     _report-videos
     echo
   fi
 
-  ~/Documents/golang/tools/video-syncer/video-syncer
+  ~/Documents/golang/tools/video-syncer/video-syncer "$@"
 
-  if [ "$1" != --no-fetch ]; then
-    echo
-    _report-videos
-  fi
 }
 
 video-sync-mpv-watch-later-files () {
@@ -330,7 +348,7 @@ video-sync-mpv-watch-later-files () {
     _report-videos
     echo
   fi
-  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files 2>&1 | grep -vE 'file error|no reader'
+  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files "$@" 2>&1 | grep -v ERROR
 }
 
 get-yt-links-for-downloads () {
@@ -1109,9 +1127,6 @@ work-sync () {
   _sync-os-configs
 
   echo
-  set -x
-  video-sync-mpv-watch-later-files
-  echo
 
   local conf_file=~/Documents/config/repo.conf
   local command=('git' 'pull' 'origin' 'master')
@@ -1122,11 +1137,12 @@ work-sync () {
   set -x
   work_recompile_go_tools_conditionally
 
-  echo >&2
-  echo 'Do you want to run video-syncer?' >&2
-  if yesno; then
-    video-sync
-  fi
+  set -x
+  video-sync  --dry-run
+
+  set -x
+  video-sync-mpv-watch-later-files  --dry-run  --no-fetch
+  echo
 }
 
 work_recompile_go_tools_conditionally () {
