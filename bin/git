@@ -15,7 +15,7 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 
 COMMAND=(/opt/homebrew/bin/git)
-if ! which "${COMMAND[@]}"; then
+if ! which "${COMMAND[@]}" >/dev/null 2>&1 ; then
   COMMAND=(/usr/bin/git)
 fi
 
@@ -61,7 +61,7 @@ commit () {
 }
 
 push () {
-  if which git-remote-gcrypt; then
+  if which git-remote-gcrypt >/dev/null 2>&1 ; then
     # additional command to run
     if git-remote-gcrypt --check "$(grep url "$BASE"/.git/config |\
          awk '{ print $3 }' |\
