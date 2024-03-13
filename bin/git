@@ -14,12 +14,9 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 # trap cleanup EXIT
 
 
-if [ "$(uname)" = Darwin ]; then
-  COMMAND=(/opt/homebrew/bin/git)
-elif [ "$(uname)" = Linux ]; then
+COMMAND=(/opt/homebrew/bin/git)
+if ! which "${COMMAND[@]}"; then
   COMMAND=(/usr/bin/git)
-else
-  COMMAND=(echo Unsupported OS)
 fi
 
 BASE="$("${COMMAND[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
@@ -64,15 +61,17 @@ commit () {
 }
 
 push () {
-  # additional command to run
-  if git-remote-gcrypt --check "$(grep url "$BASE"/.git/config |\
-       awk '{ print $3 }' |\
-       head -n1 |\
-       sed 's#^.*gcrypt::## ; s/#.*"$//')" >/dev/null 2>&1; then
-    # shellcheck disable=SC2016
-    echo '[.] running pull for `git-remote-gcrypt` repo before push' >&2
-    "${COMMAND[@]}" pull "$@"
-    echo '[.] --' >&2
+  if which git-remote-gcrypt; then
+    # additional command to run
+    if git-remote-gcrypt --check "$(grep url "$BASE"/.git/config |\
+         awk '{ print $3 }' |\
+         head -n1 |\
+         sed 's#^.*gcrypt::## ; s/#.*"$//')" >/dev/null 2>&1; then
+      # shellcheck disable=SC2016
+      echo '[.] running pull for `git-remote-gcrypt` repo before push' >&2
+      "${COMMAND[@]}" pull "$@"
+      echo '[.] --' >&2
+    fi
   fi
 
   "${COMMAND[@]}" push "$@"
