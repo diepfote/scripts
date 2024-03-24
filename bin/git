@@ -61,7 +61,7 @@ commit () {
 }
 
 push () {
-  if which git-remote-gcrypt >/dev/null 2>&1 ; then
+  if which git-remote-gcrypt >/dev/null 2>&1 && [ "$PWD" != /etc ] ; then
     # additional command to run
     if git-remote-gcrypt --check "$(grep url "$BASE"/.git/config |\
          awk '{ print $3 }' |\
