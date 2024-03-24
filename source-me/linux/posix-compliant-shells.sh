@@ -151,20 +151,20 @@ firewardened-chromium () {
 export PASSWORD_STORE_DIR=~/.password-store-private
 
 
-edit_pacman_conf () {
+edit-pacman-conf () {
   vim /etc/pacman.conf
 }
 
 
-edit_iptables_rules () {
+edit-iptables-rules () {
   sudo vim /etc/iptables/iptables.rules
   sudo systemctl restart iptables.service
 }
 
-edit_radare2_history () {
+edit-radare2-history () {
   vim -c ':$' ~/.cache/radare2/history
 }
-edit_rizin_history () {
+edit-rizin-history () {
   vim -c ':$' ~/.cache/rizin/history
 }
 
@@ -209,16 +209,16 @@ reset-firejail () {
 # ---------------------------
 
 
-allow_all_outbound_traffic () {
+allow-all-outbound-traffic () {
   sudo sed -i -r 's/^.*(-A OUTPUT -j ACCEPT)/\1/g' /etc/iptables/iptables.rules
   sudo systemctl restart iptables.service
 }
 
 
-disallow_all_outbound_traffic () {
-  deny_all_outbound_traffic
+disallow-all-outbound-traffic () {
+  deny-all-outbound-traffic
 }
-deny_all_outbound_traffic () {
+deny-all-outbound-traffic () {
   sudo sed -i -r 's/^(-A OUTPUT -j ACCEPT)/#\1/g' /etc/iptables/iptables.rules
   sudo systemctl restart iptables.service
 }
