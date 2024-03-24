@@ -6,6 +6,18 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+_help() {
+cat <<EOF
+USAGE: $(basename $0) [OPTS_TO_SED] PATTERN FILE
+EOF
+}
+
+if [ $# -lt 2 ]; then
+  _help
+  exit
+fi
+
+
 filename="${@:$#}"  # last argument
 pattern="${@:(($#-1)):1}"  # next to last argument
 
