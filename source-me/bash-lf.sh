@@ -3,7 +3,7 @@
 lf () {
   local f dir
 
-  command lf
+  command lf "$@"
 
   f=/tmp/.lf-cwd
 
