@@ -351,6 +351,58 @@ video-sync-mpv-watch-later-files () {
   ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files "$@" 2>&1 | grep -v ERROR
 }
 
+
+download-and-drc-latest () {
+
+  local link podcast_name timestamp
+
+  _help () {
+    echo >&2
+    echo 'Make sure to not re-download any videos (podcast app might get confused &' >&2
+    echo 'more CPU will be burned ...)' >&2
+    echo "Link to check: $GREEN$link$NC" >&2
+    echo >&2
+    echo "\$3 should match this format $YELLOW$(date '+%Y%m%d')$NC" >&2
+    echo  >&2
+    echo "[.] ${GREEN}usage e.g.:$NC" >&2
+    echo '   $ download-and-drc-latest "'"https://www.youtube.com/channel/UCFn4S3OexFT9YhxJ8GWdUYQ/videos"'" "'"oxide-and-friends"'" "'"5 weeks ago"'" ' >&2
+    echo '   $ download-and-drc-latest "'"https://www.youtube.com/channel/UCFn4S3OexFT9YhxJ8GWdUYQ/videos"'" "'"oxide-and-friends"'" "'"2023-05-08"'" ' >&2
+  }
+
+
+  link="$1"
+  podcast_name="$2"
+  timestamp="$3"
+
+  if ! ~/Documents/scripts/download-and-drc.sh --link "$link" --folder-name "$podcast_name" --date-stamp "$timestamp"; then
+    _help
+    return
+  fi
+
+}
+download-and-drc-batch () {
+  local batch_file podcast_name
+  batch_file="$1"
+  podcast_name="$2"
+
+  _help () {
+    echo >&2
+    echo "[.] ${GREEN}usage e.g.:$NC" >&2
+    echo '   $ download-and-drc-batch /tmp/batch "'"Rene Borbonus"'"' >&2
+    echo '   $ download-and-drc-batch /tmp/batch "'"oxide-and-friends"'"' >&2
+  }
+
+
+  link="$1"
+  podcast_name="$2"
+  timestamp="$3"
+
+  if ! ~/Documents/scripts/download-and-drc.sh --batch-file "$batch_file" --folder-name "$2"; then
+    _help
+  fi
+}
+
+
 get-yt-links-for-downloads () {
   find "$1" -mindepth 1 | sed -r 's|(.*)([A-z0-9-]{11})\.[A-z0-9]{2,6}|\2 #  \1|
                                   /^\s*$/d
