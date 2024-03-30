@@ -17,3 +17,4 @@ lf () {
   n_empty-trash
 }
 
+alias n=lf
