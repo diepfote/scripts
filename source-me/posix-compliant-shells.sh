@@ -219,6 +219,20 @@ tmux-join-pane () {
   command tmux join-pane -t "$(tmux list-pane | grep active | cut -d ']' -f3 | cut -d ' ' -f2)" -s "$1"
 }
 
+tmux-save-pane-history () {
+  if [ -z "$1" ]; then
+    echo '[!] No file path provided!' >&2
+    return
+  fi
+
+  last_arg="${*:$#}"
+  # we might want to provide `-t %15` to save the history for pane %15
+  set -- "${@:1:$(($#-1))}"
+
+  # snatched from https://unix.stackexchange.com/questions/26548/write-all-tmux-scrollback-to-a-file/236845#236845
+  tmux capture-pane "$@" -S - -p > "$last_arg"
+}
+
 tmux-set-pane-title () {
   tmux select-pane -T "$*"
 }
