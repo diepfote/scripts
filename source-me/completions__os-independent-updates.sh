@@ -14,11 +14,6 @@ __os-independent-updates_completions ()
   prev_index=$((index - 1))
   local prev_word="${COMP_WORDS[$prev_index]}"
 
-  _print() {
-    for elem in "$@"; do
-      echo "$elem"
-    done
-  }
   completions=("${completions[@]}")
 
   completions+=(--skip-rust-cargo)

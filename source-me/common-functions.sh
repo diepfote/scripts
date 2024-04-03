@@ -21,6 +21,13 @@ find-sorted () {
 }
 
 
+_print () {
+  for name in "$@"; do
+    printf -- "$name\n"
+  done
+}
+
+
 _add_to_MANPATH () {
   local path_to_add="$1"
 

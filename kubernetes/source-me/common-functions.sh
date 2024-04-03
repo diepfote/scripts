@@ -12,13 +12,6 @@ _add_to_PATH "$HOME/.krew/bin"
 
 alias kn=kubens
 
-
-_print () {
-  for name in "$@"; do
-    echo "$name"
-  done
-}
-
 _set_namespaces () {
   read -r -d '' -a _all_namespaces < <(kubectl get namespace -o json | jq '.items[].metadata.name' | sed 's#^"##;s#"$##')
   export _all_namespaces

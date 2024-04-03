@@ -593,11 +593,6 @@ list-zombies-and-parents () {
 
 
 _pkg-update_completions-return () {
-  _print() {
-    for elem in "$@"; do
-      echo "$elem"
-    done
-  }
 
   COMPREPLY=()
   index=$COMP_CWORD

@@ -1,10 +1,5 @@
 _openstack_cloud_completions()
 {
-  _print () {
-    for name in "$@"; do
-      echo "$name"
-    done
-  }
 
   COMPREPLY=()
   local cur_word="${COMP_WORDS["$COMP_CWORD"]}"

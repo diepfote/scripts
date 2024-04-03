@@ -59,18 +59,12 @@ while IFS='' read -r line; do
   all_namespaced_resources+=("$line")
 done < <("$binary" api-resources --verbs=list --namespaced -o name)
 
-_print_array () {
-  for elem in "$@"; do
-    echo "$elem"
-  done
-}
-
 if [ -z "$NAMESPACE" ]; then
   # cluster resources
   #
 
   # shellcheck disable=SC2311
-  filter="$(_print_array "${all_namespaced_resources[@]}" | tr '\n' '|' | sed 's#|$##')"
+  filter="$(_print "${all_namespaced_resources[@]}" | tr '\n' '|' | sed 's#|$##')"
   all_unnamespaced_resources=()
 
   while IFS='' read -r line; do
@@ -78,7 +72,7 @@ if [ -z "$NAMESPACE" ]; then
   done < <("$binary" api-resources --verbs=list -o name | grep -vE "$filter")
 
   if [ -n "$SHOW_RESOURCE_TYPES_ONLY" ]; then
-    _print_array "${all_unnamespaced_resources[@]}"
+    _print "${all_unnamespaced_resources[@]}"
     exit
   fi
 
@@ -91,7 +85,7 @@ else
   #
 
   if [ -n "$SHOW_RESOURCE_TYPES_ONLY" ]; then
-    _print_array "${all_unnamespaced_resources[@]}"
+    _print "${all_unnamespaced_resources[@]}"
     exit
   fi
 

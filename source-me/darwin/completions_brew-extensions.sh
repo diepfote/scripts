@@ -8,12 +8,6 @@ _brew-extensions_completions()
   local prev_index=$((index - 1))
   local prev_word="${COMP_WORDS[$prev_index]}"
 
-  _print () {
-    for name in "$@"; do
-      echo "$name"
-    done
-  }
-
   if [ -z "$formulae" ]; then
     read -r -d '' -a formulae < <(brew list --formulae)
     export formulae

@@ -30,7 +30,7 @@ _print_pkgs() {
   set +x
 
   for pkg in "$@"; do
-    echo -n "$pkg",
+    printf "$pkg",
   done
 }
 
