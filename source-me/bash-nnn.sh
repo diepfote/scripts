@@ -7,6 +7,17 @@ export NNN_BMS="d:~/Documents;h:~;D:~/Downloads;E:/etc/;v:~/Videos;V:/tmp/automo
 export NNN_FIFO=/tmp/nnn.fifo
 export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 
+
+n-rsync () {
+  # @2024-04-09
+  # copy all files in selection to directory.
+  # this uses rsync instead of `cp` or `mv`
+  # which is nnn v3.2 does
+  while read -r file; do
+    rsync -av "$file" "$@"
+  done < <(tr '\0' '\n' < ~/.config/nnn/.selection; echo)
+}
+
 n ()
 {
 #BSD 2-Clause License
