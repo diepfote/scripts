@@ -68,21 +68,13 @@ export VISUAL=nvim
 
 export MANPAGER='less -R'
 
+export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 
 # TODO remove?
 export GO111MODULE=off
 
-export NNN_COLORS=2136  # use a different color for each context -> version >= 3.2
-export NNN_TRASH=1
-export NNN_BMS="d:~/Documents;h:~;D:~/Downloads;E:/etc/;v:~/Videos;V:/tmp/automounts/fat-drive-mount/Media/Video-Files/Videos;m:~/Movies"  # jump locations for nnn
-export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 
-
-export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
-
-export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 source ~/Documents/scripts/source-me/common-functions.sh
 for name in ~/Documents/scripts/source-me/completions_*; do

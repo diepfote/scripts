@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+
+export FZF_DEFAULT_OPTS="--height '40%' --layout=reverse --border"
+
+
 # snatched from https://github.com/junegunn/fzf/wiki/Examples#with-write-to-terminal-capabilities
 
 __fzf_history ()
