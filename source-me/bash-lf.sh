@@ -17,4 +17,4 @@ lf () {
   n_empty-trash
 }
 
-alias n=lf
+# alias n=lf
