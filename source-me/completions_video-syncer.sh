@@ -4,7 +4,7 @@ _video-syncer_completions () {
   completions=()
 
   completions+=(--no-fetch)
-  completions+=(--dry-run)
+  completions+=(--no-dry-run)
 
   _pkg-update_completions-return "$@"
 }

@@ -1191,10 +1191,10 @@ work-sync () {
   work_recompile_go_tools_conditionally
 
   set -x
-  video-sync  --dry-run
+  video-sync
 
   set -x
-  video-sync-mpv-watch-later-files  --no-fetch --dry-run
+  video-sync-mpv-watch-later-files  --no-fetch
   echo
 }
 
