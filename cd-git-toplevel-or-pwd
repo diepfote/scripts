@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 __cd_dir () {
+  if [ -f "$PWD"/.envrc ]; then
+    return
+  fi
+
   local git_top_level
   git_top_level="$(git rev-parse --show-toplevel 2>/dev/null)"
 
