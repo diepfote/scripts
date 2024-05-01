@@ -76,5 +76,6 @@ if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$
   _rclone_verbose_sync_operation --update --delete-excluded "$mpv_dir" "$fastmail_path/$system-mpv-watch_later/"
 fi
 
-~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files 2>&1  | grep -v ERROR
+
+~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run 2>&1  | grep -v ERROR
 
