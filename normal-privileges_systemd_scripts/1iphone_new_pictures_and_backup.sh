@@ -42,6 +42,9 @@ rm_old_tar_gzip_backup () {
   dirs=()
 
   while IFS='' read -r line; do
+    if echo "$line" | grep -E '^$' >/dev/null; then
+      continue
+    fi
     dirs+=( "$line" )
   done < <(find-sorted "$1" -name '*.tgz' -print -o -name '*.tar' -print | tail -n +7)  # leave 6 backups in place
 
