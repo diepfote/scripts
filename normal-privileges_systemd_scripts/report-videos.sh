@@ -12,6 +12,7 @@ _add_to_PATH ~/Documents/python/tools/bin
 
 end () {
   echo "[.] END   ppid:$ppid pid:$pid $(date)" >&2
+  rm "$LOCK_FILE" || true
 }
 trap end EXIT
 
@@ -76,6 +77,4 @@ if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$
 fi
 
 ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files 2>&1  | grep -v ERROR
-
-rm "$LOCK_FILE"
 
