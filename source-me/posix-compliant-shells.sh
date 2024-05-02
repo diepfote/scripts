@@ -190,6 +190,31 @@ alias keepassxc-allow-screencapture='/Applications/KeePassXC.app/Contents/MacOS/
 # common functions START
 #
 
+ed-callable () {
+  # calling it:
+  #
+  # $ less /tmp/asdf.txt
+  # asdf
+  # asdfasfd
+  # .venv/bin/asdf
+  # aasdf/.venv/bin/asdf
+  # aasdf/  .venv/bin/asdf
+  # ~/
+  # $ ed-callable 'g/.venv/d' /tmp/asdf.txt
+  # 73
+  # 14
+  # ~/
+  # $ less /tmp/asdf.txt
+  # asdf
+  # asdfasfd
+
+  # $command could be 'g/.venv/d' ... this would delete any line containing `.venv`
+  command="$1"
+  shift
+
+  ed "$@" < <(echo "$command"; echo w)
+}
+
 date-from-epoch () {
   date --iso-8601=seconds -d@"$(expr substr "$1" 1 10)"
 }
