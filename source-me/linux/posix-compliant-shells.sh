@@ -123,6 +123,36 @@ xdg-open () {
 
 
 
+_xrandr_fst_mon () {
+  printf "%s" "$(xrandr --listmonitors  | tail -n +2 | head -n1 | awk '{ print $2 }' | sed -r 's#\+?\*?##')"
+}
+_xrandr_snd_mon () {
+  #
+  # possible values:
+  # - HDMI2
+  # - DP2
+  # - DP1
+  #
+  printf "%s" "$(xrandr --listmonitors  | tail -n 1 | awk '{ print $2 }' | sed -r 's#\+?\*?##')"
+}
+xrandr-right-of () {
+  xrandr --output "$(_xrandr_snd_mon)" --right-of "$(_xrandr_fst_mon)" --auto
+}
+xrandr-above () {
+  xrandr --output "$(_xrandr_snd_mon)" --above "$(_xrandr_fst_mon)" --auto
+}
+xrandr-same-as () {
+  xrandr --output "$(_xrandr_snd_mon)" --same-as "$(_xrandr_fst_mon)" --auto
+}
+xrandr-off () {
+  if [ "$(_xrandr_fst_mon)" = "$(_xrandr_snd_mon)" ]; then
+    return
+  fi
+  xrandr --output "$(_xrandr_snd_mon)" --off
+}
+
+
+
 _firewardened-app () {
   set -x
   (firewarden "$@" 1>/dev/null 2>&1 & echo "$?")
