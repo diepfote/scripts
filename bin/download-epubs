@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
+cleanup () {
+  rm -r "$links" "$output_dir"
+}
+trap cleanup EXIT
+
+
+output_dir="$(mktemp -d)"
+links="$(mktemp)"
+# override
+# links=/tmp/links.txt
+
+
+# NOTE: there is an implicit limit on how many items will be returned here.
+#       archive articles you have downloaded manually to get the rest
+curl -L -s "https://$(pass tail pocket | head -n1):$(pass pocket | head -n1)@getpocket.com/users/$(pass tail pocket | head -n1)/feed/unread"  |\
+    grep -E '^<link>' |\
+    sed -r 's#</?link>##g' |\
+    tail -n +2 |\
+    grep -vE '\.pdf$' | sort > "$links"
+
+cat "$links"
+echo
+wc -l "$links"
+
+echo
+echo -------------------------------------
+paperoni -o "$output_dir" -f "$links"
+
+_rclone_verbose_copy_operation "$output_dir" 'fastmail:'"$(read_toml_setting ~/Documents/config/fastmail.conf username)"'.fastmail.com/files/epubs'
+
+
+
+# # TODO 2024-05-03 archive articles we just converted to epub
+# # https://getpocket.com/developer/docs/v3/modify#action_archive
