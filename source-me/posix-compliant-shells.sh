@@ -678,19 +678,19 @@ _ask-to-empty-trash () {
 n_empty-trash () {
   _ask-to-empty-trash ~/.local/share/Trash
 
-  if [ "$(uname)" = Darwin ]; then
-    return
-  fi
-
   local trash_dirs=()
   while read -r line; do
+    # Linux: default id for first user
     trash_dirs+=("$line"/.Trash-1000)
+    # Darwin: default id for first user
+    trash_dirs+=("$line"/.Trash-501)
   done < <(df --output=target)
 
   for trash_dir in "${trash_dirs[@]}"; do
     if [ -d "$trash_dir" ]; then
       _ask-to-empty-trash "$trash_dir"
     fi
+    set +x
   done
 }
 
