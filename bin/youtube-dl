@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
+cleanup () { set +x; }
+trap cleanup exit
+
 default_opts=(--limit-rate 0.5M)
 
 if [ -n "$DISABLE_RATE_LIMIT" ]; then
   default_opts=()
 fi
+set -x
 yt-dlp "${default_opts[@]}" --no-colors "$@"

@@ -499,9 +499,7 @@ neomutt () {
 
 
 dl-youtube () {
-  set -x
   youtube-dl --add-metadata -f "$@"
-  set +x
 }
 
 dl-youtube-part-of-m4a () {
@@ -530,10 +528,8 @@ dl-playlist () {
   first_arg="$1"
   shift
 
-  set -x
   youtube-dl --add-metadata -f "$first_arg" "$@" \
     -o '%(playlist_title)s/%(playlist_index)s %(title)s-%(id)s.%(ext)s'
-  set +x
 }
 
 
