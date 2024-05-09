@@ -518,7 +518,7 @@ _dl-youtube-filter()
   url="$1"
   shift
 
-  cmd=('youtube-dl' --limit-rate "$rate" --sleep-interval '5' --max-sleep-interval '20' '-w' '--add-metadata' "$@" -- "$url")
+  cmd=('youtube-dl' --limit-rate "$rate" '-w' '--add-metadata' "$@" -- "$url")
   set -x
   "${cmd[@]}"
   set +x

@@ -1,7 +1,55 @@
 #!/usr/bin/env bash
 
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
 cleanup () { set +x; }
 trap cleanup exit
+
+
+opts=()
+# set variable if unset or null
+${DISABLE_RATE_LIMIT:=''}
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -a)
+    opts+=(--sleep-interval 5)
+    opts+=(--max-sleep-interval 20)
+    opts+=("$1")
+    opts+=("$2")
+    shift 2
+    break
+    ;;
+
+
+#     -h|--help)
+#     _help
+#     exit 0
+#     ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    opts+=("$1")
+    shift
+    # break
+    ;;
+
+  esac
+done
+
+
+set -- "${opts[@]}"
 
 default_opts=(--limit-rate 0.5M)
 
