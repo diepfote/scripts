@@ -302,7 +302,7 @@ yay-generate-PKGBUILD-checksum () {
 
   local pkg_name="$1"
   output_file="$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum
-  if ! cd "$yay_cache"/"$pkg_name"; then
+  if ! pushd "$yay_cache"/"$pkg_name"; then
     echo -e "${RED}[!] error on cd"
     return
   fi
@@ -320,7 +320,7 @@ yay-generate-PKGBUILD-checksum () {
 
   fi
   ls -alh "$output_file"
-  cd -  >/dev/null 2>&1
+  popd >/dev/null 2>&1
 }
 
 _yay-update-based-on-checksum () {
