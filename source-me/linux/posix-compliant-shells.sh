@@ -349,8 +349,6 @@ _yay-update-based-on-checksum () {
 alias xclip='command xclip -selection clipboard'
 alias xsel=xclip
 
-alias open=xdg-open
-
 
 gdb-gef () {
 if [ -z "$NOT_HOST_ENV" ]; then
