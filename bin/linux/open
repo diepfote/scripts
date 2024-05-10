@@ -10,7 +10,8 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 
 if [ -d "$1" ]; then
-  thunar "$@" >/dev/null 2>&1
+  thunar "$@" >/dev/null 2>&1 &
+  exit
 fi
 
-xdg-open "$@"  >/dev/null 2>&1
+xdg-open "$@"  >/dev/null 2>&1 &
