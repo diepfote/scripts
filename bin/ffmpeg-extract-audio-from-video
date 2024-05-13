@@ -47,11 +47,24 @@ key="$1"
 done
 
 
+cleanup () {
+  set +x
+  rm -r "$temp_dir"
+}
+
 vid_file="$1"
 b_name_no_ext="$(basename "$vid_file" | sed -r 's#.[A-Za-z0-9]+$##')"
 full_path_no_ext="$(dirname "$vid_file")/$b_name_no_ext"
 same_name_m4a_ext="$full_path_no_ext".m4a
 audio_file="${2:-$same_name_m4a_ext}"
 # snatched from https://askubuntu.com/a/437799
+set -x
 ffmpeg -i "$vid_file" -vn -c:a copy "$audio_file"
+set +x
 
+temp_dir="$(mktemp -d)"
+
+set -x
+temp_file="$temp_dir/$(basename "$audio_file")"
+ffmpeg-dynamic-range-compress-file "$audio_file" "$temp_file"
+mv "$temp_file" "$audio_file"
