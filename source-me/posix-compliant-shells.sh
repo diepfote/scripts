@@ -512,13 +512,12 @@ dl-youtube-part-of-m4a () {
 
 _dl-youtube-filter()
 {
-  local url rate
-  rate=500K
+  local url
 
   url="$1"
   shift
 
-  cmd=('youtube-dl' --limit-rate "$rate" '-w' '--add-metadata' "$@" -- "$url")
+  cmd=('youtube-dl' '-w' '--add-metadata' "$@" -- "$url")
   set -x
   "${cmd[@]}"
   set +x
