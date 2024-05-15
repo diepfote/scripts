@@ -66,6 +66,9 @@ if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$
     mpv_dir=~/.config/mpv/watch_later/
   fi
 
+  # cleanup redirection entries
+  find "$mpv_dir" -size 17c -exec bash -c 'if grep -F "# redirect entry" "$0" >/dev/null; then rm "$0"; fi;' {} \;
+
   ~/Documents/scripts/bin/_prepare-file-to-report-videos "$local_video_syncer_storage/$video_syncer_file"
 
   # sync video-syncer file
