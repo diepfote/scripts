@@ -10,7 +10,7 @@ _yay-generate-PKGBUILD-checksum_completions()
   local cur_word="${COMP_WORDS["$COMP_CWORD"]}"
   local prev_word="${COMP_WORDS["$COMP_CWORD"-1]}"
 
-  read -r -d '' -a _foreign_pkgs < <(pacman -Qmq)
+  read -r -d '' -a _foreign_pkgs < <(/usr/bin/pacman -Qmq)
   export _foreign_pkgs
 
 
