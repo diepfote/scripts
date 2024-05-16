@@ -51,7 +51,7 @@ THROTTLE_BANDWIDTH="$(head -n 1 "$pacman_bandwidth_limit_file")"
 
 
 if [ -n "$THROTTLE_BANDWIDTH" ] && [ "$THROTTLE_BANDWIDTH" -gt 0 ]; then
-  cmd+=(trickle -d "$THROTTLE_BANDWIDTH")
+  cmd+=(trickle -s -d "$THROTTLE_BANDWIDTH")
 fi
 cmd+=(/usr/bin/yay)
 set -x
