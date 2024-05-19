@@ -381,7 +381,7 @@ video-sync-mpv-watch-later-files () {
     _report-videos
     echo
   fi
-  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files "$@" 2>&1 | grep -v ERROR
+  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files "$@"
 }
 
 

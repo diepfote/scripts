@@ -11,6 +11,7 @@ _add_to_PATH ~/Documents/python/tools/bin
 
 
 end () {
+  set +x
   echo "[.] END   ppid:$ppid pid:$pid $(date)" >&2
   rm "$LOCK_FILE" || true
 }
@@ -38,15 +39,11 @@ _date="$(date)"
 echo "[.] START ppid:$ppid pid:$pid $(date)" >&2
 
 
-# !!!
-# if the lockfile is older than 5 min just delete it an move on
-find /tmp/report-videos-lock-file -mmin +5 -delete  >/dev/null 2>&1  || true  # ignore error for: no file
 if [ -f "$LOCK_FILE" ]; then
   abort
 fi
 # !!!
 touch "$LOCK_FILE"
-
 
 
 local_video_syncer_storage=~/Documents/misc/videos
@@ -55,16 +52,24 @@ mkdir -p "$local_video_syncer_storage"
 username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
 fastmail_path='fastmail:'"$username"'.fastmail.com/files/videos'
 
+system=arch
+mpv_dir=~/.local/state/mpv/watch_later/
+if [ "$(uname)" = Darwin ]; then
+  video_syncer_file=videos-work.txt
+  system=mac
+  mpv_dir=~/.config/mpv/watch_later/
+fi
+
+
+# write mapping file
+set -x
+~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files create-mapping-file
+set +x
+
+
 if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$local_video_syncer_storage"; then
 
   video_syncer_file=videos-home.txt
-  system=arch
-  mpv_dir=~/.local/state/mpv/watch_later/
-  if [ "$(uname)" = Darwin ]; then
-    video_syncer_file=videos-work.txt
-    system=mac
-    mpv_dir=~/.config/mpv/watch_later/
-  fi
 
   # cleanup redirection entries
   find "$mpv_dir" -size 17c -exec bash -c 'if grep -F "# redirect entry" "$0" >/dev/null; then rm "$0"; fi;' {} \;
@@ -80,5 +85,8 @@ if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$
 fi
 
 
-~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run 2>&1  | grep -v ERROR
+# update watch_later config (if remote is further along)
+set -x
+~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run
+set +x
 
