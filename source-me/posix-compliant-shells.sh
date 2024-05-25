@@ -124,6 +124,7 @@ alias objdump='objdump -M intel'
 alias ropper='ropper --no-color'
 
 alias cheat='~/Documents/scripts/cheat.sh ~/Documents/cheatsheets'
+alias rezepte='~/Documents/scripts/cheat.sh ~/Documents/rezepte'
 
 alias ls='ls --color=auto'
 
@@ -698,126 +699,6 @@ new-mutt () {
 }
 
 
-_mvcopy-wrapper () {
-
-  DIR=''
-  ADDITIONAL_FLAGS=()
-  while [ $# -gt 0 ]; do
-  key="$1"
-    case "$key" in
-      -d|--dir)
-      DIR="$2"
-      shift 2
-      ;;
-
-      --op)
-      OP="$2"
-      if [ "$OP" = cp ]; then
-        ADDITIONAL_FLAGS=('-r')
-      fi
-      shift 2
-      ;;
-
-      --)
-      shift
-      break
-      ;;
-
-      *)
-      break
-      ;;
-
-    esac
-  done
-
-  if [ $# -lt 1 ]; then
-    # shellcheck disable=SC2154
-    echo -e "${YELLOW}[.] Nothing to $OP.$NC"
-    return
-  elif [ $# -lt 2 ]; then
-    "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1"
-  else
-    # not remove operation
-    if ! "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1" "$DIR"/"$2"; then
-      set -x
-      ADDITIONAL_FLAGS=('-T')  # treat as normal file
-      "$OP" "${ADDITIONAL_FLAGS[@]}" -- "$DIR"/"$1" "$DIR"/"$2"
-      set +x
-    fi
-  fi
-  if [ -z "$DIR" ]; then
-    echo -e "${RED}[!] DIR param is empty.$NC"
-    return
-  fi
-
-}
-
-mv-docker () {
-  _mvcopy-wrapper --op mv --dir ~/Documents/dockerfiles "$@"
-}
-mv-go () {
-  _mvcopy-wrapper --op mv --dir ~/Documents/golang/tools "$@"
-}
-mv-zig () {
-  _mvcopy-wrapper --op mv --dir ~/Documents/zig/tools "$@"
-}
-mv-python () {
-  _mvcopy-wrapper --op mv --dir ~/Documents/python/tools "$@"
-}
-mv-script () {
-  _mvcopy-wrapper --op mv --dir ~/Documents/scripts "$@"
-}
-mv-vim () {
-  _mvcopy-wrapper --op mv --dir ~/.vim "$@"
-}
-mv-cheat () {
-  _mvcopy-wrapper --op mv --dir ~/Documents/cheatsheets "$@"
-}
-
-cp-docker () {
-  _mvcopy-wrapper --op cp --dir ~/Documents/dockerfiles "$@"
-}
-cp-go () {
-  _mvcopy-wrapper --op cp --dir ~/Documents/golang/tools "$@"
-}
-cp-zig () {
-  _mvcopy-wrapper --op cp --dir ~/Documents/zig/tools "$@"
-}
-
-cp-python () {
-  _mvcopy-wrapper --op cp --dir ~/Documents/python/tools "$@"
-}
-cp-script () {
-  _mvcopy-wrapper --op cp --dir ~/Documents/scripts "$@"
-}
-cp-vim () {
-  _mvcopy-wrapper --op cp --dir ~/.vim "$@"
-}
-cp-cheat () {
-  _mvcopy-wrapper --op cp --dir ~/Documents/cheatsheets "$@"
-}
-
-rm-docker () {
-  _mvcopy-wrapper --op rm --dir ~/Documents/dockerfiles "$@"
-}
-rm-go () {
-  _mvcopy-wrapper --op rm --dir ~/Documents/golang/tools "$@"
-}
-rm-zig () {
-  _mvcopy-wrapper --op rm --dir ~/Documents/zig/tools "$@"
-}
-rm-python () {
-  _mvcopy-wrapper --op rm --dir ~/Documents/python/tools "$@"
-}
-rm-script () {
-  _mvcopy-wrapper --op rm --dir ~/Documents/scripts "$@"
-}
-rm-vim () {
-  _mvcopy-wrapper --op rm --dir ~/.vim "$@"
-}
-rm-cheat () {
-  _mvcopy-wrapper --op rm --dir ~/Documents/cheatsheets "$@"
-}
 
 edit-dot-files () {
   pushd ~/Documents/dot-files >/dev/null
@@ -919,6 +800,15 @@ cheatsheets_commit_and_push () {
   )
 }
 
+rezepte_commit_and_push () {
+  (
+  if cd ~/Documents/rezepte; then
+    git add .
+    git commit -m "$(date --iso-8601=minutes)"
+    git push -u origin master
+  fi
+  )
+}
 
 _checkout-wrapper () {
   local dir="$1"
@@ -1022,6 +912,9 @@ diff-vim () {
 diff-cheat () {
   _diff-wrapper ~/Documents/cheatsheets "$@"
 }
+diff-rezepte () {
+  _diff-wrapper ~/Documents/rezepte "$@"
+}
 
 _log-wrapper () {
   local dir="$1"
@@ -1044,9 +937,6 @@ log-function () {
 log-docker () {
   _log-wrapper ~/Documents/dockerfiles "$@"
 }
-log-cheat () {
-  _log-wrapper ~/Documents/cheatsheets "$@"
-}
 log-mutt () {
   _log-wrapper ~/.mutt "$@"
 }
@@ -1065,6 +955,12 @@ log-script () {
 log-vim () {
   _log-wrapper ~/.vim "$@"
 }
+log-cheat () {
+  _log-wrapper ~/Documents/cheatsheets "$@"
+}
+log-rezepte () {
+  _log-wrapper ~/Documents/rezepte "$@"
+}
 
 _reset_wrapper () {
   dir="$1"
@@ -1082,9 +978,6 @@ reset-dot-files () {
 }
 reset-function () {
   _reset_wrapper ~/.config/fish/functions "$@"
-}
-reset-cheat () {
-  _reset_wrapper ~/Documents/cheatsheets "$@"
 }
 reset-docker () {
   _reset_wrapper ~/Documents/dockerfiles "$@"
@@ -1106,6 +999,12 @@ reset-script () {
 }
 reset-vim () {
   _reset_wrapper ~/.vim "$@"
+}
+reset-cheat () {
+  _reset_wrapper ~/Documents/cheatsheets "$@"
+}
+reset-rezepte () {
+  _reset_wrapper ~/Documents/rezepte "$@"
 }
 
 _status-wrapper () {
@@ -1145,7 +1044,9 @@ status-vim () {
 status-cheat () {
   _status-wrapper ~/Documents/cheatsheets "$@"
 }
-
+status-rezepte () {
+  _status-wrapper ~/Documents/rezepte "$@"
+}
 
 _work-wrapper () {
   local conf_file="$1"
