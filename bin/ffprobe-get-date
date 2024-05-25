@@ -6,4 +6,7 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-ffprobe -v quiet -of csv=p=0 -show_entries format_tags=date -- "$@"
+# csv=p=0  ... do not print csv section header
+# -v quiet ... do not print any other information
+#
+ffprobe -v quiet -of csv=p=0 -show_entries format_tags=date "$@"
