@@ -13,27 +13,29 @@ source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 cleanup () {
   rm -r "$links" "$output_dir"
+  set +x
 }
 trap cleanup EXIT
 
 
+set -x
 output_dir="$(mktemp -d)"
-links="$(mktemp)"
+# links="$(mktemp)"
 # override
-# links=/tmp/links.txt
+links=/tmp/links.txt
 
 
-# NOTE: there is an implicit limit on how many items will be returned here.
-#       archive articles you have downloaded manually to get the rest
-curl -L -s "https://$(pass tail pocket | head -n1):$(pass pocket | head -n1)@getpocket.com/users/$(pass tail pocket | head -n1)/feed/unread"  |\
-    grep -E '^<link>' |\
-    sed -r 's#</?link>##g' |\
-    tail -n +2 |\
-    grep -vE '\.pdf$' | sort > "$links"
+# # NOTE: there is an implicit limit on how many items will be returned here.
+# #       archive articles you have downloaded manually to get the rest
+# curl -L -s "https://$(pass tail pocket | head -n1):$(pass pocket | head -n1)@getpocket.com/users/$(pass tail pocket | head -n1)/feed/saves"  |\
+#     grep -E '^<link>' |\
+#     sed -r 's#</?link>##g' |\
+#     tail -n +2 |\
+#     grep -vE '\.pdf$' | sort > "$links"
 
-cat "$links"
-echo
-wc -l "$links"
+# cat "$links"
+# echo
+# wc -l "$links"
 
 echo
 echo -------------------------------------
