@@ -8,5 +8,11 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
-youtube-dl "$1" -j | stdbuf -o0 jq -r .webpage_url
+# To replace the newlines with commas, but only for lines 2 through 4, you can use the following awk command:
+# awk 'NR>=2 && NR<4 {printf "%s,", $0; next} 1' ... snatched from https://likegeeks.com/replace-newlines-using-awk/
+#
+# sed will remove e.g. ' [SZu2Cl5--PI].webm'
+#
+# shellcheck disable=SC2016
+youtube-dl "$1" -j | stdbuf -o0 jq -r '.webpage_url, .filename' | stdbuf -o0 awk 'NR %2 != 0 {printf "%s # ", $0; next} 1' | stdbuf -o0 sed -r 's# .[A-Za-z0-9_\-]{11}.\.[^\.]+$##'
 
