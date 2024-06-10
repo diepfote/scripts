@@ -353,6 +353,9 @@ fi
 
 echo
 echo
+echo -n 'Uptime: '
+uptime
+echo
 sudo systemsetup -getremotelogin  | grep --color=always -E 'On|Off'
 echo "End: $(date)"
 echo =====================
