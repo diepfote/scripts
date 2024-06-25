@@ -6,35 +6,28 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+cleanup () { set +x; }
+trap cleanup EXIT
+
+# ensure variable FIREFOX is either an empty string or whatever was
+# passed in (never unset)
+${FIREFOX:=''}
 
 if [ "$(uname)" = Darwin ]; then
 
-  if [ $# -lt 2 ]; then
-    # open in incognito window by default
-    url="$1"
-    set -- "$url" -i
-  else
-    # last arg is assumed to be the url
-    url=("${@:$#}")
-    set -- "${url[@]}" -n
-  fi
-
-  set -x
-
-  set +u
   if [ -n "$FIREFOX" ]; then
-    # remove last argument
-    set -- "${@:1:$(($#-1))}"
-    /Applications/Firefox.app/Contents/MacOS/firefox --private-window "$@"
-  elif ! /opt/homebrew/bin/chrome-cli open "$@"  1>/dev/null 2>&1; then
-    set -u
-    # remove last argument
-    set -- "${@:1:$(($#-1))}"
-    google-chrome "$@"
-  fi
-  set -u
 
-  set +x
+    set -x
+    # installed by homebrew (included in firefox)
+    # located at /Applications/Firefox.app/Contents/MacOS/
+    firefox --private-window "$@"
+    set +x
+  else
+    set -x
+    chrome "$@"
+    set +x
+  fi
+
 else
   # shellcheck disable=SC1090
   source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
@@ -44,7 +37,6 @@ else
 
   set -x
   firewardened-chromium -N "${url[@]}"  >/dev/null 2>&1  &
-  set +x
 fi
 
 # block so external scripts do not delete the file yet
