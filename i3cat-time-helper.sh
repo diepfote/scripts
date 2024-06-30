@@ -9,7 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 TZ="$1"
 
 print_time() {
-  i3cat encode < <(TZ="$TZ" date "+%a %m/%d %H:%M%:::z" | tr -d '\n')
+  "$HOME/go/bin/i3cat" encode < <(TZ="$TZ" date "+%a %m/%d %H:%M%:::z" | tr -d '\n')
 }
 
 
