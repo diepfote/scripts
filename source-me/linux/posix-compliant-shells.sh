@@ -37,7 +37,7 @@ _add_to_PATH "$HOME/Documents/scripts/bin/linux"  || true
 # shellcheck disable=SC2142
 alias public-ip="drill myip.opendns.com @resolver1.opendns.com | awk '/IN\s+A\s+\w+/ { print \$5 }'"
 # shellcheck disable=SC2142
-alias local-ip="ip addr show dev wlp4s0 | awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
+alias local-ip="ip addr show dev wlan0 | awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
 # shellcheck disable=SC2142
 alias ips="ip addr |  awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
 
@@ -185,11 +185,6 @@ edit-pacman-conf () {
   vim /etc/pacman.conf
 }
 
-
-edit-iptables-rules () {
-  sudo vim /etc/iptables/iptables.rules
-  sudo systemctl restart iptables.service
-}
 
 edit-radare2-history () {
   vim -c ':$' ~/.cache/radare2/history
