@@ -2,9 +2,10 @@
 #
 # shellcheck disable=SC1090
 
-source ~/Documents/scripts/source-me/common-functions.sh
-export user_dir="$HOME"
-source /etc/systemd/system/scripts/source-me/common-functions.sh
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
+IFUSE_MOUNTPOINT="$(mktemp -d)"
+IPHONE_DCIM_DIR="$IFUSE_MOUNTPOINT"/DCIM
 
 set -o pipefail  # propagate errors
 set -u  # exit on undefined
@@ -20,40 +21,6 @@ exit_handler () {
 }
 trap exit_handler EXIT
 
-
-tar_gzip_backup () {
-  local date_for_file dir_to_compress full_path_to_dir_to_compress
-  date_for_file="$(date +%FT%T%z | sed 's/:/_/g')"
-  full_path_to_dir_to_compress="$1"
-  dir_to_compress="$(basename "$full_path_to_dir_to_compress")"
-
-  # cd dir above UUID dir
-  pushd "$(dirname "$full_path_to_dir_to_compress")" || exit 1
-
-  set -x
-  tar cf "$dir_to_compress-$date_for_file.tar" "$dir_to_compress"
-  set +x
-
-  popd || exit 1
-}
-
-rm_old_tar_gzip_backup () {
-  local dirs
-  dirs=()
-
-  while IFS='' read -r line; do
-    if echo "$line" | grep -E '^$' >/dev/null; then
-      continue
-    fi
-    dirs+=( "$line" )
-  done < <(find-sorted "$1" -name '*.tgz' -print -o -name '*.tar' -print | tail -n +7)  # leave 6 backups in place
-
-  for dir in "${dirs[@]}"; do
-    set -x
-    rm "$dir"
-    set +x
-  done
-}
 
 do_image_copy () {
   echo 'Start iPhone image copy and backup'
@@ -131,33 +98,20 @@ do_image_copy () {
 }
 
 # only run on my private laptop
-is_private_laptop="$(hostname | grep arch-dev)"
+is_private_laptop="$(hostname | grep frame.work)"
 if [ -z "$is_private_laptop" ]; then
   echo "Wrong laptop, exiting without error."
   exit
 fi
 
 
-IFUSE_MOUNTPOINT="$(mktemp -d)"
-IPHONE_DCIM_DIR="$IFUSE_MOUNTPOINT"/DCIM
-
-
-set_backup_drive backup_drive
-# shellcheck disable=SC2154
-iphone_backup_loc="$backup_drive"/iPhone
-set_backup_drive big_drive
-LOCAL_PICTURES_DIR="$backup_drive"/#Photos
-
+iphone_backup_loc="$(read_toml_setting ~/Documents/config/sync.conf iphone-backup)"
+LOCAL_PICTURES_DIR="$(read_toml_setting ~/Documents/config/sync.conf photos)"
 
 do_image_copy
 set -x
 idevicebackup2 -u "$(idevice_id -l | head -n1)" backup  "$iphone_backup_loc"
 set +x
-
-iphone_backup_loc_UUID_dir="$(find "$iphone_backup_loc" -maxdepth 1 -type d | tail -n 1)"
-tar_gzip_backup "$iphone_backup_loc_UUID_dir"
-
-rm_old_tar_gzip_backup "$iphone_backup_loc"
 
 echo 'END iPhone image copy and backup'
 
