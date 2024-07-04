@@ -15,7 +15,7 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 
 COMMAND=(/opt/homebrew/bin/git)
-if ! which "${COMMAND[@]}" >/dev/null 2>&1 ; then
+if [ "$(uname)" = Linux ]; then
   COMMAND=(/usr/bin/git)
 fi
 
