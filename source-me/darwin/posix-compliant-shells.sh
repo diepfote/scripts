@@ -198,7 +198,6 @@ _add_to_PATH "$HOME/Documents/scripts/bin/darwin"
 _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
 _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
 
-
 export PASSWORD_STORE_DIR=~/.password-store-work
 
 
@@ -210,4 +209,7 @@ use_native_uptime () {
 }
 use_native_uptime
 unset -f use_native_uptime
+
+
+_add_to_PATH "$HOME/.bazel/bin"
 
