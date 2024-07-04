@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
 
-export NNN_COLORS=2136  # use a different color for each context -> version >= 3.2
+# NNN_COLORS: string of color numbers for each context, e.g.:
+#
+ # 8 color numbers:
+ # 0-black, 1-red, 2-green, 3-yellow, 4-blue (default), 5-magenta, 6-cyan, 7-white
+export NNN_COLORS=2136  # v3.2
 export NNN_TRASH=1
-export NNN_BMS="d:~/Documents;h:~;D:~/Downloads;E:/etc/;v:~/Videos;V:/tmp/automounts/fat-drive-mount/Media/Video-Files/Videos;m:~/Movies"  # jump locations for nnn
+# jump locations
+export NNN_BMS="d:~/Documents;h:~;D:~/Downloads;E:/etc/;v:~/Videos;V:/tmp/automounts/fat-drive-mount/Media/Video-Files/Videos;m:~/Movies"
 export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'  # curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+# curl -Ls https://raw.githubusercontent.com/jarun/nnn/v3.2/plugins/getplugs | sh
+export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'
 
 
 n-rsync () {
