@@ -211,6 +211,9 @@ commit-pacman-hooks () {
 }
 
 
+diff-etc () {
+  _diff-wrapper /etc "$@"
+}
 diff-firejail () {
   _diff-wrapper ~/.config/firejail "$@"
 }
