@@ -29,7 +29,7 @@ get_device_on_off () {
 
 run () {
   if [ "$(get_device_on_off "$device")" = off ]; then
-    "$HOME/go/bin/i3cat" encode --color '#f91bac' "♪: muted ($(get_volume "$device"))"
+    "$HOME/go/bin/i3cat" encode --color '#f91bac' "♪: M($(get_volume "$device"))"
   else
     "$HOME/go/bin/i3cat" encode "♪: $(get_volume "$device")"
   fi
