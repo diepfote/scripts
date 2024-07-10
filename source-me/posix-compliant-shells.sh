@@ -718,9 +718,6 @@ edit-zig () {
 edit-python () {
   _edit-wrapper --dir ~/Documents/python/tools "$1"
 }
-edit-function () {
-  _edit-wrapper --dir ~/.config/fish/functions "$1"
-}
 edit-script () {
   _edit-wrapper --dir ~/Documents/scripts "$1"
 }
@@ -820,9 +817,6 @@ _checkout-wrapper () {
 checkout-dot-files () {
   _checkout-wrapper ~/Documents/dot-files "$@"
 }
-checkout-function () {
-  _checkout-wrapper ~/.config/fish/functions "$@"
-}
 checkout-docker () {
   _checkout-wrapper ~/Documents/dockerfiles "$@"
 }
@@ -848,9 +842,6 @@ checkout-vim () {
 
 commit-dot-files () {
   commit-in-dir ~/Documents/dot-files "$@"
-}
-commit-function () {
-  commit-in-dir ~/.config/fish/functions "$@"
 }
 commit-docker () {
   commit-in-dir ~/Documents/dockerfiles "$@"
@@ -884,9 +875,6 @@ _diff-wrapper () {
 
 diff-dot-files () {
   _diff-wrapper ~/Documents/dot-files "$@"
-}
-diff-function () {
-  _diff-wrapper ~/.config/fish/functions "$@"
 }
 diff-docker () {
   _diff-wrapper ~/Documents/dockerfiles "$@"
@@ -931,9 +919,6 @@ _log-wrapper () {
 log-dot-files () {
   _log-wrapper ~/Documents/dot-files "$@"
 }
-log-function () {
-  _log-wrapper ~/.config/fish/functions "$@"
-}
 log-docker () {
   _log-wrapper ~/Documents/dockerfiles "$@"
 }
@@ -976,9 +961,6 @@ reset-dot-files () {
   _reset_wrapper ~/Documents/dot-files "$@"
   (cd ~/Documents/dot-files && make)
 }
-reset-function () {
-  _reset_wrapper ~/.config/fish/functions "$@"
-}
 reset-docker () {
   _reset_wrapper ~/Documents/dockerfiles "$@"
 }
@@ -1016,9 +998,6 @@ _status-wrapper () {
 
 status-dot-files () {
   _status-wrapper ~/Documents/dot-files "$@"
-}
-status-function () {
-  _status-wrapper ~/.config/fish/functions "$@"
 }
 status-docker () {
   _status-wrapper ~/Documents/dockerfiles "$@"
