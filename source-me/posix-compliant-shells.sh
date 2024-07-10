@@ -701,8 +701,9 @@ new-mutt () {
 
 
 edit-dot-files () {
-  pushd ~/Documents/dot-files >/dev/null
+  pushd ~/Documents/dot-files
 }
+
 edit-docker () {
   _edit-wrapper --dir ~/Documents/dockerfiles "$1"
 }
