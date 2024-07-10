@@ -704,28 +704,39 @@ edit-dot-files () {
   pushd ~/Documents/dot-files >/dev/null
 }
 edit-docker () {
-  _edit-wrapper --dir ~/Documents/dockerfiles "$1"
+  set -- ~/Documents/dockerfiles "$@"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
+  _edit-wrapper --dir "$dir" "$1"
 }
 edit-mutt () {
-  _edit-wrapper --dir ~/.mutt "$1"
+  set -- ~/.mutt "$@"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
+  _edit-wrapper --dir "$dir" "$1"
 }
 edit-go () {
-  _edit-wrapper --dir ~/Documents/golang/tools "$1"
+  set -- ~/Documents/golang/tools "$@"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
+  _edit-wrapper --dir "$dir" "$1"
 }
 edit-zig () {
-  _edit-wrapper --dir ~/Documents/zig/tools "$1"
+  set -- ~/Documents/zig/toosl "$@"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
+  _edit-wrapper --dir "$dir" "$1"
 }
 edit-python () {
-  _edit-wrapper --dir ~/Documents/python/tools "$1"
-}
-edit-function () {
-  _edit-wrapper --dir ~/.config/fish/functions "$1"
+  set -- ~/Documents/python/tools "$@"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
+  _edit-wrapper --dir "$dir" "$1"
 }
 edit-script () {
-  _edit-wrapper --dir ~/Documents/scripts "$1"
+  set -- ~/Documents/scripts "$@"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
+  _edit-wrapper --dir "$dir" "$1"
 }
 edit-vim () {
-  _edit-wrapper --dir ~/.vim "$1"
+  set -- ~/.vim  "$@"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
+  _edit-wrapper --dir "$dir" "$1"
 }
 
 _edit-wrapper () {
@@ -810,10 +821,22 @@ rezepte_commit_and_push () {
   )
 }
 
-_checkout-wrapper () {
-  local dir="$1"
-  shift
+_set_dir () {
+  if [ $# -gt 1 ] && [ "$2" = bb ]; then
+      dir="$1/$2"
+      shift 2
+  elif [ $# -gt 1 ] && [ "$2" = cc ]; then
+      dir="$1/$2"
+      shift 2
+  else
+    dir="$1"
+    shift
+  fi
+  export RETURN=("$@")
+}
 
+_checkout-wrapper () {
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
   git_execute_on_repo -d "$dir" git checkout -- "$@"
 }
 
@@ -876,7 +899,7 @@ commit-vim () {
 
 
 _diff-wrapper () {
-  local dir="$1"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
   set -- "${@:2:$(($#))}"; # drop first arg
 
   git_execute_on_repo -d "$dir" git diff "$@"
@@ -917,7 +940,7 @@ diff-rezepte () {
 }
 
 _log-wrapper () {
-  local dir="$1"
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
   set -- "${@:2:$(($#))}"; # drop first arg
 
   command=(git l)
@@ -963,9 +986,7 @@ log-rezepte () {
 }
 
 _reset_wrapper () {
-  dir="$1"
-  shift
-
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
   if [ "$1" = --hard ]; then
     git_execute_on_repo -d "$dir" git clean -df
   fi
@@ -1008,10 +1029,10 @@ reset-rezepte () {
 }
 
 _status-wrapper () {
-  local dir="$1"
-  shift
-
+  _set_dir "$@"; set -- "${RETURN[@]}"; unset RETURN
+  set -x
   git_execute_on_repo -d "$dir" git status -sb "$@"
+  set +x
 }
 
 status-dot-files () {
