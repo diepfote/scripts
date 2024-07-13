@@ -39,5 +39,6 @@ echo 'EOF -----------------'
 echo
 
 ls -al "$1" "$temp_file"
+wc -l "$1" "$temp_file"
 mv "$temp_file" "$1"
 
