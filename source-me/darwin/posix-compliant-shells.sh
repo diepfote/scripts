@@ -37,7 +37,7 @@ python_310_path="/opt/homebrew/opt/python@3.10/libexec/bin"
 # ln -sf "$python_310_path"/python "$python_310_path"/python3
 _add_to_PATH "$python_310_path"
 # _add_to_PATH "$HOME/Library/Python/3.10/bin"
-# export LDFLAGS="-L/opt/homebrew/opt/python@3.10/lib:$LDFLAGS"
+# export LDFLAGS="-L/opt/homebrew/opt/python@3.10/lib $LDFLAGS"
 # export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.10/lib/pkgconfig:$PKG_CONFIG_PATH"
 #
 # python 3.12
@@ -45,7 +45,7 @@ python_312_path="/opt/homebrew/opt/python@3.12/libexec/bin"
 # ln -sf "$python_312_path"/python "$python_312_path"/python3
 _add_to_PATH "$python_312_path"
 # _add_to_PATH "$HOME/Library/Python/3.12/bin"
-# export LDFLAGS="-L/opt/homebrew/opt/python@3.12/lib:$LDFLAGS"
+# export LDFLAGS="-L/opt/homebrew/opt/python@3.12/lib $LDFLAGS"
 # export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.12/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # python 3.11 = default
@@ -53,7 +53,7 @@ python_311_path="/opt/homebrew/opt/python@3.11/libexec/bin"
 ln -sf "$python_311_path"/python "$python_311_path"/python3
 _add_to_PATH "$python_311_path"
 _add_to_PATH "$HOME/Library/Python/3.11/bin"
-export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib:$LDFLAGS"
+export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib $LDFLAGS"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 
@@ -69,13 +69,13 @@ _add_to_PATH "$HOME/.gem/ruby/2.7.0/bin"
 
 # TODO maybe add ruby CPP Flag & PKG_CONFIG_PATH
 export CPPFLAGS="-I/opt/homebrew/opt/openssl@3/include:$CPPFLAGS"
-export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib:$LDFLAGS"
+export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib $LDFLAGS"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@3/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --
 
 # -- node 18 as node 20 does not work with `yarn` - 2023-04-21
 _add_to_PATH /opt/homebrew/opt/node@18/bin
-export LDFLAGS="-L/opt/homebrew/opt/node@18/lib:$LDFLAGS"
+export LDFLAGS="-L/opt/homebrew/opt/node@18/lib $LDFLAGS"
 export CPPFLAGS="-I/opt/homebrew/opt/node@18/include:$CPPFLAGS"
 # --
 
@@ -87,7 +87,7 @@ export CPPFLAGS="-I/opt/homebrew/opt/node@18/include:$CPPFLAGS"
 #   Referenced from: '/opt/homebrew/Cellar/gnupg/2.3.7_1/bin/gpg'
 #   Reason: tried: '/opt/homebrew/opt/readline/lib/libreadline.8.dylib' (no such file), '/opt/homebrew/lib/libreadline.8.dylib' (no such file), '/usr/lib/libreadline.8.dylib' (no such file)
 
-export LDFLAGS="-L/opt/homebrew/opt/readline/lib:$LDFLAGS"
+export LDFLAGS="-L/opt/homebrew/opt/readline/lib $LDFLAGS"
 export CPPFLAGS="-I/opt/homebrew/opt/readline/include:$CPPFLAGS"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/readline/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --

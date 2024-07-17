@@ -12,7 +12,7 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 
 cleanup () {
-  rm -r "$links" "$output_dir"
+  rm -r "$output_dir"
   set +x
 }
 trap cleanup EXIT
@@ -22,7 +22,7 @@ set -x
 output_dir="$(mktemp -d)"
 # links="$(mktemp)"
 # override
-links=/tmp/links.txt
+links="$1"
 
 
 # # NOTE: there is an implicit limit on how many items will be returned here.
