@@ -319,13 +319,9 @@ echo -e "${PURPLE}[>] ...$NC starting upgrades"
 brew upgrade || true
 
 
-# install `brew cu`: `brew tap buo/cask-upgrade`
 if [ -n "$GREEDY" ]; then
   echo -e "${PURPLE}[>] ...$NC starting greedy cask upgrades"
-  brew cu -y -a --no-brew-update
-else
-  echo -e "${PURPLE}[>] ...$NC starting non-greedy cask upgrades"
-  brew cu -y --no-brew-update
+  brew upgrade --cask --greedy
 fi
 
 git break-osx-credential-helper
