@@ -227,4 +227,5 @@ unset -f use_native_uptime
 
 
 _add_to_PATH "$HOME/.bazel/bin"
-
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
