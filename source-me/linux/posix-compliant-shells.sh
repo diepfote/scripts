@@ -75,39 +75,6 @@ _snap () {
   sudo lvcreate -L "$size" -s -n "s_$dir-$d" "$vol_group_mapper-$dir"
 }
 
-snap_all () {
-  local d dir regex vol_group_mapper
-
-  vol_group_mapper=/dev/mapper/VolGroup00
-  regex="$1"
-  # workaround if no input -> set to bogus value to match all
-  echo "${regex:=ASDFASDF}"  >/dev/null
-
-  d="$(date +%FT%T%Z)"
-  d="${d//:/-}"
-
-
-  while IFS='' read -r line; do
-    if [[ "$line" =~ $regex ]]; then
-      # do not create snapshots
-      #
-      continue
-    fi
-
-    _snap "$line" "$d"
-  done < <(sudo lvs -o lv_name | tail -n +2 | awk '{ print $1 }' | sed -r '/[0-9]{4}/d')
-
-}
-
-snap_subset () {
-  regex='VirtualBox|Videos|containers|swap'
-  snap_all "$regex"
-}
-
-snap-renew () {
-  sudo lvremove -y /dev/VolGroup00/s_*
-  snap_subset
-}
 
 
 open_file_if_not_open () {
