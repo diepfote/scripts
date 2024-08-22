@@ -33,8 +33,9 @@ run () {
   max_seconds_since_handshake=180
 
   if [ "$last_handshake" -lt "$(get_timestamp_x_seconds_ago "$max_seconds_since_handshake")" ]; then
-    min_since=$((max_seconds_since_handshake / 60))
-    "$HOME/go/bin/i3cat" encode --color '#ff0000' "$interface:>${min_since}min"
+    # min_since=$((max_seconds_since_handshake / 60))
+    # "$HOME/go/bin/i3cat" encode --color '#ff0000' "$interface:>${min_since}min"
+    :
   else
     "$HOME/go/bin/i3cat" encode --color '#00dc00' "$interface"
   fi
