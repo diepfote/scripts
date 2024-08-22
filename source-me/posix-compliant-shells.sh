@@ -1029,7 +1029,7 @@ work-sync () {
 
   echo
 
-  ~/Documents/golang/tools/execute-in-repos git pull origin master
+  ~/Documents/golang/tools/execute-in-repos/execute-in-repos git pull origin master
 
   echo
   set -x
