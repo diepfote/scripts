@@ -95,6 +95,8 @@ _add_to_PATH "$HOME/Documents/scripts/bin"
 _add_to_PATH "$HOME/Documents/python/tools/bin"
 _add_to_PATH "$HOME/Documents/scripts/private/bin"
 _add_to_PATH "$HOME/Documents/dockerfiles/bin"
+_add_to_PATH "$HOME/Documents/golang/tools/execute-in-repos"
+_add_to_PATH "$HOME/Documents/golang/tools/execute-on-files"
 
 #
 # extend PATH end
@@ -786,7 +788,7 @@ _checkout-wrapper () {
   local dir="$1"
   shift
 
-  git_execute_on_repo -d "$dir" git checkout -- "$@"
+  git -C "$dir" checkout -- "$@"
 }
 
 checkout-dot-files () {
@@ -845,7 +847,7 @@ _diff-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  git_execute_on_repo -d "$dir" git diff "$@"
+  git -C "$dir" diff "$@"
 }
 
 diff-dot-files () {
@@ -883,12 +885,12 @@ _log-wrapper () {
   local dir="$1"
   set -- "${@:2:$(($#))}"; # drop first arg
 
-  command=(git l)
+  args=(l)
   if [ -n "$GIT_PAGER" ]; then
-    command=(git log)
+    args=(log)
   fi
 
-  git_execute_on_repo -d "$dir" "${command[@]}" "$@"
+  git -C "$dir" "${args[@]}" "$@"
 }
 
 log-dot-files () {
@@ -927,9 +929,9 @@ _reset_wrapper () {
   shift
 
   if [ "$1" = --hard ]; then
-    git_execute_on_repo -d "$dir" git clean -df
+    git -C "$dir" clean -df
   fi
-  git_execute_on_repo -d "$dir" git reset "$@"
+  git -C "$dir" reset "$@"
 }
 
 reset-dot-files () {
@@ -968,7 +970,7 @@ _status-wrapper () {
   local dir="$1"
   shift
 
-  git_execute_on_repo -d "$dir" git status -sb "$@"
+  git -C "$dir" status -sb "$@"
 }
 
 status-dot-files () {
@@ -1002,37 +1004,6 @@ status-rezepte () {
   _status-wrapper ~/Documents/rezepte "$@"
 }
 
-_work-wrapper () {
-  local conf_file="$1"
-  shift
-  local command=("$@")
-
-  while read -r repo_dir; do
-    [ -z "$repo_dir" ] && continue  # skip empty lines
-
-    if [ "$repo_dir" = /etc ] || \
-       [ "$repo_dir" = /etc/pacman.d/hooks ]; then
-      if [ "${command[1]}" = pull ] || \
-         [ "${command[1]}" = fetch ]; then
-        source ~/Documents/scripts/source-me/colors.sh
-        echo ---- >&2
-        echo -e "${RED}Only running fetch!$NC" >&2
-        command[1]=fetch
-        git_execute_on_repo -d "$repo_dir" "${command[@]}"
-        echo -e "${RED}Only running status!$NC" >&2
-        command[1]=status
-        command[2]=-sb
-        git_execute_on_repo -d "$repo_dir" "${command[@]}"
-        echo ---- >&2
-      fi
-    else
-      git_execute_on_repo -d "$repo_dir" "${command[@]}"
-    fi
-
-  done <"$conf_file"
-  set +x
-}
-
 
 _sync-os-configs () {
   set +x
@@ -1058,10 +1029,7 @@ work-sync () {
 
   echo
 
-  local conf_file=~/Documents/config/repo.conf
-  local command=('git' 'pull' 'origin' 'master')
-  # TODO improve func name
-  _work-wrapper "$conf_file" "${command[@]}"
+  ~/Documents/golang/tools/execute-in-repos git pull origin master
 
   echo
   set -x
@@ -1099,21 +1067,17 @@ work_recompile_go_tools_conditionally () {
 }
 
 work_push () {
-  local conf_file=~/Documents/config/repo.conf
-  local command=('git' 'push')
-
-  _work-wrapper "$conf_file" "${command[@]}"
+  ~/Documents/golang/tools/execute-in-repos git push
 }
 
 work_fetch () {
-  local conf_file=~/Documents/config/repo.conf
-  local command=('git' 'fetch')
-
-  _work-wrapper "$conf_file" "${command[@]}"
+  ~/Documents/golang/tools/execute-in-repos git fetch
 }
 
 work-checked-in () {
-  __work-checked-in-wrapper ~/Documents/config/repo.conf "$@"
+  find ~/.password-store-* -type l -delete
+  ~/Documents/golang/tools/execute-in-repos/execute-in-repos git status -sb | less -R
+  (_link-shared-password-store &)
 }
 
 

@@ -98,7 +98,7 @@ else
 fi
 
 set -x
-ffmpeg-dynamic-range-compress-dir "$temp_dir"
+time ~/Documents/golang/tools/execute-on-files/execute-on-files -config <(find "$temp_dir" -mindepth 1) ffmpeg-dynamic-range-compress-file
 set +x
 
 set -x

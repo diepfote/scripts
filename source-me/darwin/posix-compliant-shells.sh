@@ -201,12 +201,12 @@ dock-unhide () {
 }
 
 w-checked-in () {
-  __work-checked-in-wrapper ~/Documents/config/work-repo.conf
+  ~/Documents/golang/tools/execute-in-repos/execute-in-repos -config work-repo.conf git status -sb | less -R
 }
 
 
 w-git_execute_on_all_repos () {
-  git_execute_on_all_repos -c ~/Documents/config/work-repo.conf -- "$@"
+  ~/Documents/golang/tools/execute-in-repos/execute-in-repos -config work-repo.conf "$@"
 }
 
 _add_to_PATH "$HOME/Documents/scripts/bin/darwin"

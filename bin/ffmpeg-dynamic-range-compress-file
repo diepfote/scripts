@@ -9,11 +9,25 @@ shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 in="$1"
-out="$2"
-shift 2
+out_unset=""
+shift
+if [ $# -lt 2 ]; then
+  tmpdir="$(mktemp -d)"
+  cleanup () { rm -r "$tmpdir"; }
+  trap cleanup EXIT
+
+  out="$tmpdir/$(basename "$in")"
+  out_unset="true"
+else
+  out="$2"
+  shift
+fi
 
 # set to val of third arg or `45`
 min_db_level="${3:-45}"
 
-ffmpeg -i "$in" -filter_complex "compand=attacks=0:points=-"$min_db_level"/-900|-"$((( $min_db_level - 5 )))"/-10|-5/-10|0/-10:gain=3" "$out" "$@"
+ffmpeg -i "$in" -filter_complex "compand=attacks=0:points=-$min_db_level/-900|-$(( min_db_level - 5 ))/-10|-5/-10|0/-10:gain=3" "$out" "$@"
 
+if [ -n "$out_unset" ]; then
+  mv "$out" "$in"
+fi
