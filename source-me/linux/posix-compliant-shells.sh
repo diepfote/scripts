@@ -215,23 +215,6 @@ reset-firejail () {
 # ---------------------------
 
 
-allow-all-outbound-traffic () {
-  sudo sed -i -r 's/^.*(-A OUTPUT -j ACCEPT)/\1/g' /etc/iptables/iptables.rules
-  sudo systemctl restart iptables.service
-}
-
-
-disallow-all-outbound-traffic () {
-  deny-all-outbound-traffic
-}
-deny-all-outbound-traffic () {
-  sudo sed -i -r 's/^(-A OUTPUT -j ACCEPT)/#\1/g' /etc/iptables/iptables.rules
-  sudo systemctl restart iptables.service
-}
-
-
-
-
 xinput-reverse-mouse-buttons () {
   if [ $# -lt 1 ]; then
     set -- "$(xinput list | grep Triathlon | tr '\t' ' ' | tr -s ' ' | cut -d ' ' -f6 | cut -d = -f2 | head -n1)"
