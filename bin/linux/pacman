@@ -66,8 +66,14 @@ if [ -n "$THROTTLE_BANDWIDTH" ] && [ "$THROTTLE_BANDWIDTH" -gt 0 ]; then
 fi
 cmd+=(/usr/bin/pacman)
 
-if [ "$*" != '-Qmq' ]; then
+# if we are not not providing completions for packages we can show what
+# we are doing
+if [ "$*" != '-Qmq' ] && [ "$*" != '-Ssq' ]; then
+  # -Ssq is used in /usr/share/bash-completion/completions/pkgfile
+  # -Qmq is used in $HOME/Documents/scripts/source-me/completions_pkgbuild.sh
+  #                 $HOME/Documents/scripts/source-me/linux/completions_yay-generate-PKGBUILD-checksum.sh
   set -x
 fi
+
 "${cmd[@]}" "$@"
 set +x

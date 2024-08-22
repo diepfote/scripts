@@ -54,6 +54,13 @@ if [ -n "$THROTTLE_BANDWIDTH" ] && [ "$THROTTLE_BANDWIDTH" -gt 0 ]; then
   cmd+=(trickle -s -d "$THROTTLE_BANDWIDTH")
 fi
 cmd+=(/usr/bin/yay)
-set -x
+
+# if we are not not providing completions for packages we can show what
+# we are doing
+if [ "$*" != '-Pc' ]; then
+  # -Pc is used in /usr/share/bash-completion/completions/yay
+  set -x
+fi
+
 "${cmd[@]}" "$@"
 set +x
