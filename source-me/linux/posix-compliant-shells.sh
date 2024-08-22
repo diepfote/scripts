@@ -91,7 +91,12 @@ xdg-open () {
 
 
 _xrandr_fst_mon () {
-  printf "%s" "$(xrandr --listmonitors  | tail -n +2 | head -n1 | awk '{ print $2 }' | sed -r 's#\+?\*?##')"
+  #
+  # possible values:
+  # - eDP1
+  # - eDP-1
+  #
+  xrandr -q | grep -v disconnected | grep connected | awk '{ print $1 }' | head -n1
 }
 _xrandr_snd_mon () {
   #
@@ -99,8 +104,9 @@ _xrandr_snd_mon () {
   # - HDMI2
   # - DP2
   # - DP1
+  # - DP-4
   #
-  printf "%s" "$(xrandr --listmonitors  | tail -n 1 | awk '{ print $2 }' | sed -r 's#\+?\*?##')"
+  xrandr -q | grep -v disconnected | grep connected | awk '{ print $1 }' | tail -n1
 }
 xrandr-right-of () {
   xrandr --output "$(_xrandr_snd_mon)" --right-of "$(_xrandr_fst_mon)" --auto
