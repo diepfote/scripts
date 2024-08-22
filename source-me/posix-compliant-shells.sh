@@ -70,6 +70,7 @@ export MANPAGER='less -R'
 
 export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
+export STARDICT_DATA_DIR="$HOME/.dictionaries/"
 
 # TODO remove?
 export GO111MODULE=off
@@ -115,6 +116,21 @@ source ~/Documents/scripts/source-me/prompt.sh
 # -------------------------
 # common aliases START
 #
+
+# STARDICT START
+alias def='sdcv --use-dict "quick_italian-english" --use-dict "dictd_www.mova.org_biology" --use-dict "American_Idioms 2nd Ed" --use-dict "Drug information" --use-dict "Pharmaceutical terms" --use-dict "Concise Oxford Thesaurus 2nd Ed. (Eng-Eng)" --use-dict "dictd_www.mova.org_1000pbio" --use-dict "dictd_www.mova.org_aviation" --use-dict "dictd_www.mova.org_idioms" --use-dict "dictd_www.mova.org_religion" --use-dict "English Dialects 3.0 (En-En)" --use-dict "Merriam-Webster'"'"'s Collegiate Thesaurus (En-En)" --use-dict "The BBI Combinatory Dictionary of English (En-En)" --use-dict "American Heritage Dictionary 4th Ed. (En-En)" --use-dict "Concise Oxford English Dictionary (En-En)" --use-dict "Macmillan English Dictionary (En-En)" --use-dict "Macmillan English Thesaurus (En-En)" --use-dict "The Chambers Thesaurus (En-En)"'
+
+alias def-ger="sdcv --use-dict 'Duden'"
+
+alias trans-ger-eng="sdcv --use-dict 'German-English' --use-dict 'quick_ding-ger-eng' --use-dict 'quick_frank-deu-eng' --use-dict 'quick_german-english'"
+
+alias trans-eng-ger="sdcv --use-dict 'quick_ding-eng-ger' --use-dict 'quick_english-german' --use-dict 'quick_frank-eng-deu' --use-dict 'English - German' --use-dict 'English-German'"
+
+alias trans-ita-ger="sdcv --use-dict 'Italian - German'"
+alias trans-ger-ita="sdcv --use-dict 'German - Italian'"
+alias trans-eng-ita="sdcv --use-dict 'quick_english-italian' --use-dict 'English - Italian'"
+alias trans-ita-eng="sdcv --use-dict 'quick_italian-english'"
+# STARDICT END
 
 alias make='make --warn-undefined-variables'
 
@@ -477,16 +493,8 @@ alias sniff="sudo ngrep -d \"\$_ngrep_interface\" -t '^(GET|POST) ' 'tcp and por
 alias httpdump="sudo tcpdump -i \"\$_ngrep_interface\" -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
 
 
-# get word definition
-def () {
-  # shellcheck disable=SC2119
-  dict -d gcide "$1" | lessc
-}
-# get synonym
-synonym () {
-  # shellcheck disable=SC2119
-  dict -d moby-thesaurus "$1" | lessc
-}
+
+
 
 doi_view () {
   #firefox --private-window "https://doi.org/$1"
