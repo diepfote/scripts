@@ -49,7 +49,7 @@ key="$1"
 done
 
 
-set -- "${opts[@]}"
+set -- "${opts[@]}" "$@"
 
 default_opts=(--limit-rate 0.5M)
 
