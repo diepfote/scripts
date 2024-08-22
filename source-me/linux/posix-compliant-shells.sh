@@ -143,11 +143,16 @@ firewardened-firefox () {
 
 firewardened-chromium () {
   flags=()
+  disable_wasm=('--js-flags=--noexpose_wasm')
   if [ "$1" = '-N' ]; then
     flags+=('-N')
     shift
   fi
-  _firewardened-app "${flags[@]}" /usr/bin/chromium --force-device-scale-factor=1.5 --js-flags=--noexpose_wasm "$@"
+  if [ "$1" = '--wasm' ]; then
+    disable_wasm=()
+    shift
+  fi
+  _firewardened-app "${flags[@]}" /usr/bin/chromium --force-device-scale-factor=1.5 "${disable_wasm[@]}" "$@"
 }
 
 
