@@ -43,7 +43,7 @@ while read -r pkg; do
     echo [.] Ignoring due to pkgfile match. \`"$pkg"\`
     pkgs_to_ignore+=("$pkg")
   # skip any and all non lts changes + anything that affects lts
-  elif echo "$pkg" | grep -qE '^linux-firmware$|^linux-lts|^mkinitcpio-|^initramfs'; then
+  elif echo "$pkg" | grep -qE '^linux-firmware$|^linux|^linux-lts|^mkinitcpio-|^initramfs'; then
     echo [.] Ignoring due to pkg name match. \`"$pkg"\`
     pkgs_to_ignore+=("$pkg")
   fi
