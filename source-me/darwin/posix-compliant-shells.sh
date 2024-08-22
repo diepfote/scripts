@@ -216,16 +216,7 @@ _add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
 export PASSWORD_STORE_DIR=~/.password-store-work
 
 
-use_native_uptime () {
-  local f=/opt/homebrew/opt/coreutils/libexec/gnubin/uptime
-  if [ -f "$f" ]; then
-    rm "$f"
-  fi
-}
-use_native_uptime
-unset -f use_native_uptime
-
-
 _add_to_PATH "$HOME/.bazel/bin"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+

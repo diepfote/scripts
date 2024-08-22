@@ -9,4 +9,4 @@ shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 
-/opt/homebrew/opt/coreutils/libexec/gnubin/df "$@" | grep -vF '/Volumes/.timemachine'
+/bin/df "$@"
