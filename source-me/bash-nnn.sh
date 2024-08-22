@@ -13,6 +13,46 @@ export NNN_FIFO=/tmp/nnn.fifo
 # curl -Ls https://raw.githubusercontent.com/jarun/nnn/v3.2/plugins/getplugs | sh
 export NNN_PLUG='p:preview-tui;v:imgview;t:imgthumb'
 
+_ask-to-empty-trash () {
+  local dir="$1"
+  if [ ! -e "$dir/files" ]; then
+    return
+  fi
+
+  ls -alh "$dir"/files
+
+  echo "Do you want to empty the trash in $dir?"
+  if yesno; then
+    set -u
+    rm -rf "${dir:?}"/*
+    set +u
+  fi
+}
+
+n_empty-trash () {
+  _ask-to-empty-trash ~/.local/share/Trash
+
+  _df=/opt/homebrew/opt/coreutils/libexec/gnubin/df
+  if [ "$(uname)" != Darwin ]; then
+    # shellcheck disable=SC2209
+    _df=df
+  fi
+
+  local trash_dirs=()
+  while read -r line; do
+    # Linux: default id for first user
+    trash_dirs+=("$line"/.Trash-1000)
+    # Darwin: default id for first user
+    trash_dirs+=("$line"/.Trash-501)
+  done < <("$_df" --output=target)
+
+  for trash_dir in "${trash_dirs[@]}"; do
+    if [ -d "$trash_dir" ]; then
+      _ask-to-empty-trash "$trash_dir"
+    fi
+    set +x
+  done
+}
 
 n-rsync () {
   # @2024-04-09

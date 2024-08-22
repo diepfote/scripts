@@ -664,41 +664,6 @@ edit-bash-history () {
   (sleep 300 && rm "$neovim_undo_dir"/*bash_history* 1>/dev/null 2>&1  &)
 }
 
-_ask-to-empty-trash () {
-  local dir="$1"
-  if [ ! -e "$dir/files" ]; then
-    return
-  fi
-
-  ls -alh "$dir"/files
-
-  echo "Do you want to empty the trash in $dir?"
-  if yesno; then
-    set -u
-    rm -rf "${dir:?}"/*
-    set +u
-  fi
-}
-
-n_empty-trash () {
-  _ask-to-empty-trash ~/.local/share/Trash
-
-  local trash_dirs=()
-  while read -r line; do
-    # Linux: default id for first user
-    trash_dirs+=("$line"/.Trash-1000)
-    # Darwin: default id for first user
-    trash_dirs+=("$line"/.Trash-501)
-  done < <(df --output=target)
-
-  for trash_dir in "${trash_dirs[@]}"; do
-    if [ -d "$trash_dir" ]; then
-      _ask-to-empty-trash "$trash_dir"
-    fi
-    set +x
-  done
-}
-
 
 new-docker () {
   edit-docker "$@"
