@@ -389,3 +389,25 @@ done
 
 }
 
+
+
+mount-disable-cryttab-fstab () {
+  args=()
+  for i in "$@"; do
+    args+=(! -name "$i")
+  done
+
+  while read -r line; do
+    sudo systemd-umount "$line"
+  done < <(set -x; find /tmp/automounts/ -mindepth 1 -maxdepth 1 -type d "${args[@]}"; set +x)
+
+}
+mount-enable-crypttab-fstab () {
+  set -x
+  sudo systemctl daemon-reload
+  sudo systemctl restart cryptsetup.target
+  sudo systemctl daemon-reload
+  sudo systemctl restart local-fs.target
+  set +x
+}
+
