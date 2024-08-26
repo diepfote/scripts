@@ -54,6 +54,7 @@ fastmail_path='fastmail:'"$username"'.fastmail.com/files/videos'
 
 system=arch
 mpv_dir=~/.local/state/mpv/watch_later/
+video_syncer_file=videos-home.txt
 if [ "$(uname)" = Darwin ]; then
   video_syncer_file=videos-work.txt
   system=mac
@@ -68,9 +69,6 @@ set +x
 
 
 if _rclone_verbose_sync_operation --update --delete-excluded "$fastmail_path" "$local_video_syncer_storage"; then
-
-  video_syncer_file=videos-home.txt
-
   # cleanup redirection entries
   find "$mpv_dir" -size 17c -exec bash -c 'if grep -F "# redirect entry" "$0" >/dev/null; then rm "$0"; fi;' {} \;
 
