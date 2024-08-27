@@ -201,7 +201,7 @@ dock-unhide () {
 }
 
 w-checked-in () {
-  ~/Documents/golang/tools/execute-in-repos/execute-in-repos -config work-repo.conf git status -sb | less -R
+  ~/Documents/golang/tools/execute-in-repos/execute-in-repos -workers 10 -config work-repo.conf git status -sb | less -R
 }
 
 

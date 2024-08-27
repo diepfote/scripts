@@ -1076,7 +1076,7 @@ work_fetch () {
 
 work-checked-in () {
   find ~/.password-store-* -type l -delete
-  ~/Documents/golang/tools/execute-in-repos/execute-in-repos git status -sb | less -R
+  ~/Documents/golang/tools/execute-in-repos/execute-in-repos -workers 10 git status -sb | less -R
   (_link-shared-password-store &)
 }
 
