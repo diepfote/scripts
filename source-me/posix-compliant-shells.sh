@@ -183,21 +183,6 @@ alias vimy="vimn -c ':set ft=yaml'"
 alias vimj="vimn -c ':set ft=json'"
 
 
-# pipenv aliases
-alias pipsh="pipenv shell"
-
-
-# snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L148
-# Print each PATH entry on a separate line
-alias path='echo -e ${PATH//:/\\n}'
-
-
-# snatched from https://github.com/mathiasbynens/dotfiles/blob/66ba9b3cc0ca1b29f04b8e39f84e5b034fdb24b6/.aliases#L126
-# Intuitive map function
-# For example, to list all directories that contain a certain file:
-# find . -name .gitattributes | map dirname
-alias map="xargs -n1"
-
 
 alias keepassxc-allow-screencapture='/Applications/KeePassXC.app/Contents/MacOS/KeePassXC --allow-screencapture >/dev/null 2>&1 &'
 
@@ -1034,6 +1019,7 @@ work-sync () {
   echo
   set -x
   work_recompile_go_tools_conditionally
+  echo
 
   set -x
   video-sync
