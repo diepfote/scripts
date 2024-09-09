@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+
+# why?
+# this allows `gh pr` to be scripted, it requires no additional input
+
+git push -u origin "$(git branch --show-current)" && gh pr create -f
