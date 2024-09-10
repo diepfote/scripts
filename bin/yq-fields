@@ -8,4 +8,23 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
-k get "$@" -o json | jq-fields
+
+# Example
+# $ cat /tmp/test.yaml
+# property:
+#   - dict: asdf
+#   - dict2: asdf1
+#
+# $ cat /tmp/test.yaml | yq-fields
+# property
+# property.0
+# property.0.dict
+# property.1
+# property.1.dict2
+#
+
+if [ $# -lt 1 ] ; then
+  yq -r 'paths(.) | join(".")' | less
+else
+  yq -r 'paths(.) | join(".")' "$1" | less
+fi
