@@ -7,5 +7,5 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-kubectl get node -o json | jq -r '.items[] | { name:.metadata.name, arch:.status.nodeInfo.architecture, ip:.metadata.annotations["alpha.kubernetes.io/provided-node-ip"] } | join("\t\t")' | sort -k 2
-
+# instead of @tsv we could use join("\t")
+kubectl get nodes -o json | jq -r '.items[] | [.metadata.name, .status.nodeInfo.architecture, .metadata.annotations["alpha.kubernetes.io/provided-node-ip"] ] | @tsv' | sort -k 2 | column -t
