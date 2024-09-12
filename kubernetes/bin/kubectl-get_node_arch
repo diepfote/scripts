@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+
+kubectl get node -o json | jq -r '.items[] | { name:.metadata.name, arch:.status.nodeInfo.architecture, ip:.metadata.annotations["alpha.kubernetes.io/provided-node-ip"] } | join("\t\t")' | sort -k 2
+
