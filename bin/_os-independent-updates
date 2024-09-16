@@ -46,8 +46,8 @@ done
 
 if [ -z "$SKIP_VIM_UPDATES" ]; then
   log
-  log ------------------
-  log "[>] updating vim plugins and vim plug itself"
+  log -e ------------------
+  log -e "[>] updating vim plugins and vim plug itself"
   set -x
 
   plugin_update_log=/tmp/nvim-plugin-update.log
@@ -82,11 +82,18 @@ else
 fi
 
 log
-log ------------------
-log "[>] updating tmux plugins"
+log -e ------------------
+log -e "[>] updating tmux plugins"
 
 ~/Documents/golang/tools/execute-in-repos/execute-in-repos -config <(find ~/.tmux/plugins/  -maxdepth 1 -mindepth 1 -type d) -- git pull
 tmux source ~/.tmux.conf
+
+  # https://wiki.archlinux.org/title/Rust#Installation
+  log -e ------------------ >&2
+  log -e "[>] updating rust" >&2
+  rustup update stable
+  rustup component add rust-analyzer
+  log -e ------------------ >&2
 
 if [ -z "$SKIP_RUST_CARGO" ]; then
   log -e '\n--------\n[>] rust cargo\n'

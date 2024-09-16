@@ -65,15 +65,6 @@ if [ "$system" = Linux ]; then
   fi
   set -e
 
-  # TODO maybe we want this on Mac OS as well
-  #
-  # On Arch we use `Rustup` instead of `Native Installation`
-  # https://wiki.archlinux.org/title/Rust#Installation
-  echo ------------------ >&2
-  echo "[>] updating rust" >&2
-  rustup update stable
-  echo ------------------ >&2
-
   _os-independent-updates "${PASS_TO_OS_INDEPENDENT[@]}"
 
   yay-all "$@"

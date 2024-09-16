@@ -57,8 +57,21 @@ export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib $LDFLAGS"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 
+
 # pipx installed binaries
 _add_to_PATH "$HOME/.local/bin"
+
+_add_to_PATH "$HOME/Documents/scripts/bin/darwin"
+_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
+_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
+
+_add_to_PATH "$HOME/.bazel/bin"
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+
+# if you install something via `rustup component add <>` it ends up here
+_add_to_PATH ~/.rustup/toolchains/stable-aarch64-apple-darwin/bin
 
 
 # --
@@ -115,9 +128,7 @@ GPG_TTY="$(tty)"
 export GPG_TTY
 
 
-alias yabai-disable-mouse-focus="sed -i -r 's/^(yabai.*(autofocus|follows_focus on))/# \1/g' ~/.yabairc; brew services restart yabai; brew services restart skhd; (cd ~/; git checkout -- ~/.yabairc)"
-alias yabai-layout-stack="yabai -m space --layout stack"
-alias yabai-layout-bsp="yabai -m space --layout bsp"
+export PASSWORD_STORE_DIR=~/.password-store-work
 
 
 # snatched from https://github.com/jessfraz/dotfiles/blob/b6571ea19f86733933395127d0eec52b75206ef9/.aliases#L92
@@ -201,22 +212,11 @@ dock-unhide () {
 }
 
 w-checked-in () {
-  ~/Documents/golang/tools/execute-in-repos/execute-in-repos -workers 10 -config work-repo.conf git status -sb | less -R
+  ~/Documents/scripts/checked-in.sh work-repo.conf
 }
 
 
 w-git_execute_on_all_repos () {
   ~/Documents/golang/tools/execute-in-repos/execute-in-repos -config work-repo.conf "$@"
 }
-
-_add_to_PATH "$HOME/Documents/scripts/bin/darwin"
-_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
-_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
-
-export PASSWORD_STORE_DIR=~/.password-store-work
-
-
-_add_to_PATH "$HOME/.bazel/bin"
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
