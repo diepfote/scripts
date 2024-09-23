@@ -190,6 +190,12 @@ tmutil-compare-last-2-backups () {
   xargs tmutil-compare-2-backups
 }
 
+tmutil-delete-local-snapshots () {
+  df -h
+  sudo tmutil listlocalsnapshots /  | tail -n +2 | sed 's#com.apple.TimeMachine.##; s#.local##' | xargs -n 1 sudo tmutil deletelocalsnapshots
+  df -h
+}
+
 
 python-clear-deploy-cache () {
   if [ $# -lt 1 ]; then
