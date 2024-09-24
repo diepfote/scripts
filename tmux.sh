@@ -10,4 +10,6 @@ if [ "$(uname)" = Linux ]; then
   tmux_bin=/usr/bin/tmux
 fi
 
-"$tmux_bin" "$@" || TMUX_FAILURE=true bash
+"$tmux_bin" "$@"
+# run plain bash if we exit tmux by detaching or starting tmux fails
+TMUX_FAILURE=true bash
