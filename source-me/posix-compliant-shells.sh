@@ -558,6 +558,10 @@ pdf-merge () {
   set +x
 }
 
+wait-for-process () {
+  local sleep_for=200
+  while ps -ef | pgrep "$@" >/dev/null 2>&1; do echo "[.] Waiting for '$*' to exit. Sleeping for $sleep_for."; sleep "$sleep_for"; done
+}
 
 rclone_fastmail_sync_bewerbungen_cvs_arbeitszeugnisse () {
   local username
