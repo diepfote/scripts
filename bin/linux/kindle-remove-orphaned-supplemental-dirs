@@ -30,5 +30,8 @@ while read -r dir_to_delete; do
   rm -r "$kindle_docs_dir"/"$dir_to_delete.sdr"
 done < <(git diff --no-index "$sdr_file_list" "$corresponding_files_list" | grep -E '^-' | grep -Ev '\---' | sed 's#^-##')
 
+# cleanup files introduced by Mac OS
+rm "$kindle_docs_dir"/._*
+
 rm -r "$temp"
 
