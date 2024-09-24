@@ -563,42 +563,26 @@ wait-for-process () {
   while ps -ef | pgrep "$@" >/dev/null 2>&1; do echo "[.] Waiting for '$*' to exit. Sleeping for $sleep_for."; sleep "$sleep_for"; done
 }
 
-rclone_fastmail_sync_bewerbungen_cvs_arbeitszeugnisse () {
-  local username
-  local src
-  local dst
-
-  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
-  src=~/Documents/bewerbungen_cvs_arbeitszeugnisse/
-  dst='fastmail:'"$username"'.fastmail.com/files/bewerbungen_cvs_arbeitszeugnisse/'
-
-  _rclone_verbose_sync_operation "$@" "$src" "$dst"
-}
-
 
 audacious-push-playlists () {
-  local username
   local src
   local dst
 
-  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
   src=~/.config/audacious/playlists
-  dst='fastmail:'"$username"'.fastmail.com/files/-configs/audacious/playlists'
+  dst='proton:-configs/audacious/playlists'
 
-  _rclone_verbose_sync_operation "$@" "$src" "$dst"
+  rclone sync --checksum --delete-excluded "$@" "$src" "$dst"
 }
 
 
 audacious-fetch-playlists () {
-  local username
   local src
   local dst
 
-  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
-  src='fastmail:'"$username"'.fastmail.com/files/-configs/audacious/playlists'
+  src='proton:-configs/audacious/playlists'
   dst=~/.config/audacious/playlists
 
-  _rclone_verbose_sync_operation "$@" "$src" "$dst"
+  rclone sync --checksum --delete-excluded "$@" "$src" "$dst"
 
   if [ "$(uname)" = Darwin ]; then
     set -x
@@ -996,20 +980,18 @@ status-rezepte () {
 
 _sync-os-configs () {
   set +x
-  local username
-  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
 
   if [ "$(uname)" = Darwin ]; then
-    local fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/arch'
+    local remote_path='proton:-configs/arch'
     local dir=~/Documents/misc/arch
     [ ! -d "$dir" ] && mkdir -p "$dir"
   else
-    local fastmail_path='fastmail:'"$username"'.fastmail.com/files/-configs/mac-os'
+    local remote_path='proton:-configs/mac-os'
     local dir=~/Documents/misc/mac-os
   fi
 
   [ ! -d "$dir" ] && mkdir -p "$dir"
-  _rclone_verbose_sync_operation "$fastmail_path" "$dir"
+  rclone sync --checksum --delete-excluded "$remote_path" "$dir"
 }
 
 work-sync () {

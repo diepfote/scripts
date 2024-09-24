@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+op="$1"
+shift
+
+if [ "$(uname)" = Darwin ]; then
+  cmd=/opt/homebrew/bin/rclone
+else
+  cmd=/usr/bin/rclone
+fi
+
+command=("$cmd" "$op" --exclude '.DS_Store' --exclude '.*.un~' --exclude '.~lock*' -L -v)
+echo -n "${command[*]} "
+# display src dst without fastmail subdomain/username
+echo "$*" | sed -r 's#[a-z0-9]+.fastmail.com(/files)#placeholder\1#g'
+"${command[@]}" "$@"
+

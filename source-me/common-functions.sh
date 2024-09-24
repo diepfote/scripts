@@ -171,24 +171,6 @@ get_random_alphanumeric ()
 }
 
 
-_rclone_verbose_copy_operation () {
-  local command
-  command=(rclone copy --exclude '.DS_Store' --exclude '.*.un~' --exclude '.~lock*' -L -v)
-  echo -n "${command[*]} "
-  # display src dst without fastmail fqdn
-  echo "$*" | sed -r 's#[a-z0-9]+.fastmail.com(/files)#placeholder\1#g'
-  "${command[@]}" "$@"
-}
-
-_rclone_verbose_sync_operation () {
-  local command
-  command=(rclone sync --exclude '.DS_Store' --exclude '.*.un~' --exclude '.~lock*' -L -v)
-  echo -n "${command[*]} "
-  # display src dst without fastmail fqdn
-  echo "$*" | sed -r 's#[a-z0-9]+.fastmail.com(/files)#placeholder\1#g'
-  "${command[@]}" "$@"
-}
-
 
 _get_cmd_tmux_pane_id () {
 # BSD 2-Clause License

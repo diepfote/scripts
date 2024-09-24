@@ -41,9 +41,9 @@ echo
 echo -------------------------------------
 paperoni -o "$output_dir" -f "$links"
 
-_rclone_verbose_copy_operation "$output_dir" 'fastmail:'"$(read_toml_setting ~/Documents/config/fastmail.conf username)"'.fastmail.com/files/epubs'
+_rclone_verbose_copy_operation "$output_dir" 'proton:epubs'
 
 
 
-# # TODO 2024-05-03 archive articles we just converted to epub
-# # https://getpocket.com/developer/docs/v3/modify#action_archive
+# TODO 2024-05-03 archive articles we just converted to epub
+# https://getpocket.com/developer/docs/v3/modify#action_archive
