@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dir=/usr/bin
+dir=/usr/local/bin
 if [ "$(uname)" = Darwin ]; then
   dir=/opt/homebrew/bin
 fi
