@@ -23,4 +23,5 @@ echo -n "${command[*]} "
 # display src dst without fastmail subdomain/username
 echo "$*" | sed -r 's#[a-z0-9]+.fastmail.com(/files)#placeholder\1#g'
 "${command[@]}" "$@"
+exit "$?"
 

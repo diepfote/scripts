@@ -58,3 +58,4 @@ if [ -n "$DISABLE_RATE_LIMIT" ]; then
 fi
 set -x
 yt-dlp "${default_opts[@]}" --no-colors "$@"
+exit "$?"
