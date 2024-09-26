@@ -6,11 +6,15 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-source ~/Documents/scripts/source-me/common-functions.sh
-_add_to_PATH ~/Documents/python/tools/bin
+
+source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+
+
+temp="$(mktemp -d)"
 
 
 end () {
+  rm -r "$temp"
   set +x
   echo "[.] END   ppid:$ppid pid:$pid $(date)" >&2
   rm "$LOCK_FILE" || true
@@ -67,14 +71,30 @@ if [ "$(uname)" = Darwin ]; then
 fi
 
 
-# TODO run in parallel -> execute-in-repos trick
+exec_fetch="$temp/exec-fetch.sh"
+detect_error="$temp"/error
 # FETCH
-if ! rclone sync --checksum "$proton_path/$video_syncer_file_remote" "$local_video_syncer_storage"; then
-  exit 1
+{
+  echo '#!/usr/bin/env bash'
+  echo rclone sync --checksum "$proton_path/$video_syncer_file_remote" "$local_video_syncer_storage"
+  # echo 'echo exit code $?'
+  echo 'if [ $? -ne 0 ]; then echo proton > '"$detect_error"'; fi'
+
+  echo rclone sync --update "$fastmail_path/${remote_system}-mpv-watch_later/" "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"
+  # echo 'echo exit code $?'
+  echo 'if [ $? -ne 0 ]; then echo fastmail > '"$detect_error"'; fi'
+} > "$exec_fetch"
+chmod +x "$exec_fetch"
+
+# to execute 2 subtasks
+touch "$temp"/{1,2}
+execute-on-files -no-header -workers 8 -config <(ls "$temp"/{1,2}) "$exec_fetch"
+
+if [ -e "$detect_error" ]; then
+  echo "${RED}[!]$NC Fetch failed: $(cat "$detect_error") | Exiting early."
+  exit 10
 fi
-if rclone sync --update "$fastmail_path/${remote_system}-mpv-watch_later/" "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"; then
-  exit 1
-fi
+
 
 # ---------
 
@@ -91,11 +111,25 @@ set -x
 ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files create-mapping-file
 set +x
 
-# TODO run in parallel -> execute-in-repos trick
 # PUSH
-rclone sync --checksum --exclude  arch-mpv-watch_later --exclude mac-mpv-watch_later "$local_video_syncer_storage" "$proton_path"
-rclone sync --update "$mpv_dir" "$fastmail_path/${system}-mpv-watch_later/"
+exec_push="$temp/exec-push.sh"
+{
+  echo '#!/usr/bin/env bash'
+  echo rclone sync --checksum --exclude  arch-mpv-watch_later --exclude mac-mpv-watch_later "$local_video_syncer_storage" "$proton_path"
+  # echo 'echo exit code $?'
+  echo 'if [ $? -ne 0 ]; then echo proton > '"$detect_error"'; fi'
 
+  echo rclone sync --update "$mpv_dir" "$fastmail_path/${system}-mpv-watch_later/"
+  # echo 'echo exit code $?'
+  echo 'if [ $? -ne 0 ]; then echo fastmail > '"$detect_error"'; fi'
+} > "$exec_push"
+chmod +x "$exec_push"
+execute-on-files -no-header -workers 8 -config <(ls "$temp"/{1,2}) "$exec_fetch"
+
+if [ -e "$detect_error" ]; then
+  echo "${RED}[!]$NC Push failed: $(cat "$detect_error") | Continuing."
+  exit 11
+fi
 
 # update local watch_later config (if remote is further along)
 set -x
