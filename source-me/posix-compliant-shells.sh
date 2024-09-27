@@ -559,8 +559,9 @@ pdf-merge () {
 }
 
 wait-for-process () {
+  if [ $# -lt 1 ] || [ "$1" == -h ] || [ "$1" == --help ]; then echo "${YELLOW}Usage$NC: wait-for-process -f 'docker push'" >&2 ; return; fi
   local sleep_for=200
-  while ps -ef | pgrep "$@" >/dev/null 2>&1; do echo "[.] Waiting for '$*' to exit. Sleeping for $sleep_for."; sleep "$sleep_for"; done
+  while pgrep "$@" >/dev/null 2>&1; do echo "[.] Waiting for '$*' to exit. Sleeping for $sleep_for."; sleep "$sleep_for"; done
 }
 
 
