@@ -16,7 +16,8 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 COMMAND=(/opt/homebrew/bin/git)
 if [ "$(uname)" = Linux ]; then
-  COMMAND=(/usr/local/bin/git)
+  # COMMAND=(firejail --profile=/etc/firejail/git.profile /usr/bin/git)
+  COMMAND=(/usr/bin/git)
 fi
 
 BASE="$("${COMMAND[@]}" rev-parse --show-toplevel 2>/dev/null || true)"

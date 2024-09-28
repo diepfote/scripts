@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-dir=/usr/local/bin
-if [ "$(uname)" = Darwin ]; then
-  dir=/opt/homebrew/bin
+COMMAND=(/opt/homebrew/bin/audacious)
+if [ "$(uname)" = Linux ]; then
+  COMMAND=(firejail --profile=/etc/firejail/audacious.profile /usr/bin/audacious)
 fi
 
-QT_SCALE_FACTOR=1.5 "$dir"/audacious  >/dev/null 2>&1 &
+cleanup () { set +x; }
+trap cleanup EXIT
+set -x
+
+QT_SCALE_FACTOR=1.5 "${COMMAND[@]}"
+
