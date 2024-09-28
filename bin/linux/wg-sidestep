@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+# REQUIRES setuid bit, make sure it is not modifiable by normal users afterwards!
+# file=wg-sidestep; sudo chmod +x "$file"; sudo chmod 644 "$file"; sudo chown root "$file"; sudo chmod u+s "$file"
+
+cleanup () { set +x; }
+trap cleanup EXIT
+
+
+op=add
+if [ "$1" = --del ]; then
+  op=del
+fi
+
+GW="$(ip route | awk '/default/ {print $3}')"
+
+ADDRS=()
+for domain in "$@"; do
+  while read -r line; do
+    ADDRS+=("$line")
+  done < <(drill -Q "$domain")
+done
+
+for IP in "${ADDRS[@]}"; do
+  set -x
+  set +e
+  sudo ip route "$op" "$IP" via "$GW"
+  set -e
+done
+
