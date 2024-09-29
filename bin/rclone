@@ -20,7 +20,7 @@ fi
 
 command=("$cmd" "$op" --exclude '.DS_Store' --exclude '.*.un~' --exclude '.~lock*' -L -v)
 # display src dst without fastmail subdomain/username
-echo "${command[*]} $*" | sed -r 's#[a-z0-9]+.fastmail.com(/files)#placeholder\1#g'
+echo "${command[*]} $*" | sed -r 's#[a-z0-9]+.fastmail.com(/files)#placeholder\1#g'  2>&1
 "${command[@]}" "$@"
 exit "$?"
 
