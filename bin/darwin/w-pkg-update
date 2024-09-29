@@ -9,7 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 
 
 mac-os-updates () {
-  echo -e '\n\n--------\n\nListing Mac OS updates'
+  echo -e '\n\n--------\n\nListing Mac OS updates'  >&2
   pkg_info=()
 
   while IFS='' read -r line; do
@@ -22,12 +22,12 @@ mac-os-updates () {
 
   if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
 
-    echo -e '\n\n--------\n\nInstalling Mac OS updates that do not require a restart.'
+    echo -e '\n\n--------\n\nInstalling Mac OS updates that do not require a restart.'  >&2
 
     echo 'Do you want to update & restart?'
     set +u
     if yesno; then
-      echo -e '\n\n--------\n\nInstalling Mac OS updates that require a restart.'
+      echo -e '\n\n--------\n\nInstalling Mac OS updates that require a restart.'  >&2
       set -x
       sudo softwareupdate -i --no-scan -a -R
       set +x
@@ -107,7 +107,7 @@ while [ $# -gt 0 ]; do
 
     --reinstall-xcode)
     # shellcheck disable=SC2154
-    echo -e "${PURPLE}[>] reinstallig xcode commandline tools$NC"
+    echo -e "${PURPLE}[>] reinstallig xcode commandline tools$NC"  >&2
 
     set -x
     sudo rm -rf /Library/Developer/CommandLineTools
@@ -126,7 +126,7 @@ while [ $# -gt 0 ]; do
 
     *) # unknown option
     echo -e "${RED}Invalid parameter:$NC '$1'!" >&2
-    echo
+    echo >&2
     _help >&2
     exit 1
     ;;
@@ -156,11 +156,11 @@ cleanup () {
   kill "$SPINNER_PID" >/dev/null 2>&1
 }
 
-echo =====================
-echo "Start: $(date)"
+echo ===================== >&2
+echo "Start: $(date)" >&2
 
 if [ -z "$DISABLE_REMOTE_LOGIN" ]; then
-  echo
+  echo >&2
   set -x
   sudo systemsetup -f -setremotelogin off
   set +x
@@ -173,7 +173,7 @@ trap 'cleanup' EXIT  # stop spinner
 # -----------------------------------------------------
 # LIMA START
 
-echo -e '\n--------\nlima archlinux disk images update & run\n'
+echo -e '\n--------\nlima archlinux disk images update & run\n' >&2
 
 base_url='https://geo.mirror.pkgbuild.com/images'
 sed_command=(sed 's#.*href="##;s#".*##')
@@ -216,7 +216,7 @@ fi
 # -----------------------------------------------------
 # PYTHON START
 
-echo -e '\n--------\npip\n'
+echo -e '\n--------\npip\n' >&2
 #
 # bypass virtualenv with `-E`
 #
@@ -229,10 +229,10 @@ print_additional_arg_info () {
   local additional_arg="$1"
   if [[ "$additional_arg" =~ user ]]; then
     # shellcheck disable=SC2154
-    echo "${PURPLE}[${NC}.${PURPLE}]$NC user"
+    echo "${PURPLE}[${NC}.${PURPLE}]$NC user"  >&2
   else
     # shellcheck disable=SC2154
-    echo "${PURPLE}[${NC}.${PURPLE}]$NC global"
+    echo "${PURPLE}[${NC}.${PURPLE}]$NC global"  >&2
   fi
 }
 python_update_pkg () {
@@ -241,7 +241,7 @@ python_update_pkg () {
 
   if [[ "$pkg" =~ typing-extensions|rich ]]; then
     # shellcheck disable=SC2154
-    echo "  [.] Pinnend pkg: ${YELLOW}$pkg$NC. Skipping upgrade."
+    echo "  [.] Pinnend pkg: ${YELLOW}$pkg$NC. Skipping upgrade."  >&2
     return
   fi
 
@@ -265,7 +265,7 @@ unset python_install_cmd grep_install_cmd additional_args
 unset -f python_update_pkg
 
 
-echo -e '\n--------\npipx\n'
+echo -e '\n--------\npipx\n'  >&2
 set -x
 pipx upgrade-all --include-injected
 ln -f --relative -s ~/.local/pipx/venvs/virtualenv/bin/virtualenv-make-relocatable ~/.local/bin/virtualenv-make-relocatable
@@ -275,7 +275,7 @@ set +x
 # -----------------------------------------------------
 
 
-echo -e '\n--------\nruby\n'
+echo -e '\n--------\nruby\n'  >&2
 additional_args=('')  # global only
 for additional_arg in "${additional_args[@]}"; do
   print_additional_arg_info "$additional_arg"
@@ -286,7 +286,7 @@ unset additional_args
 unset -f print_additional_arg_info
 
 
-echo -e '\n--------\nnpm\n'
+echo -e '\n--------\nnpm\n'  >&2
 while read -r package; do
   # safe upgrade all https://gist.github.com/othiym23/4ac31155da23962afd0e
   set -x
@@ -295,12 +295,12 @@ while read -r package; do
 done < <(npm -g outdated --parseable --depth=0 | cut -d: -f2)
 
 
-echo -e '\n--------\nkrew\n'
+echo -e '\n--------\nkrew\n'  >&2
 kubectl krew update
 kubectl krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
 
 
-echo -e '\n--------\napm\n'
+echo -e '\n--------\napm\n'  >&2
 if command -v apm >/dev/null 2>&1; then
   apm upgrade -c false || true
 fi
@@ -309,18 +309,18 @@ fi
 # ---------------------------------------------------
 # BREW START
 
-echo -e '\n--------\nbrew\n'
+echo -e '\n--------\nbrew\n'  >&2
 # shellcheck disable=SC2154
-echo -e "${PURPLE}[>] ...$NC pulling updates"
+echo -e "${PURPLE}[>] ...$NC pulling updates"  >&2
 brew update
 
 
-echo -e "${PURPLE}[>] ...$NC starting upgrades"
+echo -e "${PURPLE}[>] ...$NC starting upgrades"  >&2
 brew upgrade || true
 
 
 if [ -n "$GREEDY" ]; then
-  echo -e "${PURPLE}[>] ...$NC starting greedy cask upgrades"
+  echo -e "${PURPLE}[>] ...$NC starting greedy cask upgrades"  >&2
   brew upgrade --cask --greedy
 fi
 
@@ -336,11 +336,11 @@ fi
 
 
 if [ -z "$DISABLE_GIT_REPO_UPDATES" ]; then
-  echo -e '\n--------\nw-git-cleanup\n'
+  echo -e '\n--------\nw-git-cleanup\n'  >&2
 
   set +e
   filename=/tmp/_w-git-cleanup.log
-  echo "[.] follow along via \`tail -F $filename\`."
+  echo "[.] follow along via \`tail -F $filename\`."  >%2
   # TODO color output -> `less -R "$filename"`
   { echo -n "start: "; date; } > "$filename"
   w-git-cleanup >> "$filename" 2>&1
@@ -349,11 +349,11 @@ if [ -z "$DISABLE_GIT_REPO_UPDATES" ]; then
 fi
 
 
-echo
-echo
+echo  >&2
+echo  >&2
 echo -n 'Uptime: '
 uptime
 echo
 sudo systemsetup -getremotelogin  | grep --color=always -E 'On|Off'
-echo "End: $(date)"
-echo =====================
+echo "End: $(date)"  >&2
+echo =====================  >&2

@@ -9,8 +9,9 @@ shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 
-# REQUIRES setuid bit, make sure it is not modifiable by normal users afterwards!
-# file=wg-sidestep; sudo chmod +x "$file"; sudo chmod 644 "$file"; sudo chown root "$file"; sudo chmod u+s "$file"
+# Note: file needs to be added to /etc/sudoers
+# IMPORTANT: make sure to set it immutable afterwards
+# file=wg-sidestep; sudo chmod +i "$file"
 
 cleanup () { set +x; }
 trap cleanup EXIT

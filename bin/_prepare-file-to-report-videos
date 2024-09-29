@@ -7,6 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 filename="$1"
+shift
 [ -f "$HOME/.bash_history_x" ] && HISTFILE="$HOME/.bash_history_x" || HISTFILE="$HOME/.bash_history"
 
 ~/Documents/golang/tools/video-syncer/video-syncer 'report-files'  > "$filename"

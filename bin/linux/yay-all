@@ -102,9 +102,11 @@ key="$1"
 done
 
 
-echo
-echo =====================
-echo "Start: $(date)"
+{
+  echo
+  echo =====================
+  echo "Start: $(date)"
+} >&2
 
 source ~/Documents/scripts/source-me/spinner.sh
 source ~/Documents/scripts/source-me/posix-compliant-shells.sh
@@ -222,7 +224,7 @@ for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
   fi
   _yay-update-pkgbuild "$pkg_name"
 done
-echo '[.] attempting to upgrade AUR packages.' >&2
+echo '[.] attempting to upgrade AUR packages.'  >&2
 for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
   if ! echo "${upgradeable_AURs[*]}" | grep "$pkg_name" >&2; then
     # not upgradable. skipping

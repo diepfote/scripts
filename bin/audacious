@@ -9,5 +9,5 @@ cleanup () { set +x; }
 trap cleanup EXIT
 set -x
 
-QT_SCALE_FACTOR=1.5 "${COMMAND[@]}"
+QT_SCALE_FACTOR=1.5 "${COMMAND[@]}"  >/dev/null 2>&1 &
 
