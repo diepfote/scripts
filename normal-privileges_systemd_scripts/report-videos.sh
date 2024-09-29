@@ -71,7 +71,7 @@ if [ "$(uname)" = Darwin ]; then
 fi
 
 
-exec_fetch="$temp/exec-fetch.sh"
+exec_fetch1="$temp/1"
 detect_error="$temp"/error
 # FETCH
 {
@@ -79,21 +79,24 @@ detect_error="$temp"/error
 
   echo rclone sync --checksum "$proton_path/$video_syncer_file_remote"   "$local_video_syncer_storage"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo proton-video-file > '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n proton-video-file, > '"$detect_error"'; fi'
+
+} > "$exec_fetch1"
+exec_fetch2="$temp/2"
+{
+  echo '#!/usr/bin/env bash'
 
   echo rclone sync --update "$fastmail_path/${remote_system}-mpv-watch_later/"   "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo fastmail > '"$detect_error"'; fi'
-} > "$exec_fetch"
-chmod +x "$exec_fetch"
+  echo 'if [ $? -ne 0 ]; then echo -n fastmail, > '"$detect_error"'; fi'
 
-# to execute 2 subtasks
-touch "$temp"/{1,2}
-execute-on-files -no-header -workers 2 -config <(ls "$temp"/{1,2}) "$exec_fetch"
+} > "$exec_fetch2"
+
+execute-on-files -workers 2 -config <(ls "$temp"/{1,2}) bash
 
 if [ -e "$detect_error" ]; then
-  echo "${RED}[!]$NC Fetch failed: $(cat "$detect_error") | Exiting early."
-  exit 10
+  echo "${RED}[!]$NC Fetch failed: $(cat "$detect_error") | Continuing."
+  # exit 10
 fi
 
 
@@ -113,25 +116,34 @@ set -x
 set +x
 
 # PUSH
-exec_push="$temp/exec-push.sh"
+exec_push1="$temp/1"
 {
   echo '#!/usr/bin/env bash'
 
   echo rclone sync --checksum "$local_video_syncer_storage/$video_syncer_file"   "$proton_path"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo proton-video-file > '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n proton-video-file, > '"$detect_error"'; fi'
 
-  echo rclone sync --checksum "$local_video_syncer_storage/mapping.txt"   "$proton_path"
+} > "$exec_push1"
+exec_push2="$temp/2"
+{
+  echo '#!/usr/bin/env bash'
+
+  echo rclone sync --protondrive-replace-existing-draft=true --checksum "$local_video_syncer_storage/mapping.txt"   "$proton_path"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo proton-mapping-file > '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n proton-mapping-file, > '"$detect_error"'; fi'
+
+} > "$exec_push2"
+exec_push3="$temp/3"
+{
+  echo '#!/usr/bin/env bash'
 
   echo rclone sync --update "$mpv_dir"   "$fastmail_path/${system}-mpv-watch_later/"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo fastmail > '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n fastmail, > '"$detect_error"'; fi'
 
-} > "$exec_push"
-chmod +x "$exec_push"
-execute-on-files -no-header -workers 2 -config <(ls "$temp"/{1,2}) "$exec_push"
+} > "$exec_push3"
+execute-on-files -workers 3 -config <(ls "$temp"/{1,2,3}) bash
 
 if [ -e "$detect_error" ]; then
   echo "${RED}[!]$NC Push failed: $(cat "$detect_error") | Continuing."
