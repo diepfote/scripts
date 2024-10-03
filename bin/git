@@ -23,8 +23,10 @@ fi
 BASE="$("${COMMAND[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
 
 commit () {
+  local ADD_PREFIX=''
 
   if [[ "$BASE" =~ deploy-.* ]]; then
+    ADD_PREFIX=true
     saved_opts=()
     message=''
     while [ $# -gt 0 ]; do
@@ -37,6 +39,13 @@ commit () {
         # leave the rest as it is
         break
         ;;
+
+        --amend)
+          ADD_PREFIX=''
+          saved_opts+=(--amend)
+          shift
+          ;;
+
 
         --)
         shift
@@ -54,7 +63,11 @@ commit () {
 
     prefix="[$(awk -F '/' '{ print $3 }' "$BASE"/.git/HEAD)] "
 
-    "${COMMAND[@]}" commit -m "$prefix$message" "${saved_opts[@]}" "$@"
+    if [ -n "$ADD_PREFIX" ]; then
+      "${COMMAND[@]}" commit -m "$prefix$message" "${saved_opts[@]}" "$@"
+    else
+      "${COMMAND[@]}" commit "${saved_opts[@]}" "$@"
+    fi
   else
 
     "${COMMAND[@]}" commit "$@"
