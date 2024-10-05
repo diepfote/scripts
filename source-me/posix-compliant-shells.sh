@@ -385,8 +385,13 @@ video-sync-mpv-watch-later-files () {
   if [ "$1" != --no-fetch ]; then
     _report-videos
     echo
+  else
+    shift
+
+    # _report-videos already runs these two commands
+    ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files "$@" --no-dry-run
+    ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files create-mapping-file
   fi
-  ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files "$@"
 }
 
 
@@ -1012,7 +1017,7 @@ work-sync () {
   video-sync
 
   set -x
-  video-sync-mpv-watch-later-files  --no-fetch
+  video-sync-mpv-watch-later-files  --no-fetch --no-dry-run
   echo
 }
 

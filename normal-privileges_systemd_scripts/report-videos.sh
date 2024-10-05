@@ -111,6 +111,8 @@ find "$mpv_dir" ! -mtime -180 -delete  # delete files older than 180 days
 set -x
 # write videos-<system> file
 ~/Documents/scripts/bin/_prepare-file-to-report-videos "$local_video_syncer_storage/$video_syncer_file"
+# update local watch_later config (if remote is further along)
+~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run
 # write mpv watch-later mapping file
 ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files create-mapping-file
 set +x
@@ -149,8 +151,4 @@ if [ -e "$detect_error" ]; then
   echo "${RED}[!]$NC Push failed: $(cat "$detect_error") | Continuing."
 fi
 
-# update local watch_later config (if remote is further along)
-set -x
-~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run
-set +x
 
