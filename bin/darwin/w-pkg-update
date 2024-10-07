@@ -200,13 +200,13 @@ if [ -z "$DO_NOT_START_LIMA" ]; then
     sleep 1
   fi
 
-  if ! limactl list | tr -s ' ' ' ' | grep -q 'default Running' 2>/dev/null; then
-    set -x
-    limactl restart default  >/dev/null 2>&1  &
-    set +x
-    disown "$!"
-    sleep 1
-  fi
+  # if ! limactl list | tr -s ' ' ' ' | grep -q 'default Running' 2>/dev/null; then
+  #   set -x
+  #   limactl restart default  >/dev/null 2>&1  &
+  #   set +x
+  #   disown "$!"
+  #   sleep 1
+  # fi
 fi
 
 # LIMA END
