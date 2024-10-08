@@ -87,10 +87,10 @@ elif [ "$system" = Darwin ]; then
   w-pkg-update "$@"
   set +x
 
-  {
-    echo
-    echo "Does rclone's config require an OTP update?"
-  } >&2
-  rclone lsd proton:
 fi
 
+{
+  echo
+  echo "Does rclone's config require an OTP update?"
+} >&2
+rclone ls proton:MANUALs
