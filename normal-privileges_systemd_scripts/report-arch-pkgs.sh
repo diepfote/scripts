@@ -14,9 +14,11 @@ source ~/Documents/scripts/source-me/posix-compliant-shells.sh
 dir=~/Documents/misc/arch
 [ ! -d "$dir" ] && mkdir -p "$dir"
 
-remote_path='proton:-configs/arch'
+username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+remote_path='fastmail:'"$username"'.fastmail.com/files/-config/arch'
+# remote_path='proton:-configs/arch'
 
-if rclone sync --checksum --delete-excluded "$remote_path" "$dir"; then
+if rclone sync --delete-excluded "$remote_path" "$dir"; then
 
   # save list of pacman packages
   misc_arch_dir="$HOME/Documents/misc/arch"
@@ -33,7 +35,7 @@ if rclone sync --checksum --delete-excluded "$remote_path" "$dir"; then
   pacman -Qqm  > "$misc_arch_dir/packages_all_external"
   pacman -Qqn  > "$misc_arch_dir/packages_all_internal"
 
-  rclone sync --checksum --delete-excluded "$dir" "$remote_path"
+  rclone sync --delete-excluded "$dir" "$remote_path"
 
 fi
 

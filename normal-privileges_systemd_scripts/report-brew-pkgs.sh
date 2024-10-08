@@ -14,9 +14,11 @@ _add_to_PATH ~/Documents/python/tools/bin
 dir=~/Documents/misc/mac-os
 [ ! -d "$dir" ] && mkdir "$dir"
 
-remote_path='proton:-configs/mac-os'
+username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+remote_path='fastmail:'"$username"'.fastmail.com/files/-config/mac-os'
+# remote_path='proton:-configs/mac-os'
 
-if rclone sync --checksum --delete-excluded "$remote_path" "$dir"; then
+if rclone sync --delete-excluded "$remote_path" "$dir"; then
 
   set -x
 
@@ -51,7 +53,7 @@ if rclone sync --checksum --delete-excluded "$remote_path" "$dir"; then
     set +x
   done
 
-  rclone sync --checksum --delete-excluded "$dir" "$remote_path"
+  rclone sync --delete-excluded "$dir" "$remote_path"
 
 fi
 
