@@ -41,7 +41,7 @@ echo
 echo -------------------------------------
 paperoni -o "$output_dir" -f "$links"
 
-_rclone_verbose_copy_operation "$output_dir" 'proton:epubs'
+rclone copy "$output_dir" 'proton:epubs'
 
 
 
