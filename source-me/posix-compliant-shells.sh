@@ -986,18 +986,20 @@ status-rezepte () {
 
 _sync-os-configs () {
   set +x
+  local remote_path dir
 
+  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
   if [ "$(uname)" = Darwin ]; then
-    local remote_path='proton:-configs/arch'
+    remote_path='fastmail:'"$username"'.fastmail.com/files/-config/arch'
     local dir=~/Documents/misc/arch
     [ ! -d "$dir" ] && mkdir -p "$dir"
   else
-    local remote_path='proton:-configs/mac-os'
-    local dir=~/Documents/misc/mac-os
+    remote_path='fastmail:'"$username"'.fastmail.com/files/-config/mac-os'
+    dir=~/Documents/misc/mac-os
   fi
 
   [ ! -d "$dir" ] && mkdir -p "$dir"
-  rclone sync --checksum --delete-excluded "$remote_path" "$dir"
+  rclone sync --update --delete-excluded "$remote_path" "$dir"
 }
 
 work-sync () {
