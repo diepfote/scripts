@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-COMMAND=(/opt/homebrew/bin/audacious)
-if [ "$(uname)" = Linux ]; then
-  COMMAND=(firejail --profile=/etc/firejail/audacious.profile /usr/bin/audacious)
-fi
-
 cleanup () { set +x; }
 trap cleanup EXIT
-set -x
 
-QT_SCALE_FACTOR=1.5 "${COMMAND[@]}"  >/dev/null 2>&1 &
+if [ "$(uname)" = Linux ]; then
+  set -x
+  QT_SCALE_FACTOR=2.0 firejail --profile=/etc/firejail/audacious.profile /usr/bin/audacious  >/dev/null 2>&1 &
+else
+  set -x
+  QT_SCALE_FACTOR=1.5 /opt/homebrew/bin/audacious  >/dev/null 2>&1 &
+fi
+
+
 
