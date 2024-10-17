@@ -43,7 +43,7 @@ mac-os-updates () {
 
 _help() {
 cat <<EOF
-USAGE: w-pkg-update [-g] [-r] [--no-disable-remote-login] [--no-mac-os-updates] [--mac-os-updates-only|--no-update-repos|--reinstall-xcode]
+USAGE: w-pkg-update [-g] [-r] [--no-mac-os-updates] [--mac-os-updates-only|--no-update-repos|--reinstall-xcode]
 
 FLAGS:
 -g                           greedy option for brew
@@ -51,7 +51,6 @@ FLAGS:
 --no-update-repos            do not fetch updates to git repositories
 --no-lima                    do not start lima vm
 --no-mac-os-updates          skip mac os updates
---no-disable-remote-login    do not disable remote login in Mac OS settings
 --mac-os-updates-only        check for mac os udpates, start updates, then exit immediately
 
 OPTIONS:
@@ -64,7 +63,6 @@ GREEDY=''
 DO_NOT_START_LIMA=''
 NO_MACOS_UPDATES=''
 DISABLE_GIT_REPO_UPDATES=''
-DISABLE_REMOTE_LOGIN=''
 DRY_RUN=''
 while [ $# -gt 0 ]; do
   key="$1"
@@ -86,11 +84,6 @@ while [ $# -gt 0 ]; do
 
     --no-mac-os-updates)
     NO_MACOS_UPDATES=true
-    shift
-    ;;
-
-    --no-disable-remote-login)
-    DISABLE_REMOTE_LOGIN=false
     shift
     ;;
 
@@ -159,12 +152,6 @@ cleanup () {
 echo ===================== >&2
 echo "Start: $(date)" >&2
 
-if [ -z "$DISABLE_REMOTE_LOGIN" ]; then
-  echo >&2
-  set -x
-  sudo systemsetup -f -setremotelogin off
-  set +x
-fi
 
 # shellcheck disable=SC2064
 trap 'cleanup' EXIT  # stop spinner
