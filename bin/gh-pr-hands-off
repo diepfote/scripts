@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+cleanup () { set +x; }
+trap cleanup EXIT
 
 # why?
 # this allows `gh pr` to be scripted, it requires no additional input
 
+set -x
 git push -u origin "$(git branch --show-current)" && gh pr create -f
