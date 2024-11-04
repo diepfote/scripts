@@ -182,7 +182,9 @@ elif [ -n "$NO_FETCH" ]; then
 fi
 
 # update package info for listing
-echo n | pacman --sudo -Sy || true
+if [ -z "$NO_FETCH" ]; then
+  echo n | pacman --sudo -Sy || true
+fi
 
 if [ $# -gt 0 ]; then
   if [ "$1" = -w ]; then
