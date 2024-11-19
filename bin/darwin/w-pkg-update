@@ -330,6 +330,7 @@ if [ -z "$DISABLE_GIT_REPO_UPDATES" ]; then
   echo "[.] follow along via \`tail -F $filename\`."  >%2
   # TODO color output -> `less -R "$filename"`
   { echo -n "start: "; date; } > "$filename"
+  echo "Log file: $filename"
   w-git-cleanup >> "$filename" 2>&1
   { echo; echo -n "end: "; date; } >> "$filename"
   set -e
