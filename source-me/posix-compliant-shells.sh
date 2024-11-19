@@ -161,6 +161,7 @@ alias grep='grep \
               --exclude-dir=_build \
               --exclude-dir=__pycache__ \
               --exclude-dir=.pytest_cache \
+              --exclude=poetry.lock \
               --exclude-dir=htmlcov \
               --exclude="*.html" \
               --exclude=build.*trace \
