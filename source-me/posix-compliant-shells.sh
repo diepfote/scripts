@@ -160,6 +160,7 @@ alias grep='grep \
               --exclude-dir=*venv* \
               --exclude-dir=_build \
               --exclude-dir=__pycache__ \
+              --exclude="*.pyc" \
               --exclude-dir=.pytest_cache \
               --exclude=poetry.lock \
               --exclude-dir=htmlcov \
