@@ -905,7 +905,7 @@ log-rezepte () {
   _log-wrapper ~/Documents/rezepte "$@"
 }
 
-_reset_wrapper () {
+_reset-wrapper () {
   dir="$1"
   shift
 
@@ -916,35 +916,35 @@ _reset_wrapper () {
 }
 
 reset-dot-files () {
-  _reset_wrapper ~/Documents/dot-files "$@"
+  _reset-wrapper ~/Documents/dot-files "$@"
   (cd ~/Documents/dot-files && make)
 }
 reset-docker () {
-  _reset_wrapper ~/Documents/dockerfiles "$@"
+  _reset-wrapper ~/Documents/dockerfiles "$@"
 }
 reset-mutt () {
-  _reset_wrapper ~/.mutt "$@"
+  _reset-wrapper ~/.mutt "$@"
 }
 reset-go () {
-  _reset_wrapper ~/Documents/golang/tools "$@"
+  _reset-wrapper ~/Documents/golang/tools "$@"
 }
 reset-zig () {
-  _reset_wrapper ~/Documents/zig/tools "$@"
+  _reset-wrapper ~/Documents/zig/tools "$@"
 }
 reset-python () {
-  _reset_wrapper ~/Documents/python/tools "$@"
+  _reset-wrapper ~/Documents/python/tools "$@"
 }
 reset-script () {
-  _reset_wrapper ~/Documents/scripts "$@"
+  _reset-wrapper ~/Documents/scripts "$@"
 }
 reset-vim () {
-  _reset_wrapper ~/.vim "$@"
+  _reset-wrapper ~/.vim "$@"
 }
 reset-cheat () {
-  _reset_wrapper ~/Documents/cheatsheets "$@"
+  _reset-wrapper ~/Documents/cheatsheets "$@"
 }
 reset-rezepte () {
-  _reset_wrapper ~/Documents/rezepte "$@"
+  _reset-wrapper ~/Documents/rezepte "$@"
 }
 
 _status-wrapper () {
