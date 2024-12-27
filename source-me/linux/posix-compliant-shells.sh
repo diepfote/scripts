@@ -111,6 +111,9 @@ _xrandr_snd_mon () {
 xrandr-right-of () {
   xrandr --output "$(_xrandr_snd_mon)" --right-of "$(_xrandr_fst_mon)" --auto
 }
+xrandr-left-of () {
+  xrandr --output "$(_xrandr_snd_mon)" --left-of "$(_xrandr_fst_mon)" --auto
+}
 xrandr-above () {
   xrandr --output "$(_xrandr_snd_mon)" --above "$(_xrandr_fst_mon)" --auto
 }
@@ -122,6 +125,11 @@ xrandr-off () {
     return
   fi
   xrandr --output "$(_xrandr_snd_mon)" --off
+}
+xrandr-disable () {
+  while read -r device; do
+    xrandr --output "$device" --off
+  done < <(xrandr -q | tail -n +2 | grep -vE '^(e| )' | awk '{ print $1 }')
 }
 
 
