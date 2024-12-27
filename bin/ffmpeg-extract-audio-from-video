@@ -59,7 +59,10 @@ same_name_m4a_ext="$full_path_no_ext".m4a
 audio_file="${2:-$same_name_m4a_ext}"
 # snatched from https://askubuntu.com/a/437799
 set -x
-ffmpeg -i "$vid_file" -vn -c:a copy "$audio_file"
+if ! ffmpeg -y -i "$vid_file" -vn -c:a copy "$audio_file"; then
+  ffmpeg -y -i "$vid_file" -vn -c:a aac "$audio_file"
+fi
+
 set +x
 
 temp_dir="$(mktemp -d)"
