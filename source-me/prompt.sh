@@ -11,15 +11,15 @@ unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
 # export PS1="[ $GREEN\w$NC ]\n$ "
 
-BASH_HELPER_FILENAME="main"
+BASH_HELPER_FILENAME="release/bash-helper"
 
 if [ -n "$NOT_HOST_ENV" ]; then
-  BASH_HELPER_FILENAME="main-linux"
+  BASH_HELPER_FILENAME="x86_64-unknown-linux-gnu/${BASH_HELPER_FILENAME}"
 fi
 
 
 _ps1 () {
-  PS1="$(~/Documents/zig/tools/bash-helper/"$BASH_HELPER_FILENAME")"
+  PS1="$(~/Documents/rust/tools/bash-helper/target/"$BASH_HELPER_FILENAME")"
 }
 
 if [ -n "$ZSH" ]; then
