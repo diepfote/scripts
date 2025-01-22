@@ -8,8 +8,8 @@ echo ${TMUX_FAILURE:=''} >/dev/null
 
 if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
    [ "$(hostname)" = docker-desktop ] || \
-   [[ "$(hostname)" =~ lima* ]] || \
-   [ "$(id -u --name 2>/dev/null)" = build-user ]; then
+   [[ "$(hostname)" =~ *lima* ]] || \
+   [[ "$(id -u --name 2>/dev/null)" =~ build-user|lima ]]; then
   export NOT_HOST_ENV=true
 else
   export NOT_HOST_ENV=''
