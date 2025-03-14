@@ -25,18 +25,15 @@ cleanup () {
 #
 # shellcheck disable=SC2016
 
-codec=libx264
+codec=libx265
 scale=640:360
 #
 # constant rate factor
-# taken from: https://superuser.com/a/677580
-# For x264 your valid range is 0-51:
-# The range of the quantizer scale is 0-51:
-# where 0 is lossless, 23 is default, and 51 is worst possible.
-# A lower value is a higher quality and a subjectively sane range is 18-28.
-# Consider 18 to be visually lossless or nearly so:
-# it should look the same or nearly the same as the input but it isn't technically lossless.
-crf=23
+# use libx265 based on https://slhck.info/video/2017/02/24/crf-guide.html
+# values can range from 0 (lossless) to 51 (worst)
+# libx264 default: 23
+# libx265 default: 28
+crf=28
 
 set -x
 if find "$dir" \
