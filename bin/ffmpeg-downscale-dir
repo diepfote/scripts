@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+dir="$1"
+tmpdir="$(mktemp -d)"
+
+echo "$YELLOW[.]$NC changed files will end up in $NC$tmpdir$NC."
+echo '    only if `find` and its `ffmpeg` subprocess executions succeed'
+echo '    will these files replace the originals in the source folder'
+
+cleanup () {
+  set +x
+  rm -r "$tmpdir"
+}
+
+# Sidenote:
+# I tried `-hwaccel auto`, I saw no effect so I did not add it to the
+# command
+#
+#
+# shellcheck disable=SC2016
+
+codec=libx264
+scale=640:360
+#
+# constant rate factor
+# taken from: https://superuser.com/a/677580
+# For x264 your valid range is 0-51:
+# The range of the quantizer scale is 0-51:
+# where 0 is lossless, 23 is default, and 51 is worst possible.
+# A lower value is a higher quality and a subjectively sane range is 18-28.
+# Consider 18 to be visually lossless or nearly so:
+# it should look the same or nearly the same as the input but it isn't technically lossless.
+crf=23
+
+set -x
+if find "$dir" \
+       -regex '.*\.\(m4a\|mp4\|mov\|mp3\|wav\|flv\|webm\|mkv\)' \
+       -exec bash -c 'new='"$tmpdir"'/"$(basename "$0" | sed -r "s#(.*)\.[^\.]+\$#\1.mp4#")"; set -x; ffmpeg  -i "$0" -vf "scale='"${scale}"'" -crf '"$crf"' -c:v '"$codec"' "$new"' {} \; ; then
+
+  mv "$tmpdir"/* "$dir"
+fi
