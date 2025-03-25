@@ -316,7 +316,6 @@ _yay-update-based-on-checksum () {
 alias xclip='command xclip -selection clipboard'
 alias xsel=xclip
 
-alias feh='feh --scale-down'
 
 
 gdb-gef () {

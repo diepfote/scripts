@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+/usr/bin/feh --scale-down --info "exiftool -p '\$DateTimeOriginal' %F" "$@"
+
