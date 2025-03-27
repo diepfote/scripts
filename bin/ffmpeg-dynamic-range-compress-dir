@@ -7,30 +7,27 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 dir="$1"
-tmpdir="$(mktemp -d)"
+shift
 
-echo "$YELLOW[.]$NC changed files will end up in $NC$tmpdir$NC."
-echo '    only if `find` and its `ffmpeg` subprocess executions succeed'
-echo '    will these files replace the originals in the source folder'
 
+# @TODO use another tmpdir (there is one for each execution of `ffmpeg-dynamic-range-compress-file`
+# to only override files in the source dir if we successfully execute downscale on all files
+#
+# tmpdir="$(mktemp -d)"
+# echo "$YELLOW[.]$NC changed files will end up in $NC$tmpdir$NC."  >&2
+# echo '    only if `find` and its `ffmpeg` subprocess executions succeed'  >&2
+# echo '    will these files replace the originals in the source folder'  >&2
 cleanup () {
   set +x
-  rm -r "$tmpdir"
+#   rm -r "$tmpdir"
 }
 
-# Sidenote:
-# I tried `-hwaccel auto`, I saw no effect so I did not add it to the
-# command
-#
-#
-# shellcheck disable=SC2016
-#
-# -cmin -300 ... no older than 5 hours
-if find "$dir" ! -name '*dynamic-range-compressed*' \
-       -regex '.*\.\(m4a\|mp4\|mov\|mp3\|wav\)' \
-       -cmin -300 \
-       -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; set -x; ffmpeg-dynamic-range-compress-file "$0" "$new"' {} \; ; then
-       # -exec bash -c 'new='"$tmpdir"'/"$(basename "$0")"; echo "$new"' {} \;
 
-  mv "$tmpdir"/* "$dir"
-fi
+
+set -x
+time ~/Documents/golang/tools/execute-on-files/execute-on-files -config <(find "$dir" -mindepth 1 "$@") ffmpeg-dynamic-range-compress-file
+# @TODO
+# if COMMAND; then
+#   mv "$tmpdir"/* "$dir"
+# fi
+set +x

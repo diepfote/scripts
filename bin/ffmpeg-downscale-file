@@ -30,10 +30,23 @@ else
   shift
 fi
 
-# set to val of third arg or `45`
-min_db_level="${3:-45}"
+# Sidenote:
+# I tried `-hwaccel auto`, I saw no effect so I did not add it to the
+# command
+#
+#
+# shellcheck disable=SC2016
+codec=libx265
+scale=640:360
+#
+# constant rate factor
+# use libx265 based on https://slhck.info/video/2017/02/24/crf-guide.html
+# values can range from 0 (lossless) to 51 (worst)
+# libx264 default: 23
+# libx265 default: 28
+crf=28
 
-if ffmpeg -i "$in" -filter_complex "compand=attacks=0:points=-$min_db_level/-900|-$(( min_db_level - 5 ))/-10|-5/-10|0/-10:gain=3" "$out" "$@"; then
+if ffmpeg  -i "$in" -vf "scale=${scale}" -crf "$crf" -c:v "$codec" "$out" "$@"; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
@@ -43,3 +56,4 @@ fi
 if [ -n "$out_unset" ]; then
   mv "$out" "$in"
 fi
+
