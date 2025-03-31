@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+in="$1"
+in="$(echo "$1" | sed 's#.iso$##')"
+shift
+
+temp="$(mktemp -d)"
+fuseiso "$in".iso "$temp"
+cleanup () {
+  fusermount -u "$temp"
+  rm -r "$temp"
+  set +x
+}
+trap cleanup EXIT
+
+
+
+num_titles="$(HandBrakeCLI -i "$temp" -t 0 2>&1 | grep -oP "^\+ title \K\d+" | tail -n 1)"
+for title_num in $(seq 1 "$num_titles"); do
+  set -x
+  HandBrakeCLI --title "$title_num" -i "$temp" -o "${in} Title ${title_num}.mp4" --preset 'Fast 720p30' --format av_mp4 --all-audio
+  set +x
+done
+
