@@ -11,6 +11,10 @@ source ~/Documents/scripts/source-me/common-functions.sh
 
 
 dvd_title="$(dvdbackup -i /dev/sr0 -I | grep 'DVD-Video information of the DVD with title' | sed 's#DVD-Video information of the DVD with title ##;s#^"##;s#"$##')"
+out_name="$dvd_title"
+if [ $# -gt 0 ]; then
+  out_name="$1"
+fi
 
 temp_dir="$(mktemp -d)"
 cleanup () {
@@ -26,6 +30,6 @@ fi
 
 set -x
 time dvdbackup -i /dev/sr0 -o "$temp_dir" -M
-time mkisofs -dvd-video -udf -o "$location_to_write_to"/"$dvd_title".iso  "$temp_dir/$dvd_title"
+time mkisofs -dvd-video -udf -o "$location_to_write_to"/"$out_name".iso  "$temp_dir/$dvd_title"
 
 
