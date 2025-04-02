@@ -25,7 +25,7 @@ trap cleanup EXIT
 
 location_to_write_to="$(read_toml_setting ~/Documents/config/sync.conf movies)"
 if [ ! -d "$location_to_write_to" ]; then
-  location_to_write_to=~/Videos/movies_and_series
+  location_to_write_to=~/Videos/movies_and_series/to-handbrake
 fi
 
 set -x
