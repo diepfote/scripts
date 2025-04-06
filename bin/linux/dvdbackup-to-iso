@@ -17,8 +17,15 @@ if [ $# -gt 0 ]; then
 fi
 
 temp_dir="$(mktemp -d)"
+out="$temp_dir"/out.txt
+touch "$out"
 cleanup () {
   set +x
+
+  cat "$out"
+  echo >&2
+  grep --color=always -E '^real' "$out"  || true
+
   rm -r "$temp_dir"
 }
 trap cleanup EXIT
@@ -29,7 +36,6 @@ if [ ! -d "$location_to_write_to" ]; then
 fi
 
 set -x
-time dvdbackup -i /dev/sr0 -o "$temp_dir" -M
-time mkisofs -dvd-video -udf -o "$location_to_write_to"/"$out_name".iso  "$temp_dir/$dvd_title"
-
+( time dvdbackup -i /dev/sr0 -o "$temp_dir" -M )  > "$out" 2>&1
+( time mkisofs -dvd-video -udf -o "$location_to_write_to"/"$out_name".iso  "$temp_dir/$dvd_title" )  >> "$out" 2>&1
 
