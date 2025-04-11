@@ -6,4 +6,18 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@"
+if [ "$1" = --hours ]; then
+  shift
+
+  temp="$(mktemp -d)"
+  cleanup () {
+    rm -r "$temp"
+  }
+  trap cleanup EXIT
+  f="$temp"/calculation.txt
+  dur="$(ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@" | head -n1)"
+  echo "$dur to hours" > "$f"
+  qalc < "$f"
+else
+  ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@"
+fi
