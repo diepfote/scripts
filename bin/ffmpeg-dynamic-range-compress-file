@@ -33,11 +33,12 @@ fi
 # set to val of third arg or `45`
 min_db_level="${3:-45}"
 
-if ffmpeg -i "$in" -filter_complex "compand=attacks=0:points=-$min_db_level/-900|-$(( min_db_level - 5 ))/-10|-5/-10|0/-10:gain=3" "$out" "$@"; then
+if ffmpeg -i "$in" -filter_complex "compand=attacks=0:points=-$min_db_level/-900|-$(( min_db_level - 5 ))/-10|-5/-10|0/-10:gain=3" "$out" "$@"  >"$tmpdir"/stdout 2>"$tmpdir"/stderr; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
   echo "[!] $in: failure"  >&2
+  exit "$exit_code"
 fi
 
 if [ -n "$out_unset" ]; then

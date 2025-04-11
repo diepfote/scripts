@@ -47,11 +47,12 @@ scale=640:360
 # libx265 default: 28
 crf=28
 
-if ffmpeg  -i "$in" -vf "scale=${scale}" -crf "$crf" -c:v "$codec" "$out" "$@"; then
+if ffmpeg  -i "$in" -vf "scale=${scale}" -crf "$crf" -c:v "$codec" "$out" "$@"  >"$tmpdir"/stdout 2>"$tmpdir"/stderr; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
   echo "[!] $in: failure"  >&2
+  exit "$exit_code"
 fi
 
 if [ -n "$out_unset" ]; then
