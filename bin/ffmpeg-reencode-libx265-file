@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+# used in trap
+exit_code=1
+
+in="$1"
+out_unset=""
+shift
+if [ $# -lt 2 ]; then
+  tmpdir="$(mktemp -d)"
+  echo "[.] using $tmpdir for $(basename "$in")"  >&2
+  cleanup () {
+    set +x
+    rm -r "$tmpdir"
+    exit "$exit_code"
+  }
+  trap cleanup EXIT
+
+  out="$tmpdir/$(basename "$in")"
+  out_unset="true"
+else
+  out="$2"
+  shift
+fi
+
+# Sidenote:
+# I tried `-hwaccel auto`, I saw no effect so I did not add it to the
+# command
+#
+#
+# shellcheck disable=SC2016
+codec=libx265
+#
+# constant rate factor
+# use libx265 based on https://slhck.info/video/2017/02/24/crf-guide.html
+# values can range from 0 (lossless) to 51 (worst)
+# libx264 default: 23
+# libx265 default: 28
+crf=28
+
+if ffmpeg  -i "$in" -crf "$crf" -c:v "$codec" "$out" "$@"; then
+  echo "[.] $in: success"  >&2
+  exit_code=0
+else
+  echo "[!] $in: failure"  >&2
+fi
+
+if [ -n "$out_unset" ]; then
+  set -x
+  mv "$out" "$in"
+  set +x
+fi
+
