@@ -18,6 +18,7 @@ if [ $# -lt 2 ]; then
   tmpdir="$(mktemp -d)"
   echo "[.] using $tmpdir for $(basename "$in")"  >&2
   cleanup () {
+    set +x
     rm -r "$tmpdir"
     exit "$exit_code"
   }
@@ -54,6 +55,8 @@ else
 fi
 
 if [ -n "$out_unset" ]; then
+  set -x
   mv "$out" "$in"
+  set +x
 fi
 
