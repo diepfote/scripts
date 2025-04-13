@@ -11,26 +11,6 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 # used in trap
 exit_code=1
 
-in="$1"
-out_unset=""
-shift
-if [ $# -lt 2 ]; then
-  tmpdir="$(mktemp -d)"
-  echo "[.] using $tmpdir for $(basename "$in")"  >&2
-  cleanup () {
-    set +x
-    rm -r "$tmpdir"
-    exit "$exit_code"
-  }
-  trap cleanup EXIT
-
-  out="$tmpdir/$(basename "$in")"
-  out_unset="true"
-else
-  out="$2"
-  shift
-fi
-
 # Sidenote:
 # I tried `-hwaccel auto`, I saw no effect so I did not add it to the
 # command
@@ -46,7 +26,82 @@ codec=libx265
 # libx265 default: 28
 crf=28
 
-if ffmpeg  -i "$in" -crf "$crf" -c:v "$codec" "$out" "$@"  >"$tmpdir"/stdout 2>"$tmpdir"/stderr; then
+
+_help() {
+cat <<EOF
+USAGE: $(basename $0) [--threads NUM]  [--out FILE]
+
+OPTIONS:
+  -t|--threads NUM      Number of ffmpeg threads
+  --out FILE            Optionally specify a destination, otherwise we
+                        will write to /tmp and overwrite the current file
+                        on success
+EOF
+}
+
+
+NUM_THREADS="$(grep cores /proc/cpuinfo | head -n1 | awk 'NR==1 { print $4; exit }')"
+OUT=''
+OUT_TEMPORARY='true'
+# Parse arguments
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -t|--threads)
+    NUM_THREADS="$2"
+    shift 2
+    ;;
+
+    --out)
+    OUT="$2"
+    OUT_TEMPORARY=''
+    shift 2
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+in="$1"
+shift
+echo "[.] using $NUM_THREADS threads."  >&2
+
+
+tmpdir="$(mktemp -d)"
+echo "[.] temp dir: $tmpdir"  >&2
+cleanup () {
+  set +x
+  rm -r "$tmpdir"
+  exit "$exit_code"
+}
+trap cleanup EXIT
+
+
+if [ -z "$OUT" ]; then
+  OUT="$tmpdir/$(basename "$in")"
+  echo "[.] out file temporary: $OUT"  >&2
+else
+  out_dir="$(dirname "$(realpath "$OUT")")"
+  if [ ! -d "$out_dir" ]; then
+    out_dir="$(realpath "$PWD")"
+  fi
+  echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
+fi
+
+
+if ffmpeg -threads "$NUM_THREADS"  -i "$in" -crf "$crf" -c:v "$codec" "$OUT" "$@"  >"$tmpdir"/stdout 2>"$tmpdir"/stderr; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
@@ -54,9 +109,9 @@ else
   exit "$exit_code"
 fi
 
-if [ -n "$out_unset" ]; then
+if [ -n "$OUT_TEMPORARY" ]; then
   set -x
-  mv "$out" "$in"
+  mv "$OUT" "$in"
   set +x
 fi
 
