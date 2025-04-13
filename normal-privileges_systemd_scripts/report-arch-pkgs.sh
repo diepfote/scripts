@@ -30,10 +30,10 @@ if rclone sync --delete-excluded "$remote_path" "$dir"; then
   ## to restore move .tar.bz2 file to / and execute "tar -xjvf pacman_database.tar.bz2"
   tar -cjf "$misc_arch_dir/pacman_database.tar.bz2" "/var/lib/pacman/local"
 
-  pacman -Qqem > "$misc_arch_dir/packages_explicit_external"
-  pacman -Qqen > "$misc_arch_dir/packages_explicit_internal"
-  pacman -Qqm  > "$misc_arch_dir/packages_all_external"
-  pacman -Qqn  > "$misc_arch_dir/packages_all_internal"
+  pacman -Qqem > "$misc_arch_dir/packages_explicit_external.txt"
+  pacman -Qqen > "$misc_arch_dir/packages_explicit_internal.txt"
+  pacman -Qqm  > "$misc_arch_dir/packages_all_external.txt"
+  pacman -Qqn  > "$misc_arch_dir/packages_all_internal.txt"
 
   rclone sync --delete-excluded "$dir" "$remote_path"
 
