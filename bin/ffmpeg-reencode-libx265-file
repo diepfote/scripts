@@ -40,7 +40,11 @@ EOF
 }
 
 
-NUM_THREADS="$(grep cores /proc/cpuinfo | head -n1 | awk 'NR==1 { print $4; exit }')"
+if [ "$(uname)" != Darwin ]; then
+  NUM_THREADS="$(grep cores /proc/cpuinfo | head -n1 | awk 'NR==1 { print $4; exit }')"
+else
+  NUM_THREADS="$(sysctl -n hw.ncpu)"
+fi
 OUT=''
 OUT_TEMPORARY='true'
 # Parse arguments
