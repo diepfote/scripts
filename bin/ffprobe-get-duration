@@ -6,10 +6,45 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-if [ "$1" = --hours ] || [ "$1" = --minutes ]; then
-  interval="$(echo "$1" | sed 's#--##')"
-  shift
 
+# Parse arguments
+INTERVAL=''
+PRINT_FILE_INFO=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --minutes)
+    INTERVAL=minutes
+    shift
+    ;;
+    --hours)
+    INTERVAL=hours
+    shift
+    ;;
+
+    --info)
+    PRINT_FILE_INFO=true
+    shift
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+if [ -n "$PRINT_FILE_INFO" ]; then
+  echo "[.] $1"  >&2
+fi
+
+
+if [ -n "$INTERVAL" ]; then
   temp="$(mktemp -d)"
   cleanup () {
     rm -r "$temp"
@@ -17,7 +52,9 @@ if [ "$1" = --hours ] || [ "$1" = --minutes ]; then
   trap cleanup EXIT
   f="$temp"/calculation.txt
   dur="$(ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@" | head -n1)"
-  echo "$dur seconds to $interval" > "$f"
+  echo "$dur seconds to $INTERVAL" > "$f"
+
+  echo -n '  '
   qalc < "$f" | tail -n 3 | head -n1
 else
   ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@"
