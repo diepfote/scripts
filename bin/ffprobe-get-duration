@@ -27,6 +27,11 @@ key="$1"
     shift
     ;;
 
+    --info-short)
+    PRINT_FILE_INFO=short
+    shift
+    ;;
+
     --)
     shift
     break
@@ -40,7 +45,11 @@ key="$1"
 done
 
 if [ -n "$PRINT_FILE_INFO" ]; then
-  echo "[.] $1"  >&2
+  if [ "$PRINT_FILE_INFO" = short ]; then
+    echo "[.] $(basename "$1")"  >&2
+  else
+    echo "[.] $(realpath "$1")"  >&2
+  fi
 fi
 
 
@@ -51,10 +60,10 @@ if [ -n "$INTERVAL" ]; then
   }
   trap cleanup EXIT
   f="$temp"/calculation.txt
-  dur="$(ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@" | head -n1)"
+  dur="$(ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@" | head -n1 | sed -r 's#(.*)\..*#\1#')"
   echo "$dur seconds to $INTERVAL" > "$f"
 
-  echo -n '  '
+  echo -en '\t'
   qalc < "$f" | tail -n 3 | head -n1
 else
   ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@"
