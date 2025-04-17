@@ -69,7 +69,14 @@ do_image_copy () {
     # check file on phone newer than newest file in backups
     if [ -n "$newer_file" ]; then
       set -x
-      cp "$newer_file" "$LOCAL_PICTURES_DIR/$f_date"
+      if ! try_rsync; then
+        sleep .5
+        try_rsync
+        if ! try_rsync; then
+          sleep 1
+          try_rsync
+        fi
+      fi
       set +x
     fi
     unset newer_file
@@ -96,6 +103,11 @@ do_image_copy () {
   popd || exit 1
   sleep 1
 }
+
+try_rsync () {
+  rsync -av "$newer_file" "$LOCAL_PICTURES_DIR/$f_date/$(basename "$newer_file")"
+}
+
 
 # only run on my private laptop
 is_private_laptop="$(hostname | grep frame.work)"
