@@ -69,14 +69,7 @@ do_image_copy () {
     # check file on phone newer than newest file in backups
     if [ -n "$newer_file" ]; then
       set -x
-      if ! try_rsync; then
-        sleep .5
-        try_rsync
-        if ! try_rsync; then
-          sleep 1
-          try_rsync
-        fi
-      fi
+      try_rsync
       set +x
     fi
     unset newer_file
@@ -105,7 +98,33 @@ do_image_copy () {
 }
 
 try_rsync () {
-  rsync -av "$newer_file" "$LOCAL_PICTURES_DIR/$f_date/$(basename "$newer_file")"
+  set +e
+  set -x
+  dest="$LOCAL_PICTURES_DIR/$f_date/$(basename "$newer_file")"
+  rsync -av "$newer_file" "$dest"
+  sleep .5
+
+  repeat () {
+    rm "$dest"
+    rsync -av "$newer_file" "$dest"
+    sleep 1.5
+  }
+
+
+  while true; do
+    chk_src="$(md5sum "$newer_file" | awk '{ print $1 }')"
+    chk_dst="$(md5sum "$dest" | awk '{ print $1 }')"
+    # set values to empty string if they are unset
+    ${chk_src:=""}
+    ${chk_dst:=""}
+
+    if [ "$chk_src" != "$chk_dst" ]; then
+      repeat
+    else
+      break
+    fi
+  done
+  set +x
 }
 
 
