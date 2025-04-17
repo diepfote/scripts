@@ -24,18 +24,23 @@ codec=libx265
 # values can range from 0 (lossless) to 51 (worst)
 # libx264 default: 23
 # libx265 default: 28
-crf=28
+#
+# personal experience:
+# blu-ray movie @1080p ... 31  ... RvBS10
+# web video @720p is   ... 34  ... jb & scanlime
+# DvDs                 ... na  ... no experience
+CRF=31
 
 
 _help() {
 cat <<EOF
-USAGE: $(basename $0) [--threads NUM]  [--out FILE]
+USAGE: $(basename $0) [--threads NUM]  IN [OUT]
 
 OPTIONS:
-  -t|--threads NUM      Number of ffmpeg threads
-  --out FILE            Optionally specify a destination, otherwise we
-                        will write to /tmp and overwrite the current file
-                        on success
+  -t|--threads NUM      Number of ffmpeg threads [default: num of physical cpus]
+  --crf FACTOR          Constant rate factor [default: 31]
+                        Use 34 for web videos
+                        DvDs ... unknown
 EOF
 }
 
@@ -45,20 +50,16 @@ if [ "$(uname)" != Darwin ]; then
 else
   NUM_THREADS="$(sysctl -n hw.ncpu)"
 fi
-OUT=''
-OUT_TEMPORARY='true'
 # Parse arguments
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
+    --crf)
+      CRF="$2"
+      shift 2
+      ;;
     -t|--threads)
     NUM_THREADS="$2"
-    shift 2
-    ;;
-
-    --out)
-    OUT="$2"
-    OUT_TEMPORARY=''
     shift 2
     ;;
 
@@ -78,9 +79,19 @@ key="$1"
 
   esac
 done
-in="$1"
-shift
 echo "[.] using $NUM_THREADS threads."  >&2
+
+if [ $# -gt 1 ]; then
+  in="$1"
+  OUT="$2"
+  OUT_TEMPORARY=''
+  shift 2
+else
+  in="$1"
+  OUT=''
+  OUT_TEMPORARY='true'
+  shift
+fi
 
 
 tmpdir="$(mktemp -d)"
@@ -104,8 +115,7 @@ else
   echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
 fi
 
-
-if ffmpeg -threads "$NUM_THREADS"  -i "$in" -crf "$crf" -c:v "$codec" "$OUT" "$@"  >"$tmpdir"/stdout 2>"$tmpdir"/stderr; then
+if ffmpeg -threads "$NUM_THREADS"  -i "$in" -crf "$CRF" -c:v "$codec"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
