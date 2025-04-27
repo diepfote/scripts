@@ -13,6 +13,10 @@ PRINT_FILE_INFO=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
+    --human-readable)
+    INTERVAL=human-readable
+    shift
+    ;;
     --minutes)
     INTERVAL=minutes
     shift
@@ -26,7 +30,6 @@ key="$1"
     PRINT_FILE_INFO=true
     shift
     ;;
-
     --info-short)
     PRINT_FILE_INFO=short
     shift
@@ -61,6 +64,14 @@ if [ -n "$INTERVAL" ]; then
   trap cleanup EXIT
   f="$temp"/calculation.txt
   dur="$(ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@" | head -n1 | sed -r 's#(.*)\..*#\1#')"
+
+  if [ "$INTERVAL" = human-readable ]; then
+    if [ "$dur" -ge 3600 ]; then
+      INTERVAL=hours
+    else
+      INTERVAL=minutes
+    fi
+  fi
   echo "$dur seconds to $INTERVAL" > "$f"
 
   echo -en '\t'
