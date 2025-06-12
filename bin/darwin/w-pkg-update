@@ -287,12 +287,6 @@ kubectl krew update
 kubectl krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
 
 
-echo -e '\n--------\napm\n'  >&2
-if command -v apm >/dev/null 2>&1; then
-  apm upgrade -c false || true
-fi
-
-
 # ---------------------------------------------------
 # BREW START
 
