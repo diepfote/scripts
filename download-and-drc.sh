@@ -85,17 +85,23 @@ fi
 
 if [ -n "$BATCH_FILE" ]; then
   set -x
-  dl-youtube 140 -a "$BATCH_FILE"
+  dl-youtube 234 -a "$BATCH_FILE"
   set +x
 elif [ -n "$LINK" ] && [ -n "$DATE_STAMP" ]; then
   set -x
   upload_filter="upload_date>=$(date '+%Y%m%d' --date="$DATE_STAMP")"
-  dl-youtube 140 "$LINK"  -i --match-filter "$upload_filter"
+  dl-youtube 234 "$LINK"  -i --match-filter "$upload_filter"
   set +x
 else
   echo 'No BATCH_FILE or DATE_STAMP + LINK'
   exit 1
 fi
+
+# since we no longer are able to use format=140 we are provided with .mp4 files
+for f in "$temp_dir"/*.mp4; do
+  replaced_ext="$(echo "$f" | sed -r 's#(.*).mp4$#\1.m4a#')"
+  mv "$f" "$replaced_ext"
+done
 
 set -x
 ffmpeg-dynamic-range-compress-dir "$temp_dir"
