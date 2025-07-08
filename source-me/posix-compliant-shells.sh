@@ -107,7 +107,11 @@ _add_to_PATH "$HOME/Documents/golang/tools/execute-on-files"
 #
 
 source ~/Documents/scripts/source-me/colors.sh
-source ~/Documents/scripts/source-me/prompt.sh
+if [ "$(uname)" = Darwin ]; then
+  source ~/Documents/scripts/cc/source-me/prompt.sh
+else
+  source ~/Documents/scripts/source-me/prompt.sh
+fi
 
 #
 # prompt style end
