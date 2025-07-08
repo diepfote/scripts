@@ -31,6 +31,10 @@ _print () {
 _add_to_MANPATH () {
   local path_to_add="$1"
 
+ if [ -z "$path_to_add" ]; then
+   return
+ fi
+
  # shellcheck disable=2076
  # we want literal matching in this case
  #
@@ -110,9 +114,14 @@ _add_to_PATH () {
   reverse_order=''
   path_to_add="$1"
 
+  if [ -z "$path_to_add" ]; then
+    return
+  fi
+
   if [ $# -gt 1 ]; then
     reverse_order=true
   fi
+
 
  # shellcheck disable=2076
  # we want literal matching in this case

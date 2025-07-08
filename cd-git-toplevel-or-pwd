@@ -13,8 +13,9 @@ __cd_dir () {
     # shellcheck disable=SC2164
     cd "$PWD"
   else
-    # shellcheck disable=SC2164
-    cd "$git_top_level"
+    if [ "$git_top_level" != "" ]; then
+      cd "$git_top_level"
+    fi
   fi
 
 }
@@ -23,6 +24,7 @@ executable=bash
 if [ Darwin = "$(uname)" ]; then
   executable=/opt/homebrew/bin/bash
 fi
+# shellcheck disable=SC2064
 trap "exec $executable" EXIT
 
 __cd_dir
