@@ -19,6 +19,10 @@ fi
 
 
 _ps1 () {
+  if [[ "$PWD" =~ .*/deploy-[a-z-] ]]; then
+    ~/Documents/config/deploy.sh
+    export PS1_TAGGED=true
+  fi
   PS1="$(~/Documents/rust/tools/bash_helper/target/"$BASH_HELPER_FILENAME")"
 }
 
