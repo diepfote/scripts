@@ -75,6 +75,8 @@ export STARDICT_DATA_DIR="$HOME/.dictionaries/"
 # TODO remove?
 export GO111MODULE=off
 
+# disable color for `ansible-doc`
+export ANSIBLE_NOCOLOR=1
 
 
 source ~/Documents/scripts/source-me/common-functions.sh
