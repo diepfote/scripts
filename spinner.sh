@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-source ~/Documents/scripts/source-me/spinner.sh
+source ~/Repos/scripts/source-me/spinner.sh
 
 
 spinner "$1"

@@ -8,7 +8,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 
 _help() {

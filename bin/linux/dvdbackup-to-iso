@@ -7,7 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Repos/scripts/source-me/common-functions.sh
 
 echo -e "---\n[.] start: $(date)"  >&2
 
@@ -33,7 +33,7 @@ cleanup () {
 }
 trap cleanup EXIT
 
-location_to_write_to="$(read_toml_setting ~/Documents/config/sync.conf movies)"
+location_to_write_to="$(read_toml_setting ~/.config/personal/sync.conf movies)"
 if [ ! -d "$location_to_write_to" ]; then
   location_to_write_to=~/Videos/movies_and_series/to-handbrake
 fi

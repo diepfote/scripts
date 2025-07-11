@@ -7,14 +7,14 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/common-functions.sh
-source ~/Documents/scripts/source-me/darwin/common-functions.sh
-_add_to_PATH ~/Documents/python/tools/bin
+source ~/Repos/scripts/source-me/common-functions.sh
+source ~/Repos/scripts/source-me/darwin/common-functions.sh
+_add_to_PATH ~/Repos/python/tools/bin
 
-dir=~/Documents/misc/mac-os
+dir=~/.config/personal/sync-config/mac-os
 [ ! -d "$dir" ] && mkdir "$dir"
 
-username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+username="$(read_toml_setting ~/.config/personal/fastmail.conf username)"
 remote_path='fastmail:'"$username"'.fastmail.com/files/-config/mac-os'
 # remote_path='proton:-configs/mac-os'
 

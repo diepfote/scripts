@@ -50,7 +50,7 @@ all_dirs+=(~/.tox/)
 all_dirs+=(~/.vim/plugged/)
 all_dirs+=(~/.w3m/)
 
-all_dirs+=(~/Documents/dockerfiles/arch-all)  # arch-all.tar file
+all_dirs+=(~/Repos/dockerfiles/arch-all)  # arch-all.tar file
 all_dirs+=(~/ISOs/)
 
 all_dirs+=(~/Desktop/no-backup)

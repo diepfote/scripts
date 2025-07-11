@@ -30,7 +30,7 @@ if [ -z "$NOT_HOST_ENV" ]; then
     startx  # i3 based on ~/.xinitrc
     return
   elif [[ -z "$TMUX" ]] && [ -z "$BASH_SOURCE_IT" ]; then
-    tmux_cmd=(~/Documents/scripts/tmux.sh -2 -u)  # -u -> utf-8; -2 -> force 256 colors
+    tmux_cmd=(~/Repos/scripts/tmux.sh -2 -u)  # -u -> utf-8; -2 -> force 256 colors
     default_session_to_attach_info="$(tmux ls -F '#S #{session_attached}' |\
       grep -vE '\s+1$' |\
       grep -E 'general|default|work|private|training' |\
@@ -79,8 +79,8 @@ export GO111MODULE=off
 export ANSIBLE_NOCOLOR=1
 
 
-source ~/Documents/scripts/source-me/common-functions.sh
-for name in ~/Documents/scripts/source-me/completions_*; do
+source ~/Repos/scripts/source-me/common-functions.sh
+for name in ~/Repos/scripts/source-me/completions_*; do
   source "$name"
 done
 
@@ -93,12 +93,12 @@ done
 _add_to_PATH "$HOME/.bin"
 _add_to_PATH "$HOME/go/bin"
 _add_to_PATH "$HOME/.cargo/bin"
-_add_to_PATH "$HOME/Documents/scripts/bin"
-_add_to_PATH "$HOME/Documents/python/tools/bin"
-_add_to_PATH "$HOME/Documents/scripts/private/bin"
-_add_to_PATH "$HOME/Documents/dockerfiles/bin"
-_add_to_PATH "$HOME/Documents/golang/tools/execute-in-repos"
-_add_to_PATH "$HOME/Documents/golang/tools/execute-on-files"
+_add_to_PATH "$HOME/Repos/scripts/bin"
+_add_to_PATH "$HOME/Repos/python/tools/bin"
+_add_to_PATH "$HOME/Repos/scripts/private/bin"
+_add_to_PATH "$HOME/Repos/dockerfiles/bin"
+_add_to_PATH "$HOME/Repos/golang/tools/execute-in-repos"
+_add_to_PATH "$HOME/Repos/golang/tools/execute-on-files"
 
 #
 # extend PATH end
@@ -108,11 +108,11 @@ _add_to_PATH "$HOME/Documents/golang/tools/execute-on-files"
 # prompt style start
 #
 
-source ~/Documents/scripts/source-me/colors.sh
+source ~/Repos/scripts/source-me/colors.sh
 if [ "$(uname)" = Darwin ]; then
-  source ~/Documents/scripts/cc/source-me/prompt.sh
+  source ~/Repos/scripts/cc/source-me/prompt.sh
 else
-  source ~/Documents/scripts/source-me/prompt.sh
+  source ~/Repos/scripts/source-me/prompt.sh
 fi
 
 #
@@ -147,8 +147,8 @@ alias ag="ag --color-line '0;32' --color-path '0;35' --color-match '1;31'"
 alias objdump='objdump -M intel'
 alias ropper='ropper --no-color'
 
-alias cheat='~/Documents/scripts/cheat.sh ~/Documents/cheatsheets'
-alias rezepte='~/Documents/scripts/cheat.sh ~/Documents/rezepte'
+alias cheat='~/Repos/scripts/cheat.sh ~/Repos/cheatsheets'
+alias rezepte='~/Repos/scripts/cheat.sh ~/Repos/rezepte'
 
 alias ls='ls --color=auto'
 
@@ -166,6 +166,7 @@ alias grep='grep \
               --exclude-dir=*venv* \
               --exclude-dir=_build \
               --exclude-dir=__pycache__ \
+              --exclude-dir=.ruff_cache \
               --exclude="*.pyc" \
               --exclude-dir=.pytest_cache \
               --exclude=poetry.lock \
@@ -353,7 +354,7 @@ mpv () {
 
 
 _report-videos () {
-  ~/Documents/scripts/normal-privileges_systemd_scripts/report-videos.sh
+  ~/Repos/scripts/normal-privileges_systemd_scripts/report-videos.sh
 }
 
 video-sync () {
@@ -384,7 +385,7 @@ video-sync () {
     echo
   fi
 
-  ~/Documents/golang/tools/video-syncer/video-syncer "$@"
+  ~/Repos/golang/tools/video-syncer/video-syncer "$@"
 
 }
 
@@ -397,8 +398,8 @@ video-sync-mpv-watch-later-files () {
     shift
 
     # _report-videos already runs these two commands
-    ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files "$@" --no-dry-run
-    ~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files create-mapping-file
+    ~/Repos/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files "$@" --no-dry-run
+    ~/Repos/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files create-mapping-file
   fi
 }
 
@@ -425,7 +426,7 @@ download-and-drc-latest () {
   podcast_name="$2"
   timestamp="$3"
 
-  if ! ~/Documents/scripts/download-and-drc.sh --link "$link" --folder-name "$podcast_name" --date-stamp "$timestamp"; then
+  if ! ~/Repos/scripts/download-and-drc.sh --link "$link" --folder-name "$podcast_name" --date-stamp "$timestamp"; then
     _help
     return
   fi
@@ -448,7 +449,7 @@ download-and-drc-batch () {
   podcast_name="$2"
   timestamp="$3"
 
-  if ! ~/Documents/scripts/download-and-drc.sh --batch-file "$batch_file" --folder-name "$2"; then
+  if ! ~/Repos/scripts/download-and-drc.sh --batch-file "$batch_file" --folder-name "$2"; then
     _help
   fi
 }
@@ -664,26 +665,26 @@ new-mutt () {
 
 
 edit-dot-files () {
-  pushd ~/Documents/dot-files
+  pushd ~/Repos/dot-files
 }
 
 edit-docker () {
-  _edit-wrapper --dir ~/Documents/dockerfiles "$1"
+  _edit-wrapper --dir ~/Repos/dockerfiles "$1"
 }
 edit-mutt () {
   _edit-wrapper --dir ~/.mutt "$1"
 }
 edit-go () {
-  _edit-wrapper --dir ~/Documents/golang/tools "$1"
+  _edit-wrapper --dir ~/Repos/golang/tools "$1"
 }
 edit-zig () {
-  _edit-wrapper --dir ~/Documents/zig/tools "$1"
+  _edit-wrapper --dir ~/Repos/zig/tools "$1"
 }
 edit-python () {
-  _edit-wrapper --dir ~/Documents/python/tools "$1"
+  _edit-wrapper --dir ~/Repos/python/tools "$1"
 }
 edit-script () {
-  _edit-wrapper --dir ~/Documents/scripts "$1"
+  _edit-wrapper --dir ~/Repos/scripts "$1"
 }
 edit-vim () {
   _edit-wrapper --dir ~/.vim "$1"
@@ -745,7 +746,7 @@ _edit-wrapper () {
 
 cheatsheets_pull () {
   (
-  if cd ~/Documents/cheatsheets; then
+  if cd ~/Repos/cheatsheets; then
     git pull origin master
   fi
   )
@@ -753,7 +754,7 @@ cheatsheets_pull () {
 
 cheatsheets_commit_and_push () {
   (
-  if cd ~/Documents/cheatsheets; then
+  if cd ~/Repos/cheatsheets; then
     git add .
     git commit -m "$(date --iso-8601=minutes)"
     git push -u origin master
@@ -763,7 +764,7 @@ cheatsheets_commit_and_push () {
 
 rezepte_commit_and_push () {
   (
-  if cd ~/Documents/rezepte; then
+  if cd ~/Repos/rezepte; then
     git add .
     git commit -m "$(date --iso-8601=minutes)"
     git push -u origin master
@@ -779,25 +780,25 @@ _checkout-wrapper () {
 }
 
 checkout-dot-files () {
-  _checkout-wrapper ~/Documents/dot-files "$@"
+  _checkout-wrapper ~/Repos/dot-files "$@"
 }
 checkout-docker () {
-  _checkout-wrapper ~/Documents/dockerfiles "$@"
+  _checkout-wrapper ~/Repos/dockerfiles "$@"
 }
 checkout-mutt () {
   _checkout-wrapper ~/.mutt "$@"
 }
 checkout-go () {
-  _checkout-wrapper ~/Documents/golang/tools "$@"
+  _checkout-wrapper ~/Repos/golang/tools "$@"
 }
 checkout-zig () {
-  _checkout-wrapper ~/Documents/zig/tools "$@"
+  _checkout-wrapper ~/Repos/zig/tools "$@"
 }
 checkout-python () {
-  _checkout-wrapper ~/Documents/python/tools "$@"
+  _checkout-wrapper ~/Repos/python/tools "$@"
 }
 checkout-script () {
-  _checkout-wrapper ~/Documents/scripts "$@"
+  _checkout-wrapper ~/Repos/scripts "$@"
 }
 checkout-vim () {
   _checkout-wrapper ~/.vim "$@"
@@ -805,25 +806,25 @@ checkout-vim () {
 
 
 commit-dot-files () {
-  commit-in-dir ~/Documents/dot-files "$@"
+  commit-in-dir ~/Repos/dot-files "$@"
 }
 commit-docker () {
-  commit-in-dir ~/Documents/dockerfiles "$@"
+  commit-in-dir ~/Repos/dockerfiles "$@"
 }
 commit-mutt () {
   commit-in-dir ~/.mutt "$@"
 }
 commit-go () {
-  commit-in-dir ~/Documents/golang/tools "$@"
+  commit-in-dir ~/Repos/golang/tools "$@"
 }
 commit-zig () {
-  commit-in-dir ~/Documents/zig/tools "$@"
+  commit-in-dir ~/Repos/zig/tools "$@"
 }
 commit-python () {
-  commit-in-dir ~/Documents/python/tools "$@"
+  commit-in-dir ~/Repos/python/tools "$@"
 }
 commit-script () {
-  commit-in-dir ~/Documents/scripts "$@"
+  commit-in-dir ~/Repos/scripts "$@"
 }
 commit-vim () {
   commit-in-dir ~/.vim "$@"
@@ -838,34 +839,34 @@ _diff-wrapper () {
 }
 
 diff-dot-files () {
-  _diff-wrapper ~/Documents/dot-files "$@"
+  _diff-wrapper ~/Repos/dot-files "$@"
 }
 diff-docker () {
-  _diff-wrapper ~/Documents/dockerfiles "$@"
+  _diff-wrapper ~/Repos/dockerfiles "$@"
 }
 diff-mutt () {
   _diff-wrapper ~/.mutt "$@"
 }
 diff-go () {
-  _diff-wrapper ~/Documents/golang/tools "$@"
+  _diff-wrapper ~/Repos/golang/tools "$@"
 }
 diff-zig () {
-  _diff-wrapper ~/Documents/zig/tools "$@"
+  _diff-wrapper ~/Repos/zig/tools "$@"
 }
 diff-python () {
-  _diff-wrapper ~/Documents/python/tools "$@"
+  _diff-wrapper ~/Repos/python/tools "$@"
 }
 diff-script () {
-  _diff-wrapper ~/Documents/scripts "$@"
+  _diff-wrapper ~/Repos/scripts "$@"
 }
 diff-vim () {
   _diff-wrapper ~/.vim "$@"
 }
 diff-cheat () {
-  _diff-wrapper ~/Documents/cheatsheets "$@"
+  _diff-wrapper ~/Repos/cheatsheets "$@"
 }
 diff-rezepte () {
-  _diff-wrapper ~/Documents/rezepte "$@"
+  _diff-wrapper ~/Repos/rezepte "$@"
 }
 
 _log-wrapper () {
@@ -881,34 +882,34 @@ _log-wrapper () {
 }
 
 log-dot-files () {
-  _log-wrapper ~/Documents/dot-files "$@"
+  _log-wrapper ~/Repos/dot-files "$@"
 }
 log-docker () {
-  _log-wrapper ~/Documents/dockerfiles "$@"
+  _log-wrapper ~/Repos/dockerfiles "$@"
 }
 log-mutt () {
   _log-wrapper ~/.mutt "$@"
 }
 log-go () {
-  _log-wrapper ~/Documents/golang/tools "$@"
+  _log-wrapper ~/Repos/golang/tools "$@"
 }
 log-zig () {
-  _log-wrapper ~/Documents/zig/tools "$@"
+  _log-wrapper ~/Repos/zig/tools "$@"
 }
 log-python () {
-  _log-wrapper ~/Documents/python/tools "$@"
+  _log-wrapper ~/Repos/python/tools "$@"
 }
 log-script () {
-  _log-wrapper ~/Documents/scripts "$@"
+  _log-wrapper ~/Repos/scripts "$@"
 }
 log-vim () {
   _log-wrapper ~/.vim "$@"
 }
 log-cheat () {
-  _log-wrapper ~/Documents/cheatsheets "$@"
+  _log-wrapper ~/Repos/cheatsheets "$@"
 }
 log-rezepte () {
-  _log-wrapper ~/Documents/rezepte "$@"
+  _log-wrapper ~/Repos/rezepte "$@"
 }
 
 _reset-wrapper () {
@@ -922,35 +923,35 @@ _reset-wrapper () {
 }
 
 reset-dot-files () {
-  _reset-wrapper ~/Documents/dot-files "$@"
-  (cd ~/Documents/dot-files && make)
+  _reset-wrapper ~/Repos/dot-files "$@"
+  (cd ~/Repos/dot-files && make)
 }
 reset-docker () {
-  _reset-wrapper ~/Documents/dockerfiles "$@"
+  _reset-wrapper ~/Repos/dockerfiles "$@"
 }
 reset-mutt () {
   _reset-wrapper ~/.mutt "$@"
 }
 reset-go () {
-  _reset-wrapper ~/Documents/golang/tools "$@"
+  _reset-wrapper ~/Repos/golang/tools "$@"
 }
 reset-zig () {
-  _reset-wrapper ~/Documents/zig/tools "$@"
+  _reset-wrapper ~/Repos/zig/tools "$@"
 }
 reset-python () {
-  _reset-wrapper ~/Documents/python/tools "$@"
+  _reset-wrapper ~/Repos/python/tools "$@"
 }
 reset-script () {
-  _reset-wrapper ~/Documents/scripts "$@"
+  _reset-wrapper ~/Repos/scripts "$@"
 }
 reset-vim () {
   _reset-wrapper ~/.vim "$@"
 }
 reset-cheat () {
-  _reset-wrapper ~/Documents/cheatsheets "$@"
+  _reset-wrapper ~/Repos/cheatsheets "$@"
 }
 reset-rezepte () {
-  _reset-wrapper ~/Documents/rezepte "$@"
+  _reset-wrapper ~/Repos/rezepte "$@"
 }
 
 _status-wrapper () {
@@ -961,34 +962,34 @@ _status-wrapper () {
 }
 
 status-dot-files () {
-  _status-wrapper ~/Documents/dot-files "$@"
+  _status-wrapper ~/Repos/dot-files "$@"
 }
 status-docker () {
-  _status-wrapper ~/Documents/dockerfiles "$@"
+  _status-wrapper ~/Repos/dockerfiles "$@"
 }
 status-mutt () {
   _status-wrapper ~/.mutt "$@"
 }
 status-go () {
-  _status-wrapper ~/Documents/golang/tools "$@"
+  _status-wrapper ~/Repos/golang/tools "$@"
 }
 status-zig () {
-  _status-wrapper ~/Documents/zig/tools "$@"
+  _status-wrapper ~/Repos/zig/tools "$@"
 }
 status-python () {
-  _status-wrapper ~/Documents/python/tools "$@"
+  _status-wrapper ~/Repos/python/tools "$@"
 }
 status-script () {
-  _status-wrapper ~/Documents/scripts "$@"
+  _status-wrapper ~/Repos/scripts "$@"
 }
 status-vim () {
   _status-wrapper ~/.vim "$@"
 }
 status-cheat () {
-  _status-wrapper ~/Documents/cheatsheets "$@"
+  _status-wrapper ~/Repos/cheatsheets "$@"
 }
 status-rezepte () {
-  _status-wrapper ~/Documents/rezepte "$@"
+  _status-wrapper ~/Repos/rezepte "$@"
 }
 
 
@@ -996,14 +997,14 @@ _sync-os-configs () {
   set +x
   local remote_path dir
 
-  username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+  username="$(read_toml_setting ~/.config/personal/fastmail.conf username)"
   if [ "$(uname)" = Darwin ]; then
     remote_path='fastmail:'"$username"'.fastmail.com/files/-config/arch'
-    local dir=~/Documents/misc/arch
+    local dir=~/.config/personal/sync-config/arch
     [ ! -d "$dir" ] && mkdir -p "$dir"
   else
     remote_path='fastmail:'"$username"'.fastmail.com/files/-config/mac-os'
-    dir=~/Documents/misc/mac-os
+    dir=~/.config/personal/sync-config/mac-os
   fi
 
   [ ! -d "$dir" ] && mkdir -p "$dir"
@@ -1016,7 +1017,7 @@ work-sync () {
 
   echo
 
-  ~/Documents/golang/tools/execute-in-repos/execute-in-repos git pull origin master
+  ~/Repos/golang/tools/execute-in-repos/execute-in-repos git pull origin master
 
   echo
   set -x
@@ -1051,19 +1052,19 @@ work_recompile_go_tools_conditionally () {
         fi
       fi
     )
-  done < <(find ~/Documents/golang/tools/ -maxdepth 1 -mindepth 1 -type d)
+  done < <(find ~/Repos/golang/tools/ -maxdepth 1 -mindepth 1 -type d)
 }
 
 work_push () {
-  ~/Documents/golang/tools/execute-in-repos git push
+  ~/Repos/golang/tools/execute-in-repos git push
 }
 
 work_fetch () {
-  ~/Documents/golang/tools/execute-in-repos git fetch
+  ~/Repos/golang/tools/execute-in-repos git fetch
 }
 
 work-checked-in () {
-  ~/Documents/scripts/checked-in.sh repo.conf
+  ~/Repos/scripts/checked-in.sh repo.conf
 }
 
 

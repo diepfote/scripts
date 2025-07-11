@@ -8,7 +8,7 @@ shopt -s failglob  # error on unexpaned globs
 
 export SET_COLORS_ALWAYS=true
 set +u
-source ~/Documents/scripts/source-me/colors.sh
+source ~/Repos/scripts/source-me/colors.sh
 set -u
 
 brew deps --installed --for-each "$@" \

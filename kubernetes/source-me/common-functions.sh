@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 
-source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Repos/scripts/source-me/common-functions.sh
 
 alias kctx="kubectx"
 alias kx="kubectx"
 alias ktx="kubectx"
-alias velero_annotate_all_volumes_for_pod='~/Documents/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh'
+alias velero_annotate_all_volumes_for_pod='~/Repos/scripts/kubernetes/velero_annotate_all_volumes_for_pod.sh'
 alias krew='kubectl krew'
 _add_to_PATH "$HOME/.krew/bin"
 

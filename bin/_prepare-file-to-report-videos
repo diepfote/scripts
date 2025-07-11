@@ -10,7 +10,7 @@ filename="$1"
 shift
 [ -f "$HOME/.bash_history_x" ] && HISTFILE="$HOME/.bash_history_x" || HISTFILE="$HOME/.bash_history"
 
-~/Documents/golang/tools/video-syncer/video-syncer 'report-files'  > "$filename"
+~/Repos/golang/tools/video-syncer/video-syncer 'report-files'  > "$filename"
 
 echo >> "$filename"
 grep -E "^mpv " "$HISTFILE" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"

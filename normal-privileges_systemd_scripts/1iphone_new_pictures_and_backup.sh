@@ -2,7 +2,7 @@
 #
 # shellcheck disable=SC1090
 
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 IFUSE_MOUNTPOINT="$(mktemp -d)"
 IPHONE_DCIM_DIR="$IFUSE_MOUNTPOINT"/DCIM
@@ -138,10 +138,10 @@ if [ -z "$is_private_laptop" ]; then
 fi
 
 
-iphone_backup_loc="$(read_toml_setting ~/Documents/config/sync.conf iphone-backup)"
-LOCAL_PICTURES_DIR="$(read_toml_setting ~/Documents/config/sync.conf photos)"
+iphone_backup_loc="$(read_toml_setting ~/.config/personal/sync.conf iphone-backup)"
+LOCAL_PICTURES_DIR="$(read_toml_setting ~/.config/personal/sync.conf photos)"
 
-do_image_copy
+# do_image_copy
 set -x
 idevicebackup2 -u "$(idevice_id -l | head -n1)" backup  "$iphone_backup_loc"
 set +x

@@ -108,16 +108,16 @@ done
   echo "Start: $(date)"
 } >&2
 
-source ~/Documents/scripts/source-me/spinner.sh
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
-source ~/Documents/scripts/source-me/linux/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/spinner.sh
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/linux/posix-compliant-shells.sh
 
 
 # TODO add items if you want to use this functionality!
 # I set this elsewhere
 #
 pkgs_with_saved_checksums=()
-source ~/Documents/scripts/private/source-me/linux/posix-compliant-shells.sh
+source ~/Repos/scripts/private/source-me/linux/posix-compliant-shells.sh
 
 
 cleanup() {

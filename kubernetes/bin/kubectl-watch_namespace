@@ -3,7 +3,7 @@
 
 # MEANT TO BE SYMLINKED TO A DIR EXPOSED IN PATH
 # in my case
-# ln -s ~/Documents/scripts/kubernetes/bin/darwin/watch-namespace \
+# ln -s ~/Repos/scripts/kubernetes/bin/darwin/watch-namespace \
 #       ~/.bin/kubectl-watch_namespace
 
 

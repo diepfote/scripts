@@ -254,7 +254,7 @@ _complete_files_and_dirs_helper () {
   # Copyright (C) 2012 - 2014 Jason A. Donenfeld <Jason@zx2c4.com> and
   # Brian Mattern <rephorm@rephorm.com>. All Rights Reserved.
   # This file is licensed under the GPLv2+. Please see COPYING for more information.
-	prefix="${DIR_TO_COMPLETE:-$HOME/Documents/scripts}"
+	prefix="${DIR_TO_COMPLETE:-$HOME/Repos/scripts}"
 	prefix="${prefix%/}/"
 	suffix=".gpg"
 	autoexpand=${1:-0}

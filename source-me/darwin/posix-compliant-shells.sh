@@ -3,7 +3,7 @@
 # reset exports
 unset LDFLAGS CPPFLAGS PKG_CONFIG_PATH
 
-source ~/Documents/scripts/source-me/darwin/common-functions.sh
+source ~/Repos/scripts/source-me/darwin/common-functions.sh
 
 _add_to_PATH "$(/opt/homebrew/opt/findutils/libexec/gnubin/find /opt/homebrew/Cellar/git/ -type d -name git-jump | head -n1)"
 
@@ -61,9 +61,9 @@ export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_
 # pipx installed binaries
 _add_to_PATH "$HOME/.local/bin"
 
-_add_to_PATH "$HOME/Documents/scripts/bin/darwin"
-_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin"
-_add_to_PATH "$HOME/Documents/scripts/kubernetes/bin/darwin"
+_add_to_PATH "$HOME/Repos/scripts/bin/darwin"
+_add_to_PATH "$HOME/Repos/scripts/kubernetes/bin"
+_add_to_PATH "$HOME/Repos/scripts/kubernetes/bin/darwin"
 
 _add_to_PATH "$HOME/.bazel/bin"
 export SDKMAN_DIR="$HOME/.sdkman"
@@ -218,11 +218,11 @@ dock-unhide () {
 }
 
 w-checked-in () {
-  ~/Documents/scripts/checked-in.sh work-repo.conf
+  ~/Repos/scripts/checked-in.sh work-repo.conf
 }
 
 
 w-git_execute_on_all_repos () {
-  ~/Documents/golang/tools/execute-in-repos/execute-in-repos -config work-repo.conf "$@"
+  ~/Repos/golang/tools/execute-in-repos/execute-in-repos -config work-repo.conf "$@"
 }
 

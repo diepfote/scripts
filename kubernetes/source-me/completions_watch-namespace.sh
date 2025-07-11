@@ -4,7 +4,7 @@
 # https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial
 
 
-source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
+source ~/Repos/scripts/kubernetes/source-me/common-functions.sh
 
 set +u
 

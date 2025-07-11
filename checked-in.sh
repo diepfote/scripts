@@ -12,7 +12,7 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 repo_conf="$1"
 shift
 
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 
 if [ "$repo_conf" = repo.conf ]; then
@@ -27,7 +27,7 @@ trap cleanup EXIT
 
 output="$temp"/out.txt
 
-~/Documents/golang/tools/execute-in-repos/execute-in-repos -workers 10 -config "$repo_conf" git status -sb > "$output"
+~/Repos/golang/tools/execute-in-repos/execute-in-repos -workers 10 -config "$repo_conf" git status -sb > "$output"
 if [ "$repo_conf" = repo.conf ]; then
   (_link-shared-password-store &)
 fi

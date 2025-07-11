@@ -7,5 +7,5 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-~/Documents/golang/tools/execute-in-repos/execute-in-repos -config <(find ~/Documents/auto-update-git-repos -mindepth 1 -maxdepth 1 -type d) -- git pull
+~/Repos/golang/tools/execute-in-repos/execute-in-repos -config <(find ~/Repos/auto-update-git-repos -mindepth 1 -maxdepth 1 -type d) -- git pull
 

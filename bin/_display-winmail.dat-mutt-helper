@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Repos/scripts/source-me/common-functions.sh
 
 dir=/tmp/tnef-temp
 mkdir -p "$dir"

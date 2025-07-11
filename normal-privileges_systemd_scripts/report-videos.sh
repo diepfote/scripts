@@ -7,7 +7,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 
 temp="$(mktemp -d)"
@@ -25,7 +25,7 @@ trap end EXIT
 LOCK_FILE=/tmp/report-videos-lock-file
 
 abort () {
-  source ~/Documents/scripts/source-me/colors.sh
+  source ~/Repos/scripts/source-me/colors.sh
   echo "${RED}[!]$NC an instance is already running. $ppid:$pid exiting." >&2
   echo "[.] lock file: $LOCK_FILE" >&2
   echo --- >&2
@@ -50,10 +50,10 @@ fi
 touch "$LOCK_FILE"
 
 
-local_video_syncer_storage=~/Documents/misc/videos
+local_video_syncer_storage=~/.config/personal/sync-config/videos
 mkdir -p "$local_video_syncer_storage"
 
-username="$(read_toml_setting ~/Documents/config/fastmail.conf username)"
+username="$(read_toml_setting ~/.config/personal/fastmail.conf username)"
 fastmail_path='fastmail:'"$username"'.fastmail.com/files/videos'
 proton_path='proton:videos'
 
@@ -111,11 +111,11 @@ find "$mpv_dir" ! -mtime -180 -delete  # delete files older than 180 days
 
 set -x
 # write videos-<system> file
-~/Documents/scripts/bin/_prepare-file-to-report-videos "$local_video_syncer_storage/$video_syncer_file"
+~/Repos/scripts/bin/_prepare-file-to-report-videos "$local_video_syncer_storage/$video_syncer_file"
 # update local watch_later config (if remote is further along)
-~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run
+~/Repos/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run
 # write mpv watch-later mapping file
-~/Documents/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files create-mapping-file
+~/Repos/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files create-mapping-file
 set +x
 
 # PUSH

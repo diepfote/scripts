@@ -51,7 +51,7 @@ fi
 # ==> Starting pkgver()...
 # ==> Sources are ready.
 # -U --noconfirm --config /etc/pacman.conf -- /home/flo/.cache/yay/usbmuxd-git/usbmuxd-git-1:1.1.1.r54.gc7a0dd9-1-x86_64.pkg.tar.zst
-# /home/flo/Documents/scripts/bin/linux/pacman: line 54: THROTTLE_BANDWIDTH: unbound variable
+# /home/flo/Repos/scripts/bin/linux/pacman: line 54: THROTTLE_BANDWIDTH: unbound variable
 #  -> error installing: [/home/flo/.cache/yay/usbmuxd-git/usbmuxd-git-1:1.1.1.r54.gc7a0dd9-1-x86_64.pkg.tar.zst] - exit status 1
 #
 #
@@ -70,8 +70,8 @@ cmd+=(/usr/bin/pacman)
 # we are doing
 if [ "$*" != '-Qmq' ] && [ "$*" != '-Ssq' ]; then
   # -Ssq is used in /usr/share/bash-completion/completions/pkgfile
-  # -Qmq is used in $HOME/Documents/scripts/source-me/completions_pkgbuild.sh
-  #                 $HOME/Documents/scripts/source-me/linux/completions_yay-generate-PKGBUILD-checksum.sh
+  # -Qmq is used in $HOME/Repos/scripts/source-me/completions_pkgbuild.sh
+  #                 $HOME/Repos/scripts/source-me/linux/completions_yay-generate-PKGBUILD-checksum.sh
   set -x
 fi
 

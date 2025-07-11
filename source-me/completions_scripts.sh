@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-script_dir="$HOME/Documents/scripts"
+script_dir="$HOME/Repos/scripts"
 source "$script_dir/source-me/common-functions.sh"
 
 _scripts_complete ()
 {
-  export DIR_TO_COMPLETE="$HOME/Documents/scripts"
+  export DIR_TO_COMPLETE="$HOME/Repos/scripts"
   _complete_files_and_dirs
 }
 

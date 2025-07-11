@@ -132,11 +132,11 @@ if [ -n "$DRY_RUN" ]; then
 fi
 
 
-source ~/Documents/scripts/source-me/spinner.sh
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
-source ~/Documents/scripts/source-me/darwin/posix-compliant-shells.sh
-source ~/Documents/scripts/cc/source-me/posix-compliant-shells.sh
-source ~/Documents/scripts/kubernetes/source-me/common-functions.sh
+source ~/Repos/scripts/source-me/spinner.sh
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/darwin/posix-compliant-shells.sh
+source ~/Repos/scripts/cc/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/kubernetes/source-me/common-functions.sh
 
 set +u
 spinner
@@ -171,7 +171,7 @@ while IFS= read -r line; do
   image_links+=("$line")
 done < <(curl -sL "$base_url/$latest_image_location" | grep cloud | "${sed_command[@]}")
 
-lima_config_file=~/Documents/dot-files/.lima/default/lima.yaml.j2
+lima_config_file=~/Repos/dot-files/.lima/default/lima.yaml.j2
 # set image location
 sed -i -r 's#("https://geo.mirror.pkgbuild.com/images).*(")'"#\1/$latest_image_location${image_links[0]}\2#"  "$lima_config_file"
 # set image sha256

@@ -26,7 +26,7 @@ trap cleanup EXIT
 
 
 set -x
-time ~/Documents/golang/tools/execute-on-files/execute-on-files -config <(find "$dir" -mindepth 1 "$@") ffmpeg-downscale-file
+time ~/Repos/golang/tools/execute-on-files/execute-on-files -config <(find "$dir" -mindepth 1 "$@") ffmpeg-downscale-file
 # @TODO
 # if COMMAND; do
 #   mv "$tmpdir"/* "$dir"

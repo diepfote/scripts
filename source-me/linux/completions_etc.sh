@@ -1,7 +1,7 @@
 
 #!/usr/bin/env bash
 
-source "$HOME/Documents/scripts/source-me/common-functions.sh"
+source "$HOME/Repos/scripts/source-me/common-functions.sh"
 
 _etc_complete ()
 {

@@ -4,7 +4,7 @@ set -o pipefail
 set -u
 set -e
 
-source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Repos/scripts/source-me/common-functions.sh
 
 
 backup_dir="$HOME/.bash_backup"

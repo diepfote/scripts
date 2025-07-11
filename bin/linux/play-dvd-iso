@@ -6,7 +6,7 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-source ~/Documents/scripts/source-me/common-functions.sh
+source ~/Repos/scripts/source-me/common-functions.sh
 
 
 mount_dir="$(mktemp -d)"
@@ -53,7 +53,7 @@ set -- "${positional_args[@]}"
 file="$1"
 # check is in default movie directory
 if [ ! -f "$file" ]; then
-  dir="$(read_toml_setting ~/Documents/config/sync.conf movies)"
+  dir="$(read_toml_setting ~/.config/personal/sync.conf movies)"
   file="$dir/$1"
 fi
 

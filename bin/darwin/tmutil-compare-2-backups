@@ -9,7 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 
 
 # shellcheck source=/dev/null
-source ~/Documents/scripts/source-me/spinner.sh
+source ~/Repos/scripts/source-me/spinner.sh
 
 
 set +u
@@ -33,10 +33,10 @@ if [ $# -lt 2 ]; then
   exit 0
 fi
 
-disk_backup_loc="$(~/Documents/python/tools/split_timemachine_path.py "$1" 0)"
+disk_backup_loc="$(~/Repos/python/tools/split_timemachine_path.py "$1" 0)"
 pushd "$disk_backup_loc"
-path1="$(~/Documents/python/tools/split_timemachine_path.py "$1" 1)"
-path2="$(~/Documents/python/tools/split_timemachine_path.py "$2" 1)"
+path1="$(~/Repos/python/tools/split_timemachine_path.py "$1" 1)"
+path2="$(~/Repos/python/tools/split_timemachine_path.py "$2" 1)"
 
 # $ tmutil listbackups
 set -x

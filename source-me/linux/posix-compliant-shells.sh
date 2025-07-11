@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 if [ -z "$NOT_HOST_ENV" ]; then
   # used in sniff & httpdump
@@ -11,8 +11,8 @@ if [ -z "$NOT_HOST_ENV" ]; then
 fi
 
 
-GIT_AUTHOR_NAME="$(read_toml_setting ~/Documents/config/git.conf name)"
-GIT_AUTHOR_EMAIL="$(read_toml_setting ~/Documents/config/git.conf email)"
+GIT_AUTHOR_NAME="$(read_toml_setting ~/.config/personal/git.conf name)"
+GIT_AUTHOR_EMAIL="$(read_toml_setting ~/.config/personal/git.conf email)"
 export GIT GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL
 export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
 export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
@@ -29,7 +29,7 @@ export SYSTEMD_COLORS=0
 
 _add_to_PATH /usr/share/git/git-jump
 
-_add_to_PATH "$HOME/Documents/scripts/bin/linux"  || true
+_add_to_PATH "$HOME/Repos/scripts/bin/linux"  || true
 
 
 
@@ -281,9 +281,9 @@ yay-generate-PKGBUILD-checksum () {
   fi
 
   if [ -n "$debug" ]; then
-    ~/Documents/python/tools/archlinux-yay-remove-package-info.py PKGBUILD | vimn -
+    ~/Repos/python/tools/archlinux-yay-remove-package-info.py PKGBUILD | vimn -
   else
-    ~/Documents/python/tools/archlinux-yay-remove-package-info.py PKGBUILD | sha256sum > "$output_file"
+    ~/Repos/python/tools/archlinux-yay-remove-package-info.py PKGBUILD | sha256sum > "$output_file"
 
   fi
   ls -alh "$output_file"
@@ -293,7 +293,7 @@ yay-generate-PKGBUILD-checksum () {
 _yay-update-based-on-checksum () {
   pkg_name="$1"
 
-  if ~/Documents/python/tools/archlinux-yay-remove-package-info.py "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
+  if ~/Repos/python/tools/archlinux-yay-remove-package-info.py "$yay_cache"/"$pkg_name"/PKGBUILD | sha256sum | grep -f "$yay_cache"/"$pkg_name"-PKGBUILD.sha256sum; then
     echo >&2
     set -x
     yay --noconfirm -Sa "$pkg_name"
@@ -301,7 +301,7 @@ _yay-update-based-on-checksum () {
   else
     set +x
     # shellcheck disable=SC1090
-    source ~/Documents/scripts/source-me/colors.sh
+    source ~/Repos/scripts/source-me/colors.sh
     # shellcheck disable=SC2154
     echo -en "$RED" >&2
     echo     "[!] checksums do not match for \`$pkg_name\`." >&2

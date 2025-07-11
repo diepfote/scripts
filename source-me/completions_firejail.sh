@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-script_dir="$HOME/Documents/scripts"
+script_dir="$HOME/Repos/scripts"
 source "$script_dir/source-me/common-functions.sh"
 
 _firejail_complete ()

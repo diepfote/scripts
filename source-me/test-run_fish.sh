@@ -3,7 +3,7 @@
 
 run_fish ()
 {
-  ~/Documents/python/run_fish.py "$@"
+  ~/Repos/python/run_fish.py "$@"
   sleep 1
   set -x
   ls -alh /tmp/tmpout

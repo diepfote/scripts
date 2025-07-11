@@ -8,7 +8,7 @@ shopt -s failglob  # error on unexpaned globs
 
 
 # shellcheck disable=SC1090
-source ~/Documents/scripts/source-me/posix-compliant-shells.sh
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 
 _help() {
@@ -55,7 +55,7 @@ fi
 size="$(isosize -x /dev/sr0 | cut -d ' ' -f6)"
 sector_count="$(isosize -x /dev/sr0 | cut -d ' ' -f3 | cut -d ',' -f1)"
 
-location_to_write_to="$(read_toml_setting ~/Documents/config/sync.conf movies)"
+location_to_write_to="$(read_toml_setting ~/.config/personal/sync.conf movies)"
 if [ ! -d "$location_to_write_to" ]; then
   location_to_write_to=~/Videos/movies_and_series
 fi
