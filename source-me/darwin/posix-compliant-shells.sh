@@ -86,10 +86,9 @@ export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib $LDFLAGS"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@3/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --
 
-# -- node 18 as node 20 does not work with `yarn` - 2023-04-21
-_add_to_PATH /opt/homebrew/opt/node@18/bin
-export LDFLAGS="-L/opt/homebrew/opt/node@18/lib $LDFLAGS"
-export CPPFLAGS="-I/opt/homebrew/opt/node@18/include:$CPPFLAGS"
+_add_to_PATH /opt/homebrew/opt/node@22/bin
+export LDFLAGS="-L/opt/homebrew/opt/node@22/lib $LDFLAGS"
+export CPPFLAGS="-I/opt/homebrew/opt/node@22/include:$CPPFLAGS"
 # --
 
 # --
