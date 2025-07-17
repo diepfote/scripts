@@ -680,6 +680,9 @@ edit-go () {
 edit-zig () {
   _edit-wrapper --dir ~/Repos/zig/tools "$1"
 }
+edit-rust () {
+  _edit-wrapper --dir ~/Repos/rust/tools "$1"
+}
 edit-python () {
   _edit-wrapper --dir ~/Repos/python/tools "$1"
 }
@@ -794,6 +797,9 @@ checkout-go () {
 checkout-zig () {
   _checkout-wrapper ~/Repos/zig/tools "$@"
 }
+checkout-rust () {
+  _checkout-wrapper ~/Repos/rust/tools "$@"
+}
 checkout-python () {
   _checkout-wrapper ~/Repos/python/tools "$@"
 }
@@ -819,6 +825,9 @@ commit-go () {
 }
 commit-zig () {
   commit-in-dir ~/Repos/zig/tools "$@"
+}
+commit-rust () {
+  commit-in-dir ~/Repos/rust/tools "$@"
 }
 commit-python () {
   commit-in-dir ~/Repos/python/tools "$@"
@@ -852,6 +861,9 @@ diff-go () {
 }
 diff-zig () {
   _diff-wrapper ~/Repos/zig/tools "$@"
+}
+diff-rust () {
+  _diff-wrapper ~/Repos/rust/tools "$@"
 }
 diff-python () {
   _diff-wrapper ~/Repos/python/tools "$@"
@@ -896,6 +908,9 @@ log-go () {
 log-zig () {
   _log-wrapper ~/Repos/zig/tools "$@"
 }
+log-rust () {
+  _log-wrapper ~/Repos/rust/tools "$@"
+}
 log-python () {
   _log-wrapper ~/Repos/python/tools "$@"
 }
@@ -938,6 +953,9 @@ reset-go () {
 reset-zig () {
   _reset-wrapper ~/Repos/zig/tools "$@"
 }
+reset-rust () {
+  _reset-wrapper ~/Repos/rust/tools "$@"
+}
 reset-python () {
   _reset-wrapper ~/Repos/python/tools "$@"
 }
@@ -975,6 +993,9 @@ status-go () {
 }
 status-zig () {
   _status-wrapper ~/Repos/zig/tools "$@"
+}
+status-rust () {
+  _status-wrapper ~/Repos/rust/tools "$@"
 }
 status-python () {
   _status-wrapper ~/Repos/python/tools "$@"
