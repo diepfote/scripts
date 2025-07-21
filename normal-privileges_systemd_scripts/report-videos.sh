@@ -111,7 +111,7 @@ find "$mpv_dir" ! -mtime -180 -delete  # delete files older than 180 days
 
 set -x
 # write videos-<system> file
-~/Repos/scripts/bin/_prepare-file-to-report-videos "$local_video_syncer_storage/$video_syncer_file"
+~/Repos/scripts/bin/_prepare-file-to-report-videos "$local_video_syncer_storage/$video_syncer_file"  || true
 # update local watch_later config (if remote is further along)
 ~/Repos/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run
 # write mpv watch-later mapping file
