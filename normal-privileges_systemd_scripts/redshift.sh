@@ -16,15 +16,24 @@ trap cleanup EXIT
 source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 
-start="$(read_toml_setting ~/.config/personal/redshift.conf start)"
-end="$(read_toml_setting ~/.config/personal/redshift.conf end)"
+start_h="$(read_toml_setting ~/.config/personal/redshift.conf start_h)"
+start_m="$(read_toml_setting ~/.config/personal/redshift.conf start_m)"
+end_h="$(read_toml_setting ~/.config/personal/redshift.conf end_h)"
+end_m="$(read_toml_setting ~/.config/personal/redshift.conf end_m)"
 
 current_h="$(date +%H)"
+current_m="$(date +%M)"
 
 set -x
 ENABLED=''
-if [ "$current_h" -ge "$start" ] || [ "$current_h" -le "$end" ]; then
+if [ "$current_h" -eq "$start_h" ] && [ "$current_m" -ge "$start_m" ]; then
   ENABLED=1
+elif [ "$current_h" -gt "$start_h" ]; then
+  ENABLED=1
+elif [ "$current_h" -eq "$end_h" ] && [ "$current_m" -ge "$end_m" ]; then
+  ENABLED=''
+elif [ "$current_h" -gt "$end_h" ]; then
+  ENABLED=''
 fi
 set +x
 
