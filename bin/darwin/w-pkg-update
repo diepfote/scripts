@@ -179,12 +179,14 @@ image_sha256="$(curl -sL "$base_url/$latest_image_location${image_links[1]}" | a
 sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
 
 if [ -z "$DO_NOT_START_LIMA" ]; then
-  if ! limactl list | tr -s ' ' ' ' | grep -q 'colima Running' 2>/dev/null; then
+  if ! colima list | tr -s '\t' ' ' | grep -q 'default Running' 2>/dev/null; then
     set -x
     colima start --memory 2  >/dev/null 2>&1  &
     set +x
     disown "$!"
     sleep 1
+  else
+    colima update -v
   fi
 
   # if ! limactl list | tr -s ' ' ' ' | grep -q 'default Running' 2>/dev/null; then
@@ -195,6 +197,7 @@ if [ -z "$DO_NOT_START_LIMA" ]; then
   #   sleep 1
   # fi
 fi
+
 
 # LIMA END
 # -----------------------------------------------------
