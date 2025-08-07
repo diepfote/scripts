@@ -57,6 +57,27 @@ else
   export USER=build-user
 fi
 
+# -----------------------
+# extend PATH start
+#
+source ~/Repos/scripts/source-me/common-functions.sh
+
+_add_to_PATH "$HOME/.bin"
+_add_to_PATH "$HOME/go/bin"
+_add_to_PATH "$HOME/.cargo/bin"
+_add_to_PATH "$HOME/Repos/scripts/bin"
+_add_to_PATH "$HOME/Repos/python/tools/bin"
+_add_to_PATH "$HOME/Repos/scripts/private/bin"
+_add_to_PATH "$HOME/Repos/dockerfiles/bin"
+_add_to_PATH "$HOME/Repos/golang/tools/execute-in-repos"
+_add_to_PATH "$HOME/Repos/golang/tools/execute-on-files"
+
+#
+# extend PATH end
+# -----------------------
+
+# -------------------------------
+# common exports START
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -78,31 +99,18 @@ export GO111MODULE=off
 # disable color for `ansible-doc`
 export ANSIBLE_NOCOLOR=1
 
+# common exports END
+# --------------------------------
 
-source ~/Repos/scripts/source-me/common-functions.sh
+# --------------------------------
+# add custom bash completions START
+
 for name in ~/Repos/scripts/source-me/completions_*; do
   source "$name"
 done
 
-
-
-# -----------------------
-# extend PATH start
-#
-
-_add_to_PATH "$HOME/.bin"
-_add_to_PATH "$HOME/go/bin"
-_add_to_PATH "$HOME/.cargo/bin"
-_add_to_PATH "$HOME/Repos/scripts/bin"
-_add_to_PATH "$HOME/Repos/python/tools/bin"
-_add_to_PATH "$HOME/Repos/scripts/private/bin"
-_add_to_PATH "$HOME/Repos/dockerfiles/bin"
-_add_to_PATH "$HOME/Repos/golang/tools/execute-in-repos"
-_add_to_PATH "$HOME/Repos/golang/tools/execute-on-files"
-
-#
-# extend PATH end
-# -----------------------
+# add custom bash completions END
+# --------------------------------
 
 # --------------------------
 # prompt style start
