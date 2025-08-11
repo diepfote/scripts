@@ -141,7 +141,7 @@ fi
 iphone_backup_loc="$(read_toml_setting ~/.config/personal/sync.conf iphone-backup)"
 LOCAL_PICTURES_DIR="$(read_toml_setting ~/.config/personal/sync.conf photos)"
 
-# do_image_copy
+do_image_copy
 set -x
 idevicebackup2 -u "$(idevice_id -l | head -n1)" backup  "$iphone_backup_loc"
 set +x
