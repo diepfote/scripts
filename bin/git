@@ -14,13 +14,13 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 # trap cleanup EXIT
 
 
-COMMAND=(/opt/homebrew/bin/git)
+GIT=(/opt/homebrew/bin/git)
 if [ "$(uname)" = Linux ]; then
-  # COMMAND=(firejail --profile=/etc/firejail/git.profile /usr/bin/git)
-  COMMAND=(/usr/bin/git)
+  # GIT=(firejail --profile=/etc/firejail/git.profile /usr/bin/git)
+  GIT=(/usr/bin/git)
 fi
 
-BASE="$("${COMMAND[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
+BASE="$("${GIT[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
 
 commit () {
   local ADD_PREFIX=''
@@ -64,13 +64,13 @@ commit () {
     prefix="[$(awk -F '/' '{ print $3 }' "$BASE"/.git/HEAD)] "
 
     if [ -n "$ADD_PREFIX" ]; then
-      "${COMMAND[@]}" commit -m "$prefix$message" "${saved_opts[@]}" "$@"
+      "${GIT[@]}" commit -m "$prefix$message" "${saved_opts[@]}" "$@"
     else
-      "${COMMAND[@]}" commit "${saved_opts[@]}" "$@"
+      "${GIT[@]}" commit "${saved_opts[@]}" "$@"
     fi
   else
 
-    "${COMMAND[@]}" commit "$@"
+    "${GIT[@]}" commit "$@"
   fi
 }
 
@@ -83,23 +83,29 @@ push () {
          sed 's#^.*gcrypt::## ; s/#.*"$//')" >/dev/null 2>&1; then
       # shellcheck disable=SC2016
       echo '[.] running pull for `git-remote-gcrypt` repo before push' >&2
-      "${COMMAND[@]}" pull "$@"
+      "${GIT[@]}" pull "$@"
       echo '[.] --' >&2
     fi
   fi
 
-  "${COMMAND[@]}" push "$@"
+  "${GIT[@]}" push "$@"
 }
 
 
 
 COMMIT=''
+CHECKOUT=''
 PUSH=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
     commit)
     COMMIT=true
+    shift
+    ;;
+
+    checkout)
+    CHECKOUT=true
     shift
     ;;
 
@@ -124,13 +130,17 @@ done
 if [ -n "$PUSH" ]; then
   push "$@"
 
+elif [ -n "$CHECKOUT" ]; then
+  "${GIT[@]}" checkout "$@"
+  GIT_PAGER=''  "${GIT[@]}" l -2
+
 elif [ -n "$COMMIT" ]; then
 
   commit "$@"
 
 else
 
-  "${COMMAND[@]}" "$@"
+  "${GIT[@]}" "$@"
 fi
 
 exit "$?"
