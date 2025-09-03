@@ -132,7 +132,10 @@ if [ -n "$PUSH" ]; then
 
 elif [ -n "$CHECKOUT" ]; then
   "${GIT[@]}" checkout "$@"
-  GIT_PAGER=''  "${GIT[@]}" l -2
+
+  if [ $# -eq 1 ]; then
+    GIT_PAGER=''  "${GIT[@]}" l -2
+  fi
 
 elif [ -n "$COMMIT" ]; then
 
