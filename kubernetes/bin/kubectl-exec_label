@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+_help() {
+cat <<EOF
+USAGE: kubectl exec-label -n <NAMESPACE> -l <LABEL> -it --  bash
+
+
+Examples:
+    kubectl exec-label -n default -l app=the-app -it --  bash
+    kubectl exec-label -n default -l app=the-app -- /tmp/script-to-run
+
+NOTES:
+    Please be sure to put namespace and label options before any other options,
+    flags or args. This script will not work correctly otherwise.
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+# Parse arguments
+LABEL=''
+NAMESPACE=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -l|--label)
+    LABEL="$2"
+    shift 2
+    ;;
+
+    -n|--namespace)
+    NAMESPACE="$2"
+    shift 2
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+pod="$(k get pod -o name -n "$NAMESPACE" -l "$LABEL" | head -n1)"
+
+set -x
+k exec -n "$NAMESPACE" "$pod" "$@"
+
