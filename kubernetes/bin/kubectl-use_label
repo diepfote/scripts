@@ -11,12 +11,21 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 _help() {
 cat <<EOF
-USAGE: kubectl exec-label -n <NAMESPACE> -l <LABEL> -it --  bash
+USAGE: kubectl use-label -n <NAMESPACE> -l <LABEL>  <what-you-want-to-run>
 
+Uses a label to run an operation on the first pod it finds.
 
 Examples:
-    kubectl exec-label -n default -l app=the-app -it --  bash
-    kubectl exec-label -n default -l app=the-app -- /tmp/script-to-run
+    kubectl use-label -n default -l app=the-app exec -it --  bash
+    kubectl use-label -n default -l app=the-app exec -- /tmp/script-to-run
+
+    kubectl use-label -n default -l app=the-app delete
+
+    kubectl use-label -n default -l app=the-app describe
+
+    kubectl use-label -n default -l app=the-app get -o json
+
+    kubectl use-label -n default -l app=the-app sick-pod
 
 NOTES:
     Please be sure to put namespace and label options before any other options,
@@ -28,6 +37,7 @@ if [ $# -eq 0 ]; then
   _help
   exit
 fi
+
 
 # Parse arguments
 LABEL=''
@@ -62,8 +72,11 @@ key="$1"
   esac
 done
 
-pod="$(k get pod -o name -n "$NAMESPACE" -l "$LABEL" | head -n1)"
+OP="$1"
+shift
+
+POD="$(k get pod -o name -n "$NAMESPACE" -l "$LABEL" | head -n1)"
 
 set -x
-k exec -n "$NAMESPACE" "$pod" "$@"
+k "$OP" -n "$NAMESPACE" "$POD" "$@"
 
