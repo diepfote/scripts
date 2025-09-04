@@ -20,7 +20,7 @@ if [ "$(uname)" = Darwin ]; then
     set -x
     # installed by homebrew (included in firefox)
     # located at /Applications/Firefox.app/Contents/MacOS/
-    firefox --private-window "$@"
+    /Applications/Firefox.app/Contents/MacOS/firefox --private-window "$@"
     set +x
   else
     set -x

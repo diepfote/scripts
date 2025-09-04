@@ -11,9 +11,12 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 _help() {
 cat <<EOF
-USAGE: kubectl use-label -n <NAMESPACE> -l <LABEL>  <what-you-want-to-run>
+USAGE: kubectl use-label -n <NAMESPACE> -l <LABEL> [--last] <what-you-want-to-run>
 
 Uses a label to run an operation on the first pod it finds.
+
+Options:
+    --last  ... take the last pod not the first
 
 Examples:
     kubectl use-label -n default -l app=the-app exec -it --  bash
@@ -42,6 +45,7 @@ fi
 # Parse arguments
 LABEL=''
 NAMESPACE=''
+LIMIT_CMD=(head -n 1)
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
@@ -53,6 +57,11 @@ key="$1"
     -n|--namespace)
     NAMESPACE="$2"
     shift 2
+    ;;
+
+    --last)
+    LIMIT_CMD=(tail -n 1)
+    shift
     ;;
 
     -h|--help)
@@ -75,7 +84,7 @@ done
 OP="$1"
 shift
 
-POD="$(k get pod -o name -n "$NAMESPACE" -l "$LABEL" | head -n1)"
+POD="$(k get pod -o name -n "$NAMESPACE" -l "$LABEL" | "${LIMIT_CMD[@]}" )"
 
 set -x
 k "$OP" -n "$NAMESPACE" "$POD" "$@"
