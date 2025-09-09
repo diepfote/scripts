@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+sys="$(uname)"
+exe=/usr/bin/ffmpeg
+
+if [ "$sys" = Darwin ]; then
+  exe=/opt/homebrew/bin/ffmpeg
+fi
+
+"$exe" -y "$@"
+
