@@ -28,17 +28,13 @@ _add_to_MANPATH "/opt/homebrew/opt/gnu-getopt/share/man"
 # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
 # otherwise these python versions will be resolved before latest
 #
-# python 3.9
-python_39_path="/opt/homebrew/opt/python@3.9/libexec/bin"
-_add_to_PATH "$python_38_path"
-
-# python 3.10
-python_310_path="/opt/homebrew/opt/python@3.10/libexec/bin"
-# ln -sf "$python_310_path"/python "$python_310_path"/python3
-_add_to_PATH "$python_310_path"
-# _add_to_PATH "$HOME/Library/Python/3.10/bin"
-# export LDFLAGS="-L/opt/homebrew/opt/python@3.10/lib $LDFLAGS"
-# export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.10/lib/pkgconfig:$PKG_CONFIG_PATH"
+# python 3.13
+python_313_path="/opt/homebrew/opt/python@3.13/libexec/bin"
+# ln -sf "$python_313_path"/python "$python_313_path"/python3
+_add_to_PATH "$python_313_path"
+# _add_to_PATH "$HOME/Library/Python/3.13/bin"
+# export LDFLAGS="-L/opt/homebrew/opt/python@3.13/lib $LDFLAGS"
+# export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.13/lib/pkgconfig:$PKG_CONFIG_PATH"
 #
 # python 3.12
 python_312_path="/opt/homebrew/opt/python@3.12/libexec/bin"
@@ -47,7 +43,7 @@ _add_to_PATH "$python_312_path"
 # _add_to_PATH "$HOME/Library/Python/3.12/bin"
 # export LDFLAGS="-L/opt/homebrew/opt/python@3.12/lib $LDFLAGS"
 # export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.12/lib/pkgconfig:$PKG_CONFIG_PATH"
-
+#
 # python 3.11 = default
 python_311_path="/opt/homebrew/opt/python@3.11/libexec/bin"
 ln -sf "$python_311_path"/python "$python_311_path"/python3
@@ -55,8 +51,6 @@ _add_to_PATH "$python_311_path"
 _add_to_PATH "$HOME/Library/Python/3.11/bin"
 export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib $LDFLAGS"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
-
-
 
 # pipx installed binaries
 _add_to_PATH "$HOME/.local/bin"
