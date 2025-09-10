@@ -84,7 +84,10 @@ done
 OP="$1"
 shift
 
-POD="$(k get pod -o name -n "$NAMESPACE" -l "$LABEL" | "${LIMIT_CMD[@]}" )"
+POD="$(k get pod -o name -n "$NAMESPACE" -l "$LABEL" | "${LIMIT_CMD[@]}")"
+if [ "$OP" == sick-pods ]; then
+  POD="$(echo "$POD" | cut -d '/' -f2)"
+fi
 
 set -x
 k "$OP" -n "$NAMESPACE" "$POD" "$@"
