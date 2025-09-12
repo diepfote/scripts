@@ -18,17 +18,24 @@ if [ $# -lt 2 ]; then
 fi
 
 
-filename="${@:$#}"  # last argument
-pattern="${@:(($#-1)):1}"  # next to last argument
+filename="${*:$#}"  # last argument
+pattern="${*:(($#-1)):1}"  # next to last argument
 
 temp_dir="$(mktemp -d)"
-trap "rm -rf "$temp_dir" " EXIT
+# shellcheck disable=SC2064
+trap "rm -rf $temp_dir " EXIT
 
 temp_filename="$temp_dir"/"$(basename "$filename")"
 cp "$filename" "$temp_filename"
 
 # ${@:1:(($#-2))} all except last 2 arguments
-sed -i ${@:1:(($#-2))} "$pattern" "$temp_filename"  # all arguments passed to sed
+sed -i "${@:1:(($#-2))}" "$pattern" "$temp_filename"  # all arguments passed to sed
 
-git diff --no-index --word-diff "$filename" "$temp_filename"
+
+git_additional_args=(--word-diff)
+GIT_PAGER="${GIT_PAGER:-}"
+if [[ "$GIT_PAGER" =~ delta.* ]]; then
+  git_additional_args=()
+fi
+git diff --no-index "${git_additional_args[@]}"  --  "$filename" "$temp_filename"
 
