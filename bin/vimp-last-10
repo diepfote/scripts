@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+while read -r f; do
+  echo "${YELLOW}$f$NC:"
+  awk 'NR>4 && NR<20'  "$f"
+  echo ---
+done < <(ls -tr ~/.local/share/nvim/parrot/chats/*.md | tail -n 10)
+
