@@ -24,18 +24,20 @@ end_m="$(read_toml_setting ~/.config/personal/redshift.conf end_m)"
 current_h="$(date +%H)"
 current_m="$(date +%M)"
 
-set -x
-ENABLED=''
+ENABLED=1
 if [ "$current_h" -eq "$start_h" ] && [ "$current_m" -ge "$start_m" ]; then
+  echo 1
   ENABLED=1
 elif [ "$current_h" -gt "$start_h" ]; then
+  echo 2
   ENABLED=1
 elif [ "$current_h" -eq "$end_h" ] && [ "$current_m" -ge "$end_m" ]; then
+  echo 3
   ENABLED=''
 elif [ "$current_h" -gt "$end_h" ]; then
+  echo 4
   ENABLED=''
 fi
-set +x
 
 
 if [ -f /tmp/redshift-on ]; then
