@@ -261,6 +261,11 @@ tmux-join-pane () {
 }
 
 tmux-save-pane-history () {
+  #
+  # e.g.
+  # $ tmux-save-pane-history -t %56 2025-09-23-ci-node-run-af-integration-tests.txt
+  #
+
   if [ -z "$1" ]; then
     echo '[!] No file path provided!' >&2
     return
