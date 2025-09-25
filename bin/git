@@ -25,7 +25,7 @@ BASE="$("${GIT[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
 commit () {
   local ADD_PREFIX=''
 
-  if [[ "$BASE" =~ deploy-.* ]]; then
+  if [[ "$BASE" =~ deploy-.* ]] && [ $# -gt 0 ]; then
     ADD_PREFIX=true
     saved_opts=()
     message=''
