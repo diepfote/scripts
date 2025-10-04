@@ -89,8 +89,4 @@ elif [ "$system" = Darwin ]; then
 
 fi
 
-{
-  echo
-  echo "Does rclone's config require an OTP update?"
-} >&2
-rclone ls proton:MANUALs
+

@@ -601,9 +601,9 @@ audacious-push-playlists () {
   local dst
 
   src=~/.config/audacious/playlists
-  dst='proton:-configs/audacious/playlists'
+  dst=~/.filen/-config/audacious/playlists
 
-  rclone sync --checksum --delete-excluded "$@" "$src" "$dst"
+  rsync -av "$src" "$dst"
 }
 
 
@@ -611,10 +611,10 @@ audacious-fetch-playlists () {
   local src
   local dst
 
-  src='proton:-configs/audacious/playlists'
+  src=~/.filen/-config/audacious/playlists
   dst=~/.config/audacious/playlists
 
-  rclone sync --checksum --delete-excluded "$@" "$src" "$dst"
+  rsync -av "$src" "$dst"
 
   if [ "$(uname)" = Darwin ]; then
     set -x
