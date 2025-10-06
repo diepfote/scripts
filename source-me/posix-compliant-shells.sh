@@ -1104,7 +1104,7 @@ _work_recompile_tools_conditionally () {
 }
 
 work_recompile_rust_tools_conditionally () {
-  _work_recompile_tools_conditionally src/main.rs ~/Repos/rust/tools '.(git|bin|cargo)' build 'target/release/'
+  _work_recompile_tools_conditionally src/main.rs ~/Repos/rust/tools '.(git|bin|cargo|images)' build 'target/release/'
 }
 
 work_recompile_go_tools_conditionally () {
