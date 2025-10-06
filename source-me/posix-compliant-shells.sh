@@ -1065,6 +1065,7 @@ work-sync () {
   echo
   set -x
   work_recompile_go_tools_conditionally
+  set -x
   work_recompile_rust_tools_conditionally
   echo
 
