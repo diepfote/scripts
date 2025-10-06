@@ -1060,6 +1060,7 @@ work-sync () {
   echo
   set -x
   work_recompile_go_tools_conditionally
+  work_recompile_rust_tools_conditionally
   echo
 
   set -x
@@ -1070,28 +1071,47 @@ work-sync () {
   echo
 }
 
-work_recompile_go_tools_conditionally () {
+
+
+_work_recompile_tools_conditionally () {
   set +x
+  filename="$1"
+  repo_path="$2"
+  dir_exclusions="$3"
+  make_rule="$4"
+  binary_path="$5"
+  shift 5
 
   # re-compile go tools if binaries are older than go files
   while read -r line; do
-    if [[ "$line" =~ .git ]]; then
+    if [[ "$line" =~ $dir_exclusions ]]; then
       # skip git directory
       continue
     fi
 
     (
       if cd "$line"; then
-        binary="$(basename "$line")"
+        binary="$binary_path$(basename "$line")"
         binary_date="$(date -r "$binary" '+%s'  2>/dev/null || echo -n '1')"
-        if [ "$(date -r main.go '+%s')" -gt "$binary_date" ]; then
+        src_date="$(date -r "$filename" '+%s')"
+        if [ "$src_date" -gt "$binary_date" ]; then
           echo "[.] recompiling '$binary'"
-          make no_debug
+          make "$make_rule"
         fi
       fi
     )
-  done < <(find ~/Repos/golang/tools/ -maxdepth 1 -mindepth 1 -type d)
+  done < <(find "$repo_path" -maxdepth 1 -mindepth 1 -type d)
 }
+
+work_recompile_rust_tools_conditionally () {
+  _work_recompile_tools_conditionally src/main.rs ~/Repos/rust/tools '.(git|bin|cargo)' build 'target/release/'
+}
+
+work_recompile_go_tools_conditionally () {
+  _work_recompile_tools_conditionally main.go ~/Repos/golang/tools '.git' no_debug ''
+}
+
+
 
 work_push () {
   ~/Repos/golang/tools/execute-in-repos git push
