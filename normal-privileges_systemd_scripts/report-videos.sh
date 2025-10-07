@@ -14,7 +14,7 @@ temp="$(mktemp -d)"
 
 
 end () {
-  rm -r "$temp"
+  # rm -r "$temp"
   set +x
   echo "[.] END   ppid:$ppid pid:$pid $(date)" >&2
   rm "$LOCK_FILE" || true
@@ -53,9 +53,8 @@ touch "$LOCK_FILE"
 local_video_syncer_storage=~/.config/personal/sync-config/videos
 mkdir -p "$local_video_syncer_storage"
 
-username="$(read_toml_setting ~/.config/personal/fastmail.conf username)"
-fastmail_path='fastmail:'"$username"'.fastmail.com/files/videos'
-proton_path='proton:videos'
+rsync_path=rsync.net:state/videos
+
 
 system=arch
 remote_system=mac
@@ -77,18 +76,18 @@ detect_error="$temp"/error
 {
   echo '#!/usr/bin/env bash'
 
-  echo rclone sync --update "$fastmail_path/$video_syncer_file_remote"   "$local_video_syncer_storage"
+  echo rsync -av  "$rsync_path/$video_syncer_file_remote"   "$local_video_syncer_storage"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo -n fastmail-video-file-to-local, >> '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n video-file-to-local, >> '"$detect_error"'; fi'
 
 } > "$exec_fetch1"
 exec_fetch2="$temp/2"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rclone sync --update "$fastmail_path/${remote_system}-mpv-watch_later/"   "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"
+  echo rsync -av "$rsync_path/${remote_system}-mpv-watch_later/"   "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo -n fastmail-remote-watch-later-to-local, >> '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n remote-watch-later-to-local, >> '"$detect_error"'; fi'
 
 } > "$exec_fetch2"
 
@@ -123,27 +122,27 @@ exec_push1="$temp/1"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rclone sync --update "$local_video_syncer_storage/$video_syncer_file"   "$fastmail_path"
+  echo rsync -av  "$local_video_syncer_storage/$video_syncer_file"   "$rsync_path/$video_syncer_file"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo -n fastmail-video-file-to-remote, >> '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n video-file-to-remote, >> '"$detect_error"'; fi'
 
 } > "$exec_push1"
 exec_push2="$temp/2"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rclone sync --update "$local_video_syncer_storage/mapping.txt"   "$fastmail_path"
+  echo rsync -av  "$local_video_syncer_storage/mapping.txt"   "$rsync_path/mapping.txt"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo -n fastmail-mapping-file-to-remote, >> '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n mapping-file-to-remote, >> '"$detect_error"'; fi'
 
 } > "$exec_push2"
 exec_push3="$temp/3"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rclone sync --update "$mpv_dir"   "$fastmail_path/${system}-mpv-watch_later/"
+  echo rsync -av  "$mpv_dir"   "$rsync_path/${system}-mpv-watch_later/"
   # echo 'echo exit code $?'
-  echo 'if [ $? -ne 0 ]; then echo -n fastmail-watch-later-to-remote, >> '"$detect_error"'; fi'
+  echo 'if [ $? -ne 0 ]; then echo -n watch-later-to-remote, >> '"$detect_error"'; fi'
 
 } > "$exec_push3"
 execute-on-files -workers 3 -config <(ls "$temp"/{1,2,3}) bash
