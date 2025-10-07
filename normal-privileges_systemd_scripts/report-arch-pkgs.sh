@@ -15,7 +15,7 @@ trap cleanup EXIT
 source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 
-dir=~/.config/personal/sync-config/arch
+dir=~/.config/personal/sync-config/arch/
 [ ! -d "$dir" ] && mkdir -p "$dir"
 
 remote_path='rsync.net:state/arch/'

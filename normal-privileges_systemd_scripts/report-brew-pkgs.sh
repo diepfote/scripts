@@ -13,7 +13,7 @@ source ~/Repos/scripts/source-me/common-functions.sh
 source ~/Repos/scripts/source-me/darwin/common-functions.sh
 _add_to_PATH ~/Repos/python/tools/bin
 
-dir=~/.config/personal/sync-config/mac-os
+dir=~/.config/personal/sync-config/mac-os/
 [ ! -d "$dir" ] && mkdir "$dir"
 
 remote_path='rsync.net:state/mac-os/'
