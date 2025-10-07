@@ -1040,18 +1040,17 @@ _sync-os-configs () {
   set +x
   local remote_path dir
 
-  username="$(read_toml_setting ~/.config/personal/fastmail.conf username)"
   if [ "$(uname)" = Darwin ]; then
-    remote_path='fastmail:'"$username"'.fastmail.com/files/-config/arch'
-    local dir=~/.config/personal/sync-config/arch
+    remote_path='rsync.net:state/arch/'
+    dir=~/.config/personal/sync-config/arch/
     [ ! -d "$dir" ] && mkdir -p "$dir"
   else
-    remote_path='fastmail:'"$username"'.fastmail.com/files/-config/mac-os'
-    dir=~/.config/personal/sync-config/mac-os
+    remote_path='rsync.net:state/mac-os/'
+    dir=~/.config/personal/sync-config/mac-os/
   fi
 
   [ ! -d "$dir" ] && mkdir -p "$dir"
-  rclone sync --update --delete-excluded "$remote_path" "$dir"
+  rsync -av --delete  "$remote_path" "$dir"
 }
 
 work-sync () {

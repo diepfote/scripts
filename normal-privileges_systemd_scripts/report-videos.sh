@@ -85,7 +85,7 @@ exec_fetch2="$temp/2"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rsync -av "$rsync_path/${remote_system}-mpv-watch_later/"   "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"
+  echo rsync -av --delete  "$rsync_path/${remote_system}-mpv-watch_later/"   "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n remote-watch-later-to-local, >> '"$detect_error"'; fi'
 
@@ -140,7 +140,7 @@ exec_push3="$temp/3"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rsync -av  "$mpv_dir"   "$rsync_path/${system}-mpv-watch_later/"
+  echo rsync -av --delete  "$mpv_dir"   "$rsync_path/${system}-mpv-watch_later/"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n watch-later-to-remote, >> '"$detect_error"'; fi'
 
