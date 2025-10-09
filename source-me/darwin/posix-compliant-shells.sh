@@ -55,6 +55,7 @@ export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_
 # pipx installed binaries
 _add_to_PATH "$HOME/.local/bin"
 
+_add_to_PATH "$HOME/Repos/scripts/private/bin/darwin"
 _add_to_PATH "$HOME/Repos/scripts/bin/darwin"
 _add_to_PATH "$HOME/Repos/scripts/kubernetes/bin"
 _add_to_PATH "$HOME/Repos/scripts/kubernetes/bin/darwin"

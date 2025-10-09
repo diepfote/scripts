@@ -29,7 +29,8 @@ export SYSTEMD_COLORS=0
 
 _add_to_PATH /usr/share/git/git-jump
 
-_add_to_PATH "$HOME/Repos/scripts/bin/linux"  || true
+_add_to_PATH "$HOME/Repos/scripts/private/bin/linux"
+_add_to_PATH "$HOME/Repos/scripts/bin/linux"
 
 
 

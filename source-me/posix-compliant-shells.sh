@@ -6,6 +6,8 @@ echo ${TMUX:=''} >/dev/null
 echo ${BASH_SOURCE_IT:=''} >/dev/null
 echo ${TMUX_FAILURE:=''} >/dev/null
 
+system="$(uname)"
+
 if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
    [ "$(hostname)" = docker-desktop ] || \
    [[ "$(hostname)" =~ .*lima.* ]] || \
@@ -25,7 +27,7 @@ if [ -z "$NOT_HOST_ENV" ]; then
     # try to start it again
     :
   elif [ "$(tty)" = /dev/tty1 ] && \
-     [ "$(uname)" = Linux ]; then
+     [ "$system" = Linux ]; then
     # startxfce4
     startx  # i3 based on ~/.xinitrc
     return
@@ -68,8 +70,6 @@ _add_to_PATH "$HOME/.cargo/bin"
 _add_to_PATH "$HOME/Repos/scripts/bin"
 _add_to_PATH "$HOME/Repos/python/tools/bin"
 _add_to_PATH "$HOME/Repos/scripts/private/bin"
-_add_to_PATH "$HOME/Repos/scripts/private/bin/darwin"
-_add_to_PATH "$HOME/Repos/scripts/private/bin/linux"
 _add_to_PATH "$HOME/Repos/dockerfiles/bin"
 _add_to_PATH "$HOME/Repos/golang/tools/execute-in-repos"
 _add_to_PATH "$HOME/Repos/golang/tools/execute-on-files"
