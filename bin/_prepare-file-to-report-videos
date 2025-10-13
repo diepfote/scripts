@@ -13,4 +13,5 @@ shift
 ~/Repos/golang/tools/video-syncer/video-syncer 'report-files'  > "$filename"
 
 echo >> "$filename"
-grep -E "^mpv " "$HISTFILE" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"
+grep -E "^mpv(|-rsync.net) " "$HISTFILE" 2>/dev/null | sort | uniq | tail -n 15 >> "$filename"
+echo
