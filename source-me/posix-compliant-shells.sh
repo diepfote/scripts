@@ -605,8 +605,8 @@ audacious-push-playlists () {
   local src
   local dst
 
-  src=~/.config/audacious/playlists
-  dst=~/.filen/-config/audacious/playlists
+  src=~/.config/audacious/playlists/
+  dst='rsync.net:state/audacious/'
 
   rsync -av "$src" "$dst"
 }
@@ -616,8 +616,8 @@ audacious-fetch-playlists () {
   local src
   local dst
 
-  src=~/.filen/-config/audacious/playlists
-  dst=~/.config/audacious/playlists
+  src='rsync.net:state/audacious/'
+  dst=~/.config/audacious/playlists/
 
   rsync -av "$src" "$dst"
 
