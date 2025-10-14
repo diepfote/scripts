@@ -234,10 +234,17 @@ for pkg_name in "${pkgs_with_saved_checksums[@]}"; do
   fi
   _yay-update-based-on-checksum "$pkg_name"  || true
 done
+
 _yay-update-anything-else
+
+# avoid weird issue on btrfs if we shutdown right after an upgrade
+set -x
+sync
+
 set +x
 sudo -k
 
 echo
 echo "End: $(date)"
 echo =====================
+
