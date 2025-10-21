@@ -17,10 +17,11 @@ if [ "$(uname)" = Darwin ]; then
 
   if [ -n "$FIREFOX" ]; then
 
+    # shellcheck disable=SC2005
+    current_profile="$(echo "$(read_toml_setting ~/.config/personal/firefox.conf current-profile)")"
     set -x
     # installed by homebrew (included in firefox)
-    # located at /Applications/Firefox.app/Contents/MacOS/
-    /Applications/Firefox.app/Contents/MacOS/firefox --private-window "$@"
+    (/Applications/Firefox.app/Contents/MacOS/firefox --profile "$current_profile"  "$@"  >/dev/null 2>&1  &)
     set +x
   else
     set -x
