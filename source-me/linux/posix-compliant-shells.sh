@@ -88,6 +88,7 @@ open_file_if_not_open () {
 xdg-open () {
   (command xdg-open "$@" >/dev/null 2>&1 &)
 }
+alias open=xdg-open
 
 
 
