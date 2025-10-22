@@ -54,14 +54,21 @@ if [ ! -f "$file" ]; then
   file="$dir/$1"
 fi
 
+vlc=/usr/bin/vlc
+mpv=/usr/bin/mpv
+if [ "$(uname)" = Darwin ]; then
+  vlc=/Applications/VLC.app/Contents/MacOS/VLC
+  mpv=/opt/homebrew/bin/mpv
+fi
+
 
 if [ -z "$USE_VLC" ]; then
   set -x
-  /usr/bin/mpv dvd://  --dvd-device="$file"
+  "$mpv" dvd://  --dvd-device="$file"
 else
 
   set -x
-  /usr/bin/vlc "$file"
+  "$vlc" "$file"
 fi
 
 
