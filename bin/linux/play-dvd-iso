@@ -9,9 +9,6 @@ shopt -s failglob  # error on unexpaned globs
 source ~/Repos/scripts/source-me/common-functions.sh
 
 
-mount_dir="$(mktemp -d)"
-mkdir -p "$mount_dir"  # p flag to avoid errors if exists
-
 _help () {
 cat <<EOF
 USAGE: play-dvd-iso (-vlc) ISO_FILE
@@ -57,21 +54,14 @@ if [ ! -f "$file" ]; then
   file="$dir/$1"
 fi
 
-cleanup () {
-  fusermount -u "$mount_dir"
-  rm -r "$mount_dir"
-  set +x
-}
-trap "cleanup" EXIT
-
-fuseiso "$file" "$mount_dir"
 
 if [ -z "$USE_VLC" ]; then
   set -x
-  /usr/bin/mpv "$mount_dir"
+  /usr/bin/mpv dvd://  --dvd-device="$file"
 else
+
   set -x
-  /usr/bin/vlc "$mount_dir"
+  /usr/bin/vlc "$file"
 fi
 
 
