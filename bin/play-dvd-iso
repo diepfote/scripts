@@ -26,9 +26,15 @@ fi
 # Parse arguments
 positional_args=()
 USE_VLC=''
+LOOPBACK_DEV=''
 while [ $# -gt 0 ]; do
   key="$1"
   case "$key" in
+    --loopback)
+    LOOPBACK_DEV=true
+    shift 1
+    ;;
+
     -vlc)
     USE_VLC=true
     shift 1
@@ -67,8 +73,29 @@ if [ -z "$USE_VLC" ]; then
   "$mpv" dvd://  --dvd-device="$file"
 else
 
-  set -x
-  "$vlc" "$file"
+what="$file"
+
+if [ -n "$LOOPBACK_DEV" ]; then
+
+  mount_dir="$(mktemp -d)"
+  mkdir -p "$mount_dir"  # p flag to avoid errors if exists
+
+  cleanup () {
+    fusermount -u "$mount_dir"
+    rm -r "$mount_dir"
+    set +x
+  }
+  trap "cleanup" EXIT
+
+  fuseiso "$file" "$mount_dir"
+
+  what="$mount_dir"
 fi
+
+  set -x
+  "$vlc" "$what"
+
+fi
+
 
 
