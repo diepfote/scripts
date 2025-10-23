@@ -202,8 +202,9 @@ alias vimy="vimn -c ':set ft=yaml'"
 alias vimj="vimn -c ':set ft=json'"
 
 
-
 alias keepassxc-allow-screencapture='/Applications/KeePassXC.app/Contents/MacOS/KeePassXC --allow-screencapture >/dev/null 2>&1 &'
+
+alias cdr='cd ~/Repos'
 
 
 # common aliases END

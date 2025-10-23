@@ -61,9 +61,11 @@ remote_system=mac
 mpv_dir=~/.local/state/mpv/watch_later/
 video_syncer_file=videos-home.txt
 video_syncer_file_remote=videos-work.txt
+mapping_file=mapping-home.txt
 if [ "$(uname)" = Darwin ]; then
   video_syncer_file=videos-work.txt
   video_syncer_file_remote=videos-home.txt
+  mapping_file=mapping-work.txt
   system=mac
   remote_system=arch
   mpv_dir=~/.config/mpv/watch_later/
@@ -110,7 +112,8 @@ find "$mpv_dir" ! -mtime -180 -delete  # delete files older than 180 days
 
 set -x
 # write videos-<system> file
-~/Repos/scripts/bin/_prepare-file-to-report-videos "$local_video_syncer_storage/$video_syncer_file"  || true
+~/Repos/golang/tools/video-syncer/video-syncer 'report-files'  > "$local_video_syncer_storage/$video_syncer_file"
+
 # update local watch_later config (if remote is further along)
 ~/Repos/golang/tools/sync-video-syncer-mpv-watch-later-files/sync-video-syncer-mpv-watch-later-files --no-dry-run
 # write mpv watch-later mapping file
@@ -131,7 +134,7 @@ exec_push2="$temp/2"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rsync -av  "$local_video_syncer_storage/mapping.txt"   "$rsync_path/mapping.txt"
+  echo rsync -av  "$local_video_syncer_storage/mapping.txt"   "$rsync_path/$mapping_file"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n mapping-file-to-remote, >> '"$detect_error"'; fi'
 
