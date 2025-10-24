@@ -15,8 +15,17 @@ home="$(read_toml_setting ~/.config/personal/sync.conf rsync.net.home)"
 # libssh does not follow Include directives
 host=mpv-rsync.net
 
-path="$1"
-shift
+if [ $# -gt 1 ] && [ "$1" = --decode ]; then
+  full_url="$2"
+  shift 2
+  decoded_full_sftp_url="$(urldecode "$full_url")"
+
+  # cut off anything before Media/
+  path="$(echo -n "$decoded_full_sftp_url" | awk -F '/' '{for (i=7; i<=NF-1; i++) printf "%s/", $i; printf "%s", $NF; print ""}')"
+else
+  path="$1"
+  shift
+fi
 
 # mpv -v "$@" "sftp://$host$home/$path"
 ( mpv "$@" "sftp://$host$home/$path" >/dev/null 2>&1 & )
