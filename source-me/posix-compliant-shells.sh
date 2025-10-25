@@ -95,9 +95,6 @@ export BAT_STYLE=plain  # use change for + signs next to modifications --> git
 
 export STARDICT_DATA_DIR="$HOME/.dictionaries/"
 
-# TODO remove?
-export GO111MODULE=off
-
 # disable color for `ansible-doc`
 export ANSIBLE_NOCOLOR=1
 
