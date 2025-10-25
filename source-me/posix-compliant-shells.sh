@@ -1058,6 +1058,7 @@ work-sync () {
   echo
 
   ~/Repos/golang/tools/execute-in-repos/execute-in-repos git pull origin master
+  reload
 
   echo
   set -x
