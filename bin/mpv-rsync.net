@@ -21,7 +21,7 @@ if [ $# -gt 1 ] && [ "$1" = --decode ]; then
   decoded_full_sftp_url="$(urldecode "$full_url")"
 
   # cut off anything before Media/
-  path="$(echo -n "$decoded_full_sftp_url" | awk -F '/' '{for (i=7; i<=NF-1; i++) printf "%s/", $i; printf "%s", $NF; print ""}')"
+  path="$(echo -n "$decoded_full_sftp_url" | sed -r 's#.*(Media/)#\1#')"
 else
   path="$1"
   shift
