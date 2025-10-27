@@ -28,7 +28,7 @@ brew services > "$dir"/brew-services.txt
 cargo install --list > "$dir"/cargo-pkgs.txt
 
 # pip freeze but only explicitly installed pkgs
-(cd ~ && pip-chill > "$dir"/python-pkgs.txt)
+(cp ~/pyproject.toml "$dir"/pyproject.toml)
 
 pipx list --include-injected > "$dir"/pipx-list.txt
 

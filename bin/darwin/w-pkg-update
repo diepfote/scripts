@@ -206,54 +206,9 @@ fi
 # -----------------------------------------------------
 # PYTHON START
 
-echo -e '\n--------\npip\n' >&2
-#
-# bypass virtualenv with `-E`
-#
-# $ python -E ...
-#
-python_install_cmd=(python3 -E -m pip install --break-system-packages --upgrade)
-grep_install_cmd=(grep -v 'already satisfied')
+echo -e '\n--------\nuv\n' >&2
 
-print_additional_arg_info () {
-  local additional_arg="$1"
-  if [[ "$additional_arg" =~ user ]]; then
-    # shellcheck disable=SC2154
-    echo "${PURPLE}[${NC}.${PURPLE}]$NC user"  >&2
-  else
-    # shellcheck disable=SC2154
-    echo "${PURPLE}[${NC}.${PURPLE}]$NC global"  >&2
-  fi
-}
-python_update_pkg () {
-  local pkg="$1"
-  local additional_arg="$2"
-
-  if [[ "$pkg" =~ typing-extensions|rich ]]; then
-    # shellcheck disable=SC2154
-    echo "  [.] Pinnend pkg: ${YELLOW}$pkg$NC. Skipping upgrade."  >&2
-    return
-  fi
-
-  if [ -n "$additional_arg" ]; then
-    "${python_install_cmd[@]}" "$additional_arg" "$pkg" | "${grep_install_cmd[@]}" || true
-  else
-    set -x
-    "${python_install_cmd[@]}" "$pkg" | "${grep_install_cmd[@]}" || true
-    set +x
-  fi
-}
-additional_args=('' '--user')  # global and user pkgs
-for additional_arg in "${additional_args[@]}"; do
-  print_additional_arg_info "$additional_arg"
-  while read -r pkg; do
-    python_update_pkg "$pkg" "$additional_arg"
-  done < <(python3 -E -m pip list --outdated --format=json "$additional_arg" | jq --raw-output '.[].name')
-done
-
-unset python_install_cmd grep_install_cmd additional_args
-unset -f python_update_pkg
-
+(cd ~/ && set -x && uv lock --upgrade && uv sync && set +x)
 
 echo -e '\n--------\npipx\n'  >&2
 set -x

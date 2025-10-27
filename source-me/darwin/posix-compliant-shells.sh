@@ -46,11 +46,15 @@ _add_to_PATH "$python_312_path"
 #
 # python 3.11 = default
 python_311_path="/opt/homebrew/opt/python@3.11/libexec/bin"
-ln -sf "$python_311_path"/python "$python_311_path"/python3
+# ln -sf "$python_311_path"/python "$python_311_path"/python3
 _add_to_PATH "$python_311_path"
 _add_to_PATH "$HOME/Library/Python/3.11/bin"
 export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib $LDFLAGS"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+_add_to_PATH ~/.venv/bin/
+export LDFLAGS="-L$HOME/.venv/lib/ $LDFLAGS"
+export PKG_CONFIG_PATH="$HOME/.venv/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # pipx installed binaries
 _add_to_PATH "$HOME/.local/bin"
