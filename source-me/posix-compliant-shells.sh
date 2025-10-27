@@ -674,6 +674,36 @@ edit-bash-history () {
   (sleep 300 && rm "$neovim_undo_dir"/*bash_history* 1>/dev/null 2>&1  &)
 }
 
+vimco () {
+  vim -c ':call CopilotChatOpenOnly()' "$@"
+}
+vimp () {
+  vim -c ':PrtChatNew; :only' "$@"
+}
+vimp-last-10 () {
+  while read -r f; do
+    echo "${YELLOW}$f$NC:"
+    awk 'NR>4 && NR<20'  "$f"
+    echo ---
+  done < <(ls -tr ~/.local/share/nvim/parrot/chats/*.md | tail -n 10)
+}
+vimp-search () {
+  ag --markdown "$@" ~/.local/share/nvim/parrot/chats/
+}
+vimn () {
+  # scratch space
+  vim -c 'set buftype=nofile' "$@"
+}
+
+
+#
+# common functions END
+# ---------------------------
+
+
+# ---------------------------
+# git helpers START
+#
 
 new-docker () {
   edit-docker "$@"
@@ -755,17 +785,6 @@ _edit-wrapper () {
 
   "${command[@]}" "$DIR"/"$1"
 }
-
-
-#
-# common functions END
-# ---------------------------
-
-
-# ---------------------------
-# git helpers START
-#
-
 
 cheatsheets_pull () {
   (

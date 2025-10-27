@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# scratch space
-vim -c 'set buftype=nofile' "$@"
