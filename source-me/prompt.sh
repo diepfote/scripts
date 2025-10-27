@@ -27,7 +27,7 @@ _ps1 () {
     fi
     PS1_TAGGED=true
   fi
-  PS1="$(~/Repos/rust/tools/bash_helper/target/"$BASH_HELPER_FILENAME")"
+  PS1="$(~/Repos/rust/tools/bash-helper/target/"$BASH_HELPER_FILENAME")"
 }
 
 if [ -n "$ZSH" ]; then
