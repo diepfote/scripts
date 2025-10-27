@@ -210,10 +210,9 @@ echo -e '\n--------\nuv\n' >&2
 
 (cd ~/ && set -x && uv lock --upgrade && uv sync && set +x)
 
-echo -e '\n--------\npipx\n'  >&2
+echo -e '\n--------\nuv tool\n'  >&2
 set -x
-pipx upgrade-all --include-injected
-ln -f --relative -s ~/.local/pipx/venvs/virtualenv/bin/virtualenv-make-relocatable ~/.local/bin/virtualenv-make-relocatable
+uv tool upgrade --all
 set +x
 
 #  PYTHON END

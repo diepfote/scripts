@@ -30,7 +30,7 @@ cargo install --list > "$dir"/cargo-pkgs.txt
 # pip freeze but only explicitly installed pkgs
 (cp ~/pyproject.toml "$dir"/pyproject.toml)
 
-pipx list --include-injected > "$dir"/pipx-list.txt
+uv tool list --show-python --show-extras --show-with --show-version-specifiers > "$dir"/uv-tool-list.txt
 
 kubectl krew list > "$dir"/krew-pkgs.txt
 set +x
