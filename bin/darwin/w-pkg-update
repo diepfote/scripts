@@ -220,6 +220,18 @@ set +x
 
 
 echo -e '\n--------\nruby\n'  >&2
+
+print_additional_arg_info () {
+  local additional_arg="$1"
+  if [[ "$additional_arg" =~ user ]]; then
+    # shellcheck disable=SC2154
+    echo "${PURPLE}[${NC}.${PURPLE}]$NC user"  >&2
+  else
+    # shellcheck disable=SC2154
+    echo "${PURPLE}[${NC}.${PURPLE}]$NC global"  >&2
+  fi
+}
+
 additional_args=('')  # global only
 for additional_arg in "${additional_args[@]}"; do
   print_additional_arg_info "$additional_arg"
