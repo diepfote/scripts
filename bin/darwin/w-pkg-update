@@ -203,57 +203,10 @@ fi
 # -----------------------------------------------------
 
 
-# -----------------------------------------------------
-# PYTHON START
 
-echo -e '\n--------\nuv\n' >&2
+echo -e '\n--------\n_w-pkg-update helpers\n'  >&2
+execute-on-files -config <(find "$(dirname "$0")" -name '_w-pkg-update-*') bash
 
-(cd ~/ && set -x && uv lock --upgrade && uv sync && set +x)
-
-echo -e '\n--------\nuv tool\n'  >&2
-set -x
-uv tool upgrade --all
-set +x
-
-#  PYTHON END
-# -----------------------------------------------------
-
-
-echo -e '\n--------\nruby\n'  >&2
-
-print_additional_arg_info () {
-  local additional_arg="$1"
-  if [[ "$additional_arg" =~ user ]]; then
-    # shellcheck disable=SC2154
-    echo "${PURPLE}[${NC}.${PURPLE}]$NC user"  >&2
-  else
-    # shellcheck disable=SC2154
-    echo "${PURPLE}[${NC}.${PURPLE}]$NC global"  >&2
-  fi
-}
-
-additional_args=('')  # global only
-for additional_arg in "${additional_args[@]}"; do
-  print_additional_arg_info "$additional_arg"
-  gem update "$additional_arg"  # requires gem install rubygems-update
-done
-
-unset additional_args
-unset -f print_additional_arg_info
-
-
-echo -e '\n--------\nnpm\n'  >&2
-while read -r package; do
-  # safe upgrade all https://gist.github.com/othiym23/4ac31155da23962afd0e
-  set -x
-  npm -g install "$package"
-  set +x
-done < <(npm -g outdated --parseable --depth=0 | cut -d: -f2)
-
-
-echo -e '\n--------\nkrew\n'  >&2
-kubectl krew update
-kubectl krew upgrade  2>&1 |  grep -vE 'already on the newest version|Upgrading plugin' || true
 
 
 # ---------------------------------------------------

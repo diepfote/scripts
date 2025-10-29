@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+echo -e '\n--------\nnpm\n'  >&2
+while read -r package; do
+  # safe upgrade all https://gist.github.com/othiym23/4ac31155da23962afd0e
+  set -x
+  npm -g install "$package"
+  set +x
+done < <(npm -g outdated --parseable --depth=0 | cut -d: -f2)
+
