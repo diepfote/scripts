@@ -73,6 +73,8 @@ _add_to_PATH "$HOME/Repos/scripts/private/bin"
 _add_to_PATH "$HOME/Repos/dockerfiles/bin"
 _add_to_PATH "$HOME/Repos/golang/tools/execute-in-repos"
 _add_to_PATH "$HOME/Repos/golang/tools/execute-on-files"
+_add_to_PATH "$HOME/Repos/rust/tools/execute/target/release"
+_add_to_PATH "$HOME/Repos/rust/tools/read-ini-setting/target/release"
 
 #
 # extend PATH end
