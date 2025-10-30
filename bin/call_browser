@@ -21,7 +21,7 @@ if [ "$(uname)" = Darwin ]; then
     current_profile="$(echo "$(read_toml_setting ~/.config/personal/firefox.conf current-profile)")"
     set -x
     # installed by homebrew (included in firefox)
-    (/Applications/Firefox.app/Contents/MacOS/firefox --profile "$current_profile"  "$@"  >/dev/null 2>&1  &)
+    (cd ~ && /Applications/Firefox.app/Contents/MacOS/firefox --profile "$current_profile"  "$@"  >/dev/null 2>&1  &)
     set +x
   else
     set -x
