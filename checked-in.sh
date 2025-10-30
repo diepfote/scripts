@@ -27,7 +27,7 @@ trap cleanup EXIT
 
 output="$temp"/out.txt
 
-~/Repos/golang/tools/execute-in-repos/execute-in-repos -workers 10 -config "$repo_conf" git status -sb > "$output"
+execute --config "$repo_conf" -- git status -sb > "$output"
 if [ "$repo_conf" = repo.conf ]; then
   (_link-shared-password-store &)
 fi
