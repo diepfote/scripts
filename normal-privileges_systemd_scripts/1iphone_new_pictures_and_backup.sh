@@ -138,8 +138,8 @@ if [ -z "$is_private_laptop" ]; then
 fi
 
 
-iphone_backup_loc="$(read_toml_setting ~/.config/personal/sync.conf iphone-backup)"
-LOCAL_PICTURES_DIR="$(read_toml_setting ~/.config/personal/sync.conf photos)"
+iphone_backup_loc="$(read-ini-setting ~/.config/personal/sync.conf iphone-backup)"
+LOCAL_PICTURES_DIR="$(read-ini-setting ~/.config/personal/sync.conf photos)"
 
 do_image_copy
 set -x

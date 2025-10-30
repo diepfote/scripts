@@ -5,7 +5,7 @@
 source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 
-email_address="$(read_toml_setting ~/.config/personal/git.conf gh_email)"
+email_address="$(read-ini-setting ~/.config/personal/git.conf gh_email)"
 gpg_id="$(gpg --list-secret-keys --keyid-format LONG | grep -B 1 "$email_address" | sed 's#\s*##' | head -n1)"
 git config user.signingkey "$gpg_id"
 

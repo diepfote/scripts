@@ -74,6 +74,6 @@ for f in *.wav; do
   base_="$(basename "$f" | sed -r 's#(.*)\.[^\.]+$#\1#')"
   inf_file="$base_".inf
   sed -i '1s;^;[default]\n;'  "$inf_file"
-  title="$(read_toml_setting "$inf_file" Tracktitle | sed -r "s#^'(.*)'\$#\1#")"
+  title="$(read-ini-setting "$inf_file" Tracktitle | sed -r "s#^'(.*)'\$#\1#")"
   ffmpeg -i "$f"  -c:a aac -b:a 128k "$title.m4a"
 done

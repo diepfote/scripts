@@ -56,7 +56,7 @@ set -- "${positional_args[@]}"
 file="$1"
 # check is in default movie directory
 if [ ! -f "$file" ]; then
-  dir="$(read_toml_setting ~/.config/personal/sync.conf movies)"
+  dir="$(read-ini-setting ~/.config/personal/sync.conf movies)"
   file="$dir/$1"
 fi
 

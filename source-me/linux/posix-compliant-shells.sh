@@ -11,8 +11,8 @@ if [ -z "$NOT_HOST_ENV" ]; then
 fi
 
 
-GIT_AUTHOR_NAME="$(read_toml_setting ~/.config/personal/git.conf name)"
-GIT_AUTHOR_EMAIL="$(read_toml_setting ~/.config/personal/git.conf email)"
+GIT_AUTHOR_NAME="$(read-ini-setting ~/.config/personal/git.conf name)"
+GIT_AUTHOR_EMAIL="$(read-ini-setting ~/.config/personal/git.conf email)"
 export GIT GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL
 export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
 export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"

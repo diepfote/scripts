@@ -16,10 +16,10 @@ trap cleanup EXIT
 source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 
-start_h="$(read_toml_setting ~/.config/personal/redshift.conf start_h)"
-start_m="$(read_toml_setting ~/.config/personal/redshift.conf start_m)"
-end_h="$(read_toml_setting ~/.config/personal/redshift.conf end_h)"
-end_m="$(read_toml_setting ~/.config/personal/redshift.conf end_m)"
+start_h="$(read-ini-setting ~/.config/personal/redshift.conf start_h)"
+start_m="$(read-ini-setting ~/.config/personal/redshift.conf start_m)"
+end_h="$(read-ini-setting ~/.config/personal/redshift.conf end_h)"
+end_m="$(read-ini-setting ~/.config/personal/redshift.conf end_m)"
 
 current_h="$(date +%H)"
 current_m="$(date +%M)"

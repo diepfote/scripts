@@ -8,7 +8,7 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
-home="$(read_toml_setting ~/.config/personal/sync.conf rsync.net.home)"
+home="$(read-ini-setting ~/.config/personal/sync.conf rsync.net.home)"
 
 # make sure to set this up in your
 # default ssh config file
