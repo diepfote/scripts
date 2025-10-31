@@ -1078,7 +1078,7 @@ work-sync () {
 
   echo
 
-  ~/Repos/golang/tools/execute-in-repos/execute-in-repos git pull origin master
+  execute -- git pull origin master
   reload
 
   echo
@@ -1139,11 +1139,11 @@ work_recompile_go_tools_conditionally () {
 
 
 work_push () {
-  ~/Repos/golang/tools/execute-in-repos git push
+  execute -- git push
 }
 
 work_fetch () {
-  ~/Repos/golang/tools/execute-in-repos git fetch
+  execute -- git fetch
 }
 
 work-checked-in () {
