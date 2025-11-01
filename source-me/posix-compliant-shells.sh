@@ -1079,7 +1079,6 @@ work-sync () {
   echo
 
   execute -- git pull origin master
-  reload
 
   echo
   set -x
