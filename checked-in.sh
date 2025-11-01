@@ -27,7 +27,7 @@ trap cleanup EXIT
 
 output="$temp"/out.txt
 
-execute --config "$repo_conf" -- git status -sb > "$output"
+execute -w 12 --config "$repo_conf" -- git status -sb > "$output"
 if [ "$repo_conf" = repo.conf ]; then
   (_link-shared-password-store &)
 fi
