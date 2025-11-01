@@ -8,19 +8,22 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
+cleanup () {
+  set +x
+  popd
+}
+trap cleanup EXIT
+
 echo -e '\n--------\nuv\n' >&2
 
-(
-  cd ~/
-  set -x
+pushd
 
-  {
-    uv lock --upgrade --verbose
-    uv sync --verbose
-  } 2>&1 | grep -v DEBUG
-
-  set +x
-)
+set -x
+{
+  uv lock --upgrade --verbose
+  uv sync --verbose
+} 2>&1 | grep -v DEBUG
+set +x
 
 echo -e '\n--------\nuv tool\n'  >&2
 set -x

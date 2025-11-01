@@ -93,7 +93,7 @@ exec_fetch2="$temp/2"
 
 } > "$exec_fetch2"
 
-execute-on-files -workers 2 -config <(ls "$temp"/{1,2}) bash
+execute --files -w 2 --config <(ls "$temp"/{1,2}) -- bash
 
 if [ -e "$detect_error" ]; then
   echo "${RED}[!]$NC Fetch failed: $(cat "$detect_error")."
@@ -148,7 +148,7 @@ exec_push3="$temp/3"
   echo 'if [ $? -ne 0 ]; then echo -n watch-later-to-remote, >> '"$detect_error"'; fi'
 
 } > "$exec_push3"
-execute-on-files -workers 3 -config <(ls "$temp"/{1,2,3}) bash
+execute --files -w 3 --config <(ls "$temp"/{1,2,3}) -- bash
 
 if [ -e "$detect_error" ]; then
   echo "${RED}[!]$NC Push failed: $(cat "$detect_error")."

@@ -205,7 +205,7 @@ fi
 
 
 echo -e '\n--------\n_w-pkg-update helpers\n'  >&2
-execute-on-files -config <(find "$(dirname "$0")" -name '_w-pkg-update-*') bash
+execute --timeout 120 --files --config <(find "$(dirname "$0")" -name '_w-pkg-update-*') -- bash
 
 
 

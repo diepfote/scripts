@@ -25,7 +25,7 @@ cleanup () {
 
 
 set -x
-time ~/Repos/golang/tools/execute-on-files/execute-on-files -config <(find "$dir" -mindepth 1 "$@") ffmpeg-reencode-m4a-file
+time execute --files --config <(find "$dir" -mindepth 1 "$@") -- ffmpeg-reencode-m4a-file
 # @TODO
 # if COMMAND; then
 #   mv "$tmpdir"/* "$dir"

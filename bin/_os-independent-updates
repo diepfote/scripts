@@ -90,7 +90,7 @@ log
 log -e ------------------
 log -e "[>] updating tmux plugins"
 
-~/Repos/golang/tools/execute-in-repos/execute-in-repos -config <(find ~/.tmux/plugins/  -maxdepth 1 -mindepth 1 -type d) -- git pull
+execute --config <(find ~/.tmux/plugins/  -maxdepth 1 -mindepth 1 -type d) -- git pull
 tmux source ~/.tmux.conf
 
   # https://wiki.archlinux.org/title/Rust#Installation

@@ -25,7 +25,7 @@ cleanup () {
 
 
 set -x
-time ~/Repos/golang/tools/execute-on-files/execute-on-files -config <(find "$dir" -mindepth 1 "$@") ffmpeg-dynamic-range-compress-file
+time execute --files --config <(find "$dir" -mindepth 1 "$@") -- ffmpeg-dynamic-range-compress-file
 # @TODO
 # if COMMAND; then
 #   mv "$tmpdir"/* "$dir"
