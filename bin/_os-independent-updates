@@ -64,9 +64,14 @@ if [ -z "$SKIP_VIM_UPDATES" ]; then
   echo '[.] CocUpdateSync' >> "$plugin_update_log"
   nvim -c "Bufferize CocUpdateSync | :w >> $plugin_update_log | qa"
 
-  echo '--' >> "$plugin_update_log"
-  echo '[.] GoUpdateBinaries' >> "$plugin_update_log"
-  nvim -c "redir >>$plugin_update_log | execute ':GoUpdateBinaries' | qa"
+
+  #
+  # no need, we already run this in `do`
+  # plugins.vim: `Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }`
+  #
+  # echo '--' >> "$plugin_update_log"
+  # echo '[.] GoUpdateBinaries' >> "$plugin_update_log"
+  # nvim -c "redir >>$plugin_update_log | execute ':GoUpdateBinaries' | qa"
 
   grep -vE 'Reinstalling|Already up to date' "$plugin_update_log" >&2
   log
