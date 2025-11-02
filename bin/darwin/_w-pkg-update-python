@@ -16,7 +16,7 @@ trap cleanup EXIT
 
 echo -e '\n--------\nuv\n' >&2
 
-pushd
+pushd ~
 
 set -x
 {
