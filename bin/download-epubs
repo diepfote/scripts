@@ -41,7 +41,7 @@ echo
 echo -------------------------------------
 paperoni -o "$output_dir" -f "$links"
 
-rsync -av "$output_dir"/ ~/.filen/epubs/
+rclone copy "$output_dir"/ filen:epubs/
 
 
 
