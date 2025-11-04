@@ -220,7 +220,3 @@ w-checked-in () {
 }
 
 
-w-git_execute_on_all_repos () {
-  ~/Repos/golang/tools/execute-in-repos/execute-in-repos -config work-repo.conf "$@"
-}
-
