@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+if [ $# -lt 1 ] || [ "$1" = --help ] || [ "$1" = -h ]; then
+  echo "Usage: execute --files --config <(find -name '*.epub') -- epub-to-pdf"
+  exit
+fi
+
+in="$1"
+shift
+
+in_base="$(basename "$in")"
+out_pdf="$(basename "$in" | sed -r 's#\.[^.]+$##')".pdf
+(
+  cd "$(dirname "$in")"
+  ebook-convert "$in_base" "$out_pdf"
+)
+
