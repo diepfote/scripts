@@ -532,8 +532,7 @@ neomutt () {
 
 
 dl-youtube () {
-  youtube-dl -f hls-audio-Deutsch-0 --add-metadata "$@"
-  youtube-dl -f hls-1992-0 --add-metadata "$@"
+  youtube-dl -f "$1" --add-metadata "$@"
 }
 
 dl-youtube-part-of-m4a () {
