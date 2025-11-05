@@ -120,6 +120,7 @@ set-kubecontext () {
   fi
 
   export KUBECONFIG=~/.kube/"$1"
+  _set_namespaces
 }
 
 # shellcheck disable=SC2119
