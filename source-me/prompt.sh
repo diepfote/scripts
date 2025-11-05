@@ -11,7 +11,7 @@ unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
 # export PS1="[ $GREEN\w$NC ]\n$ "
 
-BASH_HELPER_FILENAME="release/bash_helper"
+BASH_HELPER_FILENAME="release/bash-helper"
 
 if [ -n "$NOT_HOST_ENV" ]; then
   BASH_HELPER_FILENAME="x86_64-unknown-linux-gnu/${BASH_HELPER_FILENAME}"
