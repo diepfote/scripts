@@ -41,9 +41,5 @@ echo
 echo -------------------------------------
 paperoni -o "$output_dir" -f "$links"
 
-rclone copy "$output_dir"/ filen:epubs/
+rsync -av "$output_dir"/ rsync.net:epubs/
 
-
-
-# TODO 2024-05-03 archive articles we just converted to epub
-# https://getpocket.com/developer/docs/v3/modify#action_archive

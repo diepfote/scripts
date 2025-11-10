@@ -7,17 +7,21 @@ echo ${BASH_SOURCE_IT:=''} >/dev/null
 echo ${TMUX_FAILURE:=''} >/dev/null
 
 system="$(uname)"
+hostname="$(hostname)"
 
-if [[ "$(hostname)" =~ ^[a-z0-9]+$ ]] ||\
-   [ "$(hostname)" = docker-desktop ] || \
-   [[ "$(hostname)" =~ .*lima.* ]] || \
+if [[ "$hostname" =~ ^[a-z0-9]+$ ]] ||\
+   [ "$hostname" = docker-desktop ] || \
+   [[ "$hostname" =~ .*lima.* ]] || \
    [[ "$(id -u --name 2>/dev/null)" =~ build-user|lima ]]; then
   export NOT_HOST_ENV=true
+  if [[ "$hostname" =~ ^v[0-9]+ ]]; then
+    export OVERRIDE_NOST_HOST_ENV=true
+  fi
 else
   export NOT_HOST_ENV=''
 fi
 
-if [ -z "$NOT_HOST_ENV" ]; then
+if [ -z "$NOT_HOST_ENV" ] || [ -n "$OVERRIDE_NOST_HOST_ENV" ] ; then
 
   if [[ $- != *i* ]]; then
     # non-interactive, do not start tmux or i3-gaps
