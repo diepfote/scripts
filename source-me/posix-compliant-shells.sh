@@ -16,6 +16,7 @@ if [[ "$hostname" =~ ^[a-z0-9]+$ ]] ||\
   export NOT_HOST_ENV=true
   if [[ "$hostname" =~ ^v[0-9]+ ]]; then
     export OVERRIDE_NOST_HOST_ENV=true
+    export GIT_PAGER='less -R'
   fi
 else
   export NOT_HOST_ENV=''
