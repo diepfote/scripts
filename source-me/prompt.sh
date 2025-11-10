@@ -11,12 +11,6 @@ unset PS1
 # !! remember to escape dollar signs, otherwise PS1 caches the output !!
 # export PS1="[ $GREEN\w$NC ]\n$ "
 
-BASH_HELPER_FILENAME="release/bash-helper"
-
-if [ -n "$NOT_HOST_ENV" ]; then
-  BASH_HELPER_FILENAME="x86_64-unknown-linux-gnu/${BASH_HELPER_FILENAME}"
-fi
-
 
 _ps1 () {
   if [[ "$PWD" =~ .*/deploy-[a-z-] ]]; then
@@ -27,7 +21,7 @@ _ps1 () {
     fi
     PS1_TAGGED=true
   fi
-  PS1="$(~/Repos/rust/tools/bash-helper/target/"$BASH_HELPER_FILENAME")"
+  PS1="$(bash-helper)"
 }
 
 if [ -n "$ZSH" ]; then
