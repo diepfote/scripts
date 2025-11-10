@@ -69,7 +69,7 @@ _add_to_PATH "$HOME/go/bin"
 _add_to_PATH "$HOME/.cargo/bin"
 _add_to_PATH "$HOME/Repos/scripts/bin"
 _add_to_PATH "$HOME/Repos/python/tools/bin"
-_add_to_PATH "$HOME/Repos/scripts/private/bin"
+_add_to_PATH "$HOME/Repos/scripts/private/bin"  || true
 _add_to_PATH "$HOME/Repos/dockerfiles/bin"
 _add_to_PATH "$HOME/Repos/golang/tools/execute-in-repos"
 _add_to_PATH "$HOME/Repos/golang/tools/execute-on-files"
