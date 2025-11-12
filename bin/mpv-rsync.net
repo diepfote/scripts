@@ -15,9 +15,51 @@ home="$(read-ini-setting ~/.config/personal/sync.conf rsync.net.home)"
 # libssh does not follow Include directives
 host=mpv-rsync.net
 
-if [ $# -gt 1 ] && [ "$1" = --decode ]; then
-  full_url="$2"
-  shift 2
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+cleanup () { set +x; }
+trap cleanup EXIT
+
+# Parse arguments
+DECODE=''
+BLOCKING=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --decode)
+    DECODE=true
+    shift
+    ;;
+
+    --blocking)
+    BLOCKING=true
+    shift
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+set -x
+if [ -n "$DECODE" ]; then
+  full_url="$1"
+  shift
   decoded_full_sftp_url="$(urldecode "$full_url")"
 
   # cut off anything before Media/
@@ -27,5 +69,11 @@ else
   shift
 fi
 
-# mpv -v "$@" "sftp://$host$home/$path"
-( mpv "$@" "sftp://$host$home/$path" >/dev/null 2>&1 & )
+if [ -n "$BLOCKING" ]; then
+  set -x
+  mpv -v "$@" "sftp://$host$home/$path"
+else
+  set -x
+  ( mpv "$@" "sftp://$host$home/$path" >/dev/null 2>&1 & )
+fi
+set +x
