@@ -7,5 +7,9 @@ if [ "$sys" = Darwin ]; then
   exe=/opt/homebrew/bin/ffmpeg
 fi
 
-"$exe" -y "$@"
+# -y ... always override
+# --preset slow ... increases encoding time but
+#                   improves output quality and
+#                   reduces file size
+"$exe" --preset slow -y "$@"
 
