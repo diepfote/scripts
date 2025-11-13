@@ -200,6 +200,7 @@ alias grep='grep \
 
 alias jq='jq --monochrome-output --raw-output'
 alias yq='yq --monochrome-output --raw-output'
+alias gron='gron --monochrome'
 
 # shellcheck disable=SC2154
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR="$(cat $HOME/.rangerdir)"; cd "$LASTDIR"'
