@@ -5,7 +5,7 @@ set -o pipefail  # propagate errors
 set -u  # exit on undefined
 set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
-shopt -s failglob  # error on unexpaned globs
+# shopt -s failglob  # error on unexpaned globs
 
 source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
@@ -13,6 +13,7 @@ temp_dir="$(mktemp -d)"
 
 # Parse arguments
 LINK=''
+FORMAT=0
 BATCH_FILE=''
 FOLDER_NAME=''
 DATE_STAMP=''
@@ -21,6 +22,11 @@ key="$1"
   case "$key" in
     --link)
     LINK="$2"
+    shift 2
+    ;;
+
+  --format)
+    FORMAT="$2"
     shift 2
     ;;
 
@@ -85,12 +91,12 @@ fi
 
 if [ -n "$BATCH_FILE" ]; then
   set -x
-  dl-youtube 251-drc -a "$BATCH_FILE"
+  dl-youtube "$FORMAT" -a "$BATCH_FILE"
   set +x
 elif [ -n "$LINK" ] && [ -n "$DATE_STAMP" ]; then
   set -x
   upload_filter="upload_date>=$(date '+%Y%m%d' --date="$DATE_STAMP")"
-  dl-youtube 251-drc "$LINK"  -i --match-filter "$upload_filter"
+  dl-youtube "$FORMAT" "$LINK"  -i --match-filter "$upload_filter"
   set +x
 else
   echo 'No BATCH_FILE or DATE_STAMP + LINK'
@@ -98,9 +104,9 @@ else
 fi
 
 # since we no longer are able to use format=140 we are provided with .webm files
-for f in "$temp_dir"/*.webm; do
-  replaced_ext="$(echo "$f" | sed -r 's#(.*).webm$#\1.m4a#')"
-  mv "$f" "$replaced_ext"
+for f in "$temp_dir"/*.{webm,mp3}; do
+  replaced_ext="$(echo "$f" | sed -r 's#(.*).(webm|mp3)$#\1.m4a#')"
+  mv "$f" "$replaced_ext"  || true
 done
 
 # we use a drc'ed format

@@ -546,7 +546,11 @@ neomutt () {
 
 
 dl-youtube () {
-  youtube-dl -f "$1" --add-metadata "$@"
+  local format="$1"
+  shift
+
+  args=(-f "$format" "$@")
+  youtube-dl --embed-metadata "${args[@]}" || youtube-dl "${args[@]}"
 }
 
 dl-youtube-part-of-m4a () {
