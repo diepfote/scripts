@@ -11,5 +11,5 @@ fi
 # --preset slow ... increases encoding time but
 #                   improves output quality and
 #                   reduces file size
-"$exe" --preset slow -y "$@"
+"$exe" -preset slow -y "$@"
 
