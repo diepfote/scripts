@@ -43,6 +43,11 @@ alias local-ip="ip addr show dev wlan0 | awk '/inet/ { sub(/inet6? (addr:)? ?/, 
 alias ips="ip addr |  awk '/inet/ { sub(/inet6? (addr:)? ?/, \"\"); print \$1 }'"
 
 
+alias cdRV='cd /tmp/automounts/rsync.net/Media/Video-Files/Videos'
+alias cdRM='cd /tmp/automounts/rsync.net/Media/Video-Files/Movies-Series'
+alias cdRP='cd /tmp/automounts/rsync.net/Media/Podcasts-Only'
+
+
 pacman-last-actions () {
   tail /var/log/pacman.log -n 20000 | grep -E 'installed|pacman(.*)\-U|upgraded|removed'
 }
