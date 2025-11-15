@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+
+_help() {
+cat <<EOF
+USAGE: $(basename $0) <FILE>
+
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  _help
+  exit
+fi
+
+ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=nw=1:nk=1 "$1"
+
