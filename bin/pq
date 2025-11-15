@@ -41,7 +41,12 @@ key="$1"
   esac
 done
 
+if [ "$SUBCOMMAND" = add ]; then
+  # do not shell parse command strings
+  extra_args+=(--escape)
+fi
 
 set -x
 pueue "$SUBCOMMAND" "${extra_args[@]}" "$@"
 set +x
+
