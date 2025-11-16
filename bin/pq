@@ -17,29 +17,7 @@ fi
 SUBCOMMAND="$1"
 shift
 
-# hardcode group to `now`
-extra_args=(-g now)
-
-# Parse arguments
-while [ $# -gt 0 ]; do
-key="$1"
-  case "$key" in
-    -g)  # group override detected
-    extra_args=(-g "$2")
-    shift 2
-    ;;
-
-    --)
-    # shift  # do not remove, pass to pueue
-    break
-    ;;
-
-    *)
-    break
-    ;;
-
-  esac
-done
+extra_args=()
 
 if [ "$SUBCOMMAND" = add ]; then
   # do not shell parse command strings

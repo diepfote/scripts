@@ -22,4 +22,4 @@ if [ $# -gt 0 ]; then
   LIMIT="$1"
 fi
 
-pq status -- columns=id,status,start,command order_by start last "$LIMIT"
+pueue status -g now -- columns=id,status,start,command order_by start last "$LIMIT"

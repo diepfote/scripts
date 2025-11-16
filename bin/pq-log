@@ -11,16 +11,40 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 _help() {
 cat <<EOF
-USAGE: pq [LIMIT]
+USAGE: $(basename $0) [--limit LIMIT] [TASK_IDS]
 
 EOF
 }
 
 LIMIT=5
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --limit)
+    LIMIT="$2"
+    shift 2
+    ;;
 
-if [ $# -gt 0 ]; then
-  LIMIT="$1"
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+if [ $# -lt 1 ]; then
+  pueue log -- $(pq-last-ids "$LIMIT")
+else
+  pueue log -- "$@"
 fi
-
-pueue log -- $(pq-last-ids "$LIMIT")
 

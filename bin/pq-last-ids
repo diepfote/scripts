@@ -22,5 +22,5 @@ if [ $# -gt 0 ]; then
   LIMIT="$1"
 fi
 
-pq status -- columns=id order_by start last "$LIMIT" | grep -oE '[0-9]+' | tail -n+2 | tr '\n' ' '
+pueue status -g now -- columns=id order_by start last "$LIMIT" | grep -oE '[0-9]+' | tail -n+2 | tr '\n' ' '
 
