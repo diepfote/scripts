@@ -51,7 +51,9 @@ if ffmpeg  -i "$in" -vf "scale=${scale}" -crf "$crf" -c:v "$codec" "$out" "$@"  
   echo "[.] $in: success"  >&2
   exit_code=0
 else
-  echo "[!] $in: failure"  >&2
+  exit_code="$?"
+  echo "[!] $in: failure. exit_code: $exit_code"  >&2
+  tail "$tmpdir"/std* >&2
   exit "$exit_code"
 fi
 

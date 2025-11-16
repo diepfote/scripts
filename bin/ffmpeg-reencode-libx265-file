@@ -124,7 +124,9 @@ if ffmpeg -threads "$NUM_THREADS" -i "$in" -crf "$CRF" -map 0:v -map 0:a -c:v "$
   echo "[.] $in: success"  >&2
   exit_code=0
 else
-  echo "[!] $in: failure"  >&2
+  exit_code="$?"
+  echo "[!] $in: failure. exit_code: $exit_code"  >&2
+  tail "$tmpdir"/std* >&2
   exit "$exit_code"
 fi
 
