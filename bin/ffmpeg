@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+trap cleanup EXIT
+cleanup () { set +x; }
+
 sys="$(uname)"
 exe=/usr/bin/ffmpeg
 
@@ -11,5 +14,11 @@ fi
 # --preset slow ... increases encoding time but
 #                   improves output quality and
 #                   reduces file size
-"$exe" -preset slow -y "$@"
+extra_args=(-preset slow -y)
+if [ -n "${FFMPEG_NO_WRAPPER:-}" ]; then
+  extra_args=()
+fi
+
+set -x
+"$exe" "${extra_args[@]}" "$@"
 

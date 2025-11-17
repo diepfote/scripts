@@ -90,6 +90,7 @@ tmpdir="$(mktemp -d)"
 echo "[.] temp dir: $tmpdir"  >&2
 cleanup () {
   set +x
+  unset FFMPEG_NO_WRAPPER
   rm -r "$tmpdir"
   exit "$exit_code"
 }
@@ -115,7 +116,9 @@ else
   echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
 fi
 
-if ab-av1 auto-encode --encoder libx265 --enc -preset=slow --enc threads="$NUM_THREADS" --min-vmaf "$MINVAMF" --vmaf n_threads="$NUM_THREADS" -i "$in" "$@" -o "$OUT" >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
+# ffmpeg wrapper breaks ab-av1
+export FFMPEG_NO_WRAPPER=true
+if ab-av1 auto-encode --encoder libx265 --preset slow --enc threads="$NUM_THREADS" --min-vmaf "$MINVAMF" --vmaf n_threads="$NUM_THREADS" -i "$in" "$@" -o "$OUT" >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
