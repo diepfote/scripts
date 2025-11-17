@@ -118,7 +118,7 @@ fi
 
 # ffmpeg wrapper breaks ab-av1
 export FFMPEG_NO_WRAPPER=true
-if ab-av1 auto-encode --encoder libx265 --preset slow --enc threads="$NUM_THREADS" --min-vmaf "$MINVAMF" --vmaf n_threads="$NUM_THREADS" -i "$in" "$@" -o "$OUT" >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
+if ab-av1 auto-encode --temp-dir "$tmpdir" --encoder libx265 --preset slow --enc threads="$NUM_THREADS" --min-vmaf "$MINVAMF" --vmaf n_threads="$NUM_THREADS" -i "$in" "$@" -o "$OUT" >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
