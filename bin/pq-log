@@ -9,6 +9,9 @@ shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
 
+cleanup () { set +x; }
+trap cleanup EXIT
+
 _help() {
 cat <<EOF
 USAGE: $(basename $0) [--limit LIMIT] [TASK_IDS]
@@ -17,10 +20,12 @@ EOF
 }
 
 LIMIT=5
+LIMIT_EXP=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
     --limit)
+    LIMIT_EXP=true
     LIMIT="$2"
     shift 2
     ;;
@@ -42,9 +47,17 @@ key="$1"
   esac
 done
 
+extra_args=()
 if [ $# -lt 1 ]; then
-  pueue log -- $(pq-last-ids "$LIMIT")
-else
-  pueue log -- "$@"
+  extra_args=(-g now)
 fi
+
+if [ $# -lt 1 ] || [ -n "$LIMIT_EXP" ]; then
+  set -x
+  pueue log $(pq-last-ids --limit "$LIMIT" "${extra_args[@]}" "$@")
+else
+  set -x
+  pueue log "${extra_args[@]}" "$@"
+fi
+
 
