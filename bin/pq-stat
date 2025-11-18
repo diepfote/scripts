@@ -14,7 +14,7 @@ trap cleanup EXIT
 
 _help() {
 cat <<EOF
-USAGE: pq-st [PUEUE OPTIONS] [--limit LIMIT]
+USAGE: pq-stat [PUEUE OPTIONS] [--limit LIMIT]
 
 EOF
 }
