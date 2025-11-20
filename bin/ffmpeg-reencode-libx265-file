@@ -120,7 +120,15 @@ else
   echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
 fi
 
-if ffmpeg -threads "$NUM_THREADS" -i "$in" -crf "$CRF" -map 0:v -map 0:a -c:v "$codec"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
+copy_subtitles=(-c:s copy)
+aac=(-c:a copy)
+if ffmpeg -buildconf |& grep libfdk; then
+  libfdk_aac=(-c:a libfdk_aac -vbr=4)
+  aac=("${libfdk_aac[@]}")
+  echo '[.] using libfdk_aac'
+fi
+
+if ffmpeg -threads "$NUM_THREADS" -i "$in" -crf "$CRF"  "${copy_subtitles[@]}" "${aac[@]}"  -c:v "$codec"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else

@@ -21,7 +21,7 @@ OPTIONS:
   --min-vmaf MINVAMF    Quality that should be retained
   -t|--threads NUM      Number of ffmpeg threads [default: num of physical cpus]
 FLAGS:
-  --remote-input        Pre-fetch the file to `/tmp` if on a remote host (e.g. NFS)
+  --remote-input        Pre-fetch the file to '/tmp/' if on a remote host (e.g. NFS)
 EOF
 }
 
@@ -30,14 +30,13 @@ if [ $# -lt 1 ]; then
   exit
 fi
 
-MINVAMF=90
-
 if [ "$(uname)" != Darwin ]; then
   NUM_THREADS="$(grep cores /proc/cpuinfo | head -n1 | awk 'NR==1 { print $4; exit }')"
 else
   NUM_THREADS="$(sysctl -n hw.ncpu)"
 fi
-
+MINVAMF=90
+PRESET=(--preset slow)
 REMOTE_INPUT=''
 # Parse arguments
 while [ $# -gt 0 ]; do
@@ -56,6 +55,12 @@ key="$1"
     NUM_THREADS="$2"
     shift 2
     ;;
+
+    --preset)
+    PRESET=(--preset "$2")
+    shift 2
+    ;;
+
 
     -h|--help)
     _help
@@ -92,7 +97,7 @@ cleanup () {
   set +x
   unset FFMPEG_NO_WRAPPER
 
-  echo [.] printing stdout and error for process >&2
+  echo '[.] printing stdout and error for process' >&2
   tail "$tmpdir"/std* >&2
 
   rm -r "$tmpdir"
@@ -123,7 +128,8 @@ fi
 
 # ffmpeg wrapper breaks ab-av1
 export FFMPEG_NO_WRAPPER=true
-if ab-av1 auto-encode --temp-dir "$tmpdir" --encoder libx265 --preset slow --enc threads="$NUM_THREADS" --min-vmaf "$MINVAMF" --vmaf n_threads="$NUM_THREADS" -i "$in" "$@" -o "$OUT" >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
+
+if ab-av1 auto-encode --temp-dir "$tmpdir" --encoder libx265 "${PRESET[@]}" --enc threads="$NUM_THREADS" --min-vmaf "$MINVAMF" --vmaf n_threads="$NUM_THREADS" -i "$in" "$@" -o "$OUT" >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
