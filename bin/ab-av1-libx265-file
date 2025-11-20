@@ -91,7 +91,12 @@ echo "[.] temp dir: $tmpdir"  >&2
 cleanup () {
   set +x
   unset FFMPEG_NO_WRAPPER
+
+  echo [.] printing stdout and error for process >&2
+  tail "$tmpdir"/std* >&2
+
   rm -r "$tmpdir"
+
   exit "$exit_code"
 }
 trap cleanup EXIT
@@ -124,7 +129,6 @@ if ab-av1 auto-encode --temp-dir "$tmpdir" --encoder libx265 --preset slow --enc
 else
   exit_code="$?"
   echo "[!] $in: failure. exit_code: $exit_code"  >&2
-  tail "$tmpdir"/std* >&2
   exit "$exit_code"
 fi
 
