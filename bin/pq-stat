@@ -51,5 +51,5 @@ if [ $# -lt 1 ]; then
 fi
 
 set -x
-pueue status "${extra_args[@]}" "$@"  -- columns=id,status,command status!=failed order_by end desc last "$LIMIT"
+pueue status "${extra_args[@]}" "$@"  -- columns=id,status,command,start,end order_by end desc last "$LIMIT"
 
