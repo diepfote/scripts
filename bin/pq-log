@@ -54,7 +54,7 @@ fi
 
 if [ $# -lt 1 ] || [ -n "$LIMIT_EXP" ]; then
   set -x
-  pueue log $(pueue status  "${extra_args[@]}" "$@" -- columns=id 'start > 2000-01-01' order_by start last "$LIMIT" | grep -oE '[0-9]+' | tail -n+2 | tr '\n' ' ' )
+  pueue log "$@" $(pueue status "${extra_args[@]}" columns=id 'start > 2000-01-01' order_by start last "$LIMIT" | grep -oE '[0-9]+' | tail -n+2 | tr '\n' ' ' )
 else
   set -x
   pueue log "${extra_args[@]}" "$@"

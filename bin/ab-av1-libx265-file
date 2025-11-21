@@ -97,8 +97,10 @@ cleanup () {
   set +x
   unset FFMPEG_NO_WRAPPER
 
-  echo '[.] printing stdout and error for process' >&2
-  tail "$tmpdir"/std* >&2
+  echo '[.] printing stdout for process' >&2
+  cat "$tmpdir"/stdout
+  echo '[.] printing stderr for process' >&2
+  cat "$tmpdir"/stderr >&2
 
   rm -r "$tmpdir"
 
