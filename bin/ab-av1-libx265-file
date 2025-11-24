@@ -109,14 +109,6 @@ cleanup () {
 trap cleanup EXIT
 
 
-if [ -n "$REMOTE_INPUT" ]; then
-  TMP_IN="$tmpdir/$(basename "$in")"
-  REAL_IN="$in"
-  cp "$in" "$TMP_IN"
-  in="$TMP_IN"
-fi
-
-
 if [ -z "$OUT" ]; then
   OUT="$tmpdir/$(basename "$in")"
   echo "[.] out file temporary: $OUT"  >&2
@@ -126,6 +118,13 @@ else
     out_dir="$(realpath "$PWD")"
   fi
   echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
+fi
+
+if [ -n "$REMOTE_INPUT" ]; then
+  TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
+  REAL_IN="$in"
+  cp "$in" "$TMP_IN"
+  in="$TMP_IN"
 fi
 
 # ffmpeg wrapper breaks ab-av1
