@@ -212,6 +212,7 @@ execute --timeout 120 --files --config <(find "$(dirname "$0")" -name '_w-pkg-up
 # ---------------------------------------------------
 # BREW START
 
+kill "$SPINNER_PID" >/dev/null 2>&1
 echo -e '\n--------\nbrew\n'  >&2
 # shellcheck disable=SC2154
 echo -e "${PURPLE}[>] ...$NC pulling updates"  >&2
@@ -228,6 +229,11 @@ if [ -n "$GREEDY" ]; then
 fi
 
 git break-osx-credential-helper
+
+set +u
+spinner
+SPINNER_PID="$!"
+set -u
 
 # BREW END
 # ---------------------------------------------------
