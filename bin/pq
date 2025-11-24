@@ -24,6 +24,10 @@ if [ "$SUBCOMMAND" = add ]; then
   extra_args+=(--escape)
 fi
 
+if [ "$SUBCOMMAND" = restart ]; then
+  extra_args+=(--in-place)
+fi
+
 set -x
 pueue "$SUBCOMMAND" "${extra_args[@]}" "$@"
 set +x
