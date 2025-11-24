@@ -117,7 +117,8 @@ source ~/Repos/scripts/source-me/linux/posix-compliant-shells.sh
 # I set this elsewhere
 #
 pkgs_with_saved_checksums=()
-source ~/Repos/scripts/private/source-me/linux/posix-compliant-shells.sh
+# we add items to the list above here, or we don't
+source ~/Repos/scripts/private/source-me/linux/posix-compliant-shells.sh  || true
 
 
 cleanup() {
