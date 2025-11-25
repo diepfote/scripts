@@ -591,6 +591,20 @@ lessc () {
   ccat "$1" | less -R
 }
 
+pdf-smaller () {
+  pdf-decrease-size "$@"
+}
+pdf-decrease-size () {
+  # source https://www.perplexity.ai/search/linux-easiest-way-to-decrease-DXY7BQEESLyT0cXWIdKMkA?sm=d
+  #
+  # /screen – Lowest quality and smallest size, with images downsampled to 72 dpi. Best for PDFs to be read on a screen.
+  # /ebook – Medium quality, with images downsampled to 150 dpi. Good balance for e-readers and general sharing.
+  # /printer – High quality, with images downsampled to 300 dpi. Suitable for printing on standard printers.
+  # /prepress – Maximum quality with fine color and image detail, also uses 300 dpi but preserves more color profiles and other print‑ready features.
+  # /default – Uses Ghostscript’s built-in default settings, which may vary depending on the version or configuration.
+  #
+  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$2" "$1"
+}
 
 pdf-extract-pages () {
   gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
