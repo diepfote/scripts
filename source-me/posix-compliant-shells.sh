@@ -377,11 +377,6 @@ ffmpeg-save-screenshot () {
 }
 
 
-mpv () {
-  (command mpv "$@" 1>/dev/null 2>/dev/null &)
-}
-
-
 _report-videos () {
   ~/Repos/scripts/normal-privileges_systemd_scripts/report-videos.sh
 }

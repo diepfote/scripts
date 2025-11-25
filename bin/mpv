@@ -8,29 +8,20 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
-home="$(read-ini-setting ~/.config/personal/sync.conf rsync.net.home)"
-
-# make sure to set this up in your
-# default ssh config file
-# libssh does not follow Include directives
-host=mpv-rsync.net
-
-if [ $# -eq 0 ]; then
-  _help
-  exit
+exe=/usr/bin/mpv
+if [ "$(uname)" = Darwin ]; then
+  exe=/opt/homebrew/bin/mpv
 fi
 
 cleanup () { set +x; }
 trap cleanup EXIT
 
-# Parse arguments
-DECODE=''
 BLOCKING=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
-    --decode)
-    DECODE=true
+    --blocking)
+    BLOCKING=true
     shift
     ;;
 
@@ -51,17 +42,10 @@ key="$1"
   esac
 done
 
-set -x
-if [ -n "$DECODE" ]; then
-  full_url="$1"
-  shift
-  decoded_full_sftp_url="$(urldecode "$full_url")"
-
-  # cut off anything before Media/
-  path="$(echo -n "$decoded_full_sftp_url" | sed -r 's#.*home/[a-z0-9]+/##' )"
+if [ -n "$BLOCKING" ]; then
+  set -x
+  "$exe" -v "$@"
+  set +x
 else
-  path="$1"
-  shift
+  ( "$exe" "$@" >/dev/null 2>&1 & )
 fi
-
-mpv "$@" "sftp://$host$home/$path"
