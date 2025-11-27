@@ -89,7 +89,7 @@ else
   echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
 fi
 
-if ffmpeg -threads "$NUM_THREADS"  -i "$in" -c:a "$codec"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
+if ffmpeg -y -threads "$NUM_THREADS"  -i "$in" -c:a "$codec"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else

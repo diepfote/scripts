@@ -41,7 +41,7 @@ case "$ext" in
   m4a|mp4)
   echo '[>] codec aac'
   set -x
-  if ffmpeg -i "$file" -af "volume=$decibel_to_normalized_to" -c:v copy -c:a aac -b:a 128k "$output_file"; then
+  if ffmpeg -y -i "$file" -af "volume=$decibel_to_normalized_to" -c:v copy -c:a aac -b:a 128k "$output_file"; then
 
     mv "$output_file" "$file"
   fi

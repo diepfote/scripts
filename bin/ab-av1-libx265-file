@@ -95,7 +95,6 @@ tmpdir="$(mktemp -d)"
 echo "[.] temp dir: $tmpdir"  >&2
 cleanup () {
   set +x
-  unset FFMPEG_NO_WRAPPER
 
   echo '[.] printing stdout for process' >&2
   cat "$tmpdir"/stdout
@@ -126,9 +125,6 @@ if [ -n "$REMOTE_INPUT" ]; then
   cp "$in" "$TMP_IN"
   in="$TMP_IN"
 fi
-
-# ffmpeg wrapper breaks ab-av1
-export FFMPEG_NO_WRAPPER=true
 
 if ab-av1 auto-encode --temp-dir "$tmpdir" --encoder libx265 "${PRESET[@]}" --enc threads="$NUM_THREADS" --min-vmaf "$MINVAMF" --vmaf n_threads="$NUM_THREADS" -i "$in" "$@" -o "$OUT" >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2

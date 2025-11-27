@@ -84,7 +84,7 @@ fi
 # Nicked from https://superuser.com/a/277667
 # The -map option makes ffmpeg only use the first video stream from the first input and the first audio stream from the second input for the output file.
 set -x
-ffmpeg -i "$VIDEO_FILE" -i "$AUDIO_FILE" -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 "$OUT"
+ffmpeg -y -i "$VIDEO_FILE" -i "$AUDIO_FILE" -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 "$OUT"
 
 # copy without re-encode
 # ffmpeg -i video.mp4 -i audio.wav -c copy output.mkv
