@@ -150,7 +150,7 @@ cleanup () {
 }
 
 echo ===================== >&2
-echo "Start: $(date)" >&2
+echo "Start: $(dt)" >&2
 
 
 # shellcheck disable=SC2064
@@ -265,5 +265,5 @@ echo -n 'Uptime: '
 uptime
 echo
 sudo systemsetup -getremotelogin  | grep --color=always -E 'On|Off'
-echo "End: $(date)"  >&2
+echo "End: $(dt)"  >&2
 echo =====================  >&2

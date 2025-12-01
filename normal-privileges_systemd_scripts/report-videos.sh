@@ -16,7 +16,7 @@ temp="$(mktemp -d)"
 end () {
   # rm -r "$temp"
   set +x
-  echo "[.] END   ppid:$ppid pid:$pid $(date)" >&2
+  echo "[.] END   ppid:$ppid pid:$pid $(dt)" >&2
   rm "$LOCK_FILE" || true
 }
 trap end EXIT
@@ -39,8 +39,8 @@ abort () {
 pid="$$"
 ppid="$(ps -o ppid= "$pid" | sed -r 's#\s*##')"
 
-_date="$(date)"
-echo "[.] START ppid:$ppid pid:$pid $(date)" >&2
+_date="$(dt)"
+echo "[.] START ppid:$ppid pid:$pid $(dt)" >&2
 
 
 if [ -f "$LOCK_FILE" ]; then

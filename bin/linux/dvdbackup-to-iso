@@ -9,7 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 
 source ~/Repos/scripts/source-me/common-functions.sh
 
-echo -e "---\n[.] start: $(date)"  >&2
+echo -e "---\n[.] start: $(dt)"  >&2
 
 dvd_title="$(dvdbackup -i /dev/sr0 -I | grep 'DVD-Video information of the DVD with title' | sed 's#DVD-Video information of the DVD with title ##;s#^"##;s#"$##')"
 out_name="$dvd_title"
@@ -29,7 +29,7 @@ cleanup () {
   grep --color=always -E '^real' "$out"  || true
 
   rm -r "$temp_dir"
-  echo -e "[.] end: $(date)\n---"  2>&1
+  echo -e "[.] end: $(dt)\n---"  2>&1
 }
 trap cleanup EXIT
 
