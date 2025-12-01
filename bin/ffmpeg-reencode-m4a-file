@@ -13,11 +13,6 @@ exit_code=1
 
 # aac=(-c:a copy)
 aac=(-c:a aac)
-if ffmpeg -buildconf |& grep libfdk; then
-  libfdk_aac=(-c:a libfdk_aac -vbr 3)
-  aac=("${libfdk_aac[@]}")
-  echo '[.] using libfdk_aac'
-fi
 
 _help() {
 cat <<EOF
@@ -26,6 +21,8 @@ USAGE: $(basename $0) [--threads NUM]  IN [OUT]
 FLAGS:
   --remote-input        Will copy IN to the temp file to speed up processing (e.g. if the file lives on NFS)
 OPTIONS:
+  --vbr                 Variable bitrate (libfdk_aac only)
+                        https://trac.ffmpeg.org/wiki/Encode/AAC
   -t|--threads NUM      Number of ffmpeg threads [default: num of physical cpus]
 EOF
 }
@@ -43,6 +40,18 @@ key="$1"
     --remote-input)
     REMOTE_INPUT=true
     shift
+    ;;
+
+    --vbr)
+    if ffmpeg -buildconf | grep libfdk; then
+      libfdk_aac=(-c:a libfdk_aac -vbr "$2")
+      aac=("${libfdk_aac[@]}")
+      echo '[.] using libfdk_aac' >&2
+    else
+      echo '[.]  libfdk_aac not found' >&2
+      exit 2
+    fi
+    shift 2
     ;;
 
     -t|--threads)

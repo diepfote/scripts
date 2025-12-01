@@ -39,8 +39,10 @@ e.g.: execute-on-files -workers 2 -config <(find scanlime-in-progress-new-channe
 FLAGS:
   --remote-input        Will copy IN to the temp file to speed up processing (e.g. if the file lives on NFS)
 OPTIONS:
+  --vbr                 Variable bitrate (libfdk_aac only)
+                        https://trac.ffmpeg.org/wiki/Encode/AAC
   -t|--threads NUM      Number of ffmpeg threads [default: num of physical cpus]
-  --crf FACTOR          Constant rate factor [default: 31]
+  --crf FACTOR          Constant rate factor (video) [default: 31]
                         Use 34 for web videos
                         DvDs ... unknown
 EOF
@@ -57,16 +59,34 @@ if [ "$(uname)" != Darwin ]; then
 else
   NUM_THREADS="$(sysctl -n hw.ncpu)"
 fi
-# Parse arguments
+
+REMOTE_INPUT=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
+    --remote-input)
+    REMOTE_INPUT=true
+    shift
+    ;;
+
     --crf)
       CRF="$2"
       shift 2
       ;;
     -t|--threads)
     NUM_THREADS="$2"
+    shift 2
+    ;;
+
+    --vbr)
+    if ffmpeg -buildconf | grep libfdk; then
+      libfdk_aac=(-c:a libfdk_aac -vbr "$2")
+      aac=("${libfdk_aac[@]}")
+      echo '[.] using libfdk_aac' >&2
+    else
+      echo '[.]  libfdk_aac not found' >&2
+      exit 2
+    fi
     shift 2
     ;;
 
@@ -100,6 +120,13 @@ else
   shift
 fi
 
+if [ -n "$REMOTE_INPUT" ]; then
+  TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
+  REAL_IN="$in"
+  cp "$in" "$TMP_IN"
+  in="$TMP_IN"
+fi
+
 
 tmpdir="$(mktemp -d)"
 echo "[.] temp dir: $tmpdir"  >&2
@@ -124,11 +151,6 @@ fi
 
 copy_subtitles=(-c:s copy)
 aac=(-c:a copy)
-if ffmpeg -buildconf |& grep libfdk; then
-  libfdk_aac=(-c:a libfdk_aac -vbr=4)
-  aac=("${libfdk_aac[@]}")
-  echo '[.] using libfdk_aac'
-fi
 
 if ffmpeg -y -preset -slow -threads "$NUM_THREADS" -i "$in" -crf "$CRF"  "${copy_subtitles[@]}" "${aac[@]}"  -c:v "$codec"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
