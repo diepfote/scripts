@@ -23,6 +23,8 @@ _help() {
 cat <<EOF
 USAGE: $(basename $0) [--threads NUM]  IN [OUT]
 
+FLAGS:
+  --remote-input        Will copy IN to the temp file to speed up processing (e.g. if the file lives on NFS)
 OPTIONS:
   -t|--threads NUM      Number of ffmpeg threads [default: num of physical cpus]
 EOF
@@ -34,10 +36,15 @@ if [ "$(uname)" != Darwin ]; then
 else
   NUM_THREADS="$(sysctl -n hw.ncpu)"
 fi
-# Parse arguments
+REMOTE_INPUT=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
+    --remote-input)
+    REMOTE_INPUT=true
+    shift
+    ;;
+
     -t|--threads)
     NUM_THREADS="$2"
     shift 2
@@ -94,6 +101,14 @@ else
   fi
   echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
 fi
+
+if [ -n "$REMOTE_INPUT" ]; then
+  TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
+  REAL_IN="$in"
+  cp "$in" "$TMP_IN"
+  in="$TMP_IN"
+fi
+
 
 if ffmpeg -y -threads "$NUM_THREADS"  -i "$in" "${aac[@]}"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2

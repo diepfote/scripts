@@ -36,6 +36,8 @@ cat <<EOF
 USAGE: $(basename $0) [--threads NUM]  IN [OUT]
 e.g.: execute-on-files -workers 2 -config <(find scanlime-in-progress-new-channel/ -maxdepth 1 -mtime +100 -name '*.mp4') ffmpeg-reencode-libx265-file --threads 8 --crf 34
 
+FLAGS:
+  --remote-input        Will copy IN to the temp file to speed up processing (e.g. if the file lives on NFS)
 OPTIONS:
   -t|--threads NUM      Number of ffmpeg threads [default: num of physical cpus]
   --crf FACTOR          Constant rate factor [default: 31]
