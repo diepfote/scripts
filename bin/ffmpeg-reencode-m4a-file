@@ -130,8 +130,14 @@ else
 fi
 
 if [ -n "$OUT_TEMPORARY" ]; then
-  set -x
-  mv "$OUT" "$in"
-  set +x
+  if [ -n "$REMOTE_INPUT" ]; then
+    set -x
+    mv "$OUT" "$REAL_IN"
+    set +x
+  else
+    set -x
+    mv "$OUT" "$in"
+    set +x
+  fi
 fi
 
