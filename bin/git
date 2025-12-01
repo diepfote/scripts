@@ -99,7 +99,8 @@ PUSH=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
-    commit)
+    # be sure to add any alias here
+    commit|co)
     COMMIT=true
     shift
     ;;
