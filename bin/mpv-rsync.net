@@ -25,10 +25,15 @@ trap cleanup EXIT
 
 # Parse arguments
 DECODE=''
-BLOCKING=''
+BLOCKING=()
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
+    --blocking)
+    BLOCKING=(--blocking)
+    shift
+    ;;
+
     --decode)
     DECODE=true
     shift
@@ -64,4 +69,5 @@ else
   shift
 fi
 
-mpv "$@" "sftp://$host$home/$path"
+mpv "${BLOCKING[@]}" "$@" "sftp://$host$home/$path"
+
