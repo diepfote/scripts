@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+_mpv-rsync-net_completions()
+{
+  COMPREPLY=()
+  index=$COMP_CWORD
+  local cur_word="${COMP_WORDS[$index]}"
+  prev_index=$((index - 1))
+  local prev_word="${COMP_WORDS[$prev_index]}"
+
+  completions=()
+  completions+=(--decode)
+  completions+=(--blocking)
+
+  case "${prev_word}" in
+    *)
+      COMPREPLY=($(compgen -W  "$(_print "${completions[@]}")" -- "$cur_word"))
+      ;;
+  esac
+
+}
+
+complete -F _mpv-rsync-net_completions 'mpv-rsync.net'
+complete -F _mpv-rsync-net_completions mpv
