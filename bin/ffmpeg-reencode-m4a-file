@@ -16,7 +16,7 @@ aac=(-c:a aac)
 
 _help() {
 cat <<EOF
-USAGE: $(basename $0) [--threads NUM]  IN [OUT]
+USAGE: $(basename $0) [FLAGS] [OPTIONS] IN [OUT]
 
 FLAGS:
   --remote-input        Will copy IN to the temp file to speed up processing (e.g. if the file lives on NFS)

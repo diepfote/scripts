@@ -33,7 +33,7 @@ CRF=31
 
 _help() {
 cat <<EOF
-USAGE: $(basename $0) [--threads NUM]  IN [OUT]
+USAGE: $(basename $0) [FLAGS] [OPTIONS] IN [OUT]
 e.g.: execute-on-files -workers 2 -config <(find scanlime-in-progress-new-channel/ -maxdepth 1 -mtime +100 -name '*.mp4') ffmpeg-reencode-libx265-file --threads 8 --crf 34
 
 FLAGS:

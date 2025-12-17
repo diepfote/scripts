@@ -428,34 +428,6 @@ video-sync-mpv-watch-later-files () {
 }
 
 
-download-and-drc-latest () {
-
-  local link podcast_name timestamp
-
-  _help () {
-    echo >&2
-    echo 'Make sure to not re-download any videos (podcast app might get confused &' >&2
-    echo 'more CPU will be burned ...)' >&2
-    echo "Link to check: $GREEN$link$NC" >&2
-    echo >&2
-    echo "\$3 should match this format $YELLOW$(date '+%Y%m%d')$NC" >&2
-    echo  >&2
-    echo "[.] ${GREEN}usage e.g.:$NC" >&2
-    echo '   $ download-and-drc-latest "'"https://www.youtube.com/channel/UCFn4S3OexFT9YhxJ8GWdUYQ/videos"'" "'"oxide-and-friends"'" "'"5 weeks ago"'" ' >&2
-    echo '   $ download-and-drc-latest "'"https://www.youtube.com/channel/UCFn4S3OexFT9YhxJ8GWdUYQ/videos"'" "'"oxide-and-friends"'" "'"2023-05-08"'" ' >&2
-  }
-
-
-  link="$1"
-  podcast_name="$2"
-  timestamp="$3"
-
-  if ! ~/Repos/scripts/download-and-drc.sh --link "$link" --folder-name "$podcast_name" --date-stamp "$timestamp"; then
-    _help
-    return
-  fi
-
-}
 download-and-drc-batch () {
   local batch_file podcast_name
   batch_file="$1"
