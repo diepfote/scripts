@@ -112,6 +112,32 @@ unset-kubecontext () { set-kubecontext; }
 
 # shellcheck disable=SC2120
 set-kubecontext () {
+
+  SKIP_FETCH_NAMESPACES=''
+  while [ $# -gt 0 ]; do
+  key="$1"
+    case "$key" in
+      # -h|--help)
+      # _help
+      # exit 0
+      # ;;
+      -s|--skip-namespaces)
+      SKIP_FETCH_NAMESPACES=true
+      shift
+      ;;
+
+      --)
+      shift
+      break
+      ;;
+
+      *)
+      break
+      ;;
+
+    esac
+  done
+
   unset _all_namespaces  # reset custom namespace array for completions
 
   if [ -z "$1" ]; then
@@ -120,7 +146,10 @@ set-kubecontext () {
   fi
 
   export KUBECONFIG=~/.kube/"$1"
-  _set_namespaces
+
+  if [ -z "$SKIP_FETCH_NAMESPACES" ]; then
+    _set_namespaces
+  fi
 }
 
 # shellcheck disable=SC2119
