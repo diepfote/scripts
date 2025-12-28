@@ -7,5 +7,5 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-execute --config <(find ~/Repos/auto-update-git-repos -mindepth 1 -maxdepth 1 -type d) -- git pull
+execute --timeout 30 --config <(find ~/Repos/auto-update-git-repos -mindepth 1 -maxdepth 1 -type d) -- git pull
 
