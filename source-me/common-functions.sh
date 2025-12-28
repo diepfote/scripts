@@ -23,7 +23,7 @@ find-sorted () {
 
 _print () {
   for name in "$@"; do
-    printf -- "$name\n"
+    printf -- '%s\n' "$name"
   done
 }
 

@@ -9,6 +9,13 @@ shopt -s failglob  # error on unexpaned globs
 
 binary="$(basename "$0" | cut -d '-' -f1)"
 
+
+_print () {
+  for name in "$@"; do
+    printf -- '%s\n' "$name"
+  done
+}
+
 _help() {
 cat <<EOF
 USAGE: "$binary" get-all-resources [-n <NAMESPACE>] [--show-resource-types-only]
