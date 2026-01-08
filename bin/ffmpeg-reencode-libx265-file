@@ -120,14 +120,6 @@ else
   shift
 fi
 
-if [ -n "$REMOTE_INPUT" ]; then
-  TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
-  REAL_IN="$in"
-  cp "$in" "$TMP_IN"
-  in="$TMP_IN"
-fi
-
-
 tmpdir="$(mktemp -d)"
 echo "[.] temp dir: $tmpdir"  >&2
 cleanup () {
@@ -136,6 +128,14 @@ cleanup () {
   exit "$exit_code"
 }
 trap cleanup EXIT
+
+if [ -n "$REMOTE_INPUT" ]; then
+  TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
+  REAL_IN="$in"
+  cp "$in" "$TMP_IN"
+  in="$TMP_IN"
+fi
+
 
 
 if [ -z "$OUT" ]; then
