@@ -139,7 +139,7 @@ fi
 
 
 if [ -z "$OUT" ]; then
-  OUT="$tmpdir/$(basename "$in")"
+  OUT="$tmpdir/$(basename "$REAL_IN")"
   echo "[.] out file temporary: $OUT"  >&2
 else
   out_dir="$(dirname "$(realpath "$OUT")")"
