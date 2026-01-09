@@ -152,7 +152,7 @@ fi
 copy_subtitles=(-c:s copy)
 aac=(-c:a copy)
 
-if ffmpeg -y -preset -slow -threads "$NUM_THREADS" -i "$in" -crf "$CRF"  "${copy_subtitles[@]}" "${aac[@]}"  -c:v "$codec"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
+if ffmpeg -y -preset slow -threads "$NUM_THREADS" -i "$in" -crf "$CRF"  "${copy_subtitles[@]}" "${aac[@]}"  -c:v "$codec"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
   exit_code=0
 else
