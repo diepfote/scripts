@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+LIMA_WRAPPER="$(dirname "$0")"/limactl
+cleanup () {
+  chmod +x "$LIMA_WRAPPER"
+  set +x
+}
+trap cleanup EXIT
+
+set -x
+chmod -x "$LIMA_WRAPPER"
+/opt/homebrew/bin/colima "$@"
