@@ -31,6 +31,8 @@ else
   shift
 fi
 
+size_pre="$(ls -l "$in" | awk '{ print $5 }')"
+
 # Sidenote:
 # I tried `-hwaccel auto`, I saw no effect so I did not add it to the
 # command
@@ -57,9 +59,18 @@ else
   exit "$exit_code"
 fi
 
+size_post="$(ls -l "$out" | awk '{ print $5 }')"
+
 if [ -n "$out_unset" ]; then
   set -x
   mv "$out" "$in"
   set +x
 fi
+
+
+qalc < <(echo "$size_pre bytes to gigabytes")
+qalc < <(echo "$size_post bytes to gigabytes")
+
+echo -n "[.] ratio: "
+qalc < <(echo "$size_pre / $size_post")
 

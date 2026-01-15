@@ -126,6 +126,8 @@ if [ -n "$REMOTE_INPUT" ]; then
   in="$TMP_IN"
 fi
 
+size_pre="$(ls -l "$in" | awk '{ print $5 }')"
+
 if ab-av1 auto-encode --temp-dir "$tmpdir" --encoder libx265 "${PRESET[@]}" --enc threads="$NUM_THREADS" --min-vmaf "$MINVAMF" --vmaf n_threads="$NUM_THREADS" -i "$in" "$@" -o "$OUT" >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
   exit_code=0
@@ -134,6 +136,8 @@ else
   echo "[!] $in: failure. exit_code: $exit_code"  >&2
   exit "$exit_code"
 fi
+
+size_post="$(ls -l "$OUT" | awk '{ print $5 }')"
 
 if [ -n "$OUT_TEMPORARY" ]; then
   if [ -n "$REMOTE_INPUT" ]; then
@@ -147,5 +151,9 @@ if [ -n "$OUT_TEMPORARY" ]; then
   fi
 fi
 
+qalc < <(echo "$size_pre bytes to gigabytes")
+qalc < <(echo "$size_post bytes to gigabytes")
 
+echo -n "[.] ratio: "
+qalc < <(echo "$size_pre / $size_post")
 

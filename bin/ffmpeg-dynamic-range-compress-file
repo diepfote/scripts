@@ -124,8 +124,7 @@ if [ -n "$REMOTE_INPUT" ]; then
   in="$TMP_IN"
 fi
 
-
-
+size_pre="$(ls -l "$in" | awk '{ print $5 }')"
 
 # ATTENTION: strips video (-vn)
 if ffmpeg -i "$in" -y -vn "${aac[@]}" -filter_complex "compand=attacks=0:points=-$MIN_DB_LEVEL/-900|-$(( MIN_DB_LEVEL - 5 ))/-10|-5/-10|0/-10:gain=3" "$@" "$OUT"  >"$tmpdir"/stdout 2>"$tmpdir"/stderr; then
@@ -138,6 +137,8 @@ else
   exit "$exit_code"
 fi
 
+size_post="$(ls -l "$OUT" | awk '{ print $5 }')"
+
 if [ -n "$OUT_TEMPORARY" ]; then
   if [ -n "$REMOTE_INPUT" ]; then
     set -x
@@ -149,3 +150,11 @@ if [ -n "$OUT_TEMPORARY" ]; then
     set +x
   fi
 fi
+
+
+qalc < <(echo "$size_pre bytes to gigabytes")
+qalc < <(echo "$size_post bytes to gigabytes")
+
+echo -n "[.] ratio: "
+qalc < <(echo "$size_pre / $size_post")
+

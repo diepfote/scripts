@@ -118,6 +118,7 @@ if [ -n "$REMOTE_INPUT" ]; then
   in="$TMP_IN"
 fi
 
+size_pre="$(ls -l "$in" | awk '{ print $5 }')"
 
 if ffmpeg -y -threads "$NUM_THREADS"  -i "$in" "${aac[@]}"   "$@" "$OUT"   >"$tmpdir/stdout" 2>"$tmpdir/stderr"; then
   echo "[.] $in: success"  >&2
@@ -128,6 +129,8 @@ else
   tail "$tmpdir"/std* >&2
   exit "$exit_code"
 fi
+
+size_post="$(ls -l "$OUT" | awk '{ print $5 }')"
 
 if [ -n "$OUT_TEMPORARY" ]; then
   if [ -n "$REMOTE_INPUT" ]; then
@@ -140,4 +143,11 @@ if [ -n "$OUT_TEMPORARY" ]; then
     set +x
   fi
 fi
+
+
+qalc < <(echo "$size_pre bytes to gigabytes")
+qalc < <(echo "$size_post bytes to gigabytes")
+
+echo -n "[.] ratio: "
+qalc < <(echo "$size_pre / $size_post")
 
