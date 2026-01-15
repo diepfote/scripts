@@ -8,6 +8,9 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
+# disable color for all things docker
+export NO_COLOR=1
+
 cleanup () { set +x; }
 trap cleanup EXIT
 
