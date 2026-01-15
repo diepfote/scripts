@@ -18,7 +18,11 @@ source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 dir=~/.config/personal/sync-config/arch/
 [ ! -d "$dir" ] && mkdir -p "$dir"
 
-remote_path='rsync.net:state/arch/'
+folder=arch
+if [ $# -gt 0 ]; then
+  folder="$1"
+fi
+remote_path="rsync.net:state/$folder/"
 
 
 # backup pacman database
