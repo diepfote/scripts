@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+# used in trap
+exit_code=1
+
+
+REMOTE_INPUT=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --remote-input)
+    REMOTE_INPUT=true
+    shift
+    ;;
+
+    --quality|-q)
+      QUALITY="$2"
+      shift 2
+      ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+
+
+if [ $# -gt 1 ]; then
+  in="$1"
+  OUT="$2"
+  OUT_TEMPORARY=''
+  shift 2
+else
+  in="$1"
+  OUT=''
+  OUT_TEMPORARY='true'
+  shift
+fi
+
+tmpdir="$(mktemp -d)"
+echo "[.] temp dir: $tmpdir"  >&2
+cleanup () {
+  set +x
+  rm -r "$tmpdir"
+  exit "$exit_code"
+}
+trap cleanup EXIT
+
+
+if [ -n "$REMOTE_INPUT" ]; then
+  TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
+  REAL_IN="$in"
+  cp "$in" "$TMP_IN"
+  in="$TMP_IN"
+fi
+
+
+if [ -z "$OUT" ]; then
+  OUT="$tmpdir/$(basename "$REAL_IN")"
+  echo "[.] out file temporary: $OUT"  >&2
+else
+  out_dir="$(dirname "$(realpath "$OUT")")"
+  if [ ! -d "$out_dir" ]; then
+    out_dir="$(realpath "$PWD")"
+  fi
+  echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
+fi
+
+
+size_pre="$(ls -l "$in" | awk '{ print $5 }')"
+
+HandBrakeCLI -i "$in" -o "$OUT" -e x265 -q "$QUALITY" --encoder-preset slow --all-audio copy --audio-copy-mask aac,ac3,eac3,truehd,dts,dtshd,mp3,flac --audio-fallback av_aac --all-subtitles "$@"  >"$tmpdir/stdout" 2>"$tmpdir/stderr"
+
+encode_done=0
+work_result_success=0
+if grep -E '^Encode done!' "$tmpdir/stderr"  >/dev/null 2>&1; then
+  encode_done=1
+fi
+if grep 'libhb: work result = 0' "$tmpdir/stderr"  >/dev/null 2>&1; then
+  work_result_success=1
+fi
+
+if [ "$encode_done" -eq 1 ] && [ "$work_result_success" -eq 1 ]; then
+  exit_code=0
+else
+  exit "$exit_code"
+fi
+
+
+size_post="$(ls -l "$OUT" | awk '{ print $5 }')"
+
+if [ -n "$OUT_TEMPORARY" ]; then
+  if [ -n "$REMOTE_INPUT" ]; then
+    set -x
+    mv "$OUT" "$REAL_IN"
+    set +x
+  else
+    set -x
+    mv "$OUT" "$in"
+    set +x
+  fi
+fi
+
+qalc < <(echo "$size_pre bytes to gigabytes")
+qalc < <(echo "$size_post bytes to gigabytes")
+
+echo -n "[.] ratio: "
+qalc < <(echo "$size_pre / $size_post")
+
