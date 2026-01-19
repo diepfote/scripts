@@ -287,13 +287,20 @@ yay-generate-PKGBUILD-checksum () {
     set +x
   fi
 
+  actual_pkgbuild="$yay_cache/$pkg_name/PKGBUILD"
   if [ -n "$debug" ]; then
+
+    vimn "$actual_pkgbuild"
     ~/Repos/python/tools/archlinux-yay-remove-package-info.py PKGBUILD | vimn -
+
   else
+
     ~/Repos/python/tools/archlinux-yay-remove-package-info.py PKGBUILD | sha256sum > "$output_file"
+    sha="$(awk '{ print $1 }' "$output_file")"
+    cp "$actual_pkgbuild" "$yay_cache/$pkg_name-PKGBUILD.$sha.$(d)"
 
   fi
-  ls -alh "$output_file"
+  ls -alh "$yay_cache"/*"$pkg_name"*
   popd >/dev/null 2>&1
 }
 
