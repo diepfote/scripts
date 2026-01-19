@@ -14,7 +14,7 @@ temp="$(mktemp -d)"
 
 
 end () {
-  # rm -r "$temp"
+  rm -r "$temp"
   set +x
   echo "[.] END   ppid:$ppid pid:$pid $(dt)" >&2
   rm "$LOCK_FILE" || true
