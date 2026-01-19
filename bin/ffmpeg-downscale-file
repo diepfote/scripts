@@ -19,6 +19,12 @@ if [ $# -lt 2 ]; then
   echo "[.] using $tmpdir for $(basename "$in")"  >&2
   cleanup () {
     set +x
+
+    echo '[.] printing stdout for process' >&2
+    cat "$tmpdir"/stdout
+    echo '[.] printing stderr for process' >&2
+    cat "$tmpdir"/stderr >&2
+
     rm -r "$tmpdir"
     exit "$exit_code"
   }

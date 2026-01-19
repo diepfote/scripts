@@ -119,9 +119,10 @@ else
   echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
 fi
 
+
+REAL_IN="$in"
 if [ -n "$REMOTE_INPUT" ]; then
   TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
-  REAL_IN="$in"
   cp "$in" "$TMP_IN"
   in="$TMP_IN"
 fi

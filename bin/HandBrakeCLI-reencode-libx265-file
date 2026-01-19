@@ -55,15 +55,21 @@ tmpdir="$(mktemp -d)"
 echo "[.] temp dir: $tmpdir"  >&2
 cleanup () {
   set +x
+
+  echo '[.] printing stdout for process' >&2
+  cat "$tmpdir"/stdout
+  echo '[.] printing stderr for process' >&2
+  cat "$tmpdir"/stderr >&2
+
   rm -r "$tmpdir"
   exit "$exit_code"
 }
 trap cleanup EXIT
 
 
+REAL_IN="$in"
 if [ -n "$REMOTE_INPUT" ]; then
   TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
-  REAL_IN="$in"
   cp "$in" "$TMP_IN"
   in="$TMP_IN"
 fi
