@@ -11,6 +11,8 @@ shopt -s failglob  # error on unexpaned globs
 cleanup () { set +x; }
 trap cleanup EXIT
 
+_print_pkg_info() { local name="$1"; shift; echo; echo ---; pacman -Qii "$name" | grep -E '^(Name|Required By|Optional For)'; }
+_print_additional_info_updatable_pkgs() { while read -r pkg; do _print_pkg_info "$pkg"; done < <(yay -Qqu); }
 
 source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 _add_to_PATH ~/Repos/scripts/bin/linux/
@@ -36,6 +38,6 @@ echo -n "$cur_chk" > "$prev_chk_file"
 
 
 if [ "$(wc -l "$f" | awk '{ print $1 }')" -gt 0 ]; then
-  ntf send -t 'nc pkgs to update' "$(cat "$f")"
-fi  
+  ntf send -t "$(hostname) pkgs to update" "$(cat "$f")$(echo; _print_additional_info_updatable_pkgs)"
+fi
 
