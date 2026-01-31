@@ -48,7 +48,7 @@ fi
 
 if [ -n "$ENABLED" ]; then
   set -x
-  redshift -P -O 4000
+  redshift -P -O 3800
   set +x
 else
   set -x
