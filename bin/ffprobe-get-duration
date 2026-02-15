@@ -6,6 +6,17 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+_help() {
+cat <<EOF
+USAGE: $(basename $0) [OPTIONAL_OPTIONS] <FILE_TO_INSPECT>
+
+OPTIONAL OPTIONS:
+  -h ... human readable duration
+  -s ... display basename
+  -i ... display absolute path
+EOF
+}
+
 
 # Parse arguments
 INTERVAL=''
@@ -13,7 +24,7 @@ PRINT_FILE_INFO=''
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
-    --human-readable)
+    --human-readable|-h)
     INTERVAL=human-readable
     shift
     ;;
@@ -26,13 +37,19 @@ key="$1"
     shift
     ;;
 
-    --info)
+    --info|-i)
     PRINT_FILE_INFO=true
     shift
     ;;
-    --info-short)
+    --info-short|-s)
     PRINT_FILE_INFO=short
     shift
+    ;;
+
+    --help)
+    _help
+    shift
+    exit
     ;;
 
     --)
