@@ -89,7 +89,7 @@ fi
 
 size_pre="$(ls -l "$in" | awk '{ print $5 }')"
 
-HandBrakeCLI -i "$in" -o "$OUT" -e x265 -q "$QUALITY" --encoder-preset slow --all-audio copy --audio-copy-mask aac,ac3,eac3,truehd,dts,dtshd,mp3,flac --audio-fallback av_aac --all-subtitles "$@"  >"$tmpdir/stdout" 2>"$tmpdir/stderr"
+HandBrakeCLI -i "$in" -o "$OUT" -e x265 -q "$QUALITY" --encoder-preset slow --all-audio copy --audio-copy-mask aac,ac3,eac3,truehd,dts,dtshd,mp3,flac --audio-fallback av_aac --all-subtitles "$@"  </dev/null  >"$tmpdir/stdout" 2>"$tmpdir/stderr"
 
 encode_done=0
 work_result_success=0
