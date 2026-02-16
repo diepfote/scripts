@@ -493,7 +493,6 @@ alias httpdump="sudo tcpdump -i \"\$_ngrep_interface\" -n -s 0 -w - | grep -a -o
 
 alias todo='vim ~/.filen/notes/.todo.txt'
 alias todow='vim ~/Desktop/todo/index.txt'
-alias voc='vim ~/.filen/notes/voc/'
 
 
 parrot-search () {
