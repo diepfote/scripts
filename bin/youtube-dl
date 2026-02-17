@@ -20,7 +20,7 @@ while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
     -a)
-    opts+=(--sleep-interval 5)
+    opts+=(--min-sleep-interval 5)
     opts+=(--max-sleep-interval 20)
     opts+=("$1")
     opts+=("$2")

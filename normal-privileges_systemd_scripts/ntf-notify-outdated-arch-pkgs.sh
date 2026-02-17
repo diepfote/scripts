@@ -7,6 +7,10 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
+notify=1
+if [ $# -gt 0 ]; then
+notify=0
+fi
 
 cleanup () { set +x; }
 trap cleanup EXIT
@@ -36,6 +40,10 @@ fi
 
 echo -n "$cur_chk" > "$prev_chk_file"
 
+if [ $notify -eq 0 ]; then
+  echo "[.] will not notify" >&2
+  exit
+fi
 
 if [ "$(wc -l "$f" | awk '{ print $1 }')" -gt 0 ]; then
   ntf send -t "$(hostname) pkgs to update" "$(cat "$f")$(echo; _print_additional_info_updatable_pkgs)"
