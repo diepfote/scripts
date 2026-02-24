@@ -1,0 +1,190 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+# used in trap
+exit_code=1
+
+_help() {
+cat <<EOF
+USAGE: $(basename $0) [FLAGS] [OPTIONS] IN [OUT]
+
+FLAGS:
+  --remote-input        Will copy IN to the temp file to speed up processing (e.g. if the file lives on NFS)
+OPTIONS:
+  -m                    fdkaac -m, --bitrate-mode <n>  [default=2]
+                            0 = CBR (default).
+                            1–5 = VBR; lower to higher
+
+                        https://trac.ffmpeg.org/wiki/Encode/AAC
+  --min-db-level NUM    Minimum decibel level [default: 45]
+EOF
+}
+
+REMOTE_INPUT=''
+MIN_DB_LEVEL=45
+BITRATE_MODE=2
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --remote-input)
+    REMOTE_INPUT=true
+    shift
+    ;;
+
+    --min-db-level)
+    MIN_DB_LEVEL="$2"
+    shift 2
+    ;;
+
+    -m)
+    BITRATE_MODE="$2"
+    shift 2
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+#
+# https://www.perplexity.ai/search/create-a-script-that-uses-ffmp-ClCrmP4nQDS8T5OL0H0ROA#1
+# fdkaac -m, --bitrate-mode <n>
+#   0 = CBR (default).
+#   1–5 = VBR; higher = higher average bitrate and quality.
+#
+# fdkaac --profile 5 ... aac lc for channels >= 32 kb/s
+#
+libfdk_aac=(-m "$BITRATE_MODE" --profile 5)
+
+if [ $# -gt 1 ]; then
+  in="$1"
+  OUT="$2"
+  OUT_TEMPORARY=''
+  shift 2
+else
+  in="$1"
+  OUT=''
+  OUT_TEMPORARY='true'
+  shift
+fi
+
+
+tmpdir="$(mktemp -d)"
+echo "[.] temp dir: $tmpdir"  >&2
+cleanup () {
+  set +x
+
+  echo '[.] printing stdout for process' >&2
+  cat "$tmpdir"/stdout
+  echo '[.] printing stderr for process' >&2
+  cat "$tmpdir"/stderr >&2
+
+  rm -r "$tmpdir"
+  exit "$exit_code"
+}
+trap cleanup EXIT
+
+
+if [ -z "$OUT" ]; then
+  OUT="$tmpdir/$(basename "$in" | sed -r 's#(.*)\.[^\.]+$#\1.m4a#')"
+  echo "[.] out file temporary: $OUT"  >&2
+else
+  out_dir="$(dirname "$(realpath "$OUT")")"
+  if [ ! -d "$out_dir" ]; then
+    out_dir="$(realpath "$PWD")"
+  fi
+  echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
+fi
+
+REAL_IN="$in"
+if [ -n "$REMOTE_INPUT" ]; then
+  TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
+  cp "$in" "$TMP_IN"
+  in="$TMP_IN"
+fi
+
+size_pre="$(ls -l "$in" | awk '{ print $5 }')"
+
+
+
+echo '[.] begin ffmpeg' > "$tmpdir"/stderr
+echo '[.] begin ffmpeg' > "$tmpdir"/stdout
+#
+# First dynamic range compress and output as wav file
+#
+# ATTENTION: strips video (-vn)
+# ATTENTION: downmixes to mono (-ac 1)
+#
+wav_file="$tmpdir/out.wav"
+if ! ffmpeg -i "$in" -y -vn -ac 1 -filter_complex "compand=attacks=0:points=-$MIN_DB_LEVEL/-900|-$(( MIN_DB_LEVEL - 5 ))/-10|-5/-10|0/-10:gain=3" "$wav_file"  >"$tmpdir"/stdout 2>"$tmpdir"/stderr; then
+  exit_code="$?"
+  echo "[!] $in: failure. exit_code: $exit_code"  >&2
+  tail "$tmpdir"/std* >&2
+  exit "$exit_code"
+fi
+#
+echo '[.] end ffmpeg' > "$tmpdir"/stderr
+echo '[.] end ffmpeg' > "$tmpdir"/stdout
+
+
+echo '[.] begin fdkaac' > "$tmpdir"/stderr
+echo '[.] begin fdkaac' > "$tmpdir"/stdout
+##
+# Then use vbr setting in fdkaac to create a small m4a file
+#
+# SNATCHED FROM: https://www.perplexity.ai/search/create-a-script-that-uses-ffmp-ClCrmP4nQDS8T5OL0H0ROA#1
+#
+if fdkaac "${libfdk_aac[@]}" -o "$OUT" "$wav_file"; then
+  exit_code=0
+else
+  exit_code="$?"
+  echo "[!] $in: failure. exit_code: $exit_code"  >&2
+  tail "$tmpdir"/std* >&2
+  exit "$exit_code"
+fi
+#
+echo '[.] end fdkaac' > "$tmpdir"/stderr
+echo '[.] end fdkaac' > "$tmpdir"/stdout
+
+
+
+
+size_post="$(ls -l "$OUT" | awk '{ print $5 }')"
+
+if [ -n "$OUT_TEMPORARY" ]; then
+  if [ -n "$REMOTE_INPUT" ]; then
+    set -x
+    mv "$OUT" "$REAL_IN"
+    set +x
+  else
+    set -x
+    mv "$OUT" "$in"
+    set +x
+  fi
+fi
+
+
+qalc < <(echo "$size_pre bytes to gigabytes")
+qalc < <(echo "$size_post bytes to gigabytes")
+
+echo -n "[.] ratio: "
+qalc < <(echo "$size_pre / $size_post")
+

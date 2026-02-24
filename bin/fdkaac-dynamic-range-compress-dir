@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+dir="$1"
+shift
+
+
+# @TODO use another tmpdir (there is one for each execution of `ffmpeg-dynamic-range-compress-file`
+# to only override files in the source dir if we successfully execute downscale on all files
+#
+# tmpdir="$(mktemp -d)"
+# echo "$YELLOW[.]$NC changed files will end up in $NC$tmpdir$NC."  >&2
+# echo '    only if `find` and its `ffmpeg` subprocess executions succeed'  >&2
+# echo '    will these files replace the originals in the source folder'  >&2
+cleanup () {
+  set +x
+#   rm -r "$tmpdir"
+}
+
+
+
+set -x
+time execute --files --config <(find "$dir" -mindepth 1 "$@") -- ffmpeg-dynamic-range-compress-file
+# @TODO
+# if COMMAND; then
+#   mv "$tmpdir"/* "$dir"
+# fi
+set +x

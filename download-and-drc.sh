@@ -59,7 +59,7 @@ cleanup () {
 trap cleanup EXIT
 
 
-dir="$(read-ini-setting ~/.config/personal/podcast-download.conf download-dir || echo -n)"
+dir="$(read-ini-setting ~/.config/personal/podcast-download.conf download_dir || echo -n)"
 if [ -z "$dir" ]; then
   system="$(uname)"
   if [ "$system" = Linux ]; then
@@ -87,18 +87,36 @@ fi
 
 _add_metadata() {
   set +x
+  local try_count pubdate md_filename_pubdate sanitized_date final_fname prefix show_notes title
 
   mkdir -p finished
   curl -L -s -o current.html "$line"
 
-  pub_date="$(htmlq --text '#scrollable-page > main > div > div > div.section.section--information.svelte-1cj8vg9 > div.shelf-content > ul > li:nth-child(3) > div.content.svelte-sy8mrl' < current.html | ~/Repos/python/tools/date-rewrite-for-exiftool.py)"
+  pubdate="$(htmlq --text '.information > li:nth-child(3) > div:nth-child(2)' < current.html | date-rewrite)"
 
-  show_notes="$(htmlq '#scrollable-page > main > div > div > div.section.section--paragraph.svelte-1cj8vg9.section--display-separator > div > div' < current.html)"
+  try_count=0
+  md_filename_pubdate="$(echo -n "$pubdate" | date-rewrite "$(read-ini-setting ~/.config/personal/podcast-download.conf date_format)")"
+  prefix="$(read-ini-setting ~/.config/personal/podcast-download.conf prefix)"
+  while true; do
+    if [ "$try_count" -gt 10 ]; then
+      exit 100
+    fi
+    (( try_count = try_count + 1 ))
+    rc="$(curl -s -o /dev/null -w "%{http_code}\n" "$prefix/$md_filename_pubdate".md)"
+    if [ "$rc" -eq 200 ]; then
+      break
+    fi
 
-  title="$(htmlq --text '#scrollable-page > main > div > div > div.section.section--episodeHeaderRegular.svelte-1cj8vg9.without-bottom-spacing > div > div > div.headings.svelte-1uuona0 > h1 > span' < current.html)"
+    # decrement date by 1 dy
+    # snatched from https://www.perplexity.ai/search/use-a-date-like-2025-12-15-in-OKGasZyPRi2n1EAgbkHrMQ
+    md_filename_pubdate="$(date -d "${md_filename_pubdate//_/\/} - 1 day" +%Y_%m_%d)"
+  done
+  show_notes="$(curl -s "$prefix/$md_filename_pubdate".md)"
+
+  title="$(htmlq --text '.headings__title > span:nth-child(1)' < current.html)"
 
   set -x
-  exiftool -overwrite_original_in_place -'ContentCreateDate'="$pub_date" "$replaced_ext"
+  exiftool -overwrite_original_in_place -'ContentCreateDate'="$pubdate" "$replaced_ext"
 
   exiftool -overwrite_original_in_place -'Description'="$show_notes" "$replaced_ext"
 
@@ -106,7 +124,7 @@ _add_metadata() {
   set +x
 
 
-  sanitized_date="$( echo -n "$pub_date" | sed -r 's#^([0-9]+):([0-9]+):([0-9]+) ([0-9]+):([0-9]+):([0-9]+)#\1-\2-\3 \4.\5.\6#' )"
+  sanitized_date="$( echo -n "$pubdate" | sed -r 's#^([0-9]+):([0-9]+):([0-9]+) ([0-9]+):([0-9]+):([0-9]+)#\1-\2-\3 \4.\5.\6#' )"
   final_fname="$title-$sanitized_date.m4a"
   set -x
   mv "$replaced_ext" finished/"$final_fname"
@@ -133,7 +151,7 @@ while read -u 9 -r line; do
   set +x
 
   set -x
-  ffmpeg-dynamic-range-compress-file --vbr 1 "$replaced_ext"
+  fdkaac-dynamic-range-compress-file -m 2 "$replaced_ext"
   set +x
 
   set -x
