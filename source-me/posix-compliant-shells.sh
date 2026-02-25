@@ -428,28 +428,6 @@ video-sync-mpv-watch-later-files () {
 }
 
 
-download-and-drc-batch () {
-  local batch_file podcast_name
-  batch_file="$1"
-  podcast_name="$2"
-
-  _help () {
-    echo >&2
-    echo "[.] ${GREEN}usage e.g.:$NC" >&2
-    echo '   $ download-and-drc-batch /tmp/batch "'"Rene Borbonus"'"' >&2
-    echo '   $ download-and-drc-batch /tmp/batch "'"oxide-and-friends"'"' >&2
-  }
-
-
-  link="$1"
-  podcast_name="$2"
-  timestamp="$3"
-
-  if ! ~/Repos/scripts/download-and-drc.sh --batch-file "$batch_file" --folder-name "$2"; then
-    _help
-  fi
-}
-
 
 get-yt-links-for-downloads () {
   find "$1" -mindepth 1 | sed -r 's|(.*)([A-z0-9-]{11})\.[A-z0-9]{2,6}|\2 #  \1|
