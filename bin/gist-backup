@@ -47,7 +47,10 @@
 
 source ~/Repos/scripts/source-me/common-functions.sh
 _add_to_PATH ~/Repos/scripts/bin
-_add_to_PATH ~/Repos/python/tools/bin
+# read-ini-setting on dev machine
+_add_to_PATH ~/Repos/rust/tools/bin
+# read-ini-setting (fallback location)
+_add_to_PATH ~/.bin/
 
 token="$(read-ini-setting ~/.config/personal/github.conf gist_backup_token)"
 url=${GIST_URL:-https://api.github.com/gists}
