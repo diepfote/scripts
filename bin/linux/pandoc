@@ -8,5 +8,45 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
+set -x
+TMP_OUT='/data'
+args=()
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    -o)
+    OUT="$2"
+    TMP_OUT="/data/$(basename "$OUT")"
+    shift 2
+    ;;
 
-podman run  --security-opt=no-new-privileges --rm -w "$PWD" -v "$HOME":"$HOME" docker.io/pandoc/core "$@"
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    args+=("$1")
+    shift
+    ;;
+
+  esac
+done
+
+
+cleanup() { podman rm -f "$name"; }
+trap cleanup EXIT
+
+name=safer_pandoc
+podman run --name "$name" \
+  --user=1000:1000 \
+  --cap-drop=ALL \
+  --security-opt no-new-privileges \
+  --pids-limit=100 \
+  -w "$PWD" \
+  -v "$HOME":"$HOME" \
+  -v /tmp:/tmp \
+  localhost/pandoc "${args[@]}" -o "$TMP_OUT"
+
+podman cp "$name":"$TMP_OUT" "$OUT"
+
