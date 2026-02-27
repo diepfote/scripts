@@ -13,6 +13,7 @@ source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 cleanup () {
   rm -r "$output_dir"
+  rm "$links_temp"
   set +x
 }
 trap cleanup EXIT
@@ -23,6 +24,8 @@ output_dir="$(mktemp -d)"
 # links="$(mktemp)"
 # override
 links="$1"
+links_temp=/tmp/download-epubs-links.txt
+cp "$links" "$links_temp"
 
 
 # # NOTE: there is an implicit limit on how many items will be returned here.
@@ -39,7 +42,7 @@ links="$1"
 
 echo
 echo -------------------------------------
-paperoni -o "$output_dir" -f "$links"
+paperoni -o "$output_dir" -f "$links_temp"
 
 rsync -av "$output_dir"/ rsync.net:epubs/
 

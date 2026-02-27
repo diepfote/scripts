@@ -11,9 +11,15 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 set -x
 TMP_OUT='/data'
 args=()
+docker_options=()
 while [ $# -gt 0 ]; do
 key="$1"
   case "$key" in
+    --docker-options)
+    docker_options=("$2" "$3")
+    shift 3
+    ;;
+
     -o)
     OUT="$2"
     TMP_OUT="/data/$(basename "$OUT")"
@@ -47,6 +53,8 @@ podman run --name "$name" \
   -v "$HOME":"$HOME" \
   -v /tmp:/tmp \
   localhost/pandoc "${args[@]}" -o "$TMP_OUT"
+  # "${docker_options[@]}" \
+  # localhost/pandoc "${args[@]}" -o "$TMP_OUT"
 
 podman cp "$name":"$TMP_OUT" "$OUT"
 

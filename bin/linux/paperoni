@@ -37,6 +37,8 @@ done
 cleanup() { podman rm -f "$name"; rm -r "$temp"; }
 trap cleanup EXIT
 
+pushd  "$OUT_DIR"
+
 name=safer_paperoni
 podman run --name "$name" \
   --user 1000:1000 \
