@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+# snatched from https://www.perplexity.ai/search/how-do-i-check-what-i-am-logge-J57RozKjT8epVTh4u2VPiw#5
+#
+# e.g. ESC[1;32m
+#
+# start of ANSI escape seq ... \x1B  ... ESC[
+# 0-9 or ; ... color code            ... 1;32
+# A-Za-z ... color style             ... m
+#
+sed -r 's/\x1B\[[0-9;]*[A-Za-z]//g'
+
