@@ -22,10 +22,29 @@ fi
 
 BASE="$("${GIT[@]}" rev-parse --show-toplevel 2>/dev/null || true)"
 
+
+#
+# for this to work your file needs to contain something like this:
+#
+# $ cat ~/.config/personal/git.conf
+# [default]
+# ...
+# ...
+# custom-commit-message-dir-regex = abc|cde|fgh/.*
+#
+# each dir that matches will then use the custom commit message function
+# that appends the name of the branch in brackets
+#
+# projetc structure example for the config above:
+# ~/Repos/abc/execute/src/main.rs
+# ~/Repos/cde/file-uploader/bin/do-it
+#
+CUSTOM_COMMIT_MESSAGE_ENABLED_DIRS="$(read-ini-setting ~/.config/personal/git.conf custom-commit-message-dir-regex)"
+
 commit () {
   local ADD_PREFIX=''
 
-  if [[ "$BASE" =~ deploy-.* ]] && [ $# -gt 0 ]; then
+  if [[ "$BASE" =~ $CUSTOM_COMMIT_MESSAGE_ENABLED_DIRS ]] && [ $# -gt 0 ]; then
     ADD_PREFIX=true
     saved_opts=()
     message=''
