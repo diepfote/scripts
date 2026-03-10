@@ -147,6 +147,9 @@ fi
 # common aliases START
 #
 
+
+alias rsync='command rsync -h --info=progress2'
+
 # STARDICT START
 alias def='sdcv --use-dict "quick_italian-english" --use-dict "dictd_www.mova.org_biology" --use-dict "American_Idioms 2nd Ed" --use-dict "Drug information" --use-dict "Pharmaceutical terms" --use-dict "Concise Oxford Thesaurus 2nd Ed. (Eng-Eng)" --use-dict "dictd_www.mova.org_1000pbio" --use-dict "dictd_www.mova.org_aviation" --use-dict "dictd_www.mova.org_idioms" --use-dict "dictd_www.mova.org_religion" --use-dict "English Dialects 3.0 (En-En)" --use-dict "Merriam-Webster'"'"'s Collegiate Thesaurus (En-En)" --use-dict "The BBI Combinatory Dictionary of English (En-En)" --use-dict "American Heritage Dictionary 4th Ed. (En-En)" --use-dict "Concise Oxford English Dictionary (En-En)" --use-dict "Macmillan English Dictionary (En-En)" --use-dict "Macmillan English Thesaurus (En-En)" --use-dict "The Chambers Thesaurus (En-En)"'
 
