@@ -8,37 +8,11 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
 
-set -x
-TMP_OUT='/data'
-args=()
-docker_options=()
-while [ $# -gt 0 ]; do
-key="$1"
-  case "$key" in
-    --docker-options)
-    docker_options=("$2" "$3")
-    shift 3
-    ;;
-
-    -o)
-    OUT="$2"
-    TMP_OUT="/data/$(basename "$OUT")"
-    shift 2
-    ;;
-
-    --)
-    shift
-    break
-    ;;
-
-    *)
-    args+=("$1")
-    shift
-    ;;
-
-  esac
-done
-
+OUT="$2"
+TMP_OUT="/tmp/$(basename "$OUT")"
+IN="$1"
+shift 2
+set -- "$IN" "$TMP_OUT" "$@"
 
 cleanup() { podman rm -f "$name"; }
 trap cleanup EXIT
@@ -53,7 +27,7 @@ podman run --name "$name" \
   -w "$PWD" \
   -v "$HOME":"$HOME" \
   -v /tmp:/tmp \
-  localhost/calibre "${args[@]}"
+  localhost/calibre "$@"
 
 podman cp "$name":"$TMP_OUT" "$OUT"
 
