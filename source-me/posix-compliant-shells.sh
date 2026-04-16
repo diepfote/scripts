@@ -1036,14 +1036,15 @@ status-rezepte () {
 
 _sync-os-configs () {
   set +x
-  local remote_path dir
+  local remote_path dir username
+  username="$(read-ini-setting ~/.config/personal/fastmail.conf username)"
 
   if [ "$(uname)" = Darwin ]; then
-    remote_path='rsync.net:state/arch/'
+    remote_path='fastmail:'"$username"'.fastmail.com/files/state/arch'
     dir=~/.config/personal/sync-config/arch/
     [ ! -d "$dir" ] && mkdir -p "$dir"
   else
-    remote_path='rsync.net:state/mac-os/'
+    remote_path='fastmail:'"$username"'.fastmail.com/files/state/mac-os'
     dir=~/.config/personal/sync-config/mac-os/
   fi
 

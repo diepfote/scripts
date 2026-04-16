@@ -15,8 +15,8 @@ _add_to_PATH ~/Repos/python/tools/bin
 
 dir=~/.config/personal/sync-config/mac-os/
 [ ! -d "$dir" ] && mkdir "$dir"
-
-remote_path='rsync.net:state/mac-os/'
+username="$(read-ini-setting ~/.config/personal/fastmail.conf username)"
+remote_path='fastmail:'"$username"'.fastmail.com/files/state/mac-os'
 
 set -x
 
@@ -51,5 +51,5 @@ for nsuserkeyequivalent in "${defaults_nsuserkeyequivalents_to_save[@]}"; do
   set +x
 done
 
-rsync -av --delete  "$dir" "$remote_path"
-
+set -x
+rclone sync --delete-excluded "$dir" "$remote_path"

@@ -22,7 +22,8 @@ folder=arch
 if [ $# -gt 0 ]; then
   folder="$1"
 fi
-remote_path="rsync.net:state/$folder/"
+username="$(read-ini-setting ~/.config/personal/fastmail.conf username)"
+remote_path='fastmail:'"$username"'.fastmail.com/files/state/arch'
 
 
 # backup pacman database
@@ -35,5 +36,4 @@ pacman -Qqm  > "$dir/packages_all_external.txt"
 pacman -Qqn  > "$dir/packages_all_internal.txt"
 
 set -x
-rsync -av --delete "$dir" "$remote_path"
-
+rclone sync --delete-excluded "$dir" "$remote_path"
