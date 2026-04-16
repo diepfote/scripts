@@ -78,7 +78,7 @@ detect_error="$temp"/error
 {
   echo '#!/usr/bin/env bash'
 
-  echo rclone sync "$rclone_path/$video_syncer_file_remote"   "$local_video_syncer_storage"
+  echo rclone copy "$rclone_path/$video_syncer_file_remote"   "$local_video_syncer_storage"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n video-file-to-local, >> '"$detect_error"'; fi'
 
@@ -125,7 +125,7 @@ exec_push1="$temp/1"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rclone sync "$local_video_syncer_storage/$video_syncer_file"   "$rclone_path/$video_syncer_file"
+  echo rclone copy "$local_video_syncer_storage/$video_syncer_file"   "$rclone_path/$video_syncer_file"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n video-file-to-remote, >> '"$detect_error"'; fi'
 
@@ -134,7 +134,7 @@ exec_push2="$temp/2"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rclone sync "$local_video_syncer_storage/mapping.txt"   "$rclone_path/$mapping_file"
+  echo rclone copy "$local_video_syncer_storage/mapping.txt"   "$rclone_path/$mapping_file"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n mapping-file-to-remote, >> '"$detect_error"'; fi'
 
