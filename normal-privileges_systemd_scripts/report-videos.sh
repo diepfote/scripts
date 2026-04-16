@@ -53,8 +53,8 @@ touch "$LOCK_FILE"
 local_video_syncer_storage=~/.config/personal/sync-config/videos
 mkdir -p "$local_video_syncer_storage"
 
-rsync_path=rsync.net:state/videos
-
+username="$(read-ini-setting ~/.config/personal/fastmail.conf username)"
+rclone_path='fastmail:'"$username"'.fastmail.com/files/state/videos'
 
 system=arch
 remote_system=mac
@@ -78,7 +78,7 @@ detect_error="$temp"/error
 {
   echo '#!/usr/bin/env bash'
 
-  echo rsync -av  "$rsync_path/$video_syncer_file_remote"   "$local_video_syncer_storage"
+  echo rclone sync "$rclone_path/$video_syncer_file_remote"   "$local_video_syncer_storage"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n video-file-to-local, >> '"$detect_error"'; fi'
 
@@ -87,7 +87,7 @@ exec_fetch2="$temp/2"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rsync -av --delete  "$rsync_path/${remote_system}-mpv-watch_later/"   "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"
+  echo rclone sync --delete-excluded "$rclone_path/${remote_system}-mpv-watch_later/"   "$local_video_syncer_storage/${remote_system}-mpv-watch_later/"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n remote-watch-later-to-local, >> '"$detect_error"'; fi'
 
@@ -125,7 +125,7 @@ exec_push1="$temp/1"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rsync -av  "$local_video_syncer_storage/$video_syncer_file"   "$rsync_path/$video_syncer_file"
+  echo rclone sync "$local_video_syncer_storage/$video_syncer_file"   "$rclone_path/$video_syncer_file"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n video-file-to-remote, >> '"$detect_error"'; fi'
 
@@ -134,7 +134,7 @@ exec_push2="$temp/2"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rsync -av  "$local_video_syncer_storage/mapping.txt"   "$rsync_path/$mapping_file"
+  echo rclone sync "$local_video_syncer_storage/mapping.txt"   "$rclone_path/$mapping_file"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n mapping-file-to-remote, >> '"$detect_error"'; fi'
 
@@ -143,7 +143,7 @@ exec_push3="$temp/3"
 {
   echo '#!/usr/bin/env bash'
 
-  echo rsync -av --delete  "$mpv_dir"   "$rsync_path/${system}-mpv-watch_later/"
+  echo rclone sync --delete-excluded  "$mpv_dir"   "$rclone_path/${system}-mpv-watch_later/"
   # echo 'echo exit code $?'
   echo 'if [ $? -ne 0 ]; then echo -n watch-later-to-remote, >> '"$detect_error"'; fi'
 

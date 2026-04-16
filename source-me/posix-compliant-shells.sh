@@ -1049,7 +1049,7 @@ _sync-os-configs () {
   fi
 
   [ ! -d "$dir" ] && mkdir -p "$dir"
-  rsync -av --delete  "$remote_path" "$dir"
+  rclone sync --delete-excluded "$remote_path" "$dir"
 }
 
 work-sync () {
