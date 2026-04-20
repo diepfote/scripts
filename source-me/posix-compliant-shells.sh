@@ -76,8 +76,7 @@ _add_to_PATH "$HOME/Repos/scripts/bin"
 _add_to_PATH "$HOME/Repos/python/tools/bin"
 _add_to_PATH "$HOME/Repos/scripts/private/bin"  || true
 _add_to_PATH "$HOME/Repos/dockerfiles/bin"
-_add_to_PATH "$HOME/Repos/golang/tools/execute-in-repos"
-_add_to_PATH "$HOME/Repos/golang/tools/execute-on-files"
+_add_to_PATH "$HOME/Repos/golang/tools/execute"
 
 if [ -n "$NOT_HOST_ENV" ]; then
   _add_to_PATH "$HOME/Repos/rust/tools/read-ini-setting/target/x86_64-unknown-linux-gnu/release" || true
@@ -85,7 +84,7 @@ if [ -n "$NOT_HOST_ENV" ]; then
   _add_to_PATH "$HOME/Repos/rust/tools/bash-helper/target/x86_64-unknown-linux-gnu/release" || true
 else
   _add_to_PATH "$HOME/Repos/rust/tools/read-ini-setting/target/release"
-  _add_to_PATH "$HOME/Repos/rust/tools/execute/target/release"
+  # _add_to_PATH "$HOME/Repos/rust/tools/execute/target/release"
   _add_to_PATH "$HOME/Repos/rust/tools/bash-helper/target/release"  || true
 fi
 

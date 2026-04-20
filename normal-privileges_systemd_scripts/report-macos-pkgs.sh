@@ -9,9 +9,7 @@ shopt -s failglob  # error on unexpaned globs
 cleanup () { set +x; }
 trap cleanup EXIT
 
-source ~/Repos/scripts/source-me/common-functions.sh
-source ~/Repos/scripts/source-me/darwin/common-functions.sh
-_add_to_PATH ~/Repos/python/tools/bin
+source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 
 dir=~/.config/personal/sync-config/mac-os/
 [ ! -d "$dir" ] && mkdir "$dir"
