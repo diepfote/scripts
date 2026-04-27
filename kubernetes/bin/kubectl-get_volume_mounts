@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+binary="$(basename "$0" | cut -d '-' -f1)"
+
+set -x
+"$binary" get pod "$@" -o json | jq -r '
+  ["CONTAINER","MOUNT","PATH"],
+  (.spec.containers[]
+    | .name as $c
+    | .volumeMounts[]?
+    | [$c, .name, .mountPath])
+  | @tsv
+' | column -t -s $'\t'
+
