@@ -27,5 +27,5 @@ if [ "$in" = "$out" ]; then
   exit 10
 fi
 ffmpeg -i "$in" -ac 1 -f wav - |  fdkaac -m 2 --profile 5 -o "$out" -
-exiftool -overwrite_original_in_place -TagsFromFile "$in" -All:All "$out"
+exiftool -overwrite_original_in_place -TagsFromFile "$in" -All:All -'FileModifyDate<FileModifyDate' -'FileCreateDate<FileCreateDate' "$out"
 
