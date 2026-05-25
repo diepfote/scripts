@@ -22,5 +22,10 @@ shift 2
 #
 # fdkaac --profile 5 ... aac lc for channels >= 32 kb/s
 #
+if [ "$in" = "$out" ]; then
+  echo '[!] IN and OUT need to point to separate files' >&2
+  exit 10
+fi
 ffmpeg -i "$in" -ac 1 -f wav - |  fdkaac -m 2 --profile 5 -o "$out" -
+exiftool -overwrite_original_in_place -TagsFromFile "$in" -All:All "$out"
 
