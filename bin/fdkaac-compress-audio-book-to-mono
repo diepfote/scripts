@@ -29,3 +29,13 @@ fi
 ffmpeg -i "$in" -ac 1 -f wav - |  fdkaac -m 2 --profile 5 -o "$out" -
 exiftool -overwrite_original_in_place -TagsFromFile "$in" -All:All -'FileModifyDate<FileModifyDate' -'FileCreateDate<FileCreateDate' "$out"
 
+
+# no_ext="$(echo -n "$in" | sed -r 's#.[^\.]+##')"
+ext="$(echo -n "$in" | sed -r 's#.*\.([^\.]+)#\1#')"
+if [ "$ext" = m4a ]; then
+  echo "[.] Overwriting original" >&2
+  mv "$out" "$in"
+else
+  echo "[.] Skipping overwrite for $in. out: $out" >&2
+fi
+
