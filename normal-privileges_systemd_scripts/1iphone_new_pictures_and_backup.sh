@@ -64,9 +64,7 @@ do_image_copy () {
   for f in "${files_on_phone[@]}"; do
 
     local newer_file
-    # @FIXME 2025-05-05: do not fetch mov files as we are unable to fetch
-    #                    non-corrupted files no matter how many times we try
-    newer_file="$(find "$f" -newer "$LOCAL_PICTURES_DIR/${files_on_laptop[0]}" ! -name '*.MOV')"
+    newer_file="$(find "$f" -newer "$LOCAL_PICTURES_DIR/${files_on_laptop[0]}")"
 
     # check file on phone newer than newest file in backups
     if [ -n "$newer_file" ]; then
