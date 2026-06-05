@@ -6,32 +6,18 @@ set -e  # exit on non-zero return value
 #set -f  # disable globbing/filename expansion
 shopt -s failglob  # error on unexpaned globs
 
-device="$1"
-
 get_volume() {
-  local device
-  device="$1"
-
-  awk -F '[][]' '/%/ { printf "%s", $2 ; exit }' <(amixer sget "$device")
+  pactl get-sink-volume @DEFAULT_SINK@ | awk '{ printf("%s", $5); exit; }'
 }
-
-
-# muted = off
-# unmuted = on
-get_device_on_off () {
-  if awk -F"[][]" '/%/ { print $0; exit }' <(amixer sget "$device") | grep -- '\[off\]'  >/dev/null 2>&1; then
-    echo off
-  else
-    echo on
-  fi
-}
-
 
 run () {
-  if [ "$(get_device_on_off "$device")" = off ]; then
-    "$HOME/go/bin/i3cat" encode --color '#f91bac' "♪: M($(get_volume "$device"))"
+  local muted
+  muted="$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{ printf("%s", $2); exit; }')"
+
+  if [ "$muted" = yes ]; then
+    "$HOME/go/bin/i3cat" encode --color '#f91bac' "♪: M($(get_volume))"
   else
-    "$HOME/go/bin/i3cat" encode "♪: $(get_volume "$device")"
+    "$HOME/go/bin/i3cat" encode "♪: $(get_volume)"
   fi
 
   sleep infinity &
