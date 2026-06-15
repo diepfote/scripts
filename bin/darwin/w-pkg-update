@@ -49,7 +49,7 @@ FLAGS:
 -g                           greedy option for brew
 --reinstall-xcode            (re-)install xcode commandline tools, then exit immediately
 --no-update-repos            do not fetch updates to git repositories
---no-lima                    do not start lima vm
+--no-colima                  do not start colima vm
 --no-mac-os-updates          skip mac os updates
 --mac-os-updates-only        check for mac os udpates, start updates, then exit immediately
 
@@ -158,48 +158,24 @@ trap 'cleanup' EXIT  # stop spinner
 
 
 # -----------------------------------------------------
-# LIMA START
+# COLIMA START
 
-echo -e '\n--------\nlima archlinux disk images update & run\n' >&2
-
-base_url='https://geo.mirror.pkgbuild.com/images'
-sed_command=(sed 's#.*href="##;s#".*##')
-
-latest_image_location="$(curl -s "$base_url/" | tr -s ' ' | grep -E '(href="v|latest)' | tail -n 1 | "${sed_command[@]}")"
-image_links=()
-while IFS= read -r line; do
-  image_links+=("$line")
-done < <(curl -sL "$base_url/$latest_image_location" | grep cloud | "${sed_command[@]}")
-
-lima_config_file=~/Repos/dot-files/.lima/default/lima.yaml.j2
-# set image location
-sed -i -r 's#("https://geo.mirror.pkgbuild.com/images).*(")'"#\1/$latest_image_location${image_links[0]}\2#"  "$lima_config_file"
-# set image sha256
-image_sha256="$(curl -sL "$base_url/$latest_image_location${image_links[1]}" | awk '{ print $1 }')"
-sed -i -r 's#(digest: "sha256:).*(")'"#\1$image_sha256\2#"  "$lima_config_file"
+echo -e '\n--------\ncolima update\n' >&2
 
 if [ -z "$DO_NOT_START_LIMA" ]; then
   if ! colima list | tr -s '\t' ' ' | grep -q 'default Running' 2>/dev/null; then
     set -x
-    colima start --memory 2  >/dev/null 2>&1  &
+    colima start --memory 3  >/dev/null 2>&1  &
     set +x
     disown "$!"
     sleep 1
   else
     colima update -v
   fi
-
-  # if ! limactl list | tr -s ' ' ' ' | grep -q 'default Running' 2>/dev/null; then
-  #   set -x
-  #   limactl restart default  >/dev/null 2>&1  &
-  #   set +x
-  #   disown "$!"
-  #   sleep 1
-  # fi
 fi
 
 
-# LIMA END
+# COLIMA END
 # -----------------------------------------------------
 
 
