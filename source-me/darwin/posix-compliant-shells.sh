@@ -118,6 +118,8 @@ export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 # Use git repos as installation source
 export HOMEBREW_NO_INSTALL_FROM_API=1
+# brew now asks for confirmation before upgrading/downloading on `brew upgrade`. stop that
+export HOMEBREW_NO_ASK=1
 
 
 # fix gpg error: `gpg: public key decryption failed: Inappropriate ioctl for device`
