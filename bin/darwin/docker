@@ -14,8 +14,6 @@ export NO_COLOR=1
 cleanup () { set +x; }
 trap cleanup EXIT
 
-: "${DOCKER_BACKING_INSTANCE:=colima}"
-
 set_docker_stop_args () {
   local FORCE=''
   while [ $# -gt 0 ]; do
@@ -149,12 +147,6 @@ key="$1"
       ;;
 
     rm)
-    if [ "$DOCKER_BACKING_INSTANCE" = default ]; then
-    # if [[ "$command" =~ podman.* ]]; then
-      :
-    else
-      break
-    fi
     shift
     save_args+=(rm)
     set_docker_rm_args "$@"
@@ -186,59 +178,42 @@ key="$1"
   esac
 done
 
-# shellcheck disable=2154
-if [ "$DOCKER_BACKING_INSTANCE" = default ]; then
-  command=(podman"${COMPOSE-:''}")
-  limactl shell "$DOCKER_BACKING_INSTANCE" -- "${command[@]}" "$@"
-elif [ "$DOCKER_BACKING_INSTANCE" = colima ]; then
-  (
-    # TODO dirty hack for ansible playbook phase `Gathering facts`
-    : "${HOME:=/Users/florian.sorko}"
-
-    DOCKER_HOST="unix://$HOME/.${DOCKER_BACKING_INSTANCE}/docker.sock"
-    export DOCKER_HOST
-
-    if [ -n "$COMPOSE" ]; then
-      command=(/opt/homebrew/opt/docker-compose/bin/docker-compose)
-    else
-      command=(/opt/homebrew/bin/docker)
-    fi
-
-    is_build_command=''
-    if [[ "$1" =~ build* ]]; then
-      is_build_command=true
-    fi
-    temp_args=() inserted_progress_args=''
-    # insert progress arguments right after build commands (`build` or `buildx build`)
-    for item in "$@"; do
-      if [[ "$item" =~ build* ]]; then
-        # save `build` or `buildx build` command
-        temp_args+=("$item")
-      else
-        if [ -n "$is_build_command" ]; then
-          if [ -z "$inserted_progress_args" ]; then
-            # in case this is a build command add progress args once, after the build command(s)
-            temp_args+=(--progress plain)
-            inserted_progress_args=true
-          fi
-        fi
-
-        # always save previous args
-        temp_args+=("$item")
-      fi
-
-    done
-    set -- "${temp_args[@]}"
-    unset is_build_command inserted_progress_args temp_args
-
-    set -x
-    "${command[@]}" "$@"
-    set +x
-  )
+if [ -n "$COMPOSE" ]; then
+  command=(/opt/homebrew/opt/docker-compose/bin/docker-compose)
 else
-  echo "${RED}invalid$NC $DOCKER_BACKING_INSTANCE" >&2
-  exit
+  command=(/opt/homebrew/bin/docker)
 fi
+
+is_build_command=''
+if [[ "$1" =~ build* ]]; then
+  is_build_command=true
+fi
+temp_args=() inserted_progress_args=''
+# insert progress arguments right after build commands (`build` or `buildx build`)
+for item in "$@"; do
+  if [[ "$item" =~ build* ]]; then
+    # save `build` or `buildx build` command
+    temp_args+=("$item")
+  else
+    if [ -n "$is_build_command" ]; then
+      if [ -z "$inserted_progress_args" ]; then
+        # in case this is a build command add progress args once, after the build command(s)
+        temp_args+=(--progress plain)
+        inserted_progress_args=true
+      fi
+    fi
+
+    # always save previous args
+    temp_args+=("$item")
+  fi
+
+done
+set -- "${temp_args[@]}"
+unset is_build_command inserted_progress_args temp_args
+
+set -x
+"${command[@]}" "$@"
+set +x
 
 
 if [ $? -ne 0 ]; then
