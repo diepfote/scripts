@@ -131,7 +131,12 @@ set_docker_rm_args () {
 
     if [ -z "$TIMEOUT_SET_BY_USER" ]; then
       # set timeout to 0 if the user did not provide a custom timeout (overrides default of `-t 10`)
-      save_args+=(-f -t 0)
+      if [ "$(uname)" = Linux ]; then
+        # only podman supports `podman rm -f -t 0`
+        save_args+=(-f -t 0)
+      else
+        save_args+=(-f)
+      fi
     fi
   fi
 }
