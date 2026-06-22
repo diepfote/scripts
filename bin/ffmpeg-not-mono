@@ -27,7 +27,6 @@ _is_not_mono() {
 
   mds+=("$line")
   ((count=count+1))
-  # ffmpeg command taken from https://www.perplexity.ai/search/stereo-m4a-file-to-mono-m4a-ff-XCimxhKzQmWVA66PjrGnBA#8
   done < <(ffmpeg -loglevel error -i "$1" \
                -filter_complex "[0:a]channelsplit=channel_layout=stereo[left][right]" \
                -map "[left]"  -f md5 - \

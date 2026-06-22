@@ -546,7 +546,6 @@ pdf-smaller () {
   pdf-decrease-size "$@"
 }
 pdf-decrease-size () {
-  # source https://www.perplexity.ai/search/linux-easiest-way-to-decrease-DXY7BQEESLyT0cXWIdKMkA?sm=d
   #
   # /screen – Lowest quality and smallest size, with images downsampled to 72 dpi. Best for PDFs to be read on a screen.
   # /ebook – Medium quality, with images downsampled to 150 dpi. Good balance for e-readers and general sharing.

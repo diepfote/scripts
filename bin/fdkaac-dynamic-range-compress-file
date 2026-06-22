@@ -65,7 +65,6 @@ key="$1"
   esac
 done
 #
-# https://www.perplexity.ai/search/create-a-script-that-uses-ffmp-ClCrmP4nQDS8T5OL0H0ROA#1
 # fdkaac -m, --bitrate-mode <n>
 #   0 = CBR (default).
 #   1–5 = VBR; higher = higher average bitrate and quality.
@@ -149,8 +148,6 @@ echo '[.] begin fdkaac' > "$tmpdir"/stderr
 echo '[.] begin fdkaac' > "$tmpdir"/stdout
 ##
 # Then use vbr setting in fdkaac to create a small m4a file
-#
-# SNATCHED FROM: https://www.perplexity.ai/search/create-a-script-that-uses-ffmp-ClCrmP4nQDS8T5OL0H0ROA#1
 #
 if fdkaac "${libfdk_aac[@]}" -o "$OUT" "$wav_file"; then
   exit_code=0

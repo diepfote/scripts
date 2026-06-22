@@ -15,7 +15,6 @@ shift 2
 #
 # ffmpeg -ac ... downmix to mono
 #
-# https://www.perplexity.ai/search/create-a-script-that-uses-ffmp-ClCrmP4nQDS8T5OL0H0ROA#1
 # fdkaac -m, --bitrate-mode <n>
 #   0 = CBR (default).
 #   1–5 = VBR; higher = higher average bitrate and quality.
