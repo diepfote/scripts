@@ -1,7 +1,20 @@
 #!/usr/bin/env bash
 
 
+temp="$(mktemp -d)"
+cleanup () {
+  rm -r "$temp"
+}
+trap cleanup EXIT
+
+
+count=0
 for item in "$@"; do
-  echo "[.] who requires: $item"
-  brew formulae-require | grep --color=always " $item"
+  count=$((count+1))
+  dst="$temp"/it-"$count"
+  echo "echo '[.] who requires: $item'" > "$dst"
+  echo "brew formulae-require | grep --color=always $item" >> "$dst"
 done
+
+execute --config <(find "$temp" -name 'it-*') --files -- bash
+
