@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+# used in trap
+exit_code=1
+
+# Sidenote:
+# I tried `-hwaccel auto`, I saw no effect so I did not add it to the
+# command
+#
+#
+# shellcheck disable=SC2016
+codec=libx265
+#
+# constant rate factor
+# use libx265 based on https://slhck.info/video/2017/02/24/crf-guide.html
+# values can range from 0 (lossless) to 51 (worst)
+# libx264 default: 23
+# libx265 default: 28
+#
+# personal experience:
+# blu-ray movie @1080p ... 31  ... RvBS10
+# web video @720p is   ... 34  ... jb & scanlime
+# DvDs                 ... na  ... no experience
+CRF=31
+
+_help() {
+cat <<EOF
+USAGE: $(basename $0) [FLAGS] [OPTIONS] IN [OUT]
+e.g.: execute-on-files -workers 2 -config <(find scanlime-in-progress-new-channel/ -maxdepth 1 -mtime +100 -name '*.mp4') ffmpeg-reencode-libx265-file --threads 8 --crf 34
+
+FLAGS:
+  --remote-input        Will copy IN to the temp file to speed up processing (e.g. if the file lives on NFS)
+OPTIONS:
+  --vbr                 Variable bitrate (libfdk_aac only)
+                        https://trac.ffmpeg.org/wiki/Encode/AAC
+  -t|--threads NUM      Number of ffmpeg threads [default: num of physical cpus]
+  --crf FACTOR          Constant rate factor (video) [default: 31]
+                        Use 34 for web videos
+                        DvDs ... unknown
+EOF
+}
+
+if [ $# -lt 1 ]; then
+  _help
+  exit
+fi
+
+
+if [ "$(uname)" != Darwin ]; then
+  NUM_THREADS="$(grep cores /proc/cpuinfo | head -n1 | awk 'NR==1 { print $4; exit }')"
+else
+  NUM_THREADS="$(sysctl -n hw.ncpu)"
+fi
+
+REMOTE_INPUT=''
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --remote-input)
+    REMOTE_INPUT=true
+    shift
+    ;;
+
+    --crf)
+      CRF="$2"
+      shift 2
+      ;;
+    -t|--threads)
+    NUM_THREADS="$2"
+    shift 2
+    ;;
+
+    --vbr)
+    if ffmpeg-docker -buildconf | grep libfdk; then
+      libfdk_aac=(-c:a libfdk_aac -vbr "$2")
+      aac=("${libfdk_aac[@]}")
+      echo '[.] using libfdk_aac' >&2
+    else
+      echo '[.]  libfdk_aac not found' >&2
+      exit 2
+    fi
+    shift 2
+    ;;
+
+    -h|--help)
+    _help
+    exit 0
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    break
+    ;;
+
+  esac
+done
+echo "[.] using $NUM_THREADS threads."  >&2
+
+if [ $# -gt 1 ]; then
+  in="$1"
+  OUT="$2"
+  OUT_TEMPORARY=''
+  shift 2
+else
+  in="$1"
+  OUT=''
+  OUT_TEMPORARY='true'
+  shift
+fi
+
+tmpdir="$(mktemp -d)"
+ffmpeg_fd_tmpdir="$(mktemp -d)"
+echo "[.] temp dir: $tmpdir"  >&2
+echo "[.] ffmpeg_fd_tmpdir: $ffmpeg_fd_tmpdir"  >&2
+cleanup () {
+  set +x
+
+  echo '[.] printing stdout for process' >&2
+  cat "$tmpdir"/stdout
+  echo '[.] printing stderr for process' >&2
+  cat "$tmpdir"/stderr >&2
+
+  sudo chown -R "$USER":"$USER" "$tmpdir"
+  rm -r "$tmpdir"
+  rm -r "$ffmpeg_fd_tmpdir"
+  exit "$exit_code"
+}
+trap cleanup EXIT
+
+
+REAL_IN="$in"
+if [ -n "$REMOTE_INPUT" ]; then
+  TMP_IN="$tmpdir/in_prefix-$(basename "$in")"
+  cp "$in" "$TMP_IN"
+  in="$TMP_IN"
+fi
+
+
+
+if [ -z "$OUT" ]; then
+  OUT="$tmpdir/$(basename "$REAL_IN")"
+  echo "[.] out file temporary: $OUT"  >&2
+else
+  out_dir="$(dirname "$(realpath "$OUT")")"
+  if [ ! -d "$out_dir" ]; then
+    out_dir="$(realpath "$PWD")"
+  fi
+  echo "[.] out explicitly set: ${out_dir}/$(basename "$OUT")"  >&2
+fi
+
+copy_subtitles=(-c:s copy)
+aac=(-c:a copy)
+
+size_pre="$(ls -l "$in" | awk '{ print $5 }')"
+
+sudo chown -R 100999:100999 "$tmpdir"
+ffmpeg_docker_out="$tmpdir/$(basename "$OUT")" 
+if ffmpeg-docker -y -i "$in" -preset slow -threads "$NUM_THREADS" -crf "$CRF"  "${copy_subtitles[@]}" "${aac[@]}"  -c:v "$codec"   "$@" "$tmpdir/$(basename "$OUT")"   >"$ffmpeg_fd_tmpdir/stdout" 2>"$ffmpeg_fd_tmpdir/stderr"; then
+  echo "[.] $in: success"  >&2
+  exit_code=0
+  sudo chown -R "$USER":"$USER" "$tmpdir"
+  cp "$ffmpeg_fd_tmpdir"/std* "$tmpdir"
+  cp "$ffmpeg_docker_out" "$OUT"
+else
+  exit_code="$?"
+  echo "[!] $in: failure. exit_code: $exit_code"  >&2
+  sudo chown -R "$USER":"$USER" "$tmpdir"
+  cp "$ffmpeg_fd_tmpdir"/std* "$tmpdir"
+  tail "$tmpdir"/std* >&2
+  exit "$exit_code"
+fi
+
+size_post="$(ls -l "$OUT" | awk '{ print $5 }')"
+
+if [ -n "$OUT_TEMPORARY" ]; then
+  if [ -n "$REMOTE_INPUT" ]; then
+    set -x
+    mv "$OUT" "$REAL_IN"
+    set +x
+  else
+    set -x
+    mv "$OUT" "$in"
+    set +x
+  fi
+fi
+
+
+qalc < <(echo "$size_pre bytes to gigabytes")
+qalc < <(echo "$size_post bytes to gigabytes")
+
+echo -n "[.] ratio: "
+qalc < <(echo "$size_pre / $size_post")
+

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+args=()
+docker_options=()
+while [ $# -gt 0 ]; do
+key="$1"
+  case "$key" in
+    --docker-options)
+    docker_options=("$2" "$3")
+    shift 3
+    ;;
+
+    --)
+    shift
+    break
+    ;;
+
+    *)
+    args+=("$1")
+    shift
+    ;;
+
+  esac
+done
+
+
+# cleanup() { podman rm -f "$name"; }
+# trap cleanup EXIT
+
+# running as 1000 won't help as `sudo -i` will still go back to root
+# podman run  \
+#   --user=1000:1000 \
+#   --cap-drop=ALL \
+podman run  \
+  --rm \
+  --security-opt no-new-privileges \
+  --pids-limit=100 \
+  -w "$PWD" \
+  -v "$HOME":"$HOME" \
+  -v /tmp:/tmp \
+  lscr.io/linuxserver/ffmpeg:8.1.2-cli-ls71 "${args[@]}"
