@@ -8,9 +8,9 @@ shopt -s failglob  # error on unexpaned globs
 
 _help() {
 cat <<EOF
-USAGE: $(basename $0) [OPTIONAL_OPTIONS] <FILE_TO_INSPECT>
+USAGE: $(basename $0) [FLAGS] <FILE_TO_INSPECT>
 
-OPTIONAL OPTIONS:
+FLAGS:
   -h ... human readable duration
   -s ... display basename
   -i ... display absolute path
@@ -80,7 +80,7 @@ if [ -n "$INTERVAL" ]; then
   }
   trap cleanup EXIT
   f="$temp"/calculation.txt
-  dur="$(ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@" | head -n1 | sed -r 's#(.*)\..*#\1#')"
+  dur="$(ffprobe -v quiet -of csv=p=0 -show_entries format=duration "$@" | head -n1 | sed -r 's#(.*)\..*#\1#')"
 
   if [ "$INTERVAL" = human-readable ]; then
     if [ "$dur" -ge 3600 ]; then
@@ -94,5 +94,5 @@ if [ -n "$INTERVAL" ]; then
   echo -en '\t'
   qalc < "$f" | tail -n 3 | head -n1
 else
-  ffprobe -v quiet -of csv=p=0 -show_entries format=duration -- "$@"
+  ffprobe -v quiet -of csv=p=0 -show_entries format=duration "$@"
 fi
