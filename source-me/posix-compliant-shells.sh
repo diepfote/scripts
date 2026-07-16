@@ -112,6 +112,9 @@ export STARDICT_DATA_DIR="$HOME/.dictionaries/"
 # disable color for `ansible-doc`
 export ANSIBLE_NOCOLOR=1
 
+# kubectl klock light theme
+export KUBECOLOR_PRESET="light"
+
 # common exports END
 # --------------------------------
 
