@@ -73,7 +73,10 @@ if [ -z "$SKIP_VIM_UPDATES" ]; then
   # echo '[.] GoUpdateBinaries' >> "$plugin_update_log"
   # nvim -c "redir >>$plugin_update_log | execute ':GoUpdateBinaries' | qa"
 
-  grep -vE 'Reinstalling|Already up to date|[a-d0-9]+' "$plugin_update_log" >&2
+  # 40 chars
+  # e.g. 7bfffca1f121afb7a9e38747500bf5270e006bb1
+  commit_id_match='[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]'
+  grep -vE "Reinstalling|Already up to date|${commit_id_match}" "$plugin_update_log" >&2
   log
 
   set +x
