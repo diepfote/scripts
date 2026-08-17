@@ -2,6 +2,10 @@
 
 _mpv-rsync-net_completions()
 {
+  export DIR_TO_COMPLETE="$PWD"
+  _complete_files_and_dirs
+  saved_comp_reply=("${COMPREPLY[@]}")
+
   COMPREPLY=()
   index=$COMP_CWORD
   local cur_word="${COMP_WORDS[$index]}"
@@ -17,6 +21,10 @@ _mpv-rsync-net_completions()
       COMPREPLY=($(compgen -W  "$(_print "${completions[@]}")" -- "$cur_word"))
       ;;
   esac
+
+  for item in "${saved_comp_reply[@]}"; do
+    COMPREPLY+=("$item")
+  done
 
 }
 
