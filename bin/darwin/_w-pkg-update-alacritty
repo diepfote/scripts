@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+echo -e '\n--------\nalacritty version check\n'  >&2
+
+upstream_latest_tag="$(curl -L -s https://github.com/alacritty/alacritty/tags | htmlq --text '#repo-content-pjax-container > div > div:nth-child(2) > div > div.Box > div.Box-body.p-0.tmp-p-0 > div:nth-child(1) > div > div > div.d-flex > div.d-flex.inline.pr-2.pb-1.col-12 > h2 > a' | sed 's#v##')"
+
+installed_version="$(/Applications/Alacritty.app/Contents/MacOS/alacritty --version | awk '{ print $2 }')"
+
+if [ "$installed_version" != "$upstream_latest_tag" ]; then
+  echo "[!] Alacritty version does not match upstream. $installed_version < $upstream_latest_tag."
+else
+  echo "[.] Alacritty up-to-date."
+fi
+
