@@ -34,18 +34,21 @@ kubectl krew list > "$dir"/krew-pkgs.txt
 set +x
 
 defaults_nsuserkeyequivalents_to_save=()
-defaults_nsuserequivalents_to_save+=(-g)
-defaults_nsuserequivalents_to_save+=(com.google.Chrome)
-defaults_nsuserequivalents_to_save+=(com.toggl.toggldesktop.TogglDesktop)
-defaults_nsuserequivalents_to_save+=(com.apple.Safari)
-defaults_nsuserequivalents_to_save+=(com.apple.TextEdit)
-defaults_nsuserequivalents_to_save+=(com.microsoft.edgemac)
-defaults_nsuserequivalents_to_save+=(com.microsoft.word)
-defaults_nsuserequivalents_to_save+=(com.microsoft.excel)
+defaults_nsuserkeyequivalents_to_save+=(NSGlobalDomain)
+defaults_nsuserkeyequivalents_to_save+=(com.apple.Finder)
+defaults_nsuserkeyequivalents_to_save+=(com.apple.Safari)
+defaults_nsuserkeyequivalents_to_save+=(com.apple.TextEdit)
+defaults_nsuserkeyequivalents_to_save+=(com.microsoft.word)
+defaults_nsuserkeyequivalents_to_save+=(com.microsoft.excel)
+defaults_nsuserkeyequivalents_to_save+=(org.whispersystems.signal-desktop-beta)
+defaults_nsuserkeyequivalents_to_save+=(org.whispersystems.signal-desktop)
 
-for nsuserkeyequivalent in "${defaults_nsuserkeyequivalents_to_save[@]}"; do
+# https://github.com/koenrh/deft
+# NOTE: be sure to remove all backspaces (U+0008) with customshortcuts first
+#      (https://www.houdah.com/customShortcuts?ref=CustomShortcuts)
+for key in "${defaults_nsuserkeyequivalents_to_save[@]}"; do
   set -x
-  defaults-dave "$dir" "$nsuserkeyequivalent"  || true
+  deft dump -exclude "*"  -include NSUserKeyEquivalents "$key" > "$dir/nsuserkeyequivalents/$key.yaml"
   set +x
 done
 
