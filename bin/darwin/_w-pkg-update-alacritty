@@ -15,6 +15,7 @@ installed_version="$(/Applications/Alacritty.app/Contents/MacOS/alacritty --vers
 
 if [ "$installed_version" != "$upstream_latest_tag" ]; then
   echo "[!] Alacritty version does not match upstream. $installed_version < $upstream_latest_tag."
+  osascript -e 'display notification "Update required" with title "_w-pkg-update-alacritty" subtitle "Alacritty"'
 else
   echo "[.] Alacritty up-to-date."
 fi
