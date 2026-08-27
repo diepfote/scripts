@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+echo -e '\n--------\nchrome version check\n'  >&2
+
+upstream_latest_tag="$(curl -s --get \
+  'https://versionhistory.googleapis.com/v1/chrome/platforms/mac_arm64/channels/stable/versions/all/releases' \
+  --data-urlencode 'filter=endtime=none,fraction>=0.5' \
+  --data-urlencode 'order_by=version desc' \
+  | jq -r '.releases[0].version')"
+
+installed_version="$(/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version | awk '{ print $3 }')"
+
+if [ "$installed_version" != "$upstream_latest_tag" ]; then
+  echo "[!] Chrome version does not match upstream. $installed_version < $upstream_latest_tag."
+  osascript -e 'display notification "Update required" with title "_w-pkg-update-alacritty" subtitle "Chrome"'
+else
+  echo "[.] Chrome up-to-date."
+fi
+

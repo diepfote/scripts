@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+
+echo -e '\n--------\nfirefox version check\n'  >&2
+
+upstream_latest_tag="$(curl -s -L https://product-details.mozilla.org/1.0/firefox_versions.json | jq --raw-output .LATEST_FIREFOX_VERSION)"
+
+installed_version="$(/Applications/Firefox.app/Contents/MacOS/firefox --version  | awk '{ print $3 }')"
+
+if [ "$installed_version" != "$upstream_latest_tag" ]; then
+  echo "[!] Firefox version does not match upstream. $installed_version < $upstream_latest_tag."
+  osascript -e 'display notification "Update required" with title "_w-pkg-update-alacritty" subtitle "Firefox"'
+else
+  echo "[.] Firefox up-to-date."
+fi
+
