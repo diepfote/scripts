@@ -15,7 +15,7 @@ installed_version="$(/Applications/Helium.app/Contents/MacOS/Helium --version | 
 
 if [ "$installed_version" != "$upstream_latest_tag" ]; then
   echo "[!] Helium Browser version does not match upstream. $installed_version < $upstream_latest_tag."
-  osascript -e 'display notification "Update required" with title "_w-pkg-update-alacritty" subtitle "Helium"'
+  osascript -e 'display notification "Update required" with title "_w-pkg-update-helium" subtitle "Helium"'
 else
   echo "[.] Helium Browser up-to-date."
 fi

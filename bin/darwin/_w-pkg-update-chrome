@@ -19,7 +19,7 @@ installed_version="$(/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chr
 
 if [ "$installed_version" != "$upstream_latest_tag" ]; then
   echo "[!] Chrome version does not match upstream. $installed_version < $upstream_latest_tag."
-  osascript -e 'display notification "Update required" with title "_w-pkg-update-alacritty" subtitle "Chrome"'
+  osascript -e 'display notification "Update required" with title "_w-pkg-update-chrome" subtitle "Chrome"'
 else
   echo "[.] Chrome up-to-date."
 fi

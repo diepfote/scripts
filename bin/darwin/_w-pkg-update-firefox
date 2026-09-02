@@ -15,7 +15,7 @@ installed_version="$(/Applications/Firefox.app/Contents/MacOS/firefox --version 
 
 if [ "$installed_version" != "$upstream_latest_tag" ]; then
   echo "[!] Firefox version does not match upstream. $installed_version < $upstream_latest_tag."
-  osascript -e 'display notification "Update required" with title "_w-pkg-update-alacritty" subtitle "Firefox"'
+  osascript -e 'display notification "Update required" with title "_w-pkg-update-firefox" subtitle "Firefox"'
 else
   echo "[.] Firefox up-to-date."
 fi
