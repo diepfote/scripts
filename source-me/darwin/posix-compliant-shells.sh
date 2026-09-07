@@ -25,8 +25,21 @@ _add_to_MANPATH "/opt/homebrew/opt/grep/libexec/gnuman"
 _add_to_PATH "/opt/homebrew/opt/gnu-getopt/bin"
 _add_to_MANPATH "/opt/homebrew/opt/gnu-getopt/share/man"
 
+
+# ---------------------------------------------------------------
+# PYTHON SECTION START
+#
+
 # ADD THIS ONE BEFORE newer version --> export PATH="asdf:$PATH"
 # otherwise these python versions will be resolved before latest
+#
+# python 3.14
+python_314_path="/opt/homebrew/opt/python@3.14/libexec/bin"
+# ln -sf "$python_314_path"/python "$python_314_path"/python3
+_add_to_PATH "$python_314_path"
+# _add_to_PATH "$HOME/Library/Python/3.14/bin"
+# export LDFLAGS="-L/opt/homebrew/opt/python@3.14/lib $LDFLAGS"
+# export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.14/lib/pkgconfig:$PKG_CONFIG_PATH"
 #
 # python 3.13
 python_313_path="/opt/homebrew/opt/python@3.13/libexec/bin"
@@ -48,16 +61,30 @@ _add_to_PATH "$python_312_path"
 python_311_path="/opt/homebrew/opt/python@3.11/libexec/bin"
 # ln -sf "$python_311_path"/python "$python_311_path"/python3
 _add_to_PATH "$python_311_path"
-_add_to_PATH "$HOME/Library/Python/3.11/bin"
-export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib $LDFLAGS"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
+# _add_to_PATH "$HOME/Library/Python/3.11/bin"
+# export LDFLAGS="-L/opt/homebrew/opt/python@3.11/lib $LDFLAGS"
+# export PKG_CONFIG_PATH="/opt/homebrew/opt/python@3.11/lib/pkgconfig:$PKG_CONFIG_PATH"
 
+
+
+#
+# to prevent this error:
+# <frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /Users/florian.sorko/.venv, got /Users/florian.sorko/.local/share/uv/python/cpython-3.14.7-macos-aarch64-none
+_add_to_PATH ~/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/
+#
+# IMPORTANT: make sure this is the last _add_to_PATH call for python,
+# this makes it the default, so neovim picks up on the `neovim` lib
 _add_to_PATH ~/.venv/bin/
 export LDFLAGS="-L$HOME/.venv/lib/ $LDFLAGS"
 export PKG_CONFIG_PATH="$HOME/.venv/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-# pipx installed binaries
+# binaries installed by `uv tool`
 _add_to_PATH "$HOME/.local/bin"
+
+#
+# PYTHON SECTION END
+# ---------------------------------------------------------------
+
 
 _add_to_PATH "$HOME/Repos/scripts/private/bin/darwin"
 _add_to_PATH "$HOME/Repos/scripts/bin/darwin"
