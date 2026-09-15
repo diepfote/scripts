@@ -8,38 +8,6 @@ set -e  # exit on non-zero return value
 shopt -s failglob  # error on unexpaned globs
 
 
-mac-os-updates () {
-  echo -e '\n\n--------\n\nListing Mac OS updates'  >&2
-  pkg_info=()
-
-  while IFS='' read -r line; do
-    pkg_info+=( "$line" )
-  done < <(softwareupdate --all -l --force)
-
-  for line in "${pkg_info[@]}"; do
-    echo "$line"
-  done
-
-  if [ "${#pkg_info[@]}" -gt 3 ]; then  # 3 lines are returned always
-
-    echo -e '\n\n--------\n\nInstalling Mac OS updates that do not require a restart.'  >&2
-
-    echo 'Do you want to update & restart?'
-    set +u
-    if yesno; then
-      echo -e '\n\n--------\n\nInstalling Mac OS updates that require a restart.'  >&2
-      set -x
-      sudo softwareupdate -i --no-scan -a -R
-      set +x
-    else
-      set -x
-      softwareupdate -i --no-scan -a &
-      set +x
-    fi
-    set -u
-  fi
-}
-
 
 _help() {
 cat <<EOF
@@ -50,8 +18,6 @@ FLAGS:
 --reinstall-xcode            (re-)install xcode commandline tools, then exit immediately
 --no-update-repos            do not fetch updates to git repositories
 --no-colima                  do not start colima vm
---no-mac-os-updates          skip mac os updates
---mac-os-updates-only        check for mac os udpates, start updates, then exit immediately
 
 OPTIONS:
 
@@ -61,7 +27,6 @@ EOF
 # Parse arguments
 GREEDY=''
 DO_NOT_START_LIMA=''
-NO_MACOS_UPDATES=''
 DISABLE_GIT_REPO_UPDATES=''
 DRY_RUN=''
 while [ $# -gt 0 ]; do
@@ -82,20 +47,9 @@ while [ $# -gt 0 ]; do
     shift
     ;;
 
-    --no-mac-os-updates)
-    NO_MACOS_UPDATES=true
-    shift
-    ;;
-
     --no-update-repos)
     DISABLE_GIT_REPO_UPDATES=true
     shift
-    ;;
-
-    --mac-os-updates-only)
-    mac-os-updates
-    shift
-    exit
     ;;
 
     --reinstall-xcode)
@@ -215,11 +169,6 @@ set -u
 # ---------------------------------------------------
 
 
-if [ -z "$NO_MACOS_UPDATES" ]; then
-  mac-os-updates
-fi
-
-
 if [ -z "$DISABLE_GIT_REPO_UPDATES" ]; then
   echo -e '\n--------\nw-git-cleanup\n'  >&2
 
@@ -243,3 +192,4 @@ echo
 sudo systemsetup -getremotelogin  | grep --color=always -E 'On|Off'
 echo "End: $(dt)"  >&2
 echo =====================  >&2
+

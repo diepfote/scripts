@@ -16,9 +16,7 @@ _w-pkg-update_completions()
   completions+=(-r)
   completions+=(--reinstall-xcode)
   completions+=(--no-colima)
-  completions+=(--no-mac-os-updates)
   completions+=(--no-update-repos)
-  completions+=(--mac-os-updates-only)
 
   _pkg-update_completions-return "$@"
 
