@@ -179,6 +179,8 @@ alias rezepte='~/Repos/scripts/cheat.sh ~/Repos/rezepte'
 
 alias ls='ls --color=auto'
 
+alias rg='rg --vimgrep'
+
 # TODO do not forget update `akgprg`
 # in `.vimrc`
 alias grep='grep \
