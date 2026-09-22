@@ -180,6 +180,7 @@ alias rezepte='~/Repos/scripts/cheat.sh ~/Repos/rezepte'
 alias ls='ls --color=auto'
 
 alias rg='rg --vimgrep'
+alias fd='NO_COLOR=1 fd'
 
 # TODO do not forget update `akgprg`
 # in `.vimrc`
