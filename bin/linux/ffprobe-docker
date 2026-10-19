@@ -47,4 +47,4 @@ podman run  \
   -w "$PWD" \
   -v "$HOME":"$HOME" \
   -v /tmp:/tmp \
-  lscr.io/linuxserver/ffmpeg:8.1.2-cli-ls71 "${args[@]}"
+  lscr.io/linuxserver/ffmpeg:9.0.2-cli-ls86 "${args[@]}"

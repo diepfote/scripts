@@ -47,4 +47,4 @@ podman run  \
   -w "$PWD" \
   -v "$HOME":"$HOME" \
   -v /tmp:/tmp \
-  lscr.io/linuxserver/handbrake:1.11.2-ls32 HandBrakeCLI "${args[@]}"
+  lscr.io/linuxserver/handbrake:1.11.2-ls48 HandBrakeCLI "${args[@]}"
