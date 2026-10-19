@@ -32,7 +32,7 @@ podman run --name "$name" \
   -w "$PWD" \
   -v "$HOME":"$HOME" \
   -v /tmp:/tmp \
-  localhost/pandoc "$@"
+  localhost/pandoc "$@"  --pdf-engine=typst
 
 podman cp "$name":"$TMP_OUT" "$OUT"
 
