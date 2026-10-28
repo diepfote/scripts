@@ -179,8 +179,30 @@ alias rezepte='~/Repos/scripts/cheat.sh ~/Repos/rezepte'
 
 alias ls='ls --color=auto'
 
-alias rg='rg --vimgrep'
-alias fd='NO_COLOR=1 fd'
+# default:  respects .gitignore/.ignore/.rgignore/global gitignore, skips hidden, skips binary
+# -u    ... --no-ignore
+# -uu   ... --no-ignore --hidden
+# -uuu  ... --no-ignore --hidden --binary
+#
+# --no-ignore-vcs — ignore .gitignore but still honor .ignore/.rgignore
+# --no-ignore-dot — opposite: honor .gitignore, drop .ignore
+# --no-ignore-parent — stop walking up to parent dirs for ignore files
+# --no-ignore-global — drop ~/.config/git/ignore
+# --no-require-git — apply gitignore rules even outside a git repo
+#
+# --binary vs --text/-a: --binary searches binaries but stops at the first NUL-ish report;
+#                        -a treats them as text and prints the bytes
+#
+alias rg='rg --vimgrep -u'
+#
+#  --hidden
+#  --no-ignore          include .gitignore files
+#  -u                   hidden + ignored
+#  -uu                  nothing filtered out
+#  --no-ignore-vcs      only drop .gitignore
+#  --no-ignore-parent   don't read parent-dir ignore files
+#
+alias fd='NO_COLOR=1 fd -u'
 
 # TODO do not forget update `akgprg`
 # in `.vimrc`
