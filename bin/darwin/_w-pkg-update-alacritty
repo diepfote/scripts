@@ -9,7 +9,8 @@ shopt -s failglob  # error on unexpaned globs
 
 echo -e '\n--------\nalacritty version check\n'  >&2
 
-upstream_latest_tag="$(curl -L -s https://github.com/alacritty/alacritty/tags | htmlq --text '#repo-content-pjax-container > div > div:nth-child(2) > div > div.Box > div.Box-body.p-0.tmp-p-0 > div:nth-child(1) > div > div > div.d-flex > div.d-flex.inline.pr-2.pb-1.col-12 > h2 > a' | sed 's#v##')"
+selector='#repo-content-pjax-container > react-app > div > section > div > div > div > div > div > section > rails-partial > div.Box > div.Box-body.p-0.tmp-p-0 > div:nth-child(1) > div > div > div.d-flex > div.d-flex.inline.pr-2.pb-1.col-12 > h2 > a'
+upstream_latest_tag="$(curl -L -s https://github.com/alacritty/alacritty/tags | htmlq --text "$selector" | sed 's#v##')"
 
 installed_version="$(/Applications/Alacritty.app/Contents/MacOS/alacritty --version | awk '{ print $2 }')"
 
