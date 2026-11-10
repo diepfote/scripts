@@ -138,7 +138,9 @@ xrandr-disable () {
     xrandr --output "$device" --off
   done < <(xrandr -q | tail -n +2 | grep -vE '^(e| )' | awk '{ print $1 }')
 }
-
+xrandr-office () {
+  xrandr --output "$(_xrandr_snd_mon)" --mode 3840x2160 --rate 60 --right-of "$(_xrandr_fst_mon)"
+}
 
 
 _firewardened-app () {
