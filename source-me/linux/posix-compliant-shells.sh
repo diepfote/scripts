@@ -139,7 +139,10 @@ xrandr-disable () {
   done < <(xrandr -q | tail -n +2 | grep -vE '^(e| )' | awk '{ print $1 }')
 }
 xrandr-office () {
-  xrandr --output "$(_xrandr_snd_mon)" --mode 3840x2160 --rate 60 --right-of "$(_xrandr_fst_mon)"
+  # cat /sys/class/drm/card1-DP-4/modes
+  # modetest -c | sed -n '/DP-/,/^Connector/p'   # libdrm; every mode + full timing struct
+  # xrandr --output "$(_xrandr_snd_mon)" --mode 2560x1440 --rate 59.95 --right-of "$(_xrandr_fst_mon)"
+  xrandr --output "$(_xrandr_snd_mon)" --mode 3840x2160 --rate 30 --right-of "$(_xrandr_fst_mon)"
 }
 
 
