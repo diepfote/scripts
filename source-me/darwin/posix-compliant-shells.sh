@@ -112,9 +112,9 @@ export LDFLAGS="-L/opt/homebrew/opt/openssl@3/lib $LDFLAGS"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@3/lib/pkgconfig:$PKG_CONFIG_PATH"
 # --
 
-_add_to_PATH /opt/homebrew/opt/node@22/bin
-export LDFLAGS="-L/opt/homebrew/opt/node@22/lib $LDFLAGS"
-export CPPFLAGS="-I/opt/homebrew/opt/node@22/include:$CPPFLAGS"
+_add_to_PATH /opt/homebrew/opt/node@24/bin
+export LDFLAGS="-L/opt/homebrew/opt/node@24/lib $LDFLAGS"
+export CPPFLAGS="-I/opt/homebrew/opt/node@24/include:$CPPFLAGS"
 # --
 
 # --
