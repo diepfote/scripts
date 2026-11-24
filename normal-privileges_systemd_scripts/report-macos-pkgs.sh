@@ -14,7 +14,7 @@ source ~/Repos/scripts/source-me/posix-compliant-shells.sh
 dir=~/.config/personal/sync-config/mac-os/
 [ ! -d "$dir" ] && mkdir "$dir"
 username="$(read-ini-setting ~/.config/personal/fastmail.conf username)"
-remote_path='fastmail:'"$username"'.fastmail.com/files/state/mac-os'
+remote_path='fastmail:state/mac-os'
 
 set -x
 

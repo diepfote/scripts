@@ -54,7 +54,7 @@ local_video_syncer_storage=~/.config/personal/sync-config/videos
 mkdir -p "$local_video_syncer_storage"
 
 username="$(read-ini-setting ~/.config/personal/fastmail.conf username)"
-rclone_path='fastmail:'"$username"'.fastmail.com/files/state/videos'
+rclone_path='fastmail:state/videos'
 
 system=arch
 remote_system=mac

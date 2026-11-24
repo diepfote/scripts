@@ -23,7 +23,7 @@ if [ $# -gt 0 ]; then
   folder="$1"
 fi
 username="$(read-ini-setting ~/.config/personal/fastmail.conf username)"
-remote_path='fastmail:'"$username"'.fastmail.com/files/state/arch'
+remote_path='fastmail:state/arch'
 
 
 # backup pacman database

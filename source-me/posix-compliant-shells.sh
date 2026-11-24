@@ -1066,11 +1066,11 @@ _sync-os-configs () {
   username="$(read-ini-setting ~/.config/personal/fastmail.conf username)"
 
   if [ "$(uname)" = Darwin ]; then
-    remote_path='fastmail:'"$username"'.fastmail.com/files/state/arch'
+    remote_path='fastmail:state/arch'
     dir=~/.config/personal/sync-config/arch/
     [ ! -d "$dir" ] && mkdir -p "$dir"
   else
-    remote_path='fastmail:'"$username"'.fastmail.com/files/state/mac-os'
+    remote_path='fastmail:state/mac-os'
     dir=~/.config/personal/sync-config/mac-os/
   fi
 
