@@ -10,6 +10,13 @@ shopt -s inherit_errexit  # Bash disables set -e in command substitution by defa
 
 set -x
 
+
+EXTRA=""
+if [ "$1" = --extra ]; then
+  EXTRA=true
+  shift
+fi
+
 IN="$1"
 # -o
 OUT_OPT="$2"
@@ -18,7 +25,9 @@ OUT="$3"
 shift 3
 
 TMP_OUT="/tmp/$(basename "$OUT")"
-set -- "$IN" -o "$TMP_OUT" "$@"
+if [ -z "$EXTRA" ]; then
+  set -- "$IN" -o "$TMP_OUT" "$@"
+fi
 
 cleanup() { podman rm -f "$name"; }
 trap cleanup EXIT
