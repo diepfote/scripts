@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# Usage:
+# $ ffmpeg-add-subtitles <mp4-file> <srt-file> <language>
+# e.g.
+# Italian
+# $ ffmpeg-add-subtitles some.mp4  some.srt  it
+
+# all of these stem from https://www.shellcheck.net/wiki/
+set -o pipefail  # propagate errors
+set -u  # exit on undefined
+set -e  # exit on non-zero return value
+#set -f  # disable globbing/filename expansion
+shopt -s failglob  # error on unexpaned globs
+shopt -s inherit_errexit  # Bash disables set -e in command substitution by default; reverse this behavior
+
+cleanup () {
+  set +x
+}
+
+file="$1"
+subtitles_file="$2"
+lang="$3"
+filename="$(basename "$file")"
+filename_no_ext="${filename%.*}"
+ext="${filename##*.}"
+output_file="$(dirname "$file")"/"$filename_no_ext".w-subtiles."$ext"
+
+case "$ext" in
+
+  mp4)
+  echo '[>] mov_text for mp4'
+  set -x
+  if ffmpeg -i "$file" -i "$2" -map 0 -map 1 -c copy -c:s mov_text -metadata:s:s:0 language="$lang" "$output_file"; then
+
+    # mv "$output_file" "$file"
+    :
+  fi
+
+  set +x
+  ;;
+
+  # @TODO
+  # mkv)
+  #   supports srt directly
+
+  *)
+  # shellcheck disable=SC2154
+  echo -e "${RED}[!] error. extension \`$ext\` for \`$file\`$NC."
+  ;;
+
+esac
+
